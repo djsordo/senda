@@ -1,0 +1,7 @@
+{
+  "name": "senda",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
