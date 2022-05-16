@@ -24,6 +24,12 @@ npm-debug.log*
 /.sourcemaps
 /.versions
 /.vscode
+# directorio creado automáticamente por ionic
+# para el proyecto de apk
+/android
+# directorio creado automáticamente por ionic
+# para el proyecto IOS
+/ios
 /coverage
 /dist
 /node_modules
