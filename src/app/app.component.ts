@@ -1,3 +1,4 @@
+import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-root',
@@ -10,9 +11,19 @@ export class AppComponent {
   ];
 
   usuarioActivo = {
-    nombre: localStorage.getItem('nombreUsuario'),
-    email: localStorage.getItem('emailUsuario'),
+    nombre: '',
+    email: '',
   };
-  constructor() {
+
+  constructor(private menu: MenuController) {
+  }
+
+  escribeUsuario() {
+    console.log('entra');
+    this.usuarioActivo = {
+      nombre: localStorage.getItem('nombreUsuario'),
+      email: localStorage.getItem('emailUsuario'),
+    };
+
   }
 }
