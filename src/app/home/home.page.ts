@@ -1,3 +1,4 @@
+import { PartidosService } from './../services/partidos.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-
-  constructor() { }
+  proximosPartidos: any;
+  anterioresPartidos: any;
+  constructor(private partidosService: PartidosService) { }
 
   ngOnInit() {
+    this.proximosPartidos = this.partidosService.obtenerProximosPartidos();
+    this.anterioresPartidos = this.partidosService.obtenerAnterioresPartidos();
   }
+
 
 }
