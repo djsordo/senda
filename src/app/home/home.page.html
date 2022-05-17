@@ -15,7 +15,28 @@
   </ion-header>
 
   <div id="container">
-    <strong class="capitalize">Home</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-list>
+      <ion-list-header> <h1>Próximos Partidos</h1> </ion-list-header>
+      <ion-item *ngFor="let p of proximosPartidos">
+        <ion-label>
+          <h2>{{p.fecha}}</h2>
+          <h3>{{p.partido}}</h3>
+          <p>{{p.lugar}}</p>
+        </ion-label>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header> <h1>Partidos anteriores</h1></ion-list-header>
+      <ion-item *ngFor="let p of anterioresPartidos">
+        <ion-label>
+          <h2>{{p.fecha}}</h2>
+          <h3>{{p.partido}}</h3>
+          <p>{{p.lugar}}</p>
+        </ion-label>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
