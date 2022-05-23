@@ -14,7 +14,15 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },  {
+    path: 'modo-jugador',
+    loadChildren: () => import('./modo-jugador/modo-jugador.module').then( m => m.ModoJugadorPageModule)
+  },
+  {
+    path: 'modo-accion',
+    loadChildren: () => import('./modo-accion/modo-accion.module').then( m => m.ModoAccionPageModule)
   }
+
 
 ];
 

@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Modo Jugador</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cambiarModo()" size="small">Modo Acción</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="ion-text-center">
+    <ion-item>
+      <ion-chip color="primary" slot="start">1ª Parte</ion-chip>
+      <ion-text>27:30</ion-text>
+      <ion-icon name="play-circle-outline" slot="end"></ion-icon>
+    </ion-item>
+  </ion-card>
+</ion-content>
