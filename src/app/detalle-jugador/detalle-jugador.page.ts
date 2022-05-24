@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Gesture, GestureController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle-jugador',
@@ -7,13 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetalleJugadorPage implements OnInit {
 
-  constructor() { }
+  private element: { nativeElement: any; };
 
-  ngOnInit() {
-  }
+  constructor( ) {}
+
+  ngOnInit() {}
 
   onPorteriaPan( event : any ){
     console.log( event );
   }
 
+  onClick( event : any ){
+    console.log( event );
+  }
 }
