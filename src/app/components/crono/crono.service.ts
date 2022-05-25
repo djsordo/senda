@@ -26,6 +26,16 @@ export class CronoService {
         }
       }
     }, 1000);
+    return this.tiempo.encendido;
   }
 
+  marcaTiempo(){
+    // Función que devuelve el instante actual
+    const ahora = {
+      parte: this.tiempo.parte,
+      minuto: this.tiempo.minuto,
+      segundo: this.tiempo.segundo
+    };
+    return ahora;
+  }
 }

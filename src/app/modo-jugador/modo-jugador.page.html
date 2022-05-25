@@ -11,5 +11,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-crono></app-crono>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <app-crono></app-crono>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <app-marcador></app-marcador>
+      </ion-col>
+      <ion-col>
+        <app-marcador></app-marcador>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -8,8 +8,8 @@
         <ion-text color="tertiary">{{tiempo.minuto}}:{{tiempo.segundo | number: '2.0-0'}}</ion-text>
       </ion-col>
       <ion-col class="ion-text-end">
-        <ion-icon name="play-circle-outline" size="large" (click)="pulsaCrono()" *ngIf="!tiempo.encendido"></ion-icon>
-        <ion-icon name="pause-circle-outline" size="large" (click)="pulsaCrono()" *ngIf="tiempo.encendido"></ion-icon>
+        <ion-icon name="play" size="large" (click)="pulsaCrono()" *ngIf="!tiempo.encendido"></ion-icon>
+        <ion-icon name="pause" size="large" (click)="pulsaCrono()" *ngIf="tiempo.encendido"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
