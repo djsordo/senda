@@ -1,12 +1,13 @@
-<div class="yaveremos">
-  <img #porteria src="assets/porteria4_640.png"/>
-</div>
-
-<ion-card (tap)="onPorteriaPan($event)">
-<ion-item>
-  <h1>esto es una prueba</h1>
-</ion-item>
+<!-- https://stackoverflow.com/questions/7439042/css-js-to-prevent-dragging-of-ghost-image -->
+<!--
+<ion-card #porteria 
+    [ngStyle]="{ backgroundImage: 'url(/assets/porteria4_640.png)', 
+                 backgroundRepeat: 'no-repeat',
+                 backgroundSize: 'cover' }">
+  <p>after all, this is an empty div</p>
 </ion-card>
 
-<ion-button (click)="onClick($event)"
-(pan)="onPorteriaPan($event)">Botón de prueba</ion-button>
+-->
+
+<img #porteria src="./assets/porteria4_640.png">
+

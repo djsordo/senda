@@ -35,12 +35,4 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {}
 
-  onPorteriaPan( event : any ){
-    console.log( event );
-  }
-
-  onClick( event : any ){
-    console.log( event );
-  }
-
 }
