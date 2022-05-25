@@ -5,10 +5,9 @@ import { Platform } from '@ionic/angular';
   providedIn: 'root'
 })
 export class SendaService {
+  private platform: Platform;
 
-  private platform : Platform; 
-
-  constructor( platform : Platform ) { 
+  constructor( platform: Platform ) {
     this.platform = platform;
   }
 
