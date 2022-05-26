@@ -19,13 +19,10 @@ export class CronoComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log(this.cronoService.tiempo);
-    console.log(this.tiempo);
     this.tiempo = this.cronoService.tiempo;
   }
 
   pulsaCrono(){
     this.tiempo.encendido = !this.cronoService.pasoTiempo();
-    console.log(this.cronoService.marcaTiempo());
   }
 }

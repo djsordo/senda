@@ -1,21 +1,31 @@
 import { CronoService } from './../crono/crono.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-marcador',
   templateUrl: './marcador.component.html',
   styleUrls: ['./marcador.component.scss'],
 })
-export class MarcadorComponent implements OnInit {
-  encendido = false;
-  constructor(private cronoService: CronoService) { }
+export class MarcadorComponent implements OnInit, DoCheck {
+  @Input() nombreEquipo: string;
+
+  encendido: boolean;
+
+  constructor(private cronoService: CronoService) {
+   }
 
   ngOnInit() {
-    this.encendido = !this.cronoService.tiempo.encendido;
+    this.encendido = this.cronoService.getEncendido();
+    console.log(this.encendido);
+  }
+
+  ngDoCheck(){
+    // Esta es una parte del ciclo de vida de Angular, que se ejecuta 'de vez en cuando' y lo uso para actualizar ciertas variables.
+    this.encendido = this.cronoService.getEncendido();
   }
 
   tiempoMuerto(){
-    this.cronoService.tiempo.encendido = false;
-    this.encendido = false;
+    this.cronoService.apagar();
+    console.log(this.cronoService.marcaTiempo());
   }
 }

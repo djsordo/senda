@@ -38,4 +38,19 @@ export class CronoService {
     };
     return ahora;
   }
+
+  getEncendido(){
+    // Función que obtiene el estado del crono
+    return this.tiempo.encendido;
+  }
+
+  encender(){
+    // Función que enciende el crono
+    this.tiempo.encendido = true;
+  }
+
+  apagar(){
+    // Función que apaga el crono
+    this.tiempo.encendido = false;
+  }
 }
