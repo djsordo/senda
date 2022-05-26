@@ -1,3 +1,4 @@
+import { CronoService } from './../crono/crono.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./marcador.component.scss'],
 })
 export class MarcadorComponent implements OnInit {
+  encendido = false;
+  constructor(private cronoService: CronoService) { }
 
-  constructor() { }
+  ngOnInit() {
+    this.encendido = !this.cronoService.tiempo.encendido;
+  }
 
-  ngOnInit() {}
-
+  tiempoMuerto(){
+    this.cronoService.tiempo.encendido = false;
+    this.encendido = false;
+  }
 }

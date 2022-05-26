@@ -7,8 +7,14 @@
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-col class="ion-text-start">
+          <ion-button size="small" fill="outline" (click)="tiempoMuerto()" *ngIf="encendido">T.M.</ion-button>
+        </ion-col>
         <ion-col class="ion-text-center">
-          14
+          <ion-text>14</ion-text>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
