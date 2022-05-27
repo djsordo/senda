@@ -1,3 +1,4 @@
+import { TitularesComponent } from './titulares/titulares.component';
 import { MarcadorComponent } from './marcador/marcador.component';
 import { CronoComponent } from './crono/crono.component';
 import { NgModule } from '@angular/core';
@@ -6,11 +7,11 @@ import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
-  declarations: [CronoComponent, MarcadorComponent],
+  declarations: [CronoComponent, MarcadorComponent, TitularesComponent],
   imports: [
     CommonModule,
     IonicModule
   ],
-  exports: [CronoComponent, MarcadorComponent]
+  exports: [CronoComponent, MarcadorComponent, TitularesComponent]
 })
 export class ComponentsModule { }

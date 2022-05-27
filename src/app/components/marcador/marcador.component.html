@@ -1,14 +1,16 @@
 
-  <ion-card>
+  <ion-card class="background">
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-center">
-          {{nombreEquipo}}
+          <b>{{nombreEquipo}}</b>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-start">
-          <ion-button size="small" fill="outline" (click)="tiempoMuerto()" *ngIf="encendido">T.M.</ion-button>
+          <ion-button color="success" size="small" (click)="tiempoMuerto()" *ngIf="encendido">
+            <b>T</b>
+          </ion-button>
         </ion-col>
         <ion-col class="ion-text-center">
           <ion-text>14</ion-text>
