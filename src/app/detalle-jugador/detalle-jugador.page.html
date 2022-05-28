@@ -15,9 +15,17 @@
         <ion-button>Lanzamiento</ion-button>
       </ion-col>
     </ion-row>
-
+    <ion-row>
+      <ion-col col-12>
+        <app-porteria [areas]="[
+                    { 'name' : 'p1', 
+                      'polygon' : [ [543,  77], 
+                                   [767,  77],
+                                   [543, 295],
+                                   [767, 295] ]}]"></app-porteria>
+      </ion-col>
+    </ion-row>
   </ion-grid>
-  <app-porteria></app-porteria>
 
 
 </ion-content>

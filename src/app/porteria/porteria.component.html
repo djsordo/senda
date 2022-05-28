@@ -6,8 +6,22 @@
                  backgroundSize: 'cover' }">
   <p>after all, this is an empty div</p>
 </ion-card>
-
 -->
 
-<img #porteria src="./assets/porteria4_640.png">
+<ion-grid (click)="onPorteriaClick($event)"
+    class="porteria_container">
+  <img #porteria 
+  [ngStyle]="porteriaStyle"
+  src="./assets/porteria4_640.png"/>
+
+  <img #equis1 
+    [(ngStyle)]="equis1Style"
+  src="./assets/equis4_40.png"/>
+
+</ion-grid>
+
+<!--
+<img #equis2 [ngStye]="{}"
+src="./assets/equis4_64.png"/>
+-->
 
