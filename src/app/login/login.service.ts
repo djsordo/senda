@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,9 @@ export class LoginService {
     {id: '5', email: 'invitado@gmail.com', nombre:'Invitado', perfilId: '5', password: '12345'},
   ];
 
-  constructor(private router: Router, private menu: MenuController) { }
+  constructor(private router: Router,
+              private menu: MenuController,
+              private toastController: ToastController) { }
 
   comprobarLogin(usuario: any){
     console.log('Usuario:', usuario.email);
@@ -32,9 +35,12 @@ export class LoginService {
     console.log('objeto usuario: ', usuarioEncontrado);
 
     if (usuarioEncontrado) {
-      alert(usuarioEncontrado.nombre + ' ha entrado correctamente.');
+      //alert(usuarioEncontrado.nombre + ' ha entrado correctamente.');
+      this.toastCorrecto();
+
       localStorage.setItem('nombreUsuario', usuarioEncontrado.nombre);
       localStorage.setItem('emailUsuario', usuarioEncontrado.email);
+
       this.activarMenu();
       this.router.navigate(['/home']);
       }
@@ -52,4 +58,13 @@ export class LoginService {
     this.menu.enable(false);
   }
 
+  async toastCorrecto(){
+    const toast = await this.toastController.create({
+      message: 'Usuario correcto',
+      duration: 1000,
+      position: 'middle'
+    });
+
+    toast.present();
+  }
 }
