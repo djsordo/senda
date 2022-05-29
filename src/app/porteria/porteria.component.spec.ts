@@ -22,6 +22,17 @@ fdescribe('PorteriaComponent', () => {
     expect(component).toBeTruthy();
   });
 
+
+  it('p1 case', () => {
+    let p1 = [[296.04061784897027, 41.965],
+            [418.1641876430206, 41.965],
+            [418.1641876430206, 160.775],
+            [296.04061784897027, 160.775]];
+    let point = [405, 147];
+    expect( component.isPointInsidePolygon( point, p1 )).toBeTrue();
+  });
+
+
   it('polygon1', () => {
 
     let polygon = [[0, 0], [10, 10], [10, 0], [0, 10]];
@@ -45,6 +56,7 @@ fdescribe('PorteriaComponent', () => {
 
   });
 
+
   it('bizarre polygon', () => {
 
     let bizarre = [[4, 2], [5, 2], [5, 6], [3, 6], [3, 7],
@@ -63,15 +75,14 @@ fdescribe('PorteriaComponent', () => {
     [3.5, 6.5]];
 
     for (let point of pointsInside) {
-      console.log(`test of point: ${point}`);
-      console.log(component.isPointInsidePolygon(point, bizarre));
+      expect(component.isPointInsidePolygon(point, bizarre)).toBeTrue();
     }
 
     for (let point of pointsOutside) {
-      console.log(`test of point: ${point}`);
       expect(component.isPointInsidePolygon(point, bizarre)).toBeFalse();
     }
 
   });
 
+  
 });

@@ -7,7 +7,6 @@ import { Component,
           EventEmitter, 
           ElementRef } from '@angular/core';
 import { GestureController } from '@ionic/angular';
-import { NONAME } from 'dns';
 
 const X = 0; 
 const Y = 1;
@@ -35,7 +34,7 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
   public porteriaStyle = { position: 'relative',
                           top: 0,
                           left: 0  };
-  @Input() areas = [];
+  @Input() areas;
   @Input() equis1Style = { position : 'absolute', 
                   left: '1px', 
                   top : '1px',
@@ -45,6 +44,7 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
   constructor( public gestureCtrl : GestureController ) { }
 
   async ngAfterViewInit() {
+    /*
     let gesture = this.gestureCtrl.create({
       el: this.porteria.nativeElement,
       gestureName : "primera-prueba", 
@@ -55,29 +55,49 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
       onMove : ev => { console.log("onMove"); console.log(ev); }, 
       onEnd : ev => { console.log("onEnd"); console.log(ev); }
     });
-    gesture.enable( true );
+    gesture.enable( true );*/
   }
 
   ngOnInit() {
-    console.log( this.areas );
+  }
+
+  /**
+   * transforma los puntos dados en el array de áreas 
+   * en puntos de la imagen
+   */
+  private adaptaAreas(){
+    let actualWidth = this.porteria.nativeElement.width;
+    let actualHeight = this.porteria.nativeElement.height; 
+    for( let area of this.areas ){
+      area.polygonAdapted = [];
+      for( let point of area.polygon ){
+        let x = point[X] * actualWidth;
+        let y = point[Y] * actualHeight;
+        area.polygonAdapted.push([x, y]);
+      }
+    }
   }
 
   public onPorteriaClick( event ){
-    this.equis1Style.left = `${event.offsetX - (this.equis1.nativeElement.width / 2)}px`;
-    this.equis1Style.top = `${event.offsetY - (this.equis1.nativeElement.height / 2)}px`;
-    this.equis1Style.visibility = 'visible';
-    
+    if( event.target.id === "porteria" ){
+      this.adaptaAreas();
+      this.equis1Style.left = `${event.offsetX - (this.equis1.nativeElement.width / 2)}px`;
+      this.equis1Style.top = `${event.offsetY - (this.equis1.nativeElement.height / 2)}px`;
+      this.equis1Style.visibility = 'visible';
+      console.log( `el area se llama ${this.getAreaNameOfPoint( [ event.offsetX, event.offsetY ] )}` );
+    }
   }
 
   private getAreaNameOfPoint( point : Array<number>){
+    let areas = [];
     for( let area of this.areas ){
-      if( this.isPointInsidePolygon( point, area.polygon )){
-        console.log( area.name );
-        return area.name;
+      if( this.isPointInsidePolygon( point, area.polygonAdapted )){
+        areas.push( area.name );
       }
-      return null;
     }
+    return areas;
   }
+
 
   /**
    * Dados tres puntos p, q, r <b>que estarán en la misma linea</b>
@@ -99,8 +119,6 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
    * indicarán cuanto el punto esté por debajo o a la derecha del 
    * segmento PR o bien arriba o a la izquierda.
    * 
-   * Nota: <b>Esta función no trabaja bien con números en coma flotante, 
-   * sólamente con enteros.</b> 
    */
   private orientation( p : Array<number>, 
                        q : Array<number>, 
@@ -109,7 +127,8 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
     let val = (q[Y] - p[Y]) * (r[X] - q[X])
            - (q[X] - p[X]) * (r[Y] - q[Y]);
 
-    if (val == 0)
+    // this is a "val == 0" but tolerant with floating point numbers
+    if(-0.0001 <= val && val <= 0.0001)
     {
         return 0; // collinear
     }
@@ -127,37 +146,32 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
     let o4 = this.orientation(p2, q2, q1);
 
     // General case
-    if (o1 != o2 && o3 != o4)
-    {
+    if (o1 != o2 && o3 != o4){
         return true;
     }
 
     // Special Cases
     // p1, q1 and p2 are collinear and
     // p2 lies on segment p1q1
-    if (o1 == 0 && this.onSegment(p1, p2, q1))
-    {
+    if (o1 == 0 && this.onSegment(p1, p2, q1)){
         return true;
     }
 
     // p1, q1 and p2 are collinear and
     // q2 lies on segment p1q1
-    if (o2 == 0 && this.onSegment(p1, q2, q1))
-    {
+    if (o2 == 0 && this.onSegment(p1, q2, q1)){
         return true;
     }
 
     // p2, q2 and p1 are collinear and
     // p1 lies on segment p2q2
-    if (o3 == 0 && this.onSegment(p2, p1, q2))
-    {
+    if (o3 == 0 && this.onSegment(p2, p1, q2)){
         return true;
     }
 
     // p2, q2 and q1 are collinear and
     // q1 lies on segment p2q2
-    if (o4 == 0 && this.onSegment(p2, q1, q2))
-    {
+    if (o4 == 0 && this.onSegment(p2, q1, q2)){
         return true;
     }
 
@@ -173,17 +187,15 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
                                 polygon: Array<Array<number>> ){
     if( polygon.length < 3 ) 
       return false; 
-    console.log( point );
     let INFINITE = 10000; /* use of MAX_INT can cause overflow */
     let extreme = [INFINITE, point[Y]]; 
     let intersections = 0; 
-    let i = 0; 
+    let i = 0;
     do{
       let next = (i+1) % polygon.length;
       if( this.doIntersect(polygon[i], polygon[next], 
                               point, extreme )){
         if( this.orientation( polygon[i], point, polygon[next] ) == 0 /* collinear */ ) {
-          console.log( "COLLINEAR");
           return this.onSegment( polygon[i], point, polygon[next] );
         }
         intersections++;
@@ -194,7 +206,6 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
     // condición para que un punto esté dentro
     // de un polígono es que el número de 
     // intersecciones sea impar
-    console.log( `intersections: ${intersections}`);
     return this.isOdd( intersections );
   }
 
