@@ -1,3 +1,4 @@
+import { AccionGolesLanzComponent } from './accion-goles-lanz/accion-goles-lanz.component';
 import { TitularesComponent } from './titulares/titulares.component';
 import { MarcadorComponent } from './marcador/marcador.component';
 import { CronoComponent } from './crono/crono.component';
@@ -7,11 +8,17 @@ import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
-  declarations: [CronoComponent, MarcadorComponent, TitularesComponent],
+  declarations: [ CronoComponent,
+                  MarcadorComponent,
+                  TitularesComponent,
+                  AccionGolesLanzComponent],
   imports: [
     CommonModule,
     IonicModule
   ],
-  exports: [CronoComponent, MarcadorComponent, TitularesComponent]
+  exports: [CronoComponent,
+            MarcadorComponent,
+            TitularesComponent,
+            AccionGolesLanzComponent]
 })
 export class ComponentsModule { }
