@@ -12,6 +12,11 @@ export class ModoAccionPage implements OnInit {
     fuera: 'SAN AGUSTÍN'
   };
 
+  marcador= {
+    nuestro: 0,
+    rival: 0,
+  };
+
   constructor(private router: Router) { }
 
   ngOnInit() {
