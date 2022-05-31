@@ -7,6 +7,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./modo-jugador.page.scss'],
 })
 export class ModoJugadorPage implements OnInit {
+  nombres= {
+    casa: 'B. M. LAGUNA',
+    fuera: 'SAN AGUSTÍN'
+  };
 
   constructor(private router: Router) { }
 

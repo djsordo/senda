@@ -3,7 +3,7 @@
 
 /** Ionic CSS Variables **/
 :root {
-  /** primary **/
+  /** amarillo **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
@@ -75,6 +75,27 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
+  /** Colores definidos **/
+  --ion-color-azul: #0000FF;
+  --ion-color-azul-rgb: 0,0,255;
+	--ion-color-azul-contrast: #ffffff;
+	--ion-color-azul-contrast-rgb: 255,255,255;
+	--ion-color-azul-shade: #0000e0;
+	--ion-color-azul-tint: #1a1aff;
+
+  --ion-color-rojo: #FF0000;
+	--ion-color-rojo-rgb: 255,0,0;
+	--ion-color-rojo-contrast: #ffffff;
+	--ion-color-rojo-contrast-rgb: 255,255,255;
+	--ion-color-rojo-shade: #e00000;
+	--ion-color-rojo-tint: #ff1a1a;
+
+  --ion-color-amarillo: #FFFF00;
+	--ion-color-amarillo-rgb: 255,255,0;
+	--ion-color-amarillo-contrast: #000000;
+	--ion-color-amarillo-contrast-rgb: 0,0,0;
+	--ion-color-amarillo-shade: #e0e000;
+	--ion-color-amarillo-tint: #ffff1a;
 }
 
 @media (prefers-color-scheme: light dark) {

@@ -11,11 +11,24 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card class="ion-text-center">
-    <ion-item>
-      <ion-chip color="primary" slot="start">1ª Parte</ion-chip>
-      <ion-text>27:30</ion-text>
-      <ion-icon name="play-circle-outline" slot="end"></ion-icon>
-    </ion-item>
-  </ion-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-no-padding">
+        <app-crono></app-crono>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-no-padding">
+        <app-marcador [nombreEquipo]="nombres.casa"></app-marcador>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <app-marcador [nombreEquipo]="nombres.fuera"></app-marcador>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-no-padding ion-text-center">
+        <app-titulares></app-titulares>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

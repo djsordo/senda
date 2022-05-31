@@ -1,0 +1,24 @@
+
+  <ion-card class="background">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <b>{{nombreEquipo}}</b>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-start">
+          <ion-button color="success" size="small" (click)="tiempoMuerto()" *ngIf="encendido">
+            <b>T</b>
+          </ion-button>
+        </ion-col>
+        <ion-col class="ion-text-center">
+          <ion-text>{{marcador}}</ion-text>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
