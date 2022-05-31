@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DetalleJugadorPageRoutingModule } from './detalle-jugador-routing.module';
 
 import { DetalleJugadorPage } from './detalle-jugador.page';
-import { PorteriaComponent } from '../porteria/porteria.component'; 
+import { PorteriaComponent } from '../components/jugador-porteria/porteria.component'; 
 
 @NgModule({
   imports: [
