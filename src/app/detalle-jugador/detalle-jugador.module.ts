@@ -16,6 +16,7 @@ import { PorteriaComponent } from '../porteria/porteria.component';
     IonicModule,
     DetalleJugadorPageRoutingModule
   ],
-  declarations: [DetalleJugadorPage, PorteriaComponent]
+  declarations: [DetalleJugadorPage, 
+    PorteriaComponent ]
 })
 export class DetalleJugadorPageModule {}
