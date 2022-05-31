@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./accion-goles-lanz.component.scss'],
 })
 export class AccionGolesLanzComponent implements OnInit {
-
   constructor(private cronoService: CronoService,
     private marcadorService: MarcadorService) { }
 
@@ -32,5 +31,4 @@ export class AccionGolesLanzComponent implements OnInit {
   btnLanzamiento(){
     console.log('Lanzamiento: ', this.cronoService.marcaTiempo());
   }
-
 }

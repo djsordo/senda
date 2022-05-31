@@ -24,3 +24,29 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+/** Colores creados en variables.scss **/
+.ion-color-rojo {
+  --ion-color-base: var(--ion-color-rojo) !important;
+  --ion-color-base-rgb: var(--ion-color-rojo-rgb) !important;
+  --ion-color-contrast: var(--ion-color-rojo-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-rojo-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-rojo-shade) !important;
+  --ion-color-tint: var(--ion-color-rojo-tint) !important;
+}
+.ion-color-amarillo {
+  --ion-color-base: var(--ion-color-amarillo) !important;
+  --ion-color-base-rgb: var(--ion-color-amarillo-rgb) !important;
+  --ion-color-contrast: var(--ion-color-amarillo-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-amarillo-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-amarillo-shade) !important;
+  --ion-color-tint: var(--ion-color-amarillo-tint) !important;
+}
+.ion-color-azul {
+  --ion-color-base: var(--ion-color-azul) !important;
+  --ion-color-base-rgb: var(--ion-color-azul-rgb) !important;
+  --ion-color-contrast: var(--ion-color-azul-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-azul-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-azul-shade) !important;
+  --ion-color-tint: var(--ion-color-azul-tint) !important;
+}

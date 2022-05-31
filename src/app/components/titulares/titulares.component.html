@@ -1,3 +1,51 @@
+<ion-list inset="true">
+  <ion-list-header><h2>Jugadores en la pista</h2></ion-list-header>
+  <ion-accordion-group>
+    <ion-accordion *ngFor="let titular of titulares" value="{{titular.numero}}">
+      <ion-item slot="header">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <b>{{ titular.numero }}</b>
+            </ion-col>
+            <ion-col size="1">
+              <ion-img
+                src="../../../assets/portero.png"
+                *ngIf="titular.portero"
+              ></ion-img>
+            </ion-col>
+            <ion-col size="9">
+              <ion-label>{{ titular.nombre }}</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-list slot="content">
+        <ion-grid>
+          <ion-row class="ion-text-center">
+            <ion-col>
+              <ion-button color="success" *ngIf="titular.portero">Parada</ion-button>
+              <ion-button color="success" *ngIf="!titular.portero">Gol</ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button color="danger" *ngIf="titular.portero">Gol Rival</ion-button>
+              <ion-button color="danger" *ngIf="!titular.portero">Lanzamiento</ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-text-center">
+            <ion-col>
+              <ion-button color="success">Recuperaciones</ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button color="danger">Pérdidas</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-list>
+
 <ion-list>
   <ion-list-header><h2>Jugadores en la pista</h2></ion-list-header>
   <ion-item *ngFor="let titular of titulares">
