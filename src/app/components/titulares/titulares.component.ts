@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-titulares',
@@ -43,8 +44,11 @@ export class TitularesComponent implements OnInit {
       portero: false,
     },
   ];
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
+  irADetalle(){
+    this.router.navigate(['/detalle-jugador']);
+  }
 }
