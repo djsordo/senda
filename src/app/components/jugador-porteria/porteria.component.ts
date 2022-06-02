@@ -107,7 +107,7 @@ export class PorteriaComponent implements OnInit, AfterViewInit {
                      q : Array<number>, 
                      r : Array<number> ) : boolean {
     return (Math.min( p[X], r[X] ) <= q[X] && q[X] <= Math.max( p[Y], r[Y] ) )
-       && (Math.min( p[Y], r[Y] ) <= q[Y] && q[Y] <= Math.max( p[Y], r[Y] ) );
+        && (Math.min( p[Y], r[Y] ) <= q[Y] && q[Y] <= Math.max( p[Y], r[Y] ) );
   }
 
   /**
