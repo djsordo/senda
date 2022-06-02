@@ -8,6 +8,7 @@ import { DetalleJugadorPageRoutingModule } from './detalle-jugador-routing.modul
 
 import { DetalleJugadorPage } from './detalle-jugador.page';
 import { PorteriaComponent } from '../components/jugador-porteria/porteria.component'; 
+import { PorteriaSvgComponent } from '../components/porteria-svg/porteria-svg.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { PorteriaComponent } from '../components/jugador-porteria/porteria.compo
     DetalleJugadorPageRoutingModule
   ],
   declarations: [DetalleJugadorPage, 
-    PorteriaComponent ]
+    PorteriaComponent, 
+    PorteriaSvgComponent ]
 })
 export class DetalleJugadorPageModule {}

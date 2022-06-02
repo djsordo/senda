@@ -1,0 +1,16 @@
+/*
+ * porteria.component.scss
+ */
+
+ .porteria_svg_container
+ {
+   /* esto es más importante de lo que parece: 
+   resulta que el elemento "padre" de la X
+   viene determinado por el primer elemento 
+   padre que tenga un valor de position 
+   distinto de "auto" */
+   position: relative; 
+   padding: 0%;
+ }
+
+ 

@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PorteriaSvgComponent implements OnInit {
 
+  public porteriaStyle = { position: 'relative',
+            top: 0,
+            left: 0  };
+
   constructor() { }
 
   ngOnInit() {}
