@@ -11,24 +11,32 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-row>
-      <ion-col class="ion-no-padding">
-        <app-crono></app-crono>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-no-padding">
-        <app-marcador [nombreEquipo]="nombres.casa"></app-marcador>
-      </ion-col>
-      <ion-col class="ion-no-padding">
-        <app-marcador [nombreEquipo]="nombres.fuera"></app-marcador>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-no-padding ion-text-center">
-        <app-titulares></app-titulares>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-no-padding" size="12">
+          <app-crono></app-crono>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-no-padding" size="6">
+          <app-marcador [nombreEquipo]="nombres.casa"></app-marcador>
+        </ion-col>
+        <ion-col class="ion-no-padding" size="6">
+          <app-marcador [nombreEquipo]="nombres.fuera"></app-marcador>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-no-padding ion-text-center">
+          <app-titulares></app-titulares>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
 </ion-content>
