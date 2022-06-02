@@ -18,9 +18,11 @@ export class PorteriaSvgComponent implements OnInit {
   @ViewChild("porteriaImg", { read: ElementRef, static : true } )
   porteriaImg : ElementRef;
   public porteriaStyle = { position: 'relative',
+            zIndex: '50',
             top: 0,
             left: 0  };
   @Input() svgStyle = { position : 'absolute', 
+            zIndex: '100', 
             left: '0px', 
             top : '0px' };
   private polygons = [{ 'name' : 'top_left',
@@ -51,15 +53,20 @@ export class PorteriaSvgComponent implements OnInit {
     let actualHeight = this.porteriaImg.nativeElement.height; 
     let result = [];
     for( let polygon of this.polygons ){
-      let convertedPoints = [];
+      let convertedPoints = "";
       for( let point of polygon.points ){
-        convertedPoints.push( [ point[X] * actualWidth, 
-                                point[Y] * actualHeight ] );
+        convertedPoints += `${point[X] * actualWidth}, 
+                            ${point[Y] * actualHeight} `;
       }
       result.push( { 'name' : polygon.name, 
-                    'points' : convertedPoints });
+                     'points' : convertedPoints });
     }
     return result;
+  }
+
+  public onClickPolygon( event ) : void {
+    console.log( "area pulsada: " );
+    console.log( event );
   }
 
 }

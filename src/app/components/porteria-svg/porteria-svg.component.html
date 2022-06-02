@@ -2,21 +2,15 @@
   <img #porteriaImg id="porteriaImg"
     src="./assets/porteria5.png"
     [ngStyle]="porteriaStyle"/>
-  
-  <p *ngFor="let polygon of getPolygonsConverted()">{{polygon.points[0]}}</p>
-  
+
   <svg id="porteria-svg" 
     width="100%"
     height="100%"
     [ngStyle]="svgStyle">
-    <path
-         style="fill:none;stroke:#000000;stroke-width:0.2634466px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 44.347115,107.85796 h 26.530379 v 18.75752 h -26.70416 z"
-         id="p1"/>
-     <polygon
-         style="fill:none;stroke:#000000;stroke-width:0.2634466px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 44.347115,107.85796 h 26.530379 v 18.75752 h -26.70416 z"
-         id="p2"/>
-         
+     <polygon *ngFor="let polygon of getPolygonsConverted()"
+         style="fill: transparent;"
+         [attr.points]="polygon.points"
+         id="{{polygon.name}}"
+         (click)="onClickPolygon( polygon.name )"/>
   </svg>
 </ion-grid>
