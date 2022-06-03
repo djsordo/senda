@@ -1,5 +1,7 @@
+import { PopoverController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PopoverRoboComponent } from '../popover-robo/popover-robo.component';
 
 @Component({
   selector: 'app-titulares',
@@ -44,11 +46,28 @@ export class TitularesComponent implements OnInit {
       portero: false,
     },
   ];
-  constructor(private router: Router) { }
+
+  ev: Event;
+
+  constructor(private router: Router,
+              public popoverController: PopoverController) { }
 
   ngOnInit() {}
 
   irADetalle(){
     this.router.navigate(['/detalle-jugador']);
+  }
+
+  async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverRoboComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    await popover.present();
+
+    const { role } = await popover.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
   }
 }
