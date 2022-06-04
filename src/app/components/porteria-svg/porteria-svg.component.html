@@ -11,6 +11,10 @@
          style="fill: transparent;"
          [attr.points]="polygon.points"
          id="{{polygon.name}}"
-         (click)="onClickPolygon( polygon.name )"/>
+         (click)="onClickPolygon( $event )"/>
+      <path 
+      id="equis"
+      [ngStyle]="pointerStyle"
+      [attr.d]="pointerDots"/>
   </svg>
 </ion-grid>
