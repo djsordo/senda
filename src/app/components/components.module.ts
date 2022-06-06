@@ -1,4 +1,4 @@
-import { PopoverRoboComponent } from './popover-robo/popover-robo.component';
+import { BotonListaComponent } from './boton-lista/boton-lista.component';
 import { AccionCambiosComponent } from './accion-cambios/accion-cambios.component';
 import { AccionSancionesComponent } from './accion-sanciones/accion-sanciones.component';
 import { AccionPerdRecuComponent } from './accion-perd-recu/accion-perd-recu.component';
@@ -19,7 +19,7 @@ import { IonicModule} from '@ionic/angular';
                   AccionPerdRecuComponent,
                   AccionSancionesComponent,
                   AccionCambiosComponent,
-                  PopoverRoboComponent
+                  BotonListaComponent,
                 ],
   imports: [
     CommonModule,
@@ -32,7 +32,7 @@ import { IonicModule} from '@ionic/angular';
             AccionPerdRecuComponent,
             AccionSancionesComponent,
             AccionCambiosComponent,
-            PopoverRoboComponent
+            BotonListaComponent,
             ]
 })
 export class ComponentsModule { }

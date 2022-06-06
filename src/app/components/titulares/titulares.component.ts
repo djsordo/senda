@@ -1,13 +1,12 @@
-import { PopoverController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PopoverRoboComponent } from '../popover-robo/popover-robo.component';
 
 @Component({
   selector: 'app-titulares',
   templateUrl: './titulares.component.html',
   styleUrls: ['./titulares.component.scss'],
 })
+
 export class TitularesComponent implements OnInit {
   titulares= [
     {
@@ -47,27 +46,16 @@ export class TitularesComponent implements OnInit {
     },
   ];
 
+  listaRobos= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Intercepción'}, {nombre: 'Otros'}];
+  listaPerdidas= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Pasos'}, {nombre: 'Dobles'}, {nombre: 'Otros'}];
+
   ev: Event;
 
-  constructor(private router: Router,
-              public popoverController: PopoverController) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
   irADetalle(){
     this.router.navigate(['/detalle-jugador']);
-  }
-
-  async presentPopover(ev: any) {
-    const popover = await this.popoverController.create({
-      component: PopoverRoboComponent,
-      cssClass: 'my-custom-class',
-      event: ev,
-      translucent: true
-    });
-    await popover.present();
-
-    const { role } = await popover.onDidDismiss();
-    console.log('onDidDismiss resolved with role', role);
   }
 }

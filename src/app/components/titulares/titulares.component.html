@@ -47,16 +47,10 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" (click)="presentPopover(ev)">
-                <ion-icon name="thumbs-up"></ion-icon>
-                <ion-label slot="end">Robo</ion-label>
-              </ion-item>
+              <app-boton-lista nombreBoton="Robo" numJugador="{{titular.numero}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger">
-                <ion-icon name="thumbs-down"></ion-icon>
-                <ion-label slot="end">Pérdida</ion-label>
-              </ion-item>
+              <app-boton-lista nombreBoton="Pérdida" numJugador="{{titular.numero}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
             </ion-col>
           </ion-row>
           <ion-row class="ion-text-center">

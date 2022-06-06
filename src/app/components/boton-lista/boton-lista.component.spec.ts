@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { PopoverRoboComponent } from './popover-robo.component';
+import { BotonListaComponent } from './boton-lista.component';
 
-describe('PopoverRoboComponent', () => {
-  let component: PopoverRoboComponent;
-  let fixture: ComponentFixture<PopoverRoboComponent>;
+describe('BotonListaComponent', () => {
+  let component: BotonListaComponent;
+  let fixture: ComponentFixture<BotonListaComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PopoverRoboComponent ],
+      declarations: [ BotonListaComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PopoverRoboComponent);
+    fixture = TestBed.createComponent(BotonListaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
