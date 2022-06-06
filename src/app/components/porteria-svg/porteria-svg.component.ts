@@ -124,15 +124,13 @@ export class PorteriaSvgComponent implements OnInit {
   public onClickPolygon( event ) : void {
     if( event.srcElement.id !== "equis" ){
       console.log( event.srcElement.id );
-      let x = event.x;
-      let y = event.y;
+      let x = event.offsetX;
+      let y = event.offsetY;
       let w = 10;
       // event.srcElement.id
       this.pointerStyle.visibility = 'visible';
       this.pointerDots =  `M ${x-w},${y-w} ${x+w},${y+w} 
                             M ${x+w},${y-w} ${x-w},${y+w}`; 
-      console.log( x, y );
-      console.log( this.pointerDots );
     }
   }
 
