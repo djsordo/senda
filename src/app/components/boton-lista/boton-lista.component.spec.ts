@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AccionPerdRecuComponent } from './accion-perd-recu.component';
+import { BotonListaComponent } from './boton-lista.component';
 
-describe('AccionPerdRecuComponent', () => {
-  let component: AccionPerdRecuComponent;
-  let fixture: ComponentFixture<AccionPerdRecuComponent>;
+describe('BotonListaComponent', () => {
+  let component: BotonListaComponent;
+  let fixture: ComponentFixture<BotonListaComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccionPerdRecuComponent ],
+      declarations: [ BotonListaComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AccionPerdRecuComponent);
+    fixture = TestBed.createComponent(BotonListaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

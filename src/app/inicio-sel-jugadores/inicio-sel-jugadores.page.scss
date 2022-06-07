@@ -1,0 +1,37 @@
+.fixed-box {
+  width: 100%;
+  background: #fff;
+  height: 160px;
+  z-index: 10;
+}
+
+.drop-area {
+  border: 2px dashed #ff00ff;
+  margin: 2px;
+  width: calc(50% - 4px);
+  align-items: center;
+  height: 150px;
+  display: inline-flex;
+  justify-content: center;
+  user-select: none;
+  background: #fff;
+}
+
+.item-group {
+  margin-top: 160px;
+}
+
+.cardJugador {
+  margin: 2px;
+  width: calc(20% - 8px);
+  height: calc(20% - 2px);
+  display: inline-flex;
+}
+
+.numeroCard {
+  font-size: 2em;
+}
+
+.nombreCard {
+  font-size: 1.2em;
+}

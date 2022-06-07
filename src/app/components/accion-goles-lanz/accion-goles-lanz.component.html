@@ -2,19 +2,34 @@
   <ion-grid>
     <ion-row class="ion-text-center">
       <ion-col>
-        <ion-button color="success" (click)="btnGol()">Gol</ion-button>
+        <ion-item button color="success" (click)="btnGol()">
+          <ion-icon name="football"></ion-icon>
+          <ion-label slot="end">Gol</ion-label>
+        </ion-item>
       </ion-col>
       <ion-col>
-        <ion-button color="danger" (click)="btnGolRival()">Gol Rival</ion-button>
+        <ion-item button color="danger" (click)="btnLanzamiento()">
+          <ion-icon name="close"></ion-icon>
+          <ion-label slot="end">Lanzamiento</ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row class="ion-text-center">
       <ion-col>
-        <ion-button color="success" (click)="btnParada()">Parada</ion-button>
+        <ion-item button color="success" (click)="btnParada()">
+          <ion-icon name="hand-left"></ion-icon>
+          <ion-icon name="hand-right"></ion-icon>
+          <ion-label slot="end">Parada</ion-label>
+        </ion-item>
       </ion-col>
       <ion-col>
-        <ion-button color="danger" (click)="btnLanzamiento()">Lanzamiento</ion-button>
+        <ion-item button color="danger" (click)="btnGolRival()">
+          <ion-icon name="football"></ion-icon>
+          <ion-label slot="end">Gol Rival</ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-card>
+
+

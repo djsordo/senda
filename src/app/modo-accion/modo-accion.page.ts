@@ -17,6 +17,9 @@ export class ModoAccionPage implements OnInit {
     rival: 0,
   };
 
+  listaRobos= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Intercepción'}, {nombre: 'Otros'}];
+  listaPerdidas= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Pasos'}, {nombre: 'Dobles'}, {nombre: 'Otros'}];
+
   constructor(private router: Router) { }
 
   ngOnInit() {

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './titulares.component.html',
   styleUrls: ['./titulares.component.scss'],
 })
+
 export class TitularesComponent implements OnInit {
   titulares= [
     {
@@ -44,6 +45,12 @@ export class TitularesComponent implements OnInit {
       portero: false,
     },
   ];
+
+  listaRobos= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Intercepción'}, {nombre: 'Otros'}];
+  listaPerdidas= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Pasos'}, {nombre: 'Dobles'}, {nombre: 'Otros'}];
+
+  ev: Event;
+
   constructor(private router: Router) { }
 
   ngOnInit() {}

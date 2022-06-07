@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Convocados y equipo inicial</ion-title>
+    <ion-button (click)="irAModo()" color="primary" slot="end">Empezar</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollY]="contentScrollActive">
+  <div slot="fixed" class="fixed-box">
+    <div class="drop-area" #dropInicial>
+      <b>Equipo Inicial</b>
+      {{ listaInicial | json}}
+    </div>
+    <div class="drop-area" #dropBanquillo>
+      <b>banquillo</b>
+      {{ listaBanquillo | json}}
+    </div>
+  </div>
+
+  <div class="item-group">
+    <ion-card *ngFor="let jugador of jugadores" class="cardJugador">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="numeroCard">
+            {{jugador.numero}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="nombreCard">
+            {{jugador.nombre}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
+
+  <div class="item-group">
+    <ion-card *ngFor="let i of jDisponibles" class="cardJugador">
+      Jugador {{i}}
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,0 +1,14 @@
+<ion-item button color="{{colorBoton}}" id="{{nombreBoton + numJugador}}">
+  <ion-icon name="{{icono}}"></ion-icon>
+  <ion-label slot="end">{{nombreBoton}}</ion-label>
+</ion-item>
+
+<ion-popover trigger="{{nombreBoton + numJugador}}" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-list>
+      <ion-item *ngFor="let elemento of lista" (click)="eleccion(elemento.nombre, nombreBoton)">
+        {{elemento.nombre}}
+      </ion-item>
+    </ion-list>
+  </ng-template>
+</ion-popover>

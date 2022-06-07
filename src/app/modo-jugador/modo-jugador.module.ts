@@ -10,6 +10,9 @@ import { ModoJugadorPageRoutingModule } from './modo-jugador-routing.module';
 import { ModoJugadorPage } from './modo-jugador.page';
 
 @NgModule({
+  exports: [
+    ComponentsModule,
+  ],
   imports: [
     CommonModule,
     FormsModule,
