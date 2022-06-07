@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { PorteriaSvgComponent } from './porteria-svg.component';
+import { MapaComponent } from './mapa.component';
 
-describe('PorteriaSvgComponent', () => {
-  let component: PorteriaSvgComponent;
-  let fixture: ComponentFixture<PorteriaSvgComponent>;
+describe('MapaComponent', () => {
+  let component: MapaComponent;
+  let fixture: ComponentFixture<MapaComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PorteriaSvgComponent ],
+      declarations: [ MapaComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PorteriaSvgComponent);
+    fixture = TestBed.createComponent(MapaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -7,8 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DetalleJugadorPageRoutingModule } from './detalle-jugador-routing.module';
 
 import { DetalleJugadorPage } from './detalle-jugador.page';
-import { PorteriaComponent } from '../components/jugador-porteria/porteria.component'; 
-import { PorteriaSvgComponent } from '../components/porteria-svg/porteria-svg.component';
+import { MapaComponent } from '../components/mapa/mapa.component';
 
 @NgModule({
   imports: [
@@ -18,7 +17,6 @@ import { PorteriaSvgComponent } from '../components/porteria-svg/porteria-svg.co
     DetalleJugadorPageRoutingModule
   ],
   declarations: [DetalleJugadorPage, 
-    PorteriaComponent, 
-    PorteriaSvgComponent ]
+    MapaComponent ]
 })
 export class DetalleJugadorPageModule {}
