@@ -1,0 +1,20 @@
+<ion-grid class="mapa_container">
+  <img #mapaImg id="mapaImg"
+    [src]="image"
+    [ngStyle]="mapaStyle"/>
+
+  <svg id="mapa-svg" 
+    width="100%"
+    height="100%"
+    [ngStyle]="svgStyle">
+     <polygon *ngFor="let polygon of getPolygonsConverted()"
+         style="fill: transparent;"
+         [attr.points]="polygon.points"
+         id="{{polygon.name}}"
+         (click)="onClickPolygon( $event )"/>
+      <path 
+      id="equis"
+      [ngStyle]="pointerStyle"
+      [attr.d]="pointerDots"/>
+  </svg>
+</ion-grid>
