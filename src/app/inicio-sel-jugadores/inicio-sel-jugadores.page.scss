@@ -2,7 +2,7 @@
   width: 100%;
   background: #fff;
   height: 160px;
-  z-index: 11;
+  z-index: 10;
 }
 
 .drop-area {
@@ -19,4 +19,19 @@
 
 .item-group {
   margin-top: 160px;
+}
+
+.cardJugador {
+  margin: 2px;
+  width: calc(20% - 8px);
+  height: calc(20% - 2px);
+  display: inline-flex;
+}
+
+.numeroCard {
+  font-size: 2em;
+}
+
+.nombreCard {
+  font-size: 1.2em;
 }
