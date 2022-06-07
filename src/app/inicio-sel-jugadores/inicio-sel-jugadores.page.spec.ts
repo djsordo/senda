@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AccionPerdRecuComponent } from './accion-perd-recu.component';
+import { InicioSelJugadoresPage } from './inicio-sel-jugadores.page';
 
-describe('AccionPerdRecuComponent', () => {
-  let component: AccionPerdRecuComponent;
-  let fixture: ComponentFixture<AccionPerdRecuComponent>;
+describe('InicioSelJugadoresPage', () => {
+  let component: InicioSelJugadoresPage;
+  let fixture: ComponentFixture<InicioSelJugadoresPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccionPerdRecuComponent ],
+      declarations: [ InicioSelJugadoresPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AccionPerdRecuComponent);
+    fixture = TestBed.createComponent(InicioSelJugadoresPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

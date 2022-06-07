@@ -19,7 +19,8 @@ export class HomePage implements OnInit {
   }
 
   irAModo(){
-    this.router.navigate(['/modo-jugador']);
+    /* this.router.navigate(['/modo-jugador']); */
+    this.router.navigate(['/inicio-sel-jugadores']);
   }
 
 }

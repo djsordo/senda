@@ -1,3 +1,4 @@
+import { ToastController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -14,12 +15,23 @@ export class BotonListaComponent implements OnInit {
 
   /* listaRobo= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}]; */
 
-  constructor() {}
+  constructor(private toastController: ToastController) {}
 
   ngOnInit() {}
 
   eleccion(accion2: any, accion1: any){
+    this.toastElegido(accion1 + ' - ' + accion2);
     console.log(accion1);
     console.log(accion2);
+  }
+
+  async toastElegido(mensaje: string){
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 1000,
+      position: 'middle'
+    });
+
+    toast.present();
   }
 }

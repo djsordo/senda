@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'detalle-jugador',
     loadChildren: () => import('./detalle-jugador/detalle-jugador.module').then( m => m.DetalleJugadorPageModule)
+  },
+  {
+    path: 'inicio-sel-jugadores',
+    loadChildren: () => import('./inicio-sel-jugadores/inicio-sel-jugadores.module').then( m => m.InicioSelJugadoresPageModule)
   }
 
 
