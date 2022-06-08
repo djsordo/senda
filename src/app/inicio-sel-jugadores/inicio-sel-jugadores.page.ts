@@ -40,7 +40,7 @@ export class InicioSelJugadoresPage implements OnInit {
     {numero: '56', nombre: 'Jesús Hernández', portero: false},
   ];
 
-  jDisponibles = Array.from(Array(30).keys());
+  /* jDisponibles = Array.from(Array(30).keys()); */
   listaInicial = [];
   listaBanquillo = [];
   contentScrollActive = true;
@@ -61,7 +61,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
     /* console.log('objetos: ', this.items); */
     const arr = this.items.toArray();
-    /* console.log('arr: ', arr); */
+    console.log('arr: ', arr);
 
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < arr.length; i++){
@@ -140,12 +140,12 @@ export class InicioSelJugadoresPage implements OnInit {
 
     if (this.isInZone(endX, endY, dropInicial)) {
       // Cae en la zona de equipo inicial
-      const removedItem = this.jDisponibles.splice(index, 1);
+      const removedItem = this.jugadores.splice(index, 1);
       this.listaInicial.push(removedItem[0]);
       item.nativeElement.remove();
     } else if (this.isInZone(endX, endY, dropBanquillo)) {
       // Cae en la zona de banquillo
-      const removedItem = this.jDisponibles.splice(index, 1);
+      const removedItem = this.jugadores.splice(index, 1);
       this.listaBanquillo.push(removedItem[0]);
       item.nativeElement.remove();
     } else {
