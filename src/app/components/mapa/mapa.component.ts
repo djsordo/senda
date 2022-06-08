@@ -2,8 +2,10 @@ import { Component,
         ViewChild,
         OnInit,
         Input, 
+        Output,
         HostListener,
-        ElementRef} from '@angular/core';
+        ElementRef,
+        EventEmitter} from '@angular/core';
 
 const X = 0; 
 const Y = 1;
@@ -36,6 +38,7 @@ export class MapaComponent implements OnInit {
                           'strokeLinecap' : 'round',
                           'strokeMiterlimit' : 4};
   pointerDots;
+  @Output() areaClickedEvent = new EventEmitter<string>();
 
   constructor( ) {  }
 
@@ -73,11 +76,10 @@ export class MapaComponent implements OnInit {
 
   public onClickPolygon( event ) : void {
     if( event.srcElement.id !== "equis" ){
-      console.log( event.srcElement.id );
       let x = event.offsetX;
       let y = event.offsetY;
       let w = 10;
-      // event.srcElement.id
+      this.areaClickedEvent.emit( event.srcElement.id );
       this.pointerStyle.visibility = 'visible';
       this.pointerDots =  `M ${x-w},${y-w} ${x+w},${y+w} 
                             M ${x+w},${y-w} ${x-w},${y+w}`; 
