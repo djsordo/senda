@@ -21,8 +21,11 @@
     <ion-card *ngFor="let jugador of jugadores" class="cardJugador">
       <ion-grid>
         <ion-row>
-          <ion-col class="numeroCard">
+          <ion-col class="numeroCard" size="8">
             {{jugador.numero}}
+          </ion-col>
+          <ion-col *ngIf="jugador.portero">
+            <ion-img src="../../assets/portero.png"></ion-img>
           </ion-col>
         </ion-row>
         <ion-row>
