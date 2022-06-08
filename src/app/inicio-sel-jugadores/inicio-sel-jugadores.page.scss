@@ -23,15 +23,17 @@
 
 .cardJugador {
   margin: 2px;
-  width: calc(20% - 8px);
+  width: calc(20% - 6px);
   height: calc(20% - 2px);
   display: inline-flex;
 }
 
 .numeroCard {
+  text-align: center;
   font-size: 2em;
 }
 
 .nombreCard {
-  font-size: 1.2em;
+  font-size: 1em;
+  text-align: center;
 }

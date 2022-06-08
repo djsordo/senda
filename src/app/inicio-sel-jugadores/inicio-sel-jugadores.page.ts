@@ -69,7 +69,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
       const drag = this.gestureCtrl.create({
         el: oneItem.nativeElement,
-        threshold: 1,
+        threshold: 0,
         gestureName: 'drag',
         onStart: (ev) => {
           oneItem.nativeElement.style.transition = '';
