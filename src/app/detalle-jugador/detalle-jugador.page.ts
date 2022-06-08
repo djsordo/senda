@@ -7,7 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetalleJugadorPage implements OnInit {
 
+  area_campo : string = '';
+  area_porteria : string = '';
+
   constructor(  ) {}
 
   ngOnInit() {}
+
+  public onCampoClicked( event : string ){
+    console.log("onAreaClicked: " );
+    this.area_campo = event;
+  }
+
+  public onPorteriaClicked( event : string ){
+    console.log('onPorteriaclicked');
+    this.area_porteria = event; 
+  }
 }
