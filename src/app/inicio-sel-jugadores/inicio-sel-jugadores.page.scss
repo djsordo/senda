@@ -28,6 +28,31 @@
   display: inline-flex;
 }
 
+.cardMonton {
+  position: absolute;
+  height: 150px;
+  width: 100px;
+  top: calc(50% - 75px);
+  left: calc(50% - 50px);
+}
+
+.cardEscalera {
+  position: absolute;
+  height: 150px;
+  width: 100px;
+  top: calc(50% - 75px);
+}
+
+@for $i from 1 through 50 {
+  $grados: random(60) - 30;
+  .cardMonton:nth-child(#{$i}) {
+    transform: rotate($grados + deg);
+  }
+  .cardEscalera:nth-child(#{$i}) {
+    left: 10 + 20*($i - 1) + px;
+  }
+}
+
 .numeroCard {
   text-align: center;
   font-size: 2em;
