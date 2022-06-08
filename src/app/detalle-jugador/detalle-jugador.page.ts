@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetalleJugadorPage implements OnInit {
 
-  area_campo : string = '';
-  area_porteria : string = '';
+  area_campo = '';
+  area_porteria = '';
 
   constructor(  ) {}
 
