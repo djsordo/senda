@@ -2,6 +2,7 @@ import { Component,
         ViewChild,
         OnInit,
         Input, 
+        HostListener,
         ElementRef} from '@angular/core';
 
 const X = 0; 
@@ -40,6 +41,11 @@ export class MapaComponent implements OnInit {
 
   ngOnInit() {
     this.polygons = JSON.parse( this.polygons );
+  }
+
+  @HostListener('window:resize', ['$event'] )
+  onResize( event ){
+    this.getPolygonsConverted();
   }
 
   public getPolygonsConverted(){
