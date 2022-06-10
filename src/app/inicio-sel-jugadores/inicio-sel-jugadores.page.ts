@@ -21,7 +21,6 @@ export class InicioSelJugadoresPage implements OnInit {
   @ViewChildren(IonCard, { read: ElementRef }) items: QueryList<ElementRef>;
 
   jugadores = [
-    {numero: '28', nombre: 'César Vitores', portero: false},
     {numero: '70', nombre: 'Daniel Vaquero', portero: true},
     {numero: '10', nombre: 'Mario Palomo', portero: true},
     {numero: '25', nombre: 'Adrián González', portero: false},
@@ -38,6 +37,7 @@ export class InicioSelJugadoresPage implements OnInit {
     {numero: '14', nombre: 'Marcos Alonso', portero: false},
     {numero: '29', nombre: 'Santiago Luna', portero: false},
     {numero: '56', nombre: 'Jesús Hernández', portero: false},
+    {numero: '28', nombre: 'César Vitores', portero: false, foto: 'Cesar_Vitores_Cosmes.jpeg'},
   ];
 
   /* jDisponibles = Array.from(Array(30).keys()); */
