@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
   templateUrl: './titulares.component.html',
   styleUrls: ['./titulares.component.scss'],
 })
-
 export class TitularesComponent implements OnInit {
   titulares= [
     {

@@ -10,17 +10,17 @@ export class DetalleJugadorPage implements OnInit {
   area_campo = '';
   area_porteria = '';
 
-  constructor(  ) {}
+  constructor() {}
 
   ngOnInit() {}
 
   public onCampoClicked( event : string ){
-    console.log("onAreaClicked: " );
+    console.log( event );
     this.area_campo = event;
   }
 
   public onPorteriaClicked( event : string ){
-    console.log('onPorteriaclicked');
+    console.log( event );
     this.area_porteria = event; 
   }
 }

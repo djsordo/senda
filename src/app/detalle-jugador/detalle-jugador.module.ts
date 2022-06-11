@@ -16,7 +16,8 @@ import { MapaComponent } from '../components/mapa/mapa.component';
     IonicModule,
     DetalleJugadorPageRoutingModule
   ],
-  declarations: [DetalleJugadorPage, 
+  declarations: [
+    DetalleJugadorPage, 
     MapaComponent ]
 })
 export class DetalleJugadorPageModule {}
