@@ -1,3 +1,25 @@
+<ion-item large>
+  <ion-icon name="mic" item-end (click)="setShowModal(true)"></ion-icon>
+</ion-item>
+<ion-modal [isOpen]="showModal" >
+  <ng-template>
+    <ion-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col><h3>Di "Gol de César desde lateral derecho"</h3></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p>Algunos ejemplos:</p>
+            <ul>
+              <li>Gol de María desde centro</li>
+              <li>Parada de Pedro</li>
+              <li>Tiro de mengano o citrano</li>
+            </ul>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
 <!-- mic-outline, mic-off-outline, mic-off-circle-outline -->
 <!--
 <ion-icon name="mic-off" *ngIf="isAvailable() && recording" 
@@ -7,11 +29,26 @@ item-end></ion-icon>
 <p *ngIf="isAvailable()">Last detected text: {{lastText}}</p>
 
 -->
-<ion-item large>
-  <ion-icon name="mic-off" item-end (click)="setShowModal(true)"></ion-icon>
-</ion-item>
-<ion-modal (isOpen)="showModal" >
-  <ion-content>
-    esto es una prueba de modal
-  </ion-content>
+            <ion-img src="../../../assets/mic-animation.gif"></ion-img>
+            <ion-input type="text" 
+            clearInput 
+            placeholder="Micro no disponible, escribe aquí"
+            [value]="lastText"
+            class="mic-input-box"
+            *ngIf="false && !isAvailable"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p id="textIdentified" style="font-weight: bold">{{lastText}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button class="center" (click)="setShowModal(false)" >Cerrar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ng-template>
 </ion-modal>

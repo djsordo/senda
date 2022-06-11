@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, 
+    Component, 
+    OnInit } from '@angular/core';
 import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 
 
@@ -9,25 +11,26 @@ import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 })
 export class MicrofonoComponent implements OnInit {
 
+  public isAvailable = false;
   showModal = false;
   recording = false;
-  lastText = '';
+  lastText : any;
 
   constructor( private changeDetectorRef : ChangeDetectorRef ) { 
-    // only required for android
-    // SpeechRecognition.requestPermission();
+    SpeechRecognition.available()
+      .then( value => { this.isAvailable = value['available'];
+                        if( this.isAvailable )
+                          // only required for android
+                          SpeechRecognition.requestPermission();
+                       }, 
+             value => { this.isAvailable = false; } );
   }
 
   ngOnInit() {}
 
-  async isAvailable() {
-    return await SpeechRecognition.available();
-  }
-
   async startRecognition() {
-    const isAvailable = await SpeechRecognition.available();
-
-    if( isAvailable ){
+   
+    if( this.isAvailable ){
       this.recording = true;
       SpeechRecognition.start({
         prompt : "Di \"Perico marca gol desde posición central\"",
@@ -56,12 +59,14 @@ export class MicrofonoComponent implements OnInit {
 
   async stopRecognition() {
     this.recording = false; 
-    await SpeechRecognition.stop();
+    if( this.isAvailable )
+      await SpeechRecognition.stop();
   }
 
   setShowModal( value : boolean ){
-    console.log('somebody has clicked me');
     this.showModal = value; 
   }
 
 }
+
+
