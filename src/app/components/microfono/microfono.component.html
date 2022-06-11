@@ -1,6 +1,17 @@
 <!-- mic-outline, mic-off-outline, mic-off-circle-outline -->
+<!--
 <ion-icon name="mic-off" *ngIf="isAvailable() && recording" 
 item-end></ion-icon>
 <ion-icon name="mic" *ngIf="isAvailable() && !recording" 
 item-end></ion-icon>
 <p *ngIf="isAvailable()">Last detected text: {{lastText}}</p>
+
+-->
+<ion-item large>
+  <ion-icon name="mic-off" item-end (click)="setShowModal(true)"></ion-icon>
+</ion-item>
+<ion-modal (isOpen)="showModal" >
+  <ion-content>
+    esto es una prueba de modal
+  </ion-content>
+</ion-modal>

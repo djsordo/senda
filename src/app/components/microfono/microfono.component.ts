@@ -9,12 +9,13 @@ import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 })
 export class MicrofonoComponent implements OnInit {
 
+  showModal = false;
   recording = false;
   lastText = '';
 
   constructor( private changeDetectorRef : ChangeDetectorRef ) { 
     // only required for android
-    SpeechRecognition.requestPermission();
+    // SpeechRecognition.requestPermission();
   }
 
   ngOnInit() {}
@@ -56,6 +57,11 @@ export class MicrofonoComponent implements OnInit {
   async stopRecognition() {
     this.recording = false; 
     await SpeechRecognition.stop();
+  }
+
+  setShowModal( value : boolean ){
+    console.log('somebody has clicked me');
+    this.showModal = value; 
   }
 
 }
