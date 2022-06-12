@@ -6,3 +6,13 @@
   border-color: var(--ion-color-primary, #3880ff);
   border-radius: 25px;
 }
+
+/*
+https://forum.ionicframework.com/t/ionic-4-modal-size/152372
+*/
+.my-custom-modal-css .modal-wrapper {
+  height: 20%;
+  top: 80%;
+  position: absolute; 
+  display: block;  
+}

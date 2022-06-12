@@ -29,15 +29,15 @@ export class MapaComponent implements OnInit {
             top : '0px' };
   @Input() image : string;
   @Input() polygons;
-  private cachedActualWidth;
-  private cachedActualHeight;
-  private cachedPolygons;
+  private cachedActualWidth : number;
+  private cachedActualHeight : number;
+  private cachedPolygons : Array<object>;
   @Input() pointerStyle = {'visibility': 'hidden', 
                           'stroke': '#420b0b',
                           'strokeWidth' :5.556,
                           'strokeLinecap' : 'round',
                           'strokeMiterlimit' : 4};
-  pointerDots;
+  pointerDots : string;
   @Output() areaClickedEvent = new EventEmitter<string>();
 
   constructor( ) {  }

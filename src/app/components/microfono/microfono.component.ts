@@ -14,7 +14,11 @@ export class MicrofonoComponent implements OnInit {
   public isAvailable = false;
   showModal = false;
   recording = false;
-  lastText : any;
+  lastText = '';
+  private microfonoOn = "../../../assets/mic-animation.gif";
+  private microfonoOff = "../../../assets/mic-animation-disabled.gif";
+  public microfonoImgSrc = this.microfonoOn;
+
 
   constructor( private changeDetectorRef : ChangeDetectorRef ) { 
     SpeechRecognition.available()
@@ -29,9 +33,9 @@ export class MicrofonoComponent implements OnInit {
   ngOnInit() {}
 
   async startRecognition() {
-   
-    if( this.isAvailable ){
-      this.recording = true;
+    this.microfonoImgSrc = this.microfonoOn; 
+    this.recording = true;
+  if( this.isAvailable ){
       SpeechRecognition.start({
         prompt : "Di \"Perico marca gol desde posición central\"",
         partialResults : true,
@@ -58,6 +62,7 @@ export class MicrofonoComponent implements OnInit {
   }
 
   async stopRecognition() {
+    this.microfonoImgSrc = this.microfonoOff;
     this.recording = false; 
     if( this.isAvailable )
       await SpeechRecognition.stop();
@@ -65,6 +70,18 @@ export class MicrofonoComponent implements OnInit {
 
   setShowModal( value : boolean ){
     this.showModal = value; 
+  }
+
+  public onChangeValue( event ){
+    this.lastText = event.srcElement.value;
+  }
+
+  public onClickMicro(){
+    if( this.microfonoImgSrc === this.microfonoOn ){
+      this.stopRecognition();
+    }else{
+      this.startRecognition();
+    }
   }
 
 }
