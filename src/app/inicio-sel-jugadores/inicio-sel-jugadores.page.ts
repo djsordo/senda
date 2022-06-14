@@ -163,6 +163,23 @@ export class InicioSelJugadoresPage implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
+  // se devuelve a la pila de jugadores elegibles el último dato de la lista correspondiente
+  borraJugador(lista: any){
+    if (lista === 'listaInicial'){
+      if (this.listaInicial.length !== 0){
+        const removedItem = this.listaInicial.splice(this.listaInicial.length-1, 1);
+        this.jugadores.push(removedItem[0]);
+        this.changeDetectorRef.detectChanges();
+      }
+    } else if (lista === 'listaBanquillo'){
+      if (this.listaBanquillo.length !== 0){
+        const removedItem = this.listaBanquillo.splice(this.listaBanquillo.length-1, 1);
+        this.jugadores.push(removedItem[0]);
+        this.changeDetectorRef.detectChanges();
+      }
+    }
+  }
+
   irAModo() {
     this.router.navigate(['/modo-jugador']);
   }

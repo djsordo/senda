@@ -5,6 +5,68 @@
   z-index: 10;
 }
 
+.cancha {
+  position: relative;
+  padding: 10px;
+  /* border: 5px solid red; */
+  height: 400px;
+  width: 100%;
+  background: url("../../assets/campo2.png") center / 125% no-repeat ;
+}
+
+.drop-inicial{
+  border: 2px dashed #ff00ff;
+  margin: 2px;
+  width: 80px;
+  height: 120px;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  display: inline-flex;
+  background: #fff;
+}
+
+#portero{
+  position: absolute;
+  left: calc(50% - 50px);
+  top: 0px;
+}
+
+#EI{
+  position: absolute;
+  left: 5px;
+  top: 10px;
+}
+
+#ED{
+  position: absolute;
+  left: calc(100% - 85px);
+  top: 10px;
+}
+
+#pivote{
+  position: absolute;
+  left: calc(50% - 50px);
+  top: calc(50% - 60px);
+}
+#LI{
+  position: absolute;
+  left: 35px;
+  top: calc(75% - 60px);
+}
+
+#LD{
+  position: absolute;
+  left: calc(100% - 115px);
+  top: calc(75% - 60px);
+}
+
+#central{
+  position: absolute;
+  left: calc(50% - 50px);
+  top: calc(85% - 60px);
+}
+
 .drop-area {
   border: 2px dashed #ff00ff;
   margin: 2px;
@@ -32,7 +94,7 @@
   position: absolute;
   height: 150px;
   width: 100px;
-  top: calc(50% - 75px);
+  top: calc(80% - 75px);
   left: calc(50% - 50px);
 }
 
