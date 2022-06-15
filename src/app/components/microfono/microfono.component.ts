@@ -26,50 +26,51 @@ export class MicrofonoComponent implements OnInit {
                         if( this.isAvailable )
                           // only required for android
                           SpeechRecognition.requestPermission();
-                       }, 
-             value => { this.isAvailable = false; } );
+                       } )
+      .catch( value => { this.isAvailable = false; } );
   }
 
   ngOnInit() {}
 
   async startRecognition() {
+    console.log("startRecognition starts");
     this.microfonoImgSrc = this.microfonoOn; 
     this.recording = true;
-  if( this.isAvailable ){
+    if( this.isAvailable ){
       SpeechRecognition.start({
-        prompt : "Di \"Perico marca gol desde posición central\"",
-        partialResults : true,
+        partialResults : false,
         popup : false
-      });
-
-      SpeechRecognition.addListener('partialResults', (data:any) => {
-        console.log( 'partial results fired' );
-        console.log( data.matches );
+      }).then( result => {
+          console.log("finished speech recognition and got result");
+          console.log( result ); 
         /*
         en IOS el resultado se encuentra en data.matches, 
         mientras que en Android se encuentra en data.value.
         Esto es así para versión 2.1.0 de SpeechRecognition */
-        if( data?.matches && data.matches.length > 0 ) {
-          this.lastText = data.matches[0];
+        if( result?.matches && result.matches.length > 0 ) {
+          this.lastText = result.matches[0];
           this.changeDetectorRef.detectChanges();
+          this.stopRecognition();
         }
-        if( data?.value && data.value.length > 0 ){
-          this.lastText = data.value[0];
-          this.changeDetectorRef.detectChanges();
-        }
-      } );
+        console.log("startRecognition ends");
+        });
     }
   }
 
   async stopRecognition() {
+    console.log("stop recognition starts");
     this.microfonoImgSrc = this.microfonoOff;
     this.recording = false; 
     if( this.isAvailable )
-      await SpeechRecognition.stop();
+      SpeechRecognition.stop().then(result => {
+        console.log("stopRecognition ends");
+      });
   }
 
   setShowModal( value : boolean ){
     this.showModal = value; 
+    if( this.showModal )
+      this.startRecognition();
   }
 
   public onChangeValue( event ){
