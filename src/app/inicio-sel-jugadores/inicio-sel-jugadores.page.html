@@ -10,8 +10,23 @@
     <div class="drop-inicial" id="portero" #dropPortero (click)="borraJugador('listaInicial')">
       <b>Portero</b>
     </div>
-    <div class="drop-inicial" id="EI" #dropEI (click)="borraJugador('listaInicial')">
-      <b>Extremo</b>
+    <div class="drop-inicial" id="EI" #dropEI (click)="borraPos('EI')">
+      <div *ngFor="let jugador of listaInicial">
+        <ion-card *ngIf="jugador.posicion === 'EI'">
+          <ion-grid>
+            <ion-row>
+              <ion-col class="numeroCard">
+                {{jugador.numero}}
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="nombreCard">
+                {{jugador.nombre}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </div>
     </div>
     <div class="drop-inicial" id="ED" #dropED (click)="borraJugador('listaInicial')">
       <b>Extremo</b>
@@ -41,7 +56,7 @@
   </div>
 
   <div class="item-group">
-    <ion-card *ngFor="let jugador of jugadores" class="cardMonton" id="{{jugador.numero}}">
+    <ion-card *ngFor="let jugador of jugadores" class="cardMonton" #cards>
       <!-- <ion-img src="../../assets/fotos/{{jugador.foto}}"></ion-img> -->
       <ion-grid>
         <ion-row>
