@@ -9,6 +9,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { UseExistingWebDriver } from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-inicio-sel-jugadores',
@@ -18,31 +19,36 @@ import { Router } from '@angular/router';
 export class InicioSelJugadoresPage implements OnInit {
   @ViewChild('dropInicial') dropInicial: ElementRef;
   @ViewChild('dropBanquillo') dropBanquillo: ElementRef;
-  @ViewChildren(IonCard, { read: ElementRef }) items: QueryList<ElementRef>;
+  @ViewChild('dropEI') dropEI: ElementRef;
+  /* @ViewChildren(IonCard, { read: ElementRef }) items: QueryList<ElementRef>; */
+  @ViewChildren('cards', {read: ElementRef}) items: QueryList<ElementRef>;
 
   jugadores = [
-    {numero: '28', nombre: 'César Vitores', portero: false},
-    {numero: '70', nombre: 'Daniel Vaquero', portero: true},
-    {numero: '10', nombre: 'Mario Palomo', portero: true},
-    {numero: '25', nombre: 'Adrián González', portero: false},
-    {numero: '16', nombre: 'Javier de Torre', portero: false},
-    {numero: '17', nombre: 'Óscar Otero', portero: false},
-    {numero: '45', nombre: 'Daniel Martín', portero: false},
-    {numero: '3', nombre: 'Adrián Pérez', portero: false},
-    {numero: '53', nombre: 'Alex Garrido', portero: false},
-    {numero: '98', nombre: 'Alejandro Álvarez', portero: false},
-    {numero: '39', nombre: 'Jorge Parra', portero: false},
-    {numero: '38', nombre: 'Gabriel Barriocanal', portero: false},
-    {numero: '55', nombre: 'Rodrigo Méndez', portero: false},
-    {numero: '47', nombre: 'Álvaro Recio', portero: false},
-    {numero: '14', nombre: 'Marcos Alonso', portero: false},
-    {numero: '29', nombre: 'Santiago Luna', portero: false},
-    {numero: '56', nombre: 'Jesús Hernández', portero: false},
+    {numero: '70', nombre: 'Daniel Vaquero', portero: true, posicion:''},
+    {numero: '10', nombre: 'Mario Palomo', portero: true, posicion:''},
+    {numero: '25', nombre: 'Adrián González', portero: false, posicion:''},
+    {numero: '16', nombre: 'Javier de Torre', portero: false, posicion:''},
+    {numero: '17', nombre: 'Óscar Otero', portero: false, posicion:''},
+    {numero: '45', nombre: 'Daniel Martín', portero: false, posicion:''},
+    {numero: '3', nombre: 'Adrián Pérez', portero: false, posicion:''},
+    {numero: '53', nombre: 'Alex Garrido', portero: false, posicion:''},
+    {numero: '98', nombre: 'Alejandro Álvarez', portero: false, posicion:''},
+    {numero: '39', nombre: 'Jorge Parra', portero: false, posicion:''},
+    {numero: '38', nombre: 'Gabriel Barriocanal', portero: false, posicion:''},
+    {numero: '55', nombre: 'Rodrigo Méndez', portero: false, posicion:''},
+    {numero: '47', nombre: 'Álvaro Recio', portero: false, posicion:''},
+    {numero: '14', nombre: 'Marcos Alonso', portero: false, posicion:''},
+    {numero: '29', nombre: 'Santiago Luna', portero: false, posicion:''},
+    {numero: '56', nombre: 'Jesús Hernández', portero: false, posicion:''},
+    {numero: '28', nombre: 'César Vitores', portero: false, posicion:'', foto: 'Cesar_Vitores_Cosmes.jpeg'},
   ];
 
   /* jDisponibles = Array.from(Array(30).keys()); */
   listaInicial = [];
   listaBanquillo = [];
+
+  posiciones = ['EI', 'ED', 'PI', 'PO', 'LI', 'LD', 'CE'];
+
   contentScrollActive = true;
   gestureArray: Gesture[] = [];
 
@@ -85,6 +91,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
         },
         onEnd: (ev) => {
+          console.log('i: ',i);
           this.contentScrollActive = true;
           this.handleDrop(oneItem, ev.currentX, ev.currentY, i);
 
@@ -106,11 +113,18 @@ export class InicioSelJugadoresPage implements OnInit {
   checkDropZoneHover(x,y){
     const dropInicial = this.dropInicial.nativeElement.getBoundingClientRect();
     const dropBanquillo = this.dropBanquillo.nativeElement.getBoundingClientRect();
+    const dropEI = this.dropEI.nativeElement.getBoundingClientRect();
 
     if (this.isInZone(x,y, dropInicial)) {
       this.dropInicial.nativeElement.style.backgroundColor = 'blue';
     } else {
       this.dropInicial.nativeElement.style.backgroundColor = 'white';
+    }
+
+    if (this.isInZone(x,y, dropEI)) {
+      this.dropEI.nativeElement.style.backgroundColor = 'blue';
+    } else {
+      this.dropEI.nativeElement.style.backgroundColor = 'white';
     }
 
     if (this.isInZone(x,y, dropBanquillo)) {
@@ -137,16 +151,28 @@ export class InicioSelJugadoresPage implements OnInit {
   handleDrop(item, endX, endY, index){
     const dropInicial = this.dropInicial.nativeElement.getBoundingClientRect();
     const dropBanquillo = this.dropBanquillo.nativeElement.getBoundingClientRect();
+    const dropEI = this.dropEI.nativeElement.getBoundingClientRect();
 
     if (this.isInZone(endX, endY, dropInicial)) {
       // Cae en la zona de equipo inicial
       const removedItem = this.jugadores.splice(index, 1);
+      console.log('item: ', removedItem[0]);
       this.listaInicial.push(removedItem[0]);
+      console.log('item: ', this.jugadores);
       item.nativeElement.remove();
     } else if (this.isInZone(endX, endY, dropBanquillo)) {
       // Cae en la zona de banquillo
       const removedItem = this.jugadores.splice(index, 1);
       this.listaBanquillo.push(removedItem[0]);
+      item.nativeElement.remove();
+    } else if (this.isInZone(endX, endY, dropEI) &&
+               !this.listaInicial.find(jugPos => jugPos.posicion === 'EI')) {
+      // Cae en la zona de Extremo Izquierdo
+      const removedItem = this.jugadores.splice(index, 1);
+      console.log('item: ', removedItem[0]);
+      removedItem[0].posicion = 'EI';
+      this.listaInicial.push(removedItem[0]);
+      console.log('item: ', this.jugadores);
       item.nativeElement.remove();
     } else {
       // No cae en ninguno de los dos sitios
@@ -160,7 +186,36 @@ export class InicioSelJugadoresPage implements OnInit {
 
     this.dropInicial.nativeElement.style.backgroundColor = 'white';
     this.dropBanquillo.nativeElement.style.backgroundColor = 'white';
+    this.dropEI.nativeElement.style.backgroundColor = 'white';
     this.changeDetectorRef.detectChanges();
+  }
+
+  // se devuelve a la pila de jugadores elegibles el último dato de la lista correspondiente
+  borraJugador(lista: any){
+    if (lista === 'listaInicial'){
+      if (this.listaInicial.length !== 0){
+        const removedItem = this.listaInicial.splice(this.listaInicial.length-1, 1);
+        this.jugadores.push(removedItem[0]);
+        this.changeDetectorRef.detectChanges();
+      }
+    } else if (lista === 'listaBanquillo'){
+      if (this.listaBanquillo.length !== 0){
+        const removedItem = this.listaBanquillo.splice(this.listaBanquillo.length-1, 1);
+        this.jugadores.push(removedItem[0]);
+        this.changeDetectorRef.detectChanges();
+      }
+    }
+  }
+
+  // Borra el jugador de la posicion x en la lista inicial
+  borraPos(posicion: any){
+    const indice = this.listaInicial.indexOf(this.listaInicial.find(jugPos => jugPos.posicion === posicion));
+    if (indice >= 0) {
+      const removedItem = this.listaInicial.splice(indice, 1);
+      removedItem[0].posicion = '';
+      this.jugadores.push(removedItem[0]);
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   irAModo() {
