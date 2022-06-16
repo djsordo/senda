@@ -16,8 +16,8 @@
 
 .drop-inicial{
   border: 2px dashed #ff00ff;
-  width: 80px;
-  height: 120px;
+  width: 60px;
+  height: 90px;
   align-items: center;
   justify-content: center;
   user-select: none;
@@ -25,7 +25,7 @@
   background: #fff;
 }
 
-#portero{
+#PO{
   position: absolute;
   left: calc(50% - 50px);
   top: 0px;
@@ -44,7 +44,7 @@
   top: 10px;
 }
 
-#pivote{
+#PI{
   position: absolute;
   left: calc(50% - 50px);
   top: calc(50% - 60px);
@@ -61,7 +61,7 @@
   top: calc(75% - 60px);
 }
 
-#central{
+#CE{
   position: absolute;
   left: calc(50% - 50px);
   top: calc(85% - 60px);
@@ -128,4 +128,10 @@
 ion-img{
   height: 75px;
   width: 100px;
+}
+
+.cardPos{
+  width: 60;
+  height: 90;
+  font-size: 0.7em;
 }

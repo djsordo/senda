@@ -7,12 +7,9 @@
 
 <ion-content [scrollY]="contentScrollActive">
   <div class="cancha">
-    <div class="drop-inicial" id="portero" #dropPortero (click)="borraJugador('listaInicial')">
-      <b>Portero</b>
-    </div>
-    <div class="drop-inicial" id="EI" #dropEI (click)="borraPos('EI')">
+    <div *ngFor="let posicion of posiciones" class="drop-inicial" id="{{posicion}}" #drops (click)="borraPos(posicion)">
       <div *ngFor="let jugador of listaInicial">
-        <ion-card *ngIf="jugador.posicion === 'EI'">
+        <ion-card *ngIf="jugador.posicion === posicion" class="cardPos">
           <ion-grid>
             <ion-row>
               <ion-col class="numeroCard">
@@ -27,21 +24,6 @@
           </ion-grid>
         </ion-card>
       </div>
-    </div>
-    <div class="drop-inicial" id="ED" #dropED (click)="borraJugador('listaInicial')">
-      <b>Extremo</b>
-    </div>
-    <div class="drop-inicial" id="pivote" #dropPivote (click)="borraJugador('listaInicial')">
-      <b>Pivote</b>
-    </div>
-    <div class="drop-inicial" id="central" #dropCentral (click)="borraJugador('listaInicial')">
-      <b>Central</b>
-    </div>
-    <div class="drop-inicial" id="LI" #dropLI (click)="borraJugador('listaInicial')">
-      <b>Lateral</b>
-    </div>
-    <div class="drop-inicial" id="LD" #dropLD (click)="borraJugador('listaInicial')">
-      <b>Lateral</b>
     </div>
   </div>
   <div class="fixed-box">
