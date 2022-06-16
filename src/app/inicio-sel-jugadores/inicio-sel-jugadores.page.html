@@ -26,15 +26,9 @@
       </div>
     </div>
   </div>
-  <div class="fixed-box">
-    <div class="drop-area" #dropInicial (click)="borraJugador('listaInicial')">
-      <b>Equipo Inicial</b>
-      {{ listaInicial | json}}
-    </div>
-    <div class="drop-area" #dropBanquillo (click)="borraJugador('listaBanquillo')">
-      <b>banquillo</b>
-      {{ listaBanquillo | json}}
-    </div>
+  <div class="drop-area" #dropBanquillo (click)="borraJugador('listaBanquillo')">
+    <b>banquillo</b>
+    {{ listaBanquillo | json}}
   </div>
 
   <div class="item-group">
@@ -57,5 +51,9 @@
       </ion-grid>
     </ion-card>
   </div>
-  <!-- <p>{{ jugadores | json}}</p> -->
+
+  <div class="drop-area" #dropNoConvocado (click)="borraJugador('listaNoConvocados')">
+    <b>No convocados</b>
+    {{ listaNoConvocados | json}}
+  </div>
 </ion-content>

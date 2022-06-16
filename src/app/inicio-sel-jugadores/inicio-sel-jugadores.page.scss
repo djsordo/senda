@@ -70,9 +70,9 @@
 .drop-area {
   border: 2px dashed #ff00ff;
   margin: 2px;
-  width: calc(50% - 4px);
+  width: 100%;
   align-items: center;
-  height: 150px;
+  height: 70px;
   display: inline-flex;
   justify-content: center;
   user-select: none;
@@ -92,8 +92,8 @@
 
 .cardMonton {
   position: absolute;
-  height: 150px;
-  width: 100px;
+  height: 120px;
+  width: 80px;
   top: calc(80% - 75px);
   left: calc(50% - 50px);
 }

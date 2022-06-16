@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./inicio-sel-jugadores.page.scss'],
 })
 export class InicioSelJugadoresPage implements OnInit {
-  @ViewChild('dropInicial') dropInicial: ElementRef;
+  @ViewChild('dropNoConvocado') dropNoConvocado: ElementRef;
   @ViewChild('dropBanquillo') dropBanquillo: ElementRef;
 
   @ViewChildren('drops', {read: ElementRef}) cajasDrop: QueryList<ElementRef>;
@@ -45,7 +45,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
   listaInicial = [];
   listaBanquillo = [];
-
+  listaNoConvocados = [];
 
   posiciones = ['EI', 'ED', 'PI', 'LI', 'LD', 'CE', 'PO'];
   numJugadores = this.posiciones.length;
@@ -112,18 +112,18 @@ export class InicioSelJugadoresPage implements OnInit {
 
   // Check if we are dragging above a dropzone
   checkDropZoneHover(x,y){
-    const dropInicial = this.dropInicial.nativeElement.getBoundingClientRect();
+    const dropNoConvocado = this.dropNoConvocado.nativeElement.getBoundingClientRect();
     const dropBanquillo = this.dropBanquillo.nativeElement.getBoundingClientRect();
     const dropPos = this.cajasDrop.toArray();
 
-    if (this.isInZone(x,y, dropInicial)) {
-      this.dropInicial.nativeElement.style.backgroundColor = 'blue';
+    if (this.isInZone(x,y, dropNoConvocado)) {
+      this.dropNoConvocado.nativeElement.style.backgroundColor = 'red';
     } else {
-      this.dropInicial.nativeElement.style.backgroundColor = 'white';
+      this.dropNoConvocado.nativeElement.style.backgroundColor = 'white';
     }
 
     if (this.isInZone(x,y, dropBanquillo)) {
-      this.dropBanquillo.nativeElement.style.backgroundColor = 'red';
+      this.dropBanquillo.nativeElement.style.backgroundColor = 'yellow';
     } else {
       this.dropBanquillo.nativeElement.style.backgroundColor = 'white';
     }
@@ -151,17 +151,17 @@ export class InicioSelJugadoresPage implements OnInit {
 
   // Decide what to do with dropped item
   handleDrop(item, endX, endY, index){
-    const dropInicial = this.dropInicial.nativeElement.getBoundingClientRect();
+    const dropNoConvocado = this.dropNoConvocado.nativeElement.getBoundingClientRect();
     const dropBanquillo = this.dropBanquillo.nativeElement.getBoundingClientRect();
     const dropPos = this.cajasDrop.toArray();
 
     let haCaido = false;
 
-    if (this.isInZone(endX, endY, dropInicial)) {
+    if (this.isInZone(endX, endY, dropNoConvocado)) {
       // Cae en la zona de equipo inicial
       const removedItem = this.jugadores.splice(index, 1);
       console.log('item: ', removedItem[0]);
-      this.listaInicial.push(removedItem[0]);
+      this.listaNoConvocados.push(removedItem[0]);
       console.log('item: ', this.jugadores);
       item.nativeElement.remove();
       haCaido = true;
@@ -197,7 +197,7 @@ export class InicioSelJugadoresPage implements OnInit {
       item.nativeElement.style.fontweight = 'normal';
     }
 
-    this.dropInicial.nativeElement.style.backgroundColor = 'white';
+    this.dropNoConvocado.nativeElement.style.backgroundColor = 'white';
     this.dropBanquillo.nativeElement.style.backgroundColor = 'white';
 
     for (let i = 0; i < this.numJugadores; i++){
@@ -208,9 +208,9 @@ export class InicioSelJugadoresPage implements OnInit {
 
   // se devuelve a la pila de jugadores elegibles el último dato de la lista correspondiente
   borraJugador(lista: any){
-    if (lista === 'listaInicial'){
-      if (this.listaInicial.length !== 0){
-        const removedItem = this.listaInicial.splice(this.listaInicial.length-1, 1);
+    if (lista === 'listaNoConvocados'){
+      if (this.listaNoConvocados.length !== 0){
+        const removedItem = this.listaNoConvocados.splice(this.listaNoConvocados.length-1, 1);
         this.jugadores.push(removedItem[0]);
         this.changeDetectorRef.detectChanges();
       }
