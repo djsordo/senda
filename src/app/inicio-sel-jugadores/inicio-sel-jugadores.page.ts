@@ -24,22 +24,22 @@ export class InicioSelJugadoresPage implements OnInit {
   @ViewChildren('cards', {read: ElementRef}) items: QueryList<ElementRef>;
 
   jugadores = [
-    {numero: '70', nombre: 'Daniel Vaquero', portero: true, posicion:''},
-    {numero: '10', nombre: 'Mario Palomo', portero: true, posicion:''},
-    {numero: '25', nombre: 'Adrián González', portero: false, posicion:''},
-    {numero: '16', nombre: 'Javier de Torre', portero: false, posicion:''},
-    {numero: '17', nombre: 'Óscar Otero', portero: false, posicion:''},
-    {numero: '45', nombre: 'Daniel Martín', portero: false, posicion:''},
-    {numero: '3', nombre: 'Adrián Pérez', portero: false, posicion:''},
-    {numero: '53', nombre: 'Alex Garrido', portero: false, posicion:''},
-    {numero: '98', nombre: 'Alejandro Álvarez', portero: false, posicion:''},
-    {numero: '39', nombre: 'Jorge Parra', portero: false, posicion:''},
-    {numero: '38', nombre: 'Gabriel Barriocanal', portero: false, posicion:''},
-    {numero: '55', nombre: 'Rodrigo Méndez', portero: false, posicion:''},
-    {numero: '47', nombre: 'Álvaro Recio', portero: false, posicion:''},
-    {numero: '14', nombre: 'Marcos Alonso', portero: false, posicion:''},
-    {numero: '29', nombre: 'Santiago Luna', portero: false, posicion:''},
-    {numero: '56', nombre: 'Jesús Hernández', portero: false, posicion:''},
+    {numero: '70', nombre: 'Daniel Vaquero', portero: true, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '10', nombre: 'Mario Palomo', portero: true, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '25', nombre: 'Adrián González', portero: false, posicion:'', foto: 'Adrian_Gonzalez_Garcia.jpeg'},
+    {numero: '16', nombre: 'Javier de Torre', portero: false, posicion:'', foto: 'Javier_de_Torre_Sebastian.jpeg'},
+    {numero: '17', nombre: 'Óscar Otero', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '45', nombre: 'Daniel Martín', portero: false, posicion:'', foto: 'Daniel_Martin_Paredes.jpeg'},
+    {numero: '3', nombre: 'Adrián Pérez', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '53', nombre: 'Alex Garrido', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '98', nombre: 'Alejandro Álvarez', portero: false, posicion:'', foto: 'Alejandro_Alvarez_Castro.jpeg'},
+    {numero: '39', nombre: 'Jorge Parra', portero: false, posicion:'', foto: 'Jorge_Parra_Gonzalez.jpeg'},
+    {numero: '38', nombre: 'Gabriel Barriocanal', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '55', nombre: 'Rodrigo Méndez', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '47', nombre: 'Álvaro Recio', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '14', nombre: 'Marcos Alonso', portero: false, posicion:'', foto: 'Marcos_Alonso_Ulloa.jpeg'},
+    {numero: '29', nombre: 'Santiago Luna', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '56', nombre: 'Jesús Hernández', portero: false, posicion:'', foto: 'SinImagen.jpg'},
     {numero: '28', nombre: 'César Vitores', portero: false, posicion:'', foto: 'Cesar_Vitores_Cosmes.jpeg'},
   ];
 
@@ -158,7 +158,7 @@ export class InicioSelJugadoresPage implements OnInit {
     let haCaido = false;
 
     if (this.isInZone(endX, endY, dropNoConvocado)) {
-      // Cae en la zona de equipo inicial
+      // Cae en la zona de no convocado
       const removedItem = this.jugadores.splice(index, 1);
       console.log('item: ', removedItem[0]);
       this.listaNoConvocados.push(removedItem[0]);
@@ -229,6 +229,16 @@ export class InicioSelJugadoresPage implements OnInit {
     if (indice >= 0) {
       const removedItem = this.listaInicial.splice(indice, 1);
       removedItem[0].posicion = '';
+      this.jugadores.push(removedItem[0]);
+      this.changeDetectorRef.detectChanges();
+    }
+  }
+
+  // Borra el jugador de numero n la lista
+  borraNum(lista: any, numero: any){
+    const indice = lista.indexOf(lista.find(jugNum => jugNum.numero === numero));
+    if (indice >= 0) {
+      const removedItem = lista.splice(indice, 1);
       this.jugadores.push(removedItem[0]);
       this.changeDetectorRef.detectChanges();
     }
