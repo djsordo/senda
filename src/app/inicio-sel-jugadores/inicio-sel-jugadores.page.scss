@@ -1,31 +1,24 @@
-.fixed-box {
-  width: 100%;
-  background: #fff;
-  height: 160px;
-  z-index: 10;
-}
-
 .cancha {
   position: relative;
   padding: 10px;
-  /* border: 5px solid red; */
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-style: solid;
   height: 400px;
   width: 100%;
   background: url("../../assets/campo2.png") center / 125% no-repeat ;
 }
 
 .drop-inicial{
-  border: 2px dashed #ff00ff;
-  width: 80px;
-  height: 120px;
-  align-items: center;
+  position:relative;
+  width: 96px;
+  height: 126px;
   justify-content: center;
-  user-select: none;
-  display: inline-flex;
+  border: 2px dashed #ff00ff;
   background: #fff;
 }
 
-#portero{
+#PO{
   position: absolute;
   left: calc(50% - 50px);
   top: 0px;
@@ -40,11 +33,11 @@
 
 #ED{
   position: absolute;
-  left: calc(100% - 85px);
+  left: calc(100% - 100px);
   top: 10px;
 }
 
-#pivote{
+#PI{
   position: absolute;
   left: calc(50% - 50px);
   top: calc(50% - 60px);
@@ -61,48 +54,90 @@
   top: calc(75% - 60px);
 }
 
-#central{
+#CE{
   position: absolute;
   left: calc(50% - 50px);
   top: calc(85% - 60px);
 }
 
 .drop-area {
+  position: relative;
   border: 2px dashed #ff00ff;
-  margin: 2px;
-  width: calc(50% - 4px);
-  align-items: center;
-  height: 150px;
-  display: inline-flex;
+  width: 100%;
+  height: 130px;
   justify-content: center;
   user-select: none;
   background: #fff;
 }
 
-.item-group {
-  margin-top: 160px;
+.contenedorTarjetas {
+  position:relative;
+  width: 100%;
+  height: 130px;
+  padding: 5px;
+  margin-top: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
-.cardJugador {
-  margin: 2px;
-  width: calc(20% - 6px);
-  height: calc(20% - 2px);
-  display: inline-flex;
+.tarjeta {
+  position: absolute;
+  width: 90px;
+  height: 120px;
+  display: inline-block;
+  border-style: outset;
+  border-radius: 5%;
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+}
+
+.tarjetaImagen {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 5% !important;
+  overflow: hidden;
+}
+
+.tarjetaPortero{
+  position:absolute;
+  width: 20%;
+  height: 20%;
+  top: 10%;
+  right: 10%;
+  border-radius: 50%;
+  padding: 3px;
+  background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+.tarjeta h2 {
+  background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%);
+  position:absolute;
+  padding:3px;
+  border-radius: 50%;
+  top: -10%;
+  left: 5%;
+}
+
+.tarjeta p {
+  background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  position:absolute;
+  text-align: center;
+  width: 90%;
+  height: 30%;
+  padding:2px;
+  font-size: 80%;
+  top: 65%;
+  left: 5%;
 }
 
 .cardMonton {
   position: absolute;
-  height: 150px;
-  width: 100px;
-  top: calc(80% - 75px);
+  top: calc(65% - 75px);
   left: calc(50% - 50px);
 }
 
 .cardEscalera {
   position: absolute;
-  height: 150px;
-  width: 100px;
-  top: calc(50% - 75px);
 }
 
 @for $i from 1 through 50 {
@@ -111,21 +146,6 @@
     transform: rotate($grados + deg);
   }
   .cardEscalera:nth-child(#{$i}) {
-    left: 10 + 20*($i - 1) + px;
+    left: 10 + 60*($i - 1) + px;
   }
-}
-
-.numeroCard {
-  text-align: center;
-  font-size: 2em;
-}
-
-.nombreCard {
-  font-size: 1em;
-  text-align: center;
-}
-
-ion-img{
-  height: 75px;
-  width: 100px;
 }

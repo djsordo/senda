@@ -9,7 +9,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { UseExistingWebDriver } from 'protractor/built/driverProviders';
+/* import { UseExistingWebDriver } from 'protractor/built/driverProviders'; */
 
 @Component({
   selector: 'app-inicio-sel-jugadores',
@@ -17,37 +17,38 @@ import { UseExistingWebDriver } from 'protractor/built/driverProviders';
   styleUrls: ['./inicio-sel-jugadores.page.scss'],
 })
 export class InicioSelJugadoresPage implements OnInit {
-  @ViewChild('dropInicial') dropInicial: ElementRef;
+  @ViewChild('dropNoConvocado') dropNoConvocado: ElementRef;
   @ViewChild('dropBanquillo') dropBanquillo: ElementRef;
-  @ViewChild('dropEI') dropEI: ElementRef;
-  /* @ViewChildren(IonCard, { read: ElementRef }) items: QueryList<ElementRef>; */
+
+  @ViewChildren('drops', {read: ElementRef}) cajasDrop: QueryList<ElementRef>;
   @ViewChildren('cards', {read: ElementRef}) items: QueryList<ElementRef>;
 
   jugadores = [
-    {numero: '70', nombre: 'Daniel Vaquero', portero: true, posicion:''},
-    {numero: '10', nombre: 'Mario Palomo', portero: true, posicion:''},
-    {numero: '25', nombre: 'Adrián González', portero: false, posicion:''},
-    {numero: '16', nombre: 'Javier de Torre', portero: false, posicion:''},
-    {numero: '17', nombre: 'Óscar Otero', portero: false, posicion:''},
-    {numero: '45', nombre: 'Daniel Martín', portero: false, posicion:''},
-    {numero: '3', nombre: 'Adrián Pérez', portero: false, posicion:''},
-    {numero: '53', nombre: 'Alex Garrido', portero: false, posicion:''},
-    {numero: '98', nombre: 'Alejandro Álvarez', portero: false, posicion:''},
-    {numero: '39', nombre: 'Jorge Parra', portero: false, posicion:''},
-    {numero: '38', nombre: 'Gabriel Barriocanal', portero: false, posicion:''},
-    {numero: '55', nombre: 'Rodrigo Méndez', portero: false, posicion:''},
-    {numero: '47', nombre: 'Álvaro Recio', portero: false, posicion:''},
-    {numero: '14', nombre: 'Marcos Alonso', portero: false, posicion:''},
-    {numero: '29', nombre: 'Santiago Luna', portero: false, posicion:''},
-    {numero: '56', nombre: 'Jesús Hernández', portero: false, posicion:''},
+    {numero: '70', nombre: 'Daniel Vaquero', portero: true, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '10', nombre: 'Mario Palomo', portero: true, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '25', nombre: 'Adrián González', portero: false, posicion:'', foto: 'Adrian_Gonzalez_Garcia.jpeg'},
+    {numero: '16', nombre: 'Javier de Torre', portero: false, posicion:'', foto: 'Javier_de_Torre_Sebastian.jpeg'},
+    {numero: '17', nombre: 'Óscar Otero', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '45', nombre: 'Daniel Martín', portero: false, posicion:'', foto: 'Daniel_Martin_Paredes.jpeg'},
+    {numero: '3', nombre: 'Adrián Pérez', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '53', nombre: 'Alex Garrido', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '98', nombre: 'Alejandro Álvarez', portero: false, posicion:'', foto: 'Alejandro_Alvarez_Castro.jpeg'},
+    {numero: '39', nombre: 'Jorge Parra', portero: false, posicion:'', foto: 'Jorge_Parra_Gonzalez.jpeg'},
+    {numero: '38', nombre: 'Gabriel Barriocanal', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '55', nombre: 'Rodrigo Méndez', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '47', nombre: 'Álvaro Recio', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '14', nombre: 'Marcos Alonso', portero: false, posicion:'', foto: 'Marcos_Alonso_Ulloa.jpeg'},
+    {numero: '29', nombre: 'Santiago Luna', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '56', nombre: 'Jesús Hernández', portero: false, posicion:'', foto: 'SinImagen.jpg'},
     {numero: '28', nombre: 'César Vitores', portero: false, posicion:'', foto: 'Cesar_Vitores_Cosmes.jpeg'},
   ];
 
-  /* jDisponibles = Array.from(Array(30).keys()); */
   listaInicial = [];
   listaBanquillo = [];
+  listaNoConvocados = [];
 
-  posiciones = ['EI', 'ED', 'PI', 'PO', 'LI', 'LD', 'CE'];
+  posiciones = ['EI', 'ED', 'PI', 'LI', 'LD', 'CE', 'PO'];
+  numJugadores = this.posiciones.length;
 
   contentScrollActive = true;
   gestureArray: Gesture[] = [];
@@ -111,28 +112,29 @@ export class InicioSelJugadoresPage implements OnInit {
 
   // Check if we are dragging above a dropzone
   checkDropZoneHover(x,y){
-    const dropInicial = this.dropInicial.nativeElement.getBoundingClientRect();
+    const dropNoConvocado = this.dropNoConvocado.nativeElement.getBoundingClientRect();
     const dropBanquillo = this.dropBanquillo.nativeElement.getBoundingClientRect();
-    const dropEI = this.dropEI.nativeElement.getBoundingClientRect();
+    const dropPos = this.cajasDrop.toArray();
 
-    if (this.isInZone(x,y, dropInicial)) {
-      this.dropInicial.nativeElement.style.backgroundColor = 'blue';
+    if (this.isInZone(x,y, dropNoConvocado)) {
+      this.dropNoConvocado.nativeElement.style.backgroundColor = 'red';
     } else {
-      this.dropInicial.nativeElement.style.backgroundColor = 'white';
-    }
-
-    if (this.isInZone(x,y, dropEI)) {
-      this.dropEI.nativeElement.style.backgroundColor = 'blue';
-    } else {
-      this.dropEI.nativeElement.style.backgroundColor = 'white';
+      this.dropNoConvocado.nativeElement.style.backgroundColor = 'white';
     }
 
     if (this.isInZone(x,y, dropBanquillo)) {
-      this.dropBanquillo.nativeElement.style.backgroundColor = 'red';
+      this.dropBanquillo.nativeElement.style.backgroundColor = 'yellow';
     } else {
       this.dropBanquillo.nativeElement.style.backgroundColor = 'white';
     }
 
+    for (let i = 0; i < this.numJugadores; i++){
+      if (this.isInZone(x,y, dropPos[i].nativeElement.getBoundingClientRect())) {
+        dropPos[i].nativeElement.style.backgroundColor = 'blue';
+      } else {
+        dropPos[i].nativeElement.style.backgroundColor = 'white';
+      }
+    }
   }
 
   // Check if coordinates are whitin a dropzone rect
@@ -149,33 +151,44 @@ export class InicioSelJugadoresPage implements OnInit {
 
   // Decide what to do with dropped item
   handleDrop(item, endX, endY, index){
-    const dropInicial = this.dropInicial.nativeElement.getBoundingClientRect();
+    const dropNoConvocado = this.dropNoConvocado.nativeElement.getBoundingClientRect();
     const dropBanquillo = this.dropBanquillo.nativeElement.getBoundingClientRect();
-    const dropEI = this.dropEI.nativeElement.getBoundingClientRect();
+    const dropPos = this.cajasDrop.toArray();
 
-    if (this.isInZone(endX, endY, dropInicial)) {
-      // Cae en la zona de equipo inicial
+    let haCaido = false;
+
+    if (this.isInZone(endX, endY, dropNoConvocado)) {
+      // Cae en la zona de no convocado
       const removedItem = this.jugadores.splice(index, 1);
       console.log('item: ', removedItem[0]);
-      this.listaInicial.push(removedItem[0]);
+      this.listaNoConvocados.push(removedItem[0]);
       console.log('item: ', this.jugadores);
       item.nativeElement.remove();
+      haCaido = true;
     } else if (this.isInZone(endX, endY, dropBanquillo)) {
       // Cae en la zona de banquillo
       const removedItem = this.jugadores.splice(index, 1);
       this.listaBanquillo.push(removedItem[0]);
       item.nativeElement.remove();
-    } else if (this.isInZone(endX, endY, dropEI) &&
-               !this.listaInicial.find(jugPos => jugPos.posicion === 'EI')) {
-      // Cae en la zona de Extremo Izquierdo
-      const removedItem = this.jugadores.splice(index, 1);
-      console.log('item: ', removedItem[0]);
-      removedItem[0].posicion = 'EI';
-      this.listaInicial.push(removedItem[0]);
-      console.log('item: ', this.jugadores);
-      item.nativeElement.remove();
+      haCaido = true;
     } else {
-      // No cae en ninguno de los dos sitios
+      // Cae en cualquier posición de jugador
+      for (let i = 0; i < this.numJugadores; i++){
+        if (this.isInZone(endX, endY, dropPos[i].nativeElement.getBoundingClientRect()) &&
+        !this.listaInicial.find(jugPos => jugPos.posicion === this.posiciones[i])) {
+          const removedItem = this.jugadores.splice(index, 1);
+          console.log('item: ', removedItem[0]);
+          removedItem[0].posicion = this.posiciones[i];
+          this.listaInicial.push(removedItem[0]);
+          console.log('item: ', this.jugadores);
+          item.nativeElement.remove();
+          haCaido = true;
+        }
+      }
+    }
+
+    if (!haCaido) {
+      // No cae en ninguno de los sitios
       // Vuelve a la posición inicial
       item.nativeElement.style.transition = '.2s ease-out';
       item.nativeElement.style.zIndex = 'inherit';
@@ -184,17 +197,20 @@ export class InicioSelJugadoresPage implements OnInit {
       item.nativeElement.style.fontweight = 'normal';
     }
 
-    this.dropInicial.nativeElement.style.backgroundColor = 'white';
+    this.dropNoConvocado.nativeElement.style.backgroundColor = 'white';
     this.dropBanquillo.nativeElement.style.backgroundColor = 'white';
-    this.dropEI.nativeElement.style.backgroundColor = 'white';
+
+    for (let i = 0; i < this.numJugadores; i++){
+      dropPos[i].nativeElement.style.backgroundColor = 'white';
+    }
     this.changeDetectorRef.detectChanges();
   }
 
   // se devuelve a la pila de jugadores elegibles el último dato de la lista correspondiente
   borraJugador(lista: any){
-    if (lista === 'listaInicial'){
-      if (this.listaInicial.length !== 0){
-        const removedItem = this.listaInicial.splice(this.listaInicial.length-1, 1);
+    if (lista === 'listaNoConvocados'){
+      if (this.listaNoConvocados.length !== 0){
+        const removedItem = this.listaNoConvocados.splice(this.listaNoConvocados.length-1, 1);
         this.jugadores.push(removedItem[0]);
         this.changeDetectorRef.detectChanges();
       }
@@ -213,6 +229,16 @@ export class InicioSelJugadoresPage implements OnInit {
     if (indice >= 0) {
       const removedItem = this.listaInicial.splice(indice, 1);
       removedItem[0].posicion = '';
+      this.jugadores.push(removedItem[0]);
+      this.changeDetectorRef.detectChanges();
+    }
+  }
+
+  // Borra el jugador de numero n la lista
+  borraNum(lista: any, numero: any){
+    const indice = lista.indexOf(lista.find(jugNum => jugNum.numero === numero));
+    if (indice >= 0) {
+      const removedItem = lista.splice(indice, 1);
       this.jugadores.push(removedItem[0]);
       this.changeDetectorRef.detectChanges();
     }
