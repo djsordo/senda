@@ -4,18 +4,18 @@
 <ion-modal [isOpen]="showModal"
             (didDismiss)="setShowModal(false)">
   <ng-template>
-    <ion-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col><h3>Di "Gol de César desde lateral derecho"</h3></ion-col>
-        </ion-row>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Di "Gol de María desde lateral derecho"</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
         <ion-row>
           <ion-col>
             <p>Algunos ejemplos:</p>
             <ul>
               <li>Gol de María desde centro</li>
               <li>Parada de Pedro</li>
-              <li>Tiro de mengano o citrano</li>
+              <li>Fallo de Ángela</li>
             </ul>
           </ion-col>
         </ion-row>
@@ -45,7 +45,7 @@
              (click)="setShowModal(false)" >Cerrar</ion-button>
           </ion-col>
         </ion-row>
-      </ion-grid>
-    </ion-content>
+      </ion-card-content>
+    </ion-card>
   </ng-template>
 </ion-modal>
