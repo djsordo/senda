@@ -8,7 +8,6 @@ import { CronoComponent } from './crono/crono.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule} from '@ionic/angular';
-import { MicrofonoComponent } from './microfono/microfono.component';
 
 @NgModule({
   declarations: [ CronoComponent,
@@ -17,8 +16,7 @@ import { MicrofonoComponent } from './microfono/microfono.component';
                   AccionGolesLanzComponent,
                   AccionSancionesComponent,
                   AccionCambiosComponent,
-                  BotonListaComponent, 
-                  MicrofonoComponent
+                  BotonListaComponent
                 ],
   imports: [
     CommonModule,
@@ -30,8 +28,7 @@ import { MicrofonoComponent } from './microfono/microfono.component';
             AccionGolesLanzComponent,
             AccionSancionesComponent,
             AccionCambiosComponent,
-            BotonListaComponent, 
-            MicrofonoComponent
+            BotonListaComponent
             ]
 })
 export class ComponentsModule { }
