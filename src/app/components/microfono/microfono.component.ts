@@ -11,7 +11,7 @@ import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 export class MicrofonoComponent implements OnInit {
 
   public isAvailable = false;
-  showModal = false;
+  show = false;
   recording = false;
   lastText = '';
   private microfonoOn = "./assets/mic-animation.gif";
@@ -55,12 +55,16 @@ export class MicrofonoComponent implements OnInit {
       });
   }
 
-  setShowModal( value : boolean ){
-    this.showModal = value; 
-    if( this.showModal )
+  setShow( value : boolean ){
+    this.show = value; 
+    if( this.show )
       this.startRecognition();
   }
 
+  getShow( ){
+    return this.show;
+  }
+  
   public onChangeValue( event ){
     this.lastText = event.srcElement.value;
   }

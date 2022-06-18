@@ -1,4 +1,12 @@
 
+.mic-card
+{
+  position: absolute; 
+  left: 0em; 
+  top: 0em; 
+  z-index: 100; 
+  opacity: 0.9;  
+}
 
 .mic-input-box
 {
@@ -7,12 +15,3 @@
   border-radius: 25px;
 }
 
-/*
-https://forum.ionicframework.com/t/ionic-4-modal-size/152372
-*/
-.my-custom-modal-css .modal-wrapper {
-  height: 20%;
-  top: 80%;
-  position: absolute; 
-  display: block;  
-}

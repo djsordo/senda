@@ -1,10 +1,10 @@
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Di "Gol de María desde lateral derecho"</ion-card-title>
-  </ion-card-header>
+<ion-icon name="mic" id="mic" size="large" 
+(click)="setShow(true)"
+*ngIf="!getShow()"></ion-icon>
+<ion-card *ngIf="getShow()" class="mic-card">
   <ion-card-content>
     <ion-row>
-      <ion-col>
+      <ion-col class="ion-text-left">
         <p>Algunos ejemplos:</p>
         <ul>
           <li>Gol de María desde centro</li>
@@ -14,7 +14,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="6" size-lg offset="3">
+      <ion-col class="ion-text-left" size="6" size-lg offset="3">
         <ion-img [src]="microfonoImgSrc"
           *ngIf="isAvailable"
           (click)="onClickMicro()"></ion-img>
@@ -28,15 +28,15 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col class="ion-text-left">
         <p id="textIdentified" style="font-weight: bold" [innerText]="lastText"></p>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="4" offset="4">
+      <ion-col class="ion-text-left" size="4" offset="4">
         <ion-button 
           expand="block" 
-          (click)="setShowModal(false)" >Cerrar</ion-button>
+          (click)="setShow(false)" >Cerrar</ion-button>
       </ion-col>
     </ion-row>
   </ion-card-content>

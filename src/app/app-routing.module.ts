@@ -14,7 +14,8 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'modo-jugador',
     loadChildren: () => import('./modo-jugador/modo-jugador.module').then( m => m.ModoJugadorPageModule)
   },
@@ -29,13 +30,7 @@ const routes: Routes = [
   {
     path: 'inicio-sel-jugadores',
     loadChildren: () => import('./inicio-sel-jugadores/inicio-sel-jugadores.module').then( m => m.InicioSelJugadoresPageModule)
-  },
-  {
-    path: 'modo-jugador-micro',
-    loadChildren: () => import('./modo-jugador-micro/modo-jugador-micro.module').then( m => m.ModoJugadorMicroPageModule)
   }
-
-
 ];
 
 @NgModule({
