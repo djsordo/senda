@@ -23,3 +23,5 @@ import { ModoJugadorPage } from './modo-jugador.page';
   declarations: [ModoJugadorPage]
 })
 export class ModoJugadorPageModule {}
+
+

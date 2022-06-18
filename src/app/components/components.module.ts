@@ -17,7 +17,7 @@ import { MicrofonoComponent } from './microfono/microfono.component';
                   AccionGolesLanzComponent,
                   AccionSancionesComponent,
                   AccionCambiosComponent,
-                  BotonListaComponent, 
+                  BotonListaComponent,
                   MicrofonoComponent
                 ],
   imports: [
