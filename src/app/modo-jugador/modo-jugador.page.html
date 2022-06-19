@@ -11,6 +11,21 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-no-padding">
+        <app-crono></app-crono>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-no-padding">
+        <app-marcador [nombreEquipo]="nombres.casa" [marcador]="marcador.nuestro" [nosotros]="true"></app-marcador>
+      </ion-col>
+      <ion-col class="ion-no-padding">
+        <app-marcador [nombreEquipo]="nombres.fuera" [marcador]="marcador.rival" [nosotros]="false"></app-marcador>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div>
     <ion-grid>

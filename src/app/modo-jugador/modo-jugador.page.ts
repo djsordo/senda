@@ -10,10 +10,14 @@ import { Router } from '@angular/router';
 export class ModoJugadorPage implements OnInit {
   listaInicial: [];
   listaBanquillo: [];
-
   nombres= {
     casa: 'B. M. LAGUNA',
     fuera: 'SAN AGUSTÍN'
+  };
+
+  marcador= {
+    nuestro: 0,
+    rival: 0,
   };
 
   constructor(private router: Router,
