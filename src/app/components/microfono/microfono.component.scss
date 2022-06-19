@@ -1,0 +1,17 @@
+
+.mic-card
+{
+  position: absolute; 
+  left: 0em; 
+  top: 0em; 
+  z-index: 100; 
+  opacity: 0.9;  
+}
+
+.mic-input-box
+{
+  border: 1px solid;
+  border-color: var(--ion-color-primary, #3880ff);
+  border-radius: 25px;
+}
+

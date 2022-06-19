@@ -1,0 +1,43 @@
+<ion-icon name="mic" id="mic" size="large" 
+(click)="setShow(true)"
+*ngIf="!getShow()"></ion-icon>
+<ion-card *ngIf="getShow()" class="mic-card">
+  <ion-card-content>
+    <ion-row>
+      <ion-col class="ion-text-left">
+        <p>Algunos ejemplos:</p>
+        <ul>
+          <li>Gol de María desde centro</li>
+          <li>Parada de Pedro</li>
+          <li>Fallo de Ángela</li>
+        </ul>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-left" size="6" size-lg offset="3">
+        <ion-img [src]="microfonoImgSrc"
+          *ngIf="isAvailable"
+          (click)="onClickMicro()"></ion-img>
+        <ion-input 
+        type="text" 
+        clearInput 
+        placeholder="Micro no disponible, escribe aquí"
+        (input)="onChangeValue($event)"
+        class="mic-input-box"
+        *ngIf="!isAvailable"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-left">
+        <p id="textIdentified" style="font-weight: bold" [innerText]="lastText"></p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-left" size="4" offset="4">
+        <ion-button 
+          expand="block" 
+          (click)="setShow(false)" >Cerrar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
