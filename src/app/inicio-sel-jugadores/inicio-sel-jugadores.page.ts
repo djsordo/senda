@@ -1,3 +1,4 @@
+import { PasoDatosService } from './../services/paso-datos.service';
 import { Gesture, GestureController, IonCard, IonItem } from '@ionic/angular';
 import {
   ChangeDetectorRef,
@@ -9,8 +10,6 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { PasoDatosService } from '../services/paso-datos.service';
-
 /* import { UseExistingWebDriver } from 'protractor/built/driverProviders'; */
 
 @Component({
@@ -209,6 +208,23 @@ export class InicioSelJugadoresPage implements OnInit {
       dropPos[i].nativeElement.style.backgroundColor = 'white';
     }
     this.changeDetectorRef.detectChanges();
+  }
+
+  // se devuelve a la pila de jugadores elegibles el último dato de la lista correspondiente
+  borraJugador(lista: any){
+    if (lista === 'listaNoConvocados'){
+      if (this.listaNoConvocados.length !== 0){
+        const removedItem = this.listaNoConvocados.splice(this.listaNoConvocados.length-1, 1);
+        this.jugadores.push(removedItem[0]);
+        this.changeDetectorRef.detectChanges();
+      }
+    } else if (lista === 'listaBanquillo'){
+      if (this.listaBanquillo.length !== 0){
+        const removedItem = this.listaBanquillo.splice(this.listaBanquillo.length-1, 1);
+        this.jugadores.push(removedItem[0]);
+        this.changeDetectorRef.detectChanges();
+      }
+    }
   }
 
   // Borra el jugador de la posicion x en la lista inicial
