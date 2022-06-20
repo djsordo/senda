@@ -1,3 +1,4 @@
+import { PasoDatosService } from './../services/paso-datos.service';
 import { Gesture, GestureController, IonCard, IonItem } from '@ionic/angular';
 import {
   ChangeDetectorRef,
@@ -30,7 +31,7 @@ export class InicioSelJugadoresPage implements OnInit {
     {numero: '16', nombre: 'Javier de Torre', portero: false, posicion:'', foto: 'Javier_de_Torre_Sebastian.jpeg'},
     {numero: '17', nombre: 'Óscar Otero', portero: false, posicion:'', foto: 'SinImagen.jpg'},
     {numero: '45', nombre: 'Daniel Martín', portero: false, posicion:'', foto: 'Daniel_Martin_Paredes.jpeg'},
-    {numero: '3', nombre: 'Adrián Pérez', portero: false, posicion:'', foto: 'SinImagen.jpg'},
+    {numero: '03', nombre: 'Adrián Pérez', portero: false, posicion:'', foto: 'SinImagen.jpg'},
     {numero: '53', nombre: 'Alex Garrido', portero: false, posicion:'', foto: 'SinImagen.jpg'},
     {numero: '98', nombre: 'Alejandro Álvarez', portero: false, posicion:'', foto: 'Alejandro_Alvarez_Castro.jpeg'},
     {numero: '39', nombre: 'Jorge Parra', portero: false, posicion:'', foto: 'Jorge_Parra_Gonzalez.jpeg'},
@@ -53,7 +54,10 @@ export class InicioSelJugadoresPage implements OnInit {
   contentScrollActive = true;
   gestureArray: Gesture[] = [];
 
-  constructor(private router: Router, private gestureCtrl: GestureController, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private router: Router,
+    private gestureCtrl: GestureController,
+    private changeDetectorRef: ChangeDetectorRef,
+    private pasoDatos: PasoDatosService) {}
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterViewInit() {
@@ -245,6 +249,8 @@ export class InicioSelJugadoresPage implements OnInit {
   }
 
   irAModo() {
+    this.pasoDatos.enviaListaInicial(this.listaInicial);
+    this.pasoDatos.enviaListaBanquillo(this.listaBanquillo);
     this.router.navigate(['/modo-jugador']);
   }
 }

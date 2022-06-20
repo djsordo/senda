@@ -1,3 +1,4 @@
+import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -7,14 +8,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./modo-jugador.page.scss'],
 })
 export class ModoJugadorPage implements OnInit {
+  listaInicial: [];
+  listaBanquillo: [];
   nombres= {
     casa: 'B. M. LAGUNA',
     fuera: 'SAN AGUSTÍN'
   };
 
-  constructor(private router: Router) { }
+  marcador= {
+    nuestro: 0,
+    rival: 0,
+  };
+
+  constructor(private router: Router,
+    private pasoDatos: PasoDatosService) { }
 
   ngOnInit() {
+    this.pasoDatos.$getListaInicial.subscribe(data => this.listaInicial = data).unsubscribe();
+    this.pasoDatos.$getListaBanquillo.subscribe(data => this.listaBanquillo = data).unsubscribe();
   }
 
   cambiarModo(){
