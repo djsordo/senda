@@ -1,4 +1,4 @@
-import { Component, 
+import { Component,
           OnInit } from '@angular/core';
 import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 
@@ -14,11 +14,11 @@ export class MicrofonoComponent implements OnInit {
   show = false;
   recording = false;
   lastText = '';
-  private microfonoOn = "./assets/mic-animation.gif";
+  private microfonoOn = './assets/mic-animation.gif';
   private microfonoOff = "./assets/mic-animation-disabled.gif";
   public microfonoImgSrc = this.microfonoOn;
 
-  constructor( ) { 
+  constructor( ) {
     SpeechRecognition.available()
       .then( value => { this.isAvailable = value['available'];
                         if( this.isAvailable )
@@ -31,7 +31,7 @@ export class MicrofonoComponent implements OnInit {
   ngOnInit() {}
 
   async startRecognition() {
-    this.microfonoImgSrc = this.microfonoOn; 
+    this.microfonoImgSrc = this.microfonoOn;
     this.recording = true;
     if( this.isAvailable ){
       SpeechRecognition.start({
@@ -39,7 +39,7 @@ export class MicrofonoComponent implements OnInit {
         popup : false
       }).then( result => {
         if( result.matches && result.matches.length > 0 ) {
-          console.log( result.matches ); 
+          console.log( result.matches );
           this.lastText = result.matches[0];
           this.stopRecognition();
         }
@@ -49,14 +49,14 @@ export class MicrofonoComponent implements OnInit {
 
   async stopRecognition() {
     this.microfonoImgSrc = this.microfonoOff;
-    this.recording = false; 
+    this.recording = false;
     if( this.isAvailable )
       SpeechRecognition.stop().then(result => {
       });
   }
 
   setShow( value : boolean ){
-    this.show = value; 
+    this.show = value;
     if( this.show )
       this.startRecognition();
   }
@@ -64,7 +64,7 @@ export class MicrofonoComponent implements OnInit {
   getShow( ){
     return this.show;
   }
-  
+
   public onChangeValue( event ){
     this.lastText = event.srcElement.value;
   }
