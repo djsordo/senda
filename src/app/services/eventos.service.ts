@@ -3,12 +3,13 @@ import { Injectable  } from "@angular/core";
 @Injectable({
   providedIn : 'root'
 })
-export class DbService {
+export class EventosService {
 
-  constructor() {}
+  prototiposEventos : Array<EventoPrototipo>;
+  eventos : Array<Evento>;
 
-  public getAllEventosPrototipos( ){
-    return [
+  constructor() {
+    this.prototiposEventos = [
       { id: 'parada', positivo: TipoEvento.positivo }, 
       { id: 'gol_rival', positivo: TipoEvento.negativo }, 
       { id: 'gol', positivo: TipoEvento.positivo }, 
@@ -21,6 +22,14 @@ export class DbService {
       { id: 'tarjeta_roja',  positivo: TipoEvento.negativo },
       { id: 'tarjeta_azul', positivo: TipoEvento.negativo }
     ];
+  }
+
+  public getAllEventosPrototipos( ){
+    return this.prototiposEventos;
+  }
+
+  public addEvento( evento : Evento ){
+    this.eventos.push( evento );
   }
 
 }
