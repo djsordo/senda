@@ -6,19 +6,33 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class PasoDatosService {
-  private listaInicial = new BehaviorSubject<[]>([]);
-  private listaBanquillo = new BehaviorSubject<[]>([]);
+/*   private listaInicial = new BehaviorSubject<[]>([]);
+  private listaBanquillo = new BehaviorSubject<[]>([]); */
 
-  $getListaInicial = this.listaInicial.asObservable();
+  listaInicial: any;
+  listaBanquillo: any;
+
+  /* $getListaInicial = this.listaInicial.asObservable();
   $getListaBanquillo = this.listaBanquillo.asObservable();
+ */
+  constructor() {
+    console.log('Constructor del servicio');
+  }
 
   enviaListaInicial(datos: any){
-    this.listaInicial.next(datos);
+    this.listaInicial = datos;
   }
 
   enviaListaBanquillo(datos: any){
-    this.listaBanquillo.next(datos);
+    this.listaBanquillo = datos;
   }
 
-  constructor() { }
+  getListaInicial(){
+    return this.listaInicial;
+  }
+
+  getListaBanquillo(){
+    return this.listaBanquillo;
+  }
+
 }

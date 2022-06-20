@@ -24,8 +24,16 @@ export class ModoJugadorPage implements OnInit {
     private pasoDatos: PasoDatosService) { }
 
   ngOnInit() {
-    this.pasoDatos.$getListaInicial.subscribe(data => this.listaInicial = data).unsubscribe();
-    this.pasoDatos.$getListaBanquillo.subscribe(data => this.listaBanquillo = data).unsubscribe();
+    console.log('Pasa por aquí');
+    this.listaInicial = this.pasoDatos.getListaInicial();
+    this.listaBanquillo = this.pasoDatos.getListaBanquillo();
+
+/*     if (!this.listaInicial){
+      this.pasoDatos.$getListaInicial.subscribe(data => this.listaInicial = data).unsubscribe();
+    }
+    if (!this.listaBanquillo){
+      this.pasoDatos.$getListaBanquillo.subscribe(data => this.listaBanquillo = data).unsubscribe();
+    } */
   }
 
   cambiarModo(){
