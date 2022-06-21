@@ -23,16 +23,16 @@ export class TitularesComponent implements OnInit {
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
     this.jugCampo = this.listaInicial;
-    console.log('Jugadores de campo antes: ', this.jugCampo);
-    console.log('Lista Inicial antes: ', this.listaInicial);
+    /* console.log('Jugadores de campo antes: ', this.jugCampo);
+    console.log('Lista Inicial antes: ', this.listaInicial); */
     const indice = this.jugCampo?.indexOf(this.jugCampo.find(po => po.posicion === 'PO'));
-    console.log('Índice: ',indice);
+    /* console.log('Índice: ',indice); */
 
     if (indice && indice !== -1 ){
       this.portero = this.jugCampo.splice(indice, 1);
     }
-    console.log('Jugadores de campo después: ', this.jugCampo);
-    console.log('Lista Inicial después: ', this.listaInicial);
+    /* console.log('Jugadores de campo después: ', this.jugCampo);
+    console.log('Lista Inicial después: ', this.listaInicial); */
 
     this.jugCampo = this.jugCampo?.sort((x,y) => x.numero.localeCompare(y.numero));
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
