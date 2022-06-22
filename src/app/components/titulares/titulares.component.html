@@ -4,7 +4,7 @@
   </ion-list-header>
   <ion-accordion-group>
     <ion-accordion *ngIf="portero" value="{{portero[0].numero}}">
-      <ion-item slot="header">
+      <ion-item slot="header" color="{{portero[0].exclusion ? 'danger' : '' }}">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
@@ -52,7 +52,7 @@
               </ion-item>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger">
+              <ion-item button color="danger" (click)="dosMinutos(portero[0].numero)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
@@ -74,7 +74,7 @@
     </ion-accordion>
 
     <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.numero}}">
-      <ion-item slot="header">
+      <ion-item slot="header" color="{{titular.exclusion ? 'danger' : '' }}">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
@@ -119,7 +119,7 @@
               </ion-item>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger">
+              <ion-item button color="danger" (click)="dosMinutos(titular.numero)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>

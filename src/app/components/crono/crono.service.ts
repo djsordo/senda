@@ -11,6 +11,9 @@ export class CronoService {
     segundo: 0
   };
 
+  // En este array se llevan los 2 minutos
+  cronos2min = [];
+
   constructor() { }
 
   pasoTiempo(){
@@ -52,5 +55,16 @@ export class CronoService {
   apagar(){
     // Función que apaga el crono
     this.tiempo.encendido = false;
+  }
+
+  // Se activa un crono de 2 minutos
+  setCrono2min(numeroJug: any){
+    const crono2min = {numero: numeroJug, minutos: 2, segundos: 0};
+    this.cronos2min.push(crono2min);
+  }
+
+  // Vemos el crono del jugador
+  getCrono2min(numeroJug: any){
+    return this.cronos2min.find(crono => crono.numero === numeroJug);
   }
 }

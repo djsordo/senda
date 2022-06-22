@@ -23,22 +23,36 @@ export class TitularesComponent implements OnInit {
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
     this.jugCampo = this.listaInicial;
-    /* console.log('Jugadores de campo antes: ', this.jugCampo);
-    console.log('Lista Inicial antes: ', this.listaInicial); */
     const indice = this.jugCampo?.indexOf(this.jugCampo.find(po => po.posicion === 'PO'));
-    /* console.log('Índice: ',indice); */
 
     if (indice && indice !== -1 ){
       this.portero = this.jugCampo.splice(indice, 1);
+      this.portero[0].exclusion = false;
     }
-    /* console.log('Jugadores de campo después: ', this.jugCampo);
-    console.log('Lista Inicial después: ', this.listaInicial); */
 
     this.jugCampo = this.jugCampo?.sort((x,y) => x.numero.localeCompare(y.numero));
+    for (let i = 0; i < this.jugCampo?.length; i++){
+     this.jugCampo[i].exclusion = false;
+    }
+
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
   }
 
   irADetalle(): void{
     this.router.navigate(['/detalle-jugador']);
+  }
+
+  dosMinutos(numero: any){
+    if (this.portero.numero === numero){
+      this.portero[0].exclusion = true;
+    } else {
+      for (let i = 0; i < this.jugCampo?.length; i++){
+        if (this.jugCampo[i].numero === numero){
+          this.jugCampo[i].exclusion = true;
+        }
+       }
+      }
+    console.log(this.portero[0]);
+    console.log(this.jugCampo);
   }
 }
