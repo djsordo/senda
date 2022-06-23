@@ -17,18 +17,23 @@ export class CronoService {
   constructor() { }
 
   pasoTiempo(){
-    // Función que se ejecuta cada segundo si el crono está encendido
+    // Función que se ejecuta cada decima de segundo si el crono está encendido
     setTimeout(() => {
       if (this.tiempo.encendido){
         this.pasoTiempo();
-        this.tiempo.segundo++;
+        this.tiempo.segundo = this.tiempo.segundo + 1;
 
         if (this.tiempo.segundo === 60) {
           this.tiempo.minuto++;
           this.tiempo.segundo = 0;
         }
-      }
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for (let i = 0; i < this.cronos2min.length; i++){
+          this.cronos2min[i].segundos = this.cronos2min[i].segundos - 1;
+        };
+      };
     }, 1000);
+
     return this.tiempo.encendido;
   }
 
@@ -59,12 +64,18 @@ export class CronoService {
 
   // Se activa un crono de 2 minutos
   setCrono2min(numeroJug: any){
-    const crono2min = {numero: numeroJug, minutos: 2, segundos: 0};
+    const crono2min = {numero: numeroJug, segundos: 120};
     this.cronos2min.push(crono2min);
   }
 
   // Vemos el crono del jugador
   getCrono2min(numeroJug: any){
     return this.cronos2min.find(crono => crono.numero === numeroJug);
+  }
+
+  // Borra el crono del jugador
+  deleteCrono2min(numeroJug: any){
+    const indice = this.cronos2min.indexOf(this.cronos2min.find(crono => crono.numero === numeroJug));
+    this.cronos2min.splice(indice, 1);
   }
 }
