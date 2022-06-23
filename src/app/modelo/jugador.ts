@@ -1,12 +1,12 @@
 
 
-interface Jugador {
+export interface Jugador {
 
   id: string;
   numero: string;
   nombre: string;
-  apellidos: string;
   posicion: string;
+  portero: boolean;
   foto: string;
 }
 

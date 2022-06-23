@@ -27,6 +27,8 @@ npm-debug.log*
 # directorio creado automáticamente por ionic
 # para el proyecto de apk
 /android
+!/android/app/src/main/AndroidManifest.xml
+!/android/app/src/main/java/io/ionic/starter/MainActivity.java
 # directorio creado automáticamente por ionic
 # para el proyecto IOS
 /ios
