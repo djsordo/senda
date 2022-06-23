@@ -9,3 +9,4 @@ interface Evento {
   accion : EventoPrototipo;
   crono : string;
 }
+
