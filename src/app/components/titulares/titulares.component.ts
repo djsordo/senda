@@ -46,13 +46,17 @@ export class TitularesComponent implements OnInit {
     this.listaExcluidos = [];
 
     console.log('ngOnInit');
+    console.log('Portero: ', this.portero[0]);
+    console.log('Titulares: ', this.jugCampo);
+    console.log('Banquillo: ', this.listaBanquillo);
+    console.log('Excluidos: ', this.listaExcluidos);
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngDoCheck(){
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
-    console.log(this.listaExcluidos?.length);
+    console.log(this.listaExcluidos);
     for (let i = 0; i < this.listaExcluidos?.length; i++){
       if (this.listaExcluidos[i].exclusion){
         this.listaExcluidos[i].segExclusion = this.crono.getCrono2min(this.listaExcluidos[i].numero).segundos;
@@ -61,7 +65,12 @@ export class TitularesComponent implements OnInit {
           this.crono.deleteCrono2min(this.listaExcluidos[i].numero);
           // devolvemos al jugador a la lista de titulares
           const titular = this.listaExcluidos.splice(i,1);
-          this.jugCampo.push(titular[0]);
+          if (titular[0].posicion === 'PO'){
+            this.portero.push(titular[0]);
+          } else {
+            this.jugCampo.push(titular[0]);
+          }
+
         }
       }
     }
@@ -83,7 +92,7 @@ export class TitularesComponent implements OnInit {
   }
 
   dosMinutos(numero: any){
-    if (this.portero[0].numero === numero){
+    if (this.portero[0]?.numero === numero){
       this.portero[0].exclusion = true;
       this.portero[0].segExclusion = 120;
 

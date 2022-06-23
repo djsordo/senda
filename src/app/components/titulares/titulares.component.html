@@ -3,7 +3,7 @@
     <h2>Jugadores en la pista</h2>
   </ion-list-header>
   <ion-accordion-group #acordeonJugadores>
-    <ion-accordion *ngIf="portero" value="{{portero[0].numero}}">
+    <ion-accordion *ngIf="portero[0]" value="{{portero[0].numero}}">
       <ion-item slot="header" color="{{portero[0].exclusion ? 'danger' : '' }}">
         <ion-grid>
           <ion-row>
