@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,7 +12,8 @@ export class DetalleJugadorPage implements OnInit {
   area_campo = '';
   area_porteria = '';
 
-  constructor() {}
+  constructor(private toastController: ToastController,
+    private router: Router) {}
 
   ngOnInit() {}
 
@@ -21,6 +24,22 @@ export class DetalleJugadorPage implements OnInit {
 
   public onPorteriaClicked( event : string ){
     console.log( event );
-    this.area_porteria = event; 
+    this.area_porteria = event;
+  }
+
+  btnOk(){
+    const mensaje = 'Gol de xxx desde el ' + this.area_campo + ' que ha entrado por el ' + this.area_porteria;
+    this.toastOk(mensaje);
+    this.router.navigate(['/modo-jugador']);
+  }
+
+  async toastOk(mensaje: string){
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'middle'
+    });
+
+    toast.present();
   }
 }
