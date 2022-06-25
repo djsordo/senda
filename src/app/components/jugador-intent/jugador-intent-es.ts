@@ -1,3 +1,5 @@
+import { Injectable } from '@angular/core';
+
 /**
  * aquí tenemos que registrar cosicas como: 
  * 
@@ -14,6 +16,9 @@
  * "[tarjeta] azul para nombre-jugador"
  * 
  */
+@Injectable({
+  providedIn : 'root'
+})
 export class JugadorIntentEs{
 
   private accion = [ "gol", 
@@ -37,7 +42,10 @@ export class JugadorIntentEs{
   private allIntents = [ this.intent1 ];
 
   public parseIntent( sentence : string ){
-  
+    // ni idea, pero aquí hay que inyectar varios servicios
+    for( let intent of this.allIntents ){
+      ;
+    }
   }
 
 

@@ -10,9 +10,10 @@ fdescribe( 'EventoPrototipoService', () => {
     eventosService = new EventosService();
   });
 
-  it('should be created', () =>{
+  it('should be created', () => {
     expect( typeof eventosService === 'object'  
-            && eventosService !== null });
+            && eventosService !== null ).toBe( true );
+  });
 
   it('getAll() must return values', () => {
     let prototipos = eventosService.getAllEventosPrototipos();

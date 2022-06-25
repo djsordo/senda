@@ -1,12 +1,15 @@
 
+import { Jugador } from './jugador';
+import { Accion } from './accion';
+import { Equipo } from './equipo'; 
 
-interface Evento {
+export interface Evento {
 
   id : string;
   timestamp : Date;
   jugador : Jugador;
   equipo : Equipo; 
-  accion : EventoPrototipo;
+  accion : Accion;
   crono : string;
 }
 

@@ -3,7 +3,7 @@ import { ComponentFixture,
           waitForAsync } from '@angular/core/testing';
 import { JugadorIntentEs } from './jugador-intent-es';
 
-describe('JugadorIntentEs', () => {
+fdescribe('JugadorIntentEs', () => {
   let jugadorIntent = new JugadorIntentEs();
 
   it('should create', () => {
