@@ -1,20 +1,15 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PasoDatosService {
-/*   private listaInicial = new BehaviorSubject<[]>([]);
-  private listaBanquillo = new BehaviorSubject<[]>([]); */
 
   listaInicial: any;
   listaBanquillo: any;
 
-  /* $getListaInicial = this.listaInicial.asObservable();
-  $getListaBanquillo = this.listaBanquillo.asObservable();
- */
+  pantallaDetalle: any;
+
   constructor() {
     console.log('Constructor del servicio');
   }
@@ -33,6 +28,14 @@ export class PasoDatosService {
 
   getListaBanquillo(){
     return this.listaBanquillo;
+  }
+
+  enviaPantallaDetalle(datos: any){
+    return this.pantallaDetalle = datos;
+  }
+
+  getPantallaDetalle(){
+    return this.pantallaDetalle;
   }
 
 }

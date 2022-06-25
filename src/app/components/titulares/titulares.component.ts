@@ -1,3 +1,4 @@
+import { PasoDatosService } from './../../services/paso-datos.service';
 import { CronoService } from './../crono/crono.service';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -23,7 +24,8 @@ export class TitularesComponent implements OnInit {
   ev: Event;
 
   constructor(private router: Router,
-    private crono: CronoService) { }
+    private crono: CronoService,
+    private pasoDatos: PasoDatosService) { }
 
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
@@ -73,7 +75,27 @@ export class TitularesComponent implements OnInit {
     }
   }
 
-  irADetalle(): void{
+  btnGol(jugador: any): void{
+    const detalle = {accion: 'gol', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.router.navigate(['/detalle-jugador']);
+  }
+
+  btnGolRival(jugador: any): void{
+    const detalle = {accion: 'gol rival', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.router.navigate(['/detalle-jugador']);
+  }
+
+  btnLanzamiento(jugador: any): void{
+    const detalle = {accion: 'lanzamiento', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.router.navigate(['/detalle-jugador']);
+  }
+
+  btnParada(jugador: any): void{
+    const detalle = {accion: 'parada', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
   }
 

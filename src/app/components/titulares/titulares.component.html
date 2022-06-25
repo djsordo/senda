@@ -23,14 +23,14 @@
         <ion-grid>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success">
+              <ion-item button color="success" (click)="btnParada(portero[0])">
                 <ion-icon name="hand-left"></ion-icon>
                 <ion-icon name="hand-right"></ion-icon>
                 <ion-label slot="end">Parada</ion-label>
               </ion-item>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger">
+              <ion-item button color="danger" (click)="btnGolRival(portero[0])">
                 <ion-icon name="football"></ion-icon>
                 <ion-label slot="end">Gol Rival</ion-label>
               </ion-item>
@@ -91,13 +91,13 @@
         <ion-grid>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" (click)="irADetalle()">
+              <ion-item button color="success" (click)="btnGol(titular)">
                 <ion-icon name="football"></ion-icon>
                 <ion-label slot="end">Gol</ion-label>
               </ion-item>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger">
+              <ion-item button color="danger" (click)="btnLanzamiento(titular)">
                 <ion-icon name="close"></ion-icon>
                 <ion-label slot="end">Tiro</ion-label>
               </ion-item>
