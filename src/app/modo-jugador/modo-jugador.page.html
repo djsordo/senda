@@ -6,6 +6,7 @@
     <ion-title>Modo Jugador</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cambiarModo()" size="small">Modo Acción</ion-button>
+      <microfono></microfono>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -29,11 +30,6 @@
 
   <div>
     <ion-grid>
-      <ion-row>
-        <ion-col>
-          <microfono></microfono>
-        </ion-col>
-      </ion-row>
       <ion-row>
         <ion-col class="ion-no-padding ion-text-center">
           <app-titulares [listaInicial] = 'listaInicial' [listaBanquillo] = 'listaBanquillo'></app-titulares>

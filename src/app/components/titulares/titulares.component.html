@@ -3,8 +3,8 @@
     <h2>Jugadores en la pista</h2>
   </ion-list-header>
   <ion-accordion-group #acordeonJugadores>
-    <ion-accordion *ngIf="portero" value="{{portero[0].numero}}">
-      <ion-item slot="header" color="{{portero[0].exclusion ? 'danger' : '' }}">
+    <ion-accordion *ngIf="portero[0]" value="{{portero[0].numero}}">
+      <ion-item slot="header">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
@@ -14,7 +14,7 @@
               <ion-img src="../../../assets/portero.png"></ion-img>
             </ion-col>
             <ion-col size="9">
-              <ion-label>{{ portero[0].nombre }} {{portero[0].exclusion ? ' ' + portero[0].segExclusion : ''}}</ion-label>
+              <ion-label>{{ portero[0].nombre }}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -23,14 +23,14 @@
         <ion-grid>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success">
+              <ion-item button color="success" (click)="btnParada(portero[0])">
                 <ion-icon name="hand-left"></ion-icon>
                 <ion-icon name="hand-right"></ion-icon>
                 <ion-label slot="end">Parada</ion-label>
               </ion-item>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger">
+              <ion-item button color="danger" (click)="btnGolRival(portero[0])">
                 <ion-icon name="football"></ion-icon>
                 <ion-label slot="end">Gol Rival</ion-label>
               </ion-item>
@@ -59,13 +59,13 @@
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(portero[0])"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="rojo"></ion-button>
+                <ion-button color="rojo" (click)="btnRoja(portero[0])"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button  color="azul"></ion-button>
+                <ion-button  color="azul" (click)="btnAzul(portero[0])"></ion-button>
               </ion-col>
               </ion-row>
           </ion-row>
@@ -74,7 +74,7 @@
     </ion-accordion>
 
     <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.numero}}">
-      <ion-item slot="header" color="{{titular.exclusion ? 'danger' : '' }}">
+      <ion-item slot="header">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
@@ -82,7 +82,7 @@
             </ion-col>
             <ion-col size="1"></ion-col>
             <ion-col size="9">
-              <ion-label>{{ titular.nombre }} {{titular.exclusion ? ' ' + titular.segExclusion : ''}}</ion-label>
+              <ion-label>{{ titular.nombre }}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -91,13 +91,13 @@
         <ion-grid>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" (click)="irADetalle()">
+              <ion-item button color="success" (click)="btnGol(titular)">
                 <ion-icon name="football"></ion-icon>
                 <ion-label slot="end">Gol</ion-label>
               </ion-item>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger">
+              <ion-item button color="danger" (click)="btnLanzamiento(titular)">
                 <ion-icon name="close"></ion-icon>
                 <ion-label slot="end">Tiro</ion-label>
               </ion-item>
@@ -113,10 +113,20 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success">
+              <ion-item button color="success" id="{{'cambio' + titular.id}}">
                 <ion-icon name="repeat"></ion-icon>
                 <ion-label slot="end">Cambio</ion-label>
               </ion-item>
+              <ion-popover trigger="{{'cambio' + titular.id}}" [dismissOnSelect]="true">
+                <ng-template>
+
+                  <!-- <ion-list>
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular.id, elemento.id)">
+                      {{elemento.numero + ' ' + elemento.nombre}}
+                    </ion-item>
+                  </ion-list> -->
+                </ng-template>
+              </ion-popover>
             </ion-col>
             <ion-col size="6">
               <ion-item button color="danger" (click)="dosMinutos(titular.numero)">
@@ -126,13 +136,13 @@
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="rojo"></ion-button>
+                <ion-button color="rojo" (click)="btnRoja(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button  color="azul"></ion-button>
+                <ion-button  color="azul" (click)="btnAzul(titular)"></ion-button>
               </ion-col>
               </ion-row>
           </ion-row>
@@ -141,15 +151,18 @@
     </ion-accordion>
 
     <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.numero}}">
-      <ion-item slot="header" color="{{titular.exclusion ? 'danger' : '' }}">
+      <ion-item slot="header" color="danger">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
               <b>{{ titular.numero }}</b>
             </ion-col>
             <ion-col size="1"></ion-col>
-            <ion-col size="9">
-              <ion-label>{{ titular.nombre }} {{titular.exclusion ? ' ' + titular.segExclusion : ''}}</ion-label>
+            <ion-col size="7">
+              <ion-label>{{ titular.nombre }}</ion-label>
+            </ion-col>
+            <ion-col size="2">
+              <ion-label>{{titular.segExclusion*1000 | date: 'm:ss'}}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -165,13 +178,13 @@
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="rojo"></ion-button>
+                <ion-button color="rojo" (click)="btnRoja(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button  color="azul"></ion-button>
+                <ion-button  color="azul" (click)="btnAzul(titular)"></ion-button>
               </ion-col>
               </ion-row>
           </ion-row>
@@ -183,3 +196,4 @@
 <ion-item>
   <ion-button color="success">Cambio Ataque/Defensa</ion-button>
 </ion-item>
+

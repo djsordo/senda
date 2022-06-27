@@ -5,7 +5,8 @@
         <ion-chip color="primary">{{tiempo.parte}}ª Parte</ion-chip>
       </ion-col>
       <ion-col class="ion-text-center">
-        <ion-text color="tertiary">{{tiempo.minuto}}:{{tiempo.segundo | number: '2.0-0'}}</ion-text>
+        <ion-text color="tertiary">{{tiempo.segundo*1000 | date: 'mm:ss'}}</ion-text>
+        <!-- <ion-text color="tertiary">{{tiempo.minuto}}:{{tiempo.segundo | number: '2.0-0'}}</ion-text> -->
       </ion-col>
       <ion-col class="ion-text-end">
         <ion-icon name="play" size="large" (click)="pulsaCrono()" *ngIf="!tiempo.encendido"></ion-icon>

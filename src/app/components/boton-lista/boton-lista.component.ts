@@ -13,8 +13,6 @@ export class BotonListaComponent implements OnInit {
   @Input() icono: string;
   @Input() colorBoton: string;
 
-  /* listaRobo= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}]; */
-
   constructor(private toastController: ToastController) {}
 
   ngOnInit() {}
@@ -28,7 +26,7 @@ export class BotonListaComponent implements OnInit {
   async toastElegido(mensaje: string){
     const toast = await this.toastController.create({
       message: mensaje,
-      duration: 1000,
+      duration: 2000,
       position: 'middle'
     });
 

@@ -1,7 +1,8 @@
+import { PasoDatosService } from './../../services/paso-datos.service';
 import { CronoService } from './../crono/crono.service';
-import { Component, Input, OnInit, DoCheck, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonAccordionGroup } from '@ionic/angular';
+import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-titulares',
@@ -23,7 +24,9 @@ export class TitularesComponent implements OnInit {
   ev: Event;
 
   constructor(private router: Router,
-    private crono: CronoService) { }
+    private crono: CronoService,
+    private pasoDatos: PasoDatosService,
+    private toastController: ToastController) { }
 
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
@@ -45,45 +48,75 @@ export class TitularesComponent implements OnInit {
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
     this.listaExcluidos = [];
 
-    console.log('ngOnInit');
+    /* console.log('ngOnInit');
+    console.log('Portero: ', this.portero[0]);
+    console.log('Titulares: ', this.jugCampo);
+    console.log('Banquillo: ', this.listaBanquillo);
+    console.log('Excluidos: ', this.listaExcluidos); */
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngDoCheck(){
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
-    console.log(this.listaExcluidos?.length);
+    //console.log(this.listaExcluidos);
     for (let i = 0; i < this.listaExcluidos?.length; i++){
-      if (this.listaExcluidos[i].exclusion){
-        this.listaExcluidos[i].segExclusion = this.crono.getCrono2min(this.listaExcluidos[i].numero).segundos;
-        if (this.listaExcluidos[i].segExclusion === 0) {
-          this.listaExcluidos[i].exclusion = false;
-          this.crono.deleteCrono2min(this.listaExcluidos[i].numero);
-          // devolvemos al jugador a la lista de titulares
-          const titular = this.listaExcluidos.splice(i,1);
+      this.listaExcluidos[i].segExclusion = this.crono.getCrono2min(this.listaExcluidos[i].numero).segundos;
+      if (this.listaExcluidos[i].segExclusion === 0) {
+        this.listaExcluidos[i].exclusion = false;
+        this.crono.deleteCrono2min(this.listaExcluidos[i].numero);
+        // devolvemos al jugador a la lista de titulares
+        const titular = this.listaExcluidos.splice(i,1);
+        if (titular[0].posicion === 'PO'){
+          this.portero.push(titular[0]);
+        } else {
           this.jugCampo.push(titular[0]);
         }
       }
     }
-
-    // Lo mismo para el portero
-/*     if (this.portero[0].exclusion){
-      this.portero[0].segExclusion = this.crono.getCrono2min(this.portero[0].numero).segundos;
-      if (this.portero[0].segExclusion === 0) {
-        this.portero[0].exclusion = false;
-        this.crono.deleteCrono2min(this.portero[0].numero);
-      }
-    } */
-    //console.log(this.crono.cronos2min);
   }
 
-
-  irADetalle(): void{
+  btnGol(jugador: any): void{
+    const detalle = {accion: 'gol', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
   }
 
+  btnGolRival(jugador: any): void{
+    const detalle = {accion: 'gol rival', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.router.navigate(['/detalle-jugador']);
+  }
+
+  btnLanzamiento(jugador: any): void{
+    const detalle = {accion: 'lanzamiento', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.router.navigate(['/detalle-jugador']);
+  }
+
+  btnParada(jugador: any): void{
+    const detalle = {accion: 'parada', idJugador: jugador.id};
+    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.router.navigate(['/detalle-jugador']);
+  }
+
+  btnAmarilla(jugador: any): void{
+    const mensaje = 'Tarjeta amarilla para ' + jugador.nombre;
+    this.toastOk(mensaje);
+  }
+
+  btnRoja(jugador: any): void{
+    const mensaje = 'Tarjeta roja para ' + jugador.nombre;
+    this.toastOk(mensaje);
+  }
+
+  btnAzul(jugador: any): void{
+    const mensaje = 'Tarjeta azul para ' + jugador.nombre;
+    this.toastOk(mensaje);
+  }
+
   dosMinutos(numero: any){
-    if (this.portero[0].numero === numero){
+    if (this.portero[0]?.numero === numero){
       this.portero[0].exclusion = true;
       this.portero[0].segExclusion = 120;
 
@@ -110,4 +143,21 @@ export class TitularesComponent implements OnInit {
 
     }
 
+    btnCambio(titular: any, cambio: any){
+      // Cambio em las listas
+
+      const mensaje = 'Sale ' + titular.nombre + ' y entra ' + cambio.nombre;
+      this.toastOk(mensaje);
+
+    }
+
+    async toastOk(mensaje: string){
+      const toast = await this.toastController.create({
+        message: mensaje,
+        duration: 2000,
+        position: 'middle'
+      });
+
+      toast.present();
+    }
 }
