@@ -7,7 +7,7 @@ fdescribe( 'EventoPrototipoService', () => {
 
   beforeEach( () => {
     TestBed.configureTestingModule({});
-    eventosService = new EventosService();
+    eventosService = TestBed.inject( EventosService );
   });
 
   it('should be created', () => {
@@ -16,7 +16,7 @@ fdescribe( 'EventoPrototipoService', () => {
   });
 
   it('getAll() must return values', () => {
-    let prototipos = eventosService.getAllEventosPrototipos();
+    let prototipos = eventosService.getAcciones();
     expect( prototipos !== null 
         && typeof prototipos === 'object'
         && prototipos.length > 0 ).toBe( true );

@@ -6,8 +6,8 @@ export enum TipoAccion {
 }
 
 export interface Accion {
-
   id : string; 
+  alias : Array<string>;
   positivo : TipoAccion;
 
 }
