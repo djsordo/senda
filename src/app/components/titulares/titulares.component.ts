@@ -47,12 +47,11 @@ export class TitularesComponent implements OnInit {
 
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
     this.listaExcluidos = [];
-
-    /* console.log('ngOnInit');
+    console.clear;
     console.log('Portero: ', this.portero[0]);
     console.log('Titulares: ', this.jugCampo);
     console.log('Banquillo: ', this.listaBanquillo);
-    console.log('Excluidos: ', this.listaExcluidos); */
+    console.log('Excluidos: ', this.listaExcluidos);
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -144,9 +143,22 @@ export class TitularesComponent implements OnInit {
     }
 
     btnCambio(titular: any, cambio: any){
-      // Cambio em las listas
+      // Cambio en las listas
+      const sale = this.jugCampo.findIndex(res => res.id === titular);
+      const entra = this.listaBanquillo.findIndex(res => res.id === cambio);
 
-      const mensaje = 'Sale ' + titular.nombre + ' y entra ' + cambio.nombre;
+      const jugSale = this.jugCampo.splice(sale, 1);
+      const jugEntra = this.listaBanquillo.splice(entra, 1);
+      //console.log('Entra: ', jugEntra[0]);
+      //console.log('Sale: ', jugSale[0]);
+
+      this.jugCampo.push(jugEntra[0]);
+      this.listaBanquillo.push(jugSale[0]);
+
+      //console.log('Titulares: ', this.jugCampo);
+      //console.log('Banquillo: ', this.listaBanquillo);
+
+      const mensaje = 'Sale ' + jugSale[0].nombre + ' y entra ' + jugEntra[0].nombre;
       this.toastOk(mensaje);
 
     }
