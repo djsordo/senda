@@ -2,7 +2,7 @@ import { PasoDatosService } from './../../services/paso-datos.service';
 import { CronoService } from './../crono/crono.service';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonAccordionGroup } from '@ionic/angular';
+import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-titulares',
@@ -25,7 +25,8 @@ export class TitularesComponent implements OnInit {
 
   constructor(private router: Router,
     private crono: CronoService,
-    private pasoDatos: PasoDatosService) { }
+    private pasoDatos: PasoDatosService,
+    private toastController: ToastController) { }
 
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
@@ -99,6 +100,21 @@ export class TitularesComponent implements OnInit {
     this.router.navigate(['/detalle-jugador']);
   }
 
+  btnAmarilla(jugador: any): void{
+    const mensaje = 'Tarjeta amarilla para ' + jugador.nombre;
+    this.toastOk(mensaje);
+  }
+
+  btnRoja(jugador: any): void{
+    const mensaje = 'Tarjeta roja para ' + jugador.nombre;
+    this.toastOk(mensaje);
+  }
+
+  btnAzul(jugador: any): void{
+    const mensaje = 'Tarjeta azul para ' + jugador.nombre;
+    this.toastOk(mensaje);
+  }
+
   dosMinutos(numero: any){
     if (this.portero[0]?.numero === numero){
       this.portero[0].exclusion = true;
@@ -127,4 +143,21 @@ export class TitularesComponent implements OnInit {
 
     }
 
+    btnCambio(titular: any, cambio: any){
+      // Cambio em las listas
+
+      const mensaje = 'Sale ' + titular.nombre + ' y entra ' + cambio.nombre;
+      this.toastOk(mensaje);
+
+    }
+
+    async toastOk(mensaje: string){
+      const toast = await this.toastController.create({
+        message: mensaje,
+        duration: 2000,
+        position: 'middle'
+      });
+
+      toast.present();
+    }
 }

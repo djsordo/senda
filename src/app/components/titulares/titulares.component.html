@@ -59,13 +59,13 @@
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(portero[0])"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="rojo"></ion-button>
+                <ion-button color="rojo" (click)="btnRoja(portero[0])"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button  color="azul"></ion-button>
+                <ion-button  color="azul" (click)="btnAzul(portero[0])"></ion-button>
               </ion-col>
               </ion-row>
           </ion-row>
@@ -113,10 +113,20 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success">
+              <ion-item button color="success" id="{{'cambio' + titular.id}}">
                 <ion-icon name="repeat"></ion-icon>
                 <ion-label slot="end">Cambio</ion-label>
               </ion-item>
+              <ion-popover trigger="{{'cambio' + titular.id}}" [dismissOnSelect]="true">
+                <ng-template>
+
+                  <!-- <ion-list>
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular.id, elemento.id)">
+                      {{elemento.numero + ' ' + elemento.nombre}}
+                    </ion-item>
+                  </ion-list> -->
+                </ng-template>
+              </ion-popover>
             </ion-col>
             <ion-col size="6">
               <ion-item button color="danger" (click)="dosMinutos(titular.numero)">
@@ -126,13 +136,13 @@
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="rojo"></ion-button>
+                <ion-button color="rojo" (click)="btnRoja(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button  color="azul"></ion-button>
+                <ion-button  color="azul" (click)="btnAzul(titular)"></ion-button>
               </ion-col>
               </ion-row>
           </ion-row>
@@ -168,13 +178,13 @@
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="rojo"></ion-button>
+                <ion-button color="rojo" (click)="btnRoja(titular)"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button  color="azul"></ion-button>
+                <ion-button  color="azul" (click)="btnAzul(titular)"></ion-button>
               </ion-col>
               </ion-row>
           </ion-row>
@@ -186,3 +196,4 @@
 <ion-item>
   <ion-button color="success">Cambio Ataque/Defensa</ion-button>
 </ion-item>
+

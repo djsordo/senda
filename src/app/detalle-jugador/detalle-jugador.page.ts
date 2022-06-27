@@ -20,7 +20,8 @@ export class DetalleJugadorPage implements OnInit {
     private marcadorService: MarcadorService,
     private pasoDatos: PasoDatosService) {}
 
-    detalle: any;
+  detalle: any;
+
   ngOnInit() {
     this.detalle = this.pasoDatos.getPantallaDetalle();
   }
