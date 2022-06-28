@@ -7,3 +7,11 @@ ion-row {
   justify-content: center;
   height: 100%;
 }
+
+ion-popover::part(content) {
+  top: unset !important;
+  left: 0 !important;
+  bottom: 0;
+  width: 100vw;
+  border-radius: 10px;
+}
