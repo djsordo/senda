@@ -1,5 +1,7 @@
 import { Injectable  } from "@angular/core";
 
+import { CronoService } from "../components/crono/crono.service";
+
 import { Accion, TipoAccion } from '../modelo/accion';
 import { Evento } from '../modelo/evento';
 
@@ -12,7 +14,7 @@ export class EventosService {
   acciones : Array<Accion>;
   eventos : Array<Evento>;
 
-  constructor() {
+  constructor( private cronoService : CronoService ) {
     this.acciones = [
       { id: 'parada', 
         alias: ['parada', 'paradón'], 
@@ -54,9 +56,22 @@ export class EventosService {
     return this.acciones;
   }
 
+  /**
+   * Devuelve un evento nuevo. 
+   */
+  public newEvento(){
+    return {  id : '',
+        timestamp : new Date(),
+        jugador : null,
+        accion : null,
+        crono : this.cronoService.marcaTiempo() } as Evento;
+  }
+
   public addEvento( evento : Evento ){
     this.eventos.push( evento );
   }
 
 }
+
+
 

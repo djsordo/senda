@@ -6,10 +6,12 @@ import { Equipo } from './equipo';
 export interface Evento {
 
   id : string;
-  timestamp : Date;
+  timestamp? : Date;
   jugador : Jugador;
-  equipo : Equipo; 
+  equipo? : Equipo; 
   accion : Accion;
-  crono : string;
+  crono : { parte : number, 
+          minuto : number, 
+          segundo: number};
 }
 

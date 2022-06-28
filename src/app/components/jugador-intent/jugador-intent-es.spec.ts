@@ -1,6 +1,7 @@
-import { ComponentFixture, 
-          TestBed, 
-          waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+
+import { Evento } from '../../modelo/evento';
+import { EventosService } from 'src/app/services/eventos.service';
 import { JugadorIntentEs } from './jugador-intent-es';
 
 fdescribe('JugadorIntentEs', () => {
@@ -15,43 +16,22 @@ fdescribe('JugadorIntentEs', () => {
     expect( jugadorIntent ).toBeTruthy();
   });
 
-  // it('begins with', () => {
-  //   expect( jugadorIntent.testProbe.beginsWith( 
-  //     ['gol', 'de', 'dani'], ['gol']
-  //   )).toBeTruthy();
-  //   expect( jugadorIntent.testProbe.beginsWith(
-  //     ['de', 'dany'], ['gol']
-  //   )).toBeFalsy();
-  // });
+  it('simple intent 1', () => {
+    debugger;
+    let result = jugadorIntent.parseSentence( "gol de dani" );
+    expect( result !== null );
+    expect( result.accion.id === 'gol' ).toBeTrue();
+    //expect( result.jugador.numero === '70' ).toBeTrue();
+    console.log( result );
+  });
 
-  // it('parseOptionalPreposition', () => {
-
-  //   let sentence1 = ['de', 'desde', 'en', 'prueba'];
-  //   jugadorIntent.testProbe.parseOptionalPreposition( sentence1 )
-  //   expect( sentence1.length === 1 && sentence1[0] === 'prueba' ).toBeTrue();
-
-  //   let sentence2 = ['prueba'];
-  //   jugadorIntent.testProbe.parseOptionalPreposition( sentence1 )
-  //   expect( sentence2.length === 1 && sentence2[0] === 'prueba' ).toBeTrue();
-
-  // });
-
-  // it('parse function step by step', () =>{
-  //   let words = [ 'gol', 'de', 'dani'];
-  //   let first = jugadorIntent.testProbe.parseAccion( words );
-  //   expect( first ).toBeTrue();
-  //   expect( words.length === 2 
-  //     && words[0] === 'de' 
-  //     && words[1] === 'dani' );
-
-  //   let second = jugadorIntent.testProbe.parseOptionalPreposition( words ); 
-  //   expect( second ).toBeTrue();
-  //   expect( words.length === 1 && words[1] === 'dani' );
-
-  // });
-
-  it('parse funcion', () => {
-    expect( jugadorIntent.parseIntent( "gol de dani" ) ).toBeTrue();
+  it('simple intent 2', () => {
+    debugger;
+    let result = jugadorIntent.parseSentence( "paradón de césar" );
+    expect( result !== null );
+    expect( result.accion.id === 'parada' ).toBeTrue();
+    //expect( result.jugador.numero === '70' ).toBeTrue();
+    console.log( result );
   });
 
 });
