@@ -105,22 +105,25 @@ export class TitularesComponent implements OnInit {
   }
 
   btnRoja(jugador: any): void{
+    this.dosMinutos(jugador.numero);
     const mensaje = 'Tarjeta roja para ' + jugador.nombre;
     this.toastOk(mensaje);
   }
 
   btnAzul(jugador: any): void{
+    this.dosMinutos(jugador.numero);
     const mensaje = 'Tarjeta azul para ' + jugador.nombre;
     this.toastOk(mensaje);
   }
 
   dosMinutos(numero: any){
+    let excluido: any;
     if (this.portero[0]?.numero === numero){
       this.portero[0].exclusion = true;
       this.portero[0].segExclusion = 120;
 
       // Mandamos al portero a la lista de excluidos
-      const excluido = this.portero.splice(0,1);
+      excluido = this.portero.splice(0,1);
       this.listaExcluidos.push(excluido[0]);
     } else {
       for (let i = 0; i < this.jugCampo?.length; i++){
@@ -129,13 +132,16 @@ export class TitularesComponent implements OnInit {
           this.jugCampo[i].segExclusion = 120;
 
           // Mandamos al jugador a la lista de excluidos
-          const excluido = this.jugCampo.splice(i,1);
+          excluido = this.jugCampo.splice(i,1);
           this.listaExcluidos.push(excluido[0]);
           break;
         }
        }
       }
       this.crono.setCrono2min(numero);
+
+      const mensaje = '2 minutos para ' + excluido[0].nombre;
+      this.toastOk(mensaje);
 
       // Cerramos el acordeón de jugadores
       this.acordeonJugadores.value = undefined;
