@@ -56,24 +56,27 @@ export class JugadorIntentEs{
    */
   public parseSentence( sentence: string ){
     let eventParsed = this.eventosService.newEvento();
-    if( this.parseIntent( sentence, eventParsed ) )
+    if( this.parseSimpleSentence( sentence, eventParsed ) )
       return eventParsed; 
     else
       return null;
   }
 
-  private parseIntent( sentence : string, eventParsed : Evento ){
+  /**
+   * Ejemplos de una frase sencilla: 
+   * - "gol de cesar"
+   * - "paradón de vaquero"
+   * @param sentence 
+   * @param eventParsed 
+   * @returns 
+   */
+  private parseSimpleSentence( sentence : string, eventParsed : Evento ){
     let words = sentence.split(' ');
+    words = words.map( (x) => { return x.toLowerCase(); } );
 
-    let result1 = this.parseAccion( words, eventParsed )
-    let result2 = this.parseOptionalPreposition( words, eventParsed );
-    let result3 = this.parseCualquierJugador( words, eventParsed );
-
-    console.log( result1 );
-    console.log( result2 );
-    console.log( result3 );
-    console.log( words );
-    return true;
+    return this.parseAccion( words, eventParsed )
+       && this.parseOptionalPreposition( words, eventParsed )
+       && this.parseJugador( words, eventParsed );
   }
 
   private parseAccion( sentenceAsWords : string[], eventParsed : Evento ){
@@ -90,43 +93,49 @@ export class JugadorIntentEs{
     return false;
   }
 
-  private parseCualquierJugador( sentenceAsWords : string[], eventParsed : Evento ){
-    for( let jugador of this.jugadores ){
-      if( this.parseUnJugador( sentenceAsWords, jugador, eventParsed ) ){
-        return true; 
+  private parseJugador( sentenceAsWords : string[], eventParsed : Evento ){
+    let result = false;
+    if( sentenceAsWords.length > 1 ) {
+      // intentaremos identificar un nombre especificado como nombre y apellido
+      // (gol de cesar vitores)
+      let jugadorEncontrado;
+      if( (jugadorEncontrado = this.encontradoUnJugador( sentenceAsWords.slice(0,2) ) ) ){
+        sentenceAsWords.splice(0, 2); 
+        eventParsed.jugador = jugadorEncontrado;
+        result = true;
       }
     }
-    return false;
+    if( !result && sentenceAsWords.length > 0 ){
+      // intentaremos identificar un nombre especificado como nombre 
+      // (gol de santi)
+      let jugadorEncontrado;
+      if( (jugadorEncontrado = this.encontradoUnJugador( [sentenceAsWords[0]] ) ) ){
+        sentenceAsWords.splice(0, 1); 
+        eventParsed.jugador = jugadorEncontrado;
+        result = true;
+      }
+    }
+    return result;
   }
 
-  private parseUnJugador( sentenceAsWords : string[], jugador : Jugador, eventParsed : Evento ){
-    if( sentenceAsWords.length > 1 ){
-      let twoWords = sentenceAsWords[0] 
-      + ' ' 
-      + sentenceAsWords[1];
-      if( twoWords === jugador.numero 
-        || this.estaIncluido( twoWords, jugador.nombre ) 
-        || this.estaIncluido( twoWords, jugador.posicion ) ){
-          sentenceAsWords.splice( 0, 2 );
-          eventParsed.jugador = jugador;
-          return true;
-        }
+  private encontradoUnJugador( possibleName : string[] ){
+    let jugadoresParsed = [];
+    for( let jugador of this.jugadores ){
+      if( this.parseUnJugador( possibleName, jugador ) ){
+        jugadoresParsed.push( jugador ); 
+      }
     }
-    if( sentenceAsWords.length > 0 ){
-      let firstWord = sentenceAsWords[0]; 
-      if( firstWord === jugador.numero 
-        || this.estaIncluido( firstWord, jugador.nombre )
-        || this.estaIncluido( firstWord, jugador.posicion ) ){
-          sentenceAsWords.splice( 0, 1 );
-          eventParsed.jugador = jugador;
-          return true;
-        }
+    if( jugadoresParsed.length === 1 ){
+      return jugadoresParsed[0];
     }
-    return false;
+    return null;
   }
 
-  private estaIncluido( s1 : string, s2: string ){
-    return s2 && s2 !== '' && s1.includes( s2 );
+  private parseUnJugador( possibleName : string[], jugador : Jugador ){
+    let regExp = new RegExp( '.*' + possibleName.join('.*') + '.*', 'i' );
+    return jugador.numero.match( regExp ) 
+     || jugador?.nombre.match( regExp )
+     || jugador?.posicion.match( regExp );
   }
 
   private parseOptionalPreposition( sentenceAsWords : string[], eventParsed : object ){
