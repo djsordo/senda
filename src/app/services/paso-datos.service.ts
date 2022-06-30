@@ -16,10 +16,13 @@ export class PasoDatosService {
 
   enviaListaInicial(datos: any){
     this.listaInicial = datos;
+    console.log('lista Inicial: ', this.listaInicial);
+
   }
 
   enviaListaBanquillo(datos: any){
     this.listaBanquillo = datos;
+    console.log('Banquillo: ', this.listaBanquillo);
   }
 
   getListaInicial(){

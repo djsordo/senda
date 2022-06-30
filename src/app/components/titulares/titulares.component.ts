@@ -149,16 +149,28 @@ export class TitularesComponent implements OnInit {
     }
 
     btnCambio(titular: any, cambio: any, esPortero: any){
-      // Cambio en las listas
-      const sale = this.jugCampo.findIndex(res => res.id === titular);
-      const entra = this.listaBanquillo.findIndex(res => res.id === cambio);
+      let jugSale: any;
 
-      const jugSale = this.jugCampo.splice(sale, 1);
+      if (esPortero){
+        jugSale = this.portero;
+        this.portero.pop();
+      } else {
+        const sale = this.jugCampo.findIndex(res => res.id === titular);
+        jugSale = this.jugCampo.splice(sale, 1);
+      }
+      // Cambio en las listas
+
+      const entra = this.listaBanquillo.findIndex(res => res.id === cambio);
       const jugEntra = this.listaBanquillo.splice(entra, 1);
+
       //console.log('Entra: ', jugEntra[0]);
       //console.log('Sale: ', jugSale[0]);
+      if (esPortero){
+        this.portero.push(jugEntra[0]);
+      } else {
+        this.jugCampo.push(jugEntra[0]);
+      }
 
-      this.jugCampo.push(jugEntra[0]);
       this.listaBanquillo.push(jugSale[0]);
 
       //console.log('Titulares: ', this.jugCampo);

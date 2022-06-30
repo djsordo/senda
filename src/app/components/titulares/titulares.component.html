@@ -46,11 +46,11 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" id="{{'cambio' + portero[0].id}}">
+              <ion-item button color="success" id="cambioPortero">
                 <ion-icon name="repeat"></ion-icon>
                 <ion-label slot="end">Cambio</ion-label>
               </ion-item>
-              <ion-popover trigger="{{'cambio' + portero[0].id}}" [dismissOnSelect]="true">
+              <ion-popover trigger="cambioPortero" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-list>
                     <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(portero[0].id, elemento.id, true)">
