@@ -47,7 +47,7 @@ export class TitularesComponent implements OnInit {
 
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
     this.listaExcluidos = [];
-    console.clear;
+
     console.log('Portero: ', this.portero[0]);
     console.log('Titulares: ', this.jugCampo);
     console.log('Banquillo: ', this.listaBanquillo);
@@ -105,13 +105,13 @@ export class TitularesComponent implements OnInit {
   }
 
   btnRoja(jugador: any): void{
-    this.dosMinutos(jugador.numero);
+    /* this.dosMinutos(jugador.numero); */
     const mensaje = 'Tarjeta roja para ' + jugador.nombre;
     this.toastOk(mensaje);
   }
 
   btnAzul(jugador: any): void{
-    this.dosMinutos(jugador.numero);
+    /* this.dosMinutos(jugador.numero); */
     const mensaje = 'Tarjeta azul para ' + jugador.nombre;
     this.toastOk(mensaje);
   }
@@ -148,7 +148,7 @@ export class TitularesComponent implements OnInit {
 
     }
 
-    btnCambio(titular: any, cambio: any){
+    btnCambio(titular: any, cambio: any, esPortero: any){
       // Cambio en las listas
       const sale = this.jugCampo.findIndex(res => res.id === titular);
       const entra = this.listaBanquillo.findIndex(res => res.id === cambio);
