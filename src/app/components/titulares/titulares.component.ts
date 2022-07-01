@@ -3,6 +3,7 @@ import { CronoService } from './../crono/crono.service';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-titulares',
@@ -27,34 +28,17 @@ export class TitularesComponent implements OnInit {
     private crono: CronoService,
     private pasoDatos: PasoDatosService,
     private toastController: ToastController) {
-      console.log('constructor titulares');
-      this.jugCampo = this.listaInicial;
-      alert(this.jugCampo);
-      const indice = this.jugCampo?.indexOf(this.jugCampo.find(po => po.posicion === 'PO'));
-
-      if (indice && indice !== -1 ){
-        this.portero = this.jugCampo.splice(indice, 1);
-        this.portero[0].exclusion = false;
-        this.portero[0].segExclusion = 0;
-      }
-
-      this.jugCampo = this.jugCampo?.sort((x,y) => x.numero.localeCompare(y.numero));
-      for (let i = 0; i < this.jugCampo?.length; i++){
-       this.jugCampo[i].exclusion = false;
-       this.jugCampo[i].segExclusion = 0;
-      }
-
-      this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
-      this.listaExcluidos = [];
+      //console.log('constructor titulares');
      }
 
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
-    console.log('ngOninit titulares');
-/*     this.jugCampo = this.listaInicial;
+    /* console.log('ngOninit titulares'); */
+    this.jugCampo = this.listaInicial;
+
     const indice = this.jugCampo?.indexOf(this.jugCampo.find(po => po.posicion === 'PO'));
 
-    if (indice && indice !== -1 ){
+    if (indice >= 0 ){
       this.portero = this.jugCampo.splice(indice, 1);
       this.portero[0].exclusion = false;
       this.portero[0].segExclusion = 0;
@@ -67,19 +51,24 @@ export class TitularesComponent implements OnInit {
     }
 
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
-    this.listaExcluidos = []; */
+    this.listaExcluidos = [];
 
     /* console.log('Portero: ', this.portero[0]);
     console.log('Titulares: ', this.jugCampo);
     console.log('Banquillo: ', this.listaBanquillo);
     console.log('Excluidos: ', this.listaExcluidos); */
+
+/*     alert(this.jugCampo);
+alert(this.portero);
+alert(this.listaBanquillo);
+ */
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngDoCheck(){
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
-    console.log('ngDoCheck titulares');
+    /* console.log('ngDoCheck titulares'); */
     if (this.listaExcluidos !== undefined){
       for (let i = 0; i < this.listaExcluidos?.length; i++){
         this.listaExcluidos[i].segExclusion = this.crono.getCrono2min(this.listaExcluidos[i].numero).segundos;
@@ -163,7 +152,7 @@ export class TitularesComponent implements OnInit {
         }
        }
       // Jugadores ya excluidos
-      for (let i = 0; i < this.listaExcluidos?.length; i++){
+     /*  for (let i = 0; i < this.listaExcluidos?.length; i++){
         if (this.listaExcluidos[i].numero === numero){
           this.listaExcluidos[i].segExclusion += 120;
 
@@ -172,15 +161,12 @@ export class TitularesComponent implements OnInit {
           this.listaExcluidos.push(excluido[0]);
           break;
         }
-       }
+       } */
       }
       this.crono.setCrono2min(numero);
 
       const mensaje = '2 minutos para ' + excluido[0].nombre;
       this.toastOk(mensaje);
-
-      // Cerramos el acordeón de jugadores
-      this.acordeonJugadores.value = undefined;
 
     }
 
@@ -188,8 +174,8 @@ export class TitularesComponent implements OnInit {
       let jugSale: any;
 
       if (esPortero){
-        jugSale = this.portero;
-        this.portero.pop();
+        jugSale = this.portero.splice(0,1);
+
       } else {
         const sale = this.jugCampo.findIndex(res => res.id === titular);
         jugSale = this.jugCampo.splice(sale, 1);
