@@ -21,14 +21,22 @@ export class ModoJugadorPage implements OnInit {
   };
 
   constructor(private router: Router,
-    private pasoDatos: PasoDatosService) { }
+    private pasoDatos: PasoDatosService) {
+      console.log('Constructor modo-jugador');
+      if (!this.listaInicial){
+        this.pasoDatos.$getListaInicial.subscribe(data => this.listaInicial = data).unsubscribe();
+      }
+      if (!this.listaBanquillo){
+        this.pasoDatos.$getListaBanquillo.subscribe(data => this.listaBanquillo = data).unsubscribe();
+      }
+    }
 
   ngOnInit() {
-    console.log('Pasa por aquí');
-    this.listaInicial = this.pasoDatos.getListaInicial();
-    this.listaBanquillo = this.pasoDatos.getListaBanquillo();
+    console.log('ngOnInit modo-jugador');
+    /* this.listaInicial = this.pasoDatos.getListaInicial();
+    this.listaBanquillo = this.pasoDatos.getListaBanquillo(); */
 
-/*     if (!this.listaInicial){
+/*      if (!this.listaInicial){
       this.pasoDatos.$getListaInicial.subscribe(data => this.listaInicial = data).unsubscribe();
     }
     if (!this.listaBanquillo){

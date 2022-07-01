@@ -1,36 +1,27 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PasoDatosService {
+  private listaInicial = new BehaviorSubject<[]>([]);
+  private listaBanquillo = new BehaviorSubject<[]>([]);
 
-  listaInicial: any;
-  listaBanquillo: any;
+  $getListaInicial = this.listaInicial.asObservable();
+  $getListaBanquillo = this.listaBanquillo.asObservable();
 
   pantallaDetalle: any;
 
-  constructor() {
-    console.log('Constructor del servicio');
-  }
+  constructor() {}
 
   enviaListaInicial(datos: any){
-    this.listaInicial = datos;
-    console.log('lista Inicial: ', this.listaInicial);
-
+    this.listaInicial.next(datos);
   }
 
   enviaListaBanquillo(datos: any){
-    this.listaBanquillo = datos;
-    console.log('Banquillo: ', this.listaBanquillo);
-  }
-
-  getListaInicial(){
-    return this.listaInicial;
-  }
-
-  getListaBanquillo(){
-    return this.listaBanquillo;
+    this.listaBanquillo.next(datos);
   }
 
   enviaPantallaDetalle(datos: any){

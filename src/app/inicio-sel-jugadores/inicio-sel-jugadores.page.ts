@@ -27,7 +27,7 @@ export class InicioSelJugadoresPage implements OnInit {
   @ViewChildren('drops', {read: ElementRef}) cajasDrop: QueryList<ElementRef>;
   @ViewChildren('cards', {read: ElementRef}) items: QueryList<ElementRef>;
 
-  jugadores : Array<Jugador> = [];
+  jugadores: Array<Jugador> = [];
 
   listaInicial = [];
   listaBanquillo = [];
@@ -43,7 +43,7 @@ export class InicioSelJugadoresPage implements OnInit {
     private gestureCtrl: GestureController,
     private changeDetectorRef: ChangeDetectorRef,
     private pasoDatos: PasoDatosService,
-    private jugadoresService : JugadoresService) {
+    private jugadoresService: JugadoresService) {
 
       this.jugadores = this.jugadoresService.getJugadores();
 
