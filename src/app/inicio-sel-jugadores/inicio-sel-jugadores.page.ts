@@ -27,7 +27,7 @@ export class InicioSelJugadoresPage implements OnInit {
   @ViewChildren('drops', {read: ElementRef}) cajasDrop: QueryList<ElementRef>;
   @ViewChildren('cards', {read: ElementRef}) items: QueryList<ElementRef>;
 
-  jugadores : Array<Jugador> = [];
+  jugadores: Array<Jugador> = [];
 
   listaInicial = [];
   listaBanquillo = [];
@@ -43,7 +43,7 @@ export class InicioSelJugadoresPage implements OnInit {
     private gestureCtrl: GestureController,
     private changeDetectorRef: ChangeDetectorRef,
     private pasoDatos: PasoDatosService,
-    private jugadoresService : JugadoresService) {
+    private jugadoresService: JugadoresService) {
 
       this.jugadores = this.jugadoresService.getJugadores();
 
@@ -62,7 +62,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
     /* console.log('objetos: ', this.items); */
     const arr = this.items.toArray();
-    console.log('arr: ', arr);
+    //console.log('arr: ', arr);
 
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < arr.length; i++){
@@ -98,7 +98,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
     this.items.changes.subscribe(res => {
       if (this.gestureArray.length !== this.items.length) {
-        console.log('item cambiado: ', res);
+        //console.log('item cambiado: ', res);
         this.updateGestures();
       }
     });
@@ -154,9 +154,9 @@ export class InicioSelJugadoresPage implements OnInit {
     if (this.isInZone(endX, endY, dropNoConvocado)) {
       // Cae en la zona de no convocado
       const removedItem = this.jugadores.splice(index, 1);
-      console.log('item: ', removedItem[0]);
+      //console.log('item: ', removedItem[0]);
       this.listaNoConvocados.push(removedItem[0]);
-      console.log('item: ', this.jugadores);
+      //console.log('item: ', this.jugadores);
       item.nativeElement.remove();
       haCaido = true;
     } else if (this.isInZone(endX, endY, dropBanquillo)) {
@@ -171,10 +171,10 @@ export class InicioSelJugadoresPage implements OnInit {
         if (this.isInZone(endX, endY, dropPos[i].nativeElement.getBoundingClientRect()) &&
         !this.listaInicial.find(jugPos => jugPos.posicion === this.posiciones[i])) {
           const removedItem = this.jugadores.splice(index, 1);
-          console.log('item: ', removedItem[0]);
+          //console.log('item: ', removedItem[0]);
           removedItem[0].posicion = this.posiciones[i];
           this.listaInicial.push(removedItem[0]);
-          console.log('item: ', this.jugadores);
+          //console.log('item: ', this.jugadores);
           item.nativeElement.remove();
           haCaido = true;
         }
@@ -239,8 +239,10 @@ export class InicioSelJugadoresPage implements OnInit {
   }
 
   irAModo() {
+
     this.pasoDatos.enviaListaInicial(this.listaInicial);
     this.pasoDatos.enviaListaBanquillo(this.listaBanquillo);
+
     this.router.navigate(['/modo-jugador']);
   }
 }
