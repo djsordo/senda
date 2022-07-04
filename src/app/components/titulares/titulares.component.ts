@@ -133,7 +133,7 @@ alert(this.listaBanquillo);
     let excluido: any;
     if (this.portero[0]?.numero === numero){
       this.portero[0].exclusion = true;
-      this.portero[0].segExclusion += 120;
+      this.portero[0].segExclusion = 120;
 
       // Mandamos al portero a la lista de excluidos
       excluido = this.portero.splice(0,1);
@@ -143,7 +143,7 @@ alert(this.listaBanquillo);
       for (let i = 0; i < this.jugCampo?.length; i++){
         if (this.jugCampo[i].numero === numero){
           this.jugCampo[i].exclusion = true;
-          this.jugCampo[i].segExclusion += 120;
+          this.jugCampo[i].segExclusion = 120;
 
           // Mandamos al jugador a la lista de excluidos
           excluido = this.jugCampo.splice(i,1);
@@ -151,22 +151,30 @@ alert(this.listaBanquillo);
           break;
         }
        }
-      // Jugadores ya excluidos
-     /*  for (let i = 0; i < this.listaExcluidos?.length; i++){
-        if (this.listaExcluidos[i].numero === numero){
-          this.listaExcluidos[i].segExclusion += 120;
 
-          // Mandamos al jugador a la lista de excluidos
-          excluido = this.listaExcluidos.splice(i,1);
-          this.listaExcluidos.push(excluido[0]);
-          break;
-        }
-       } */
+      // Jugadores ya excluidos
+      if (excluido === undefined) {
+        for (let i = 0; i < this.listaExcluidos?.length; i++){
+          if (this.listaExcluidos[i].numero === numero){
+            this.listaExcluidos[i].segExclusion = this.listaExcluidos[i].segExclusion + 120;
+
+            // Mandamos al jugador a la lista de excluidos
+            excluido = this.listaExcluidos.splice(i,1);
+            console.log(excluido);
+            this.listaExcluidos.push(excluido[0]);
+            break;
+          }
+         }
+      }
+
       }
       this.crono.setCrono2min(numero);
 
       const mensaje = '2 minutos para ' + excluido[0].nombre;
       this.toastOk(mensaje);
+
+      // Cerramos el acordeón de jugadores
+      this.acordeonJugadores.value = undefined;
 
     }
 
