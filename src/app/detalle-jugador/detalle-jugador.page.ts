@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { PasoDatosService } from '../services/paso-datos.service';
+import { BalonmanoService } from '../services/balonmano.service';
+
 
 @Component({
   selector: 'app-detalle-jugador',
@@ -17,7 +19,8 @@ export class DetalleJugadorPage implements OnInit {
   constructor(private toastController: ToastController,
     private router: Router,
     private marcadorService: MarcadorService,
-    private pasoDatos: PasoDatosService) {}
+    private pasoDatos: PasoDatosService, 
+    public balonmanoService : BalonmanoService ) {}
 
   detalle: any;
 

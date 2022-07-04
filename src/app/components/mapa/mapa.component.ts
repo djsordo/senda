@@ -43,7 +43,6 @@ export class MapaComponent implements OnInit {
   constructor( ) {  }
 
   ngOnInit() {
-    this.polygons = JSON.parse( this.polygons );
   }
 
   @HostListener('window:resize', ['$event'] )
@@ -68,7 +67,7 @@ export class MapaComponent implements OnInit {
         convertedPoints += `${point[X] * this.cachedActualWidth}, 
                             ${point[Y] * this.cachedActualHeight} `;
       }
-      this.cachedPolygons.push( { 'name' : polygon.name, 
+      this.cachedPolygons.push( { 'id' : polygon.id, 
                             'points' : convertedPoints });
     }
     return this.cachedPolygons;

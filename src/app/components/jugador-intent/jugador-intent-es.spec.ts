@@ -51,8 +51,36 @@ fdescribe('JugadorIntentEs', () => {
     expect( result.jugador.numero === '28' ).toBeTrue();
   });
 
-  it('primera frase compleja', () => {
-    let result = jugadorIntent.parseSentence('');
+  it('frase compleja 1', () => {
+    let result = jugadorIntent.parseSentence('gol de barrio desde seis metros izquierda adios');
+    expect( result !== null ).toBeTrue();
+    console.log( result );
+    expect( result.accion.id === 'tiro' ).toBeTrue();
+    expect( result.jugador.numero === '28' ).toBeTrue();
+  });
+
+  it('frase compleja 2', () => {
+    let result = jugadorIntent.parseSentence('parada de óscar otero desde nueve metros centro a abajo izquierda');
+    expect( result !== null ).toBeTrue();
+    console.log( result );
+    expect( result.accion.id === 'tiro' ).toBeTrue();
+    expect( result.jugador.numero === '28' ).toBeTrue();
+  });
+
+  it('frase compleja 3', () => {
+    let result = jugadorIntent.parseSentence('tarjeta amarilla de parra');
+    expect( result !== null ).toBeTrue();
+    console.log( result );
+    expect( result.accion.id === 'tiro' ).toBeTrue();
+    expect( result.jugador.numero === '28' ).toBeTrue();
+  });
+
+  it('frase compleja 4', () => {
+    let result = jugadorIntent.parseSentence('gol de santiago desde campo contrario a arriba izquierda');
+    expect( result !== null ).toBeTrue();
+    console.log( result );
+    expect( result.accion.id === 'tiro' ).toBeTrue();
+    expect( result.jugador.numero === '28' ).toBeTrue();
   });
 
 });

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
+import { BalonmanoService } from 'src/app/services/balonmano.service';
+
 import { Jugador } from '../../modelo/jugador';
 import { JugadoresService } from 'src/app/services/jugadores.service';
 
 import { Accion } from '../../modelo/accion';
 import { EventosService } from '../../services/eventos.service';
-
-import { CronoService } from '../crono/crono.service';
 
 import { Evento } from '../../modelo/evento';
 
@@ -39,7 +39,8 @@ export class JugadorIntentEs{
   private allIntents : object[];
 
   constructor( private eventosService : EventosService,
-               private jugadoresService : JugadoresService ){
+               private jugadoresService : JugadoresService,
+               private balonmanoService : BalonmanoService ){
     this.acciones = this.eventosService.getAcciones();
     this.jugadores = this.jugadoresService.getJugadores();
 
@@ -58,31 +59,11 @@ export class JugadorIntentEs{
     let eventParsed = this.eventosService.newEvento();
     if( this.parseSimpleSentence( sentence, eventParsed ) )
       return eventParsed; 
+    else if( this.parseDetailedSentence( sentence, eventParsed ) )
+      return eventParsed;
     else
       return null;
   }
-
-  /**
-   * Ejemplos de una frase compleja: 
-   * - gol de [nombre jugador] desde [posicion] a [porteria]
-   * @param sentence 
-   * @param eventParsed 
-   */
-  private parseDetailedSentence( sentence : string, eventParsed : Evento ){
-    let words = sentence.split(' ');
-    words = words.map( x => x.toLowerCase() );
-  }
-
-  /**
-   * Ejemplos de modo telegráfico: 
-   * - tiro de cesar foxtrot charlie
-   * 
-   * Lo que haremos será codificar con los códigos de la 
-   * radio las zonas de tiro y el destino. De esta forma 
-   * "alfa charlie" será que el tiro salió del lateral
-   * izquierdo (alfa) y fue a la parte superior derecha 
-   * de la portería (charlie)
-   */
 
   /**
    * Ejemplos de una frase sencilla: 
@@ -99,6 +80,35 @@ export class JugadorIntentEs{
     return this.parseAccion( words, eventParsed )
        && this.parseOptionalPreposition( words, eventParsed )
        && this.parseJugador( words, eventParsed );
+  }
+
+  /**
+   * Ejemplos de una frase compleja: 
+   * - gol de [nombre jugador] desde [posicion] a [porteria]
+   * @param sentence 
+   * @param eventParsed 
+   */
+  private parseDetailedSentence( sentence : string, eventParsed : Evento ){
+    let words = sentence.split(' ');
+    words = words.map( x => x.toLowerCase() );
+
+    return this.parseAccion( words, eventParsed )
+        && this.parseOptionalPreposition( words, eventParsed )
+        && this.parseJugador( words, eventParsed )
+        && this.parseOptionalPreposition( words, eventParsed )
+        && this.parseCampoPosicion( words, eventParsed )
+        && this.parseOptionalPreposition( words, eventParsed )
+        && this.parsePorteriaPosicion( words, eventParsed );
+  }
+
+  private parseCampoPosicion( sentenceAsWords : string[], eventParsed : Evento ){
+    // XJX PENDIENTE
+    return true;
+  }
+
+  private parsePorteriaPosicion( sentenceAsWords : string[], eventParsed : Evento ){
+    // XJX PENDIENTE
+    return true;
   }
 
   private parseAccion( sentenceAsWords : string[], eventParsed : Evento ){
