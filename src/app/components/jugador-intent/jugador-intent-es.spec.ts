@@ -29,14 +29,14 @@ fdescribe('JugadorIntentEs', () => {
   });
 
   it('reconoce a jugador por apellido', () => {
-    let result = jugadorIntent.parseSentence( "gol de vaquero" );
+    let result = jugadorIntent.parseSentence( "gol de Vaquero" );
     expect( result ).toBeTruthy();
     expect( result.accion.id === 'gol' );
     expect( result.jugador.numero === '70' );
   });
 
   it('reconoce a jugador por nombre de pila', () => {
-    let result = jugadorIntent.parseSentence( "paradón de césar" );
+    let result = jugadorIntent.parseSentence( "paradón de César" );
     expect( result !== null ).toBeTrue();
     expect( result.accion.id === 'parada' ).toBeTrue();
     expect( result.jugador.numero === '28' ).toBeTrue();

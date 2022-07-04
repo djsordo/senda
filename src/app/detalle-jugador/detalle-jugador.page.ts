@@ -2,7 +2,6 @@ import { MarcadorService } from './../components/marcador/marcador.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { NgStyle } from '@angular/common';
 import { PasoDatosService } from '../services/paso-datos.service';
 
 @Component({

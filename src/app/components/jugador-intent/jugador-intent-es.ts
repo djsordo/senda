@@ -63,6 +63,28 @@ export class JugadorIntentEs{
   }
 
   /**
+   * Ejemplos de una frase compleja: 
+   * - gol de [nombre jugador] desde [posicion] a [porteria]
+   * @param sentence 
+   * @param eventParsed 
+   */
+  private parseDetailedSentence( sentence : string, eventParsed : Evento ){
+    let words = sentence.split(' ');
+    words = words.map( x => x.toLowerCase() );
+  }
+
+  /**
+   * Ejemplos de modo telegráfico: 
+   * - tiro de cesar foxtrot charlie
+   * 
+   * Lo que haremos será codificar con los códigos de la 
+   * radio las zonas de tiro y el destino. De esta forma 
+   * "alfa charlie" será que el tiro salió del lateral
+   * izquierdo (alfa) y fue a la parte superior derecha 
+   * de la portería (charlie)
+   */
+
+  /**
    * Ejemplos de una frase sencilla: 
    * - "gol de cesar"
    * - "paradón de vaquero"
@@ -72,7 +94,7 @@ export class JugadorIntentEs{
    */
   private parseSimpleSentence( sentence : string, eventParsed : Evento ){
     let words = sentence.split(' ');
-    words = words.map( (x) => { return x.toLowerCase(); } );
+    words = words.map( (x) => x.toLowerCase() );
 
     return this.parseAccion( words, eventParsed )
        && this.parseOptionalPreposition( words, eventParsed )
