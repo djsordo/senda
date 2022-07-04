@@ -51,6 +51,10 @@ fdescribe('JugadorIntentEs', () => {
     expect( result.jugador.numero === '28' ).toBeTrue();
   });
 
+  it('primera frase compleja', () => {
+    let result = jugadorIntent.parseSentence('');
+  });
+
 });
 
 
