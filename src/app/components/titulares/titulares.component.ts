@@ -92,41 +92,63 @@ alert(this.listaBanquillo);
     const detalle = {accion: 'gol', idJugador: jugador.id};
     this.pasoDatos.enviaPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
+
   }
 
   btnGolRival(jugador: any): void{
     const detalle = {accion: 'gol rival', idJugador: jugador.id};
     this.pasoDatos.enviaPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
   }
 
   btnLanzamiento(jugador: any): void{
     const detalle = {accion: 'lanzamiento', idJugador: jugador.id};
     this.pasoDatos.enviaPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
   }
 
   btnParada(jugador: any): void{
     const detalle = {accion: 'parada', idJugador: jugador.id};
     this.pasoDatos.enviaPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
   }
 
   btnAmarilla(jugador: any): void{
     const mensaje = 'Tarjeta amarilla para ' + jugador.nombre;
     this.toastOk(mensaje);
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
   }
 
   btnRoja(jugador: any): void{
     /* this.dosMinutos(jugador.numero); */
     const mensaje = 'Tarjeta roja para ' + jugador.nombre;
     this.toastOk(mensaje);
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
   }
 
   btnAzul(jugador: any): void{
     /* this.dosMinutos(jugador.numero); */
     const mensaje = 'Tarjeta azul para ' + jugador.nombre;
     this.toastOk(mensaje);
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
   }
 
   dosMinutos(numero: any){
