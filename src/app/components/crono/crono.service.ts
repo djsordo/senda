@@ -63,9 +63,14 @@ export class CronoService {
   }
 
   // Se activa un crono de 2 minutos
-  setCrono2min(numeroJug: any){
-    const crono2min = {numero: numeroJug, segundos: 120};
+  setCrono2min(numeroJug: any, seg: any){
+    const crono2min = {numero: numeroJug, segundos: seg};
     this.cronos2min.push(crono2min);
+  }
+
+  sumaCrono2min(numeroJug: any, seg: any){
+    const indice = this.cronos2min.findIndex(crono => crono.numero === numeroJug);
+    this.cronos2min[indice].segundos += seg;
   }
 
   // Vemos el crono del jugador

@@ -160,6 +160,7 @@ alert(this.listaBanquillo);
       // Mandamos al portero a la lista de excluidos
       excluido = this.portero.splice(0,1);
       this.listaExcluidos.push(excluido[0]);
+      this.crono.setCrono2min(numero, excluido[0].segExclusion);
     } else {
       // Jugadores de campo
       for (let i = 0; i < this.jugCampo?.length; i++){
@@ -170,6 +171,7 @@ alert(this.listaBanquillo);
           // Mandamos al jugador a la lista de excluidos
           excluido = this.jugCampo.splice(i,1);
           this.listaExcluidos.push(excluido[0]);
+          this.crono.setCrono2min(numero, excluido[0].segExclusion);
           break;
         }
        }
@@ -181,16 +183,15 @@ alert(this.listaBanquillo);
             this.listaExcluidos[i].segExclusion = this.listaExcluidos[i].segExclusion + 120;
 
             // Mandamos al jugador a la lista de excluidos
-            excluido = this.listaExcluidos.splice(i,1);
+            excluido = this.listaExcluidos.slice(i,i+1);
             console.log(excluido);
-            this.listaExcluidos.push(excluido[0]);
+            this.crono.sumaCrono2min(numero, 120);
             break;
           }
          }
       }
 
       }
-      this.crono.setCrono2min(numero);
 
       const mensaje = '2 minutos para ' + excluido[0].nombre;
       this.toastOk(mensaje);
