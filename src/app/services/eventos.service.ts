@@ -6,6 +6,20 @@ import { Accion, TipoAccion } from '../modelo/accion';
 import { Evento } from '../modelo/evento';
 
 
+export enum Acciones {
+  parada = 'parada', 
+  gol_rival = 'gol_rival', 
+  gol = 'gol', 
+  tiro = 'tiro',
+  perdida = 'perdida',
+  robo = 'robo', 
+  cambio = 'cambio', 
+  dos_minutos = '2_minutos', 
+  tarjeta_amarilla = 'tarjeta_amarilla', 
+  tarjeta_roja = 'tarjeta_roja', 
+  tarjeta_azul = 'tarjeta_azul'
+}
+
 @Injectable({
   providedIn : 'root'
 })
@@ -16,37 +30,37 @@ export class EventosService {
 
   constructor( private cronoService : CronoService ) {
     this.acciones = [
-      { id: 'parada', 
+      { id: Acciones.parada, 
         alias: ['parada', 'paradón'], 
         positivo: TipoAccion.positivo }, 
-      { id: 'gol_rival', 
+      { id: Acciones.gol_rival, 
         alias: ['gol rival', 'gol del rival'], 
         positivo: TipoAccion.negativo }, 
-      { id: 'gol', 
+      { id: Acciones.gol, 
         alias: ['gol', 'golazo', 'tanto'], 
         positivo: TipoAccion.positivo }, 
-      { id: 'tiro', 
+      { id: Acciones.tiro, 
         alias: ['tiro', 'tiro a puerta'], 
         positivo: TipoAccion.positivo },
-      { id: 'perdida', 
+      { id: Acciones.perdida, 
         alias: ['pérdida'], 
         positivo: TipoAccion.negativo }, 
-      { id: 'robo', 
+      { id: Acciones.robo, 
         alias: ['robo', 'robada'], 
         positivo: TipoAccion.positivo },
-      { id: 'cambio',  
+      { id: Acciones.cambio,  
         alias: ['cambio', 'se cambia', 'se cambia por'], 
         positivo: TipoAccion.neutro },
-      { id: '2_minutos', 
+      { id: Acciones.dos_minutos, 
         alias: ['dos minutos', '2 minutos'], 
         positivo: TipoAccion.negativo },
-      { id: 'tarjeta_amarilla',  
+      { id: Acciones.tarjeta_amarilla,  
         alias: ['tarjeta amarilla', 'amarilla'], 
         positivo: TipoAccion.negativo },
-      { id: 'tarjeta_roja', 
+      { id: Acciones.tarjeta_roja, 
         alias: ['tarjeta roja', 'roja'], 
         positivo: TipoAccion.negativo },
-      { id: 'tarjeta_azul', 
+      { id: Acciones.tarjeta_azul, 
         alias: ['tarjeta azul', 'azul'], 
         positivo: TipoAccion.negativo }
     ];

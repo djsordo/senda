@@ -10,6 +10,8 @@ export interface Evento {
   jugador : Jugador;
   equipo? : Equipo; 
   accion : Accion;
+  posicionCampo? : string, 
+  posicionPorteria? : string, 
   crono : { parte : number, 
           minuto : number, 
           segundo: number};

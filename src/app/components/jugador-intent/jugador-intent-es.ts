@@ -57,9 +57,9 @@ export class JugadorIntentEs{
    */
   public parseSentence( sentence: string ){
     let eventParsed = this.eventosService.newEvento();
-    if( this.parseSimpleSentence( sentence, eventParsed ) )
-      return eventParsed; 
-    else if( this.parseDetailedSentence( sentence, eventParsed ) )
+    if( this.parseDetailedSentence( sentence, eventParsed ) )
+      return eventParsed;
+    else if( this.parseSimpleSentence( sentence, eventParsed ) )
       return eventParsed;
     else
       return null;
@@ -92,6 +92,14 @@ export class JugadorIntentEs{
     let words = sentence.split(' ');
     words = words.map( x => x.toLowerCase() );
 
+    console.log( this.parseAccion( words, eventParsed ) ); 
+    console.log( this.parseOptionalPreposition( words, eventParsed ) ); 
+    console.log( this.parseJugador( words, eventParsed ) ); 
+    console.log( this.parseOptionalPreposition( words, eventParsed ) ); 
+    console.log( this.parseCampoPosicion( words, eventParsed ) ); 
+    console.log( this.parseOptionalPreposition( words, eventParsed ) ); 
+    console.log( this.parsePorteriaPosicion( words, eventParsed ) ); 
+
     return this.parseAccion( words, eventParsed )
         && this.parseOptionalPreposition( words, eventParsed )
         && this.parseJugador( words, eventParsed )
@@ -102,13 +110,31 @@ export class JugadorIntentEs{
   }
 
   private parseCampoPosicion( sentenceAsWords : string[], eventParsed : Evento ){
-    // XJX PENDIENTE
-    return true;
+    for( let posicion of this.balonmanoService.campo.polygons ){
+      for( let aliasPosicionCampo of posicion.name.es ){
+        let aliasAsWords = aliasPosicionCampo.split( ' ' );
+        if( this.beginsWith( sentenceAsWords, aliasAsWords )){
+          eventParsed.posicionCampo = posicion.id; 
+          sentenceAsWords.splice( 0, aliasAsWords.length );
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private parsePorteriaPosicion( sentenceAsWords : string[], eventParsed : Evento ){
-    // XJX PENDIENTE
-    return true;
+    for( let posicion of this.balonmanoService.porteria.polygons ){
+      for( let aliasPosicionPorteria of posicion.name.es ){
+        let aliasAsWords = aliasPosicionPorteria.split( ' ' );
+        if( this.beginsWith( sentenceAsWords, aliasAsWords )){
+          eventParsed.posicionPorteria = posicion.id; 
+          sentenceAsWords.splice( 0, aliasAsWords.length );
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private parseAccion( sentenceAsWords : string[], eventParsed : Evento ){
