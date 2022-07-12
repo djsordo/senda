@@ -27,7 +27,9 @@ export class MicrofonoPage implements OnInit {
       .catch( value => { this.isAvailable = false; } );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.startRecognition();
+  }
 
   async startRecognition() {
     this.microfonoImgSrc = this.microfonoOn;
