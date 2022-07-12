@@ -1,4 +1,4 @@
-import { Gesture, GestureController, IonCard, IonItem } from '@ionic/angular';
+import { Gesture, GestureController } from '@ionic/angular';
 import {
   ChangeDetectorRef,
   Component,

@@ -30,6 +30,10 @@ const routes: Routes = [
   {
     path: 'inicio-sel-jugadores',
     loadChildren: () => import('./inicio-sel-jugadores/inicio-sel-jugadores.module').then( m => m.InicioSelJugadoresPageModule)
+  },
+  {
+    path: 'microfono',
+    loadChildren: () => import('./microfono/microfono.module').then( m => m.MicrofonoPageModule)
   }
 
 
