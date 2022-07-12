@@ -3,7 +3,6 @@ import { CronoService } from './../crono/crono.service';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-titulares',
