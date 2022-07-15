@@ -1,6 +1,6 @@
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { CronoService } from './../crono/crono.service';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
@@ -10,16 +10,23 @@ import { IonAccordionGroup, ToastController } from '@ionic/angular';
   styleUrls: ['./titulares.component.scss'],
 })
 export class TitularesComponent implements OnInit {
-  @Input() listaInicial: any;
-  @Input() listaBanquillo: any;
+  listaInicial: any;
+  listaBanquillo: any;
   @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
 
   listaExcluidos: any;
   portero: any;
   jugCampo: any;
 
-  listaRobos= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Intercepción'}, {nombre: 'Otros'}];
-  listaPerdidas= [{nombre: 'Pase'}, {nombre: 'Falta en ataque'}, {nombre: 'Pasos'}, {nombre: 'Dobles'}, {nombre: 'Otros'}];
+  listaRobos= [{nombre: 'Pase'}, 
+              {nombre: 'Falta en ataque'}, 
+              {nombre: 'Intercepción'}, 
+              {nombre: 'Otros'}];
+  listaPerdidas= [{nombre: 'Pase'}, 
+              {nombre: 'Falta en ataque'}, 
+              {nombre: 'Pasos'}, 
+              {nombre: 'Dobles'}, 
+              {nombre: 'Otros'}];
 
   ev: Event;
 
@@ -27,18 +34,17 @@ export class TitularesComponent implements OnInit {
     private crono: CronoService,
     private pasoDatos: PasoDatosService,
     private toastController: ToastController) {
-      //console.log('constructor titulares');
-     }
+
+    }
 
   ngOnInit() {
+    this.jugCampo = this.pasoDatos.listaInicial;
+
     // divido la lista inicial en portero y jugadores de campo
-    /* console.log('ngOninit titulares'); */
-    this.jugCampo = this.listaInicial;
+    const indicePortero = this.jugCampo?.indexOf(this.jugCampo.find(po => po.posicion === 'PO'));
 
-    const indice = this.jugCampo?.indexOf(this.jugCampo.find(po => po.posicion === 'PO'));
-
-    if (indice >= 0 ){
-      this.portero = this.jugCampo.splice(indice, 1);
+    if (indicePortero >= 0 ){
+      this.portero = this.jugCampo.splice(indicePortero, 1);
       this.portero[0].exclusion = false;
       this.portero[0].segExclusion = 0;
     }
@@ -49,18 +55,9 @@ export class TitularesComponent implements OnInit {
      this.jugCampo[i].segExclusion = 0;
     }
 
-    this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
+    this.listaBanquillo = this.pasoDatos.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
     this.listaExcluidos = [];
 
-    /* console.log('Portero: ', this.portero[0]);
-    console.log('Titulares: ', this.jugCampo);
-    console.log('Banquillo: ', this.listaBanquillo);
-    console.log('Excluidos: ', this.listaExcluidos); */
-
-/*     alert(this.jugCampo);
-alert(this.portero);
-alert(this.listaBanquillo);
- */
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -89,7 +86,7 @@ alert(this.listaBanquillo);
 
   btnGol(jugador: any): void{
     const detalle = {accion: 'gol', idJugador: jugador.id};
-    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.pasoDatos.setPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores
@@ -99,7 +96,7 @@ alert(this.listaBanquillo);
 
   btnGolRival(jugador: any): void{
     const detalle = {accion: 'gol rival', idJugador: jugador.id};
-    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.pasoDatos.setPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores
@@ -108,7 +105,7 @@ alert(this.listaBanquillo);
 
   btnLanzamiento(jugador: any): void{
     const detalle = {accion: 'lanzamiento', idJugador: jugador.id};
-    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.pasoDatos.setPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores
@@ -117,7 +114,7 @@ alert(this.listaBanquillo);
 
   btnParada(jugador: any): void{
     const detalle = {accion: 'parada', idJugador: jugador.id};
-    this.pasoDatos.enviaPantallaDetalle(detalle);
+    this.pasoDatos.setPantallaDetalle(detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores

@@ -240,8 +240,8 @@ export class InicioSelJugadoresPage implements OnInit {
 
   irAModo() {
 
-    this.pasoDatos.enviaListaInicial(this.listaInicial);
-    this.pasoDatos.enviaListaBanquillo(this.listaBanquillo);
+    this.pasoDatos.setListaInicial(this.listaInicial);
+    this.pasoDatos.setListaBanquillo(this.listaBanquillo);
 
     this.router.navigate(['/modo-jugador']);
   }

@@ -25,27 +25,26 @@ export class PasoDatosService {
   enviaListaBanquillo(datos: any){
     this.listaBanquillo.next(datos);
   } */
-  enviaListaInicial(datos: any){
+  setListaInicial(datos: any){
     this.listaInicial = datos;
     /* console.log('lista Inicial: ', this.listaInicial); */
-
-  }
-
-  enviaListaBanquillo(datos: any){
-    this.listaBanquillo = datos;
-    /* console.log('Banquillo: ', this.listaBanquillo); */
   }
 
   getListaInicial(){
     return this.listaInicial;
   }
 
+  setListaBanquillo(datos: any){
+    this.listaBanquillo = datos;
+    /* console.log('Banquillo: ', this.listaBanquillo); */
+  }
+
   getListaBanquillo(){
     return this.listaBanquillo;
   }
 
-  enviaPantallaDetalle(datos: any){
-    return this.pantallaDetalle = datos;
+  setPantallaDetalle(datos: any){
+    this.pantallaDetalle = datos;
   }
 
   getPantallaDetalle(){
