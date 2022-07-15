@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
+import { JugadorIntentEs } from '../components/jugador-intent/jugador-intent-es';
+import { Evento } from '../modelo/evento';
 import { NavegacionService } from '../services/navegacion.service';
 
 @Component({
@@ -11,37 +13,38 @@ export class MicrofonoPage implements OnInit {
 
 
   public isAvailable = false;
-  recording = false;
-  lastText = '';
+  private lastText = '';
+  private lastEvent : Evento = null;
   private microfonoOn = './assets/mic-animation.gif';
   private microfonoOff = "./assets/mic-animation-disabled.gif";
   public microfonoImgSrc = this.microfonoOn;
 
-  constructor(  private navegacion : NavegacionService ) {
+  constructor(  private navegacion : NavegacionService, 
+                private intentParser : JugadorIntentEs ) {
+  }
+
+  ngOnInit() {
     SpeechRecognition.available()
       .then( value => { this.isAvailable = value['available'];
                         if( this.isAvailable )
                           // only required for android
                           SpeechRecognition.requestPermission();
+                          this.startRecognition();
                        } )
       .catch( value => { this.isAvailable = false; } );
   }
 
-  ngOnInit() {
-    this.startRecognition();
-  }
-
   async startRecognition() {
     this.microfonoImgSrc = this.microfonoOn;
-    this.recording = true;
     if( this.isAvailable ){
       SpeechRecognition.start({
         partialResults : false,
         popup : false
       }).then( result => {
         if( result.matches && result.matches.length > 0 ) {
-          console.log( result.matches );
           this.lastText = result.matches[0];
+          this.onSentenceReady();
+          console.log( this.lastEvent );
           this.stopRecognition();
         }
         });
@@ -50,7 +53,6 @@ export class MicrofonoPage implements OnInit {
 
   async stopRecognition() {
     this.microfonoImgSrc = this.microfonoOff;
-    this.recording = false;
     if( this.isAvailable )
       SpeechRecognition.stop().then(result => {
       });
@@ -66,6 +68,10 @@ export class MicrofonoPage implements OnInit {
     }else{
       this.startRecognition();
     }
+  }
+
+  public onSentenceReady() : Evento {
+    return this.intentParser.parseSentence( this.lastText );
   }
 
   public irAtras(){

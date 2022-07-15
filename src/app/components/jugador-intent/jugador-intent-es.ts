@@ -55,7 +55,7 @@ export class JugadorIntentEs{
    * @param sentence la frase a ser identificada
    * @returns objeto evento reconocido o null si no ha identifiado nada
    */
-  public parseSentence( sentence: string ){
+  public parseSentence( sentence: string ) : Evento {
     let eventParsed = this.eventosService.newEvento();
     if( this.parseDetailedSentence( sentence, eventParsed ) )
       return eventParsed;
@@ -91,14 +91,6 @@ export class JugadorIntentEs{
   private parseDetailedSentence( sentence : string, eventParsed : Evento ){
     let words = sentence.split(' ');
     words = words.map( x => x.toLowerCase() );
-
-    console.log( this.parseAccion( words, eventParsed ) ); 
-    console.log( this.parseOptionalPreposition( words, eventParsed ) ); 
-    console.log( this.parseJugador( words, eventParsed ) ); 
-    console.log( this.parseOptionalPreposition( words, eventParsed ) ); 
-    console.log( this.parseCampoPosicion( words, eventParsed ) ); 
-    console.log( this.parseOptionalPreposition( words, eventParsed ) ); 
-    console.log( this.parsePorteriaPosicion( words, eventParsed ) ); 
 
     return this.parseAccion( words, eventParsed )
         && this.parseOptionalPreposition( words, eventParsed )

@@ -1,5 +1,6 @@
 import { MenuController } from '@ionic/angular';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NavegacionService } from './services/navegacion.service';
 
 
 @Component({
@@ -7,9 +8,11 @@ import { Component } from '@angular/core';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public appPages = [
-    { title: 'Home', url: '/home', icon: 'home'},
+    { title: 'Home', 
+      url: '/home', 
+      icon: 'home'},
   ];
 
   usuarioActivo = {
@@ -17,7 +20,12 @@ export class AppComponent {
     email: '',
   };
 
-  constructor(private menu: MenuController) {
+  constructor(private menu: MenuController, 
+              private navegacion : NavegacionService ) {
+  }
+
+  public ngOnInit(): void {
+    this.navegacion.init();    
   }
 
   escribeUsuario() {

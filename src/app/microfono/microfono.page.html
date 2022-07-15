@@ -8,17 +8,17 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col class="ion-text-left">
-        <p>Algunos ejemplos:</p>
+      <ion-col class="ion-text-left" size="12">
+        <p>Dictame la jugada!!! Algunos ejemplos:</p>
         <ul>
           <li>Gol de María desde centro</li>
           <li>Parada de Pedro</li>
-          <li>Gol de Angela desde seis metros izquierda arriba derecha</li>
+          <li>Gol de Angela desde seis metros izquierda hacia arriba derecha</li>
         </ul>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="ion-text-left" size="12" size-lg>
+      <ion-col class="ion-text-left" size="10">
         <ion-img [src]="microfonoImgSrc"
           *ngIf="isAvailable"
           (click)="onClickMicro()"></ion-img>
@@ -26,9 +26,18 @@
         type="text" 
         clearInput 
         placeholder="Micro no disponible, escribe aquí"
+        inputmode="text"
         (input)="onChangeValue($event)"
         class="mic-input-box"
         *ngIf="!isAvailable"></ion-input>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button color="primary"
+        shape="round"
+        (click)="onSentenceReady()">
+          <ion-icon 
+          name="caret-forward-outline"></ion-icon>
+        </ion-button>
       </ion-col>
     </ion-row>
     <ion-row>

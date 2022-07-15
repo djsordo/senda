@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from "@angular/router";
 import { Location } from "@angular/common";
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
 /**
@@ -17,9 +18,16 @@ export class NavegacionService {
   private history : string[] = [];
 
   constructor( private router : Router, private location : Location ){
+  }
+
+  public init(): void {
     this.router.events.subscribe( event => {
       if (event instanceof NavigationEnd) {
         this.history.push(event.urlAfterRedirects);
+        console.log('--------------------------');
+        for( let url of this.history ){
+          console.log( url ); 
+        }
       }
     })
   }
