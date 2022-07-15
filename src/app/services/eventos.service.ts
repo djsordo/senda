@@ -8,7 +8,8 @@ import { Evento } from '../modelo/evento';
 
 export enum Acciones {
   parada = 'parada', 
-  gol_rival = 'gol_rival', 
+  gol_rival = 'gol_rival',
+  lanzamiento = 'lanzamiento',
   gol = 'gol', 
   tiro = 'tiro',
   perdida = 'perdida',

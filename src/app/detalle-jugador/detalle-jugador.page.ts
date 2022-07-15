@@ -2,8 +2,13 @@ import { MarcadorService } from './../components/marcador/marcador.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+
+
+import { Jugador } from '../modelo/jugador';
 import { PasoDatosService } from '../services/paso-datos.service';
 import { BalonmanoService } from '../services/balonmano.service';
+import { EventosService } from '../services/eventos.service';
+import { TradService } from '../services/trad.service';
 
 
 @Component({
@@ -13,19 +18,24 @@ import { BalonmanoService } from '../services/balonmano.service';
 })
 export class DetalleJugadorPage implements OnInit {
 
-  area_campo = '';
-  area_porteria = '';
+  private area_campo = '';
+  private area_porteria = '';
+  private accion = ''; 
+  private jugador: Jugador = null;
 
   constructor(private toastController: ToastController,
     private router: Router,
     private marcadorService: MarcadorService,
     private pasoDatos: PasoDatosService, 
-    public balonmanoService : BalonmanoService ) {}
+    public balonmanoService : BalonmanoService, 
+    private eventosService : EventosService,
+    private trad : TradService ) {}
 
   detalle: any;
 
   ngOnInit() {
-    this.detalle = this.pasoDatos.getPantallaDetalle();
+    this.accion = this.pasoDatos.getPantalla("detalle-jugador").accion;
+    this.jugador = this.pasoDatos.getPantalla("detalle-jugador").jugador;
   }
 
   public onCampoClicked( event : string ){
@@ -58,5 +68,9 @@ export class DetalleJugadorPage implements OnInit {
     });
 
     toast.present();
+  }
+
+  public getTituloPagina() {
+    return `${this.trad.t('accion.'+this.accion)} de ${this.jugador.nombre}`;
   }
 }

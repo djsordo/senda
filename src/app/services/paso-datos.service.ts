@@ -12,9 +12,9 @@ export class PasoDatosService {
   $getListaInicial = this.listaInicial.asObservable();
   $getListaBanquillo = this.listaBanquillo.asObservable(); */
 
-  listaInicial: any;
-  listaBanquillo: any;
-  pantallaDetalle: any;
+  private listaInicial: any;
+  private listaBanquillo: any;
+  private datosPantalla : any = {};
 
   constructor() {}
 
@@ -43,12 +43,12 @@ export class PasoDatosService {
     return this.listaBanquillo;
   }
 
-  setPantallaDetalle(datos: any){
-    this.pantallaDetalle = datos;
+  setPantalla(url : string, datos: any){
+    this.datosPantalla[url] = datos;
   }
 
-  getPantallaDetalle(){
-    return this.pantallaDetalle;
+  getPantalla( url: string ){
+    return this.datosPantalla[url];
   }
 
 }

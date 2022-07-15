@@ -3,6 +3,7 @@ import { CronoService } from './../crono/crono.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
+import { Acciones } from 'src/app/services/eventos.service';
 
 @Component({
   selector: 'app-titulares',
@@ -38,7 +39,7 @@ export class TitularesComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.jugCampo = this.pasoDatos.listaInicial;
+    this.jugCampo = this.pasoDatos.getListaInicial();
 
     // divido la lista inicial en portero y jugadores de campo
     const indicePortero = this.jugCampo?.indexOf(this.jugCampo.find(po => po.posicion === 'PO'));
@@ -55,7 +56,7 @@ export class TitularesComponent implements OnInit {
      this.jugCampo[i].segExclusion = 0;
     }
 
-    this.listaBanquillo = this.pasoDatos.listaBanquillo?.sort((x,y) => x.numero.localeCompare(y.numero));
+    this.listaBanquillo = this.pasoDatos.getListaBanquillo()?.sort((x,y) => x.numero.localeCompare(y.numero));
     this.listaExcluidos = [];
 
   }
@@ -85,8 +86,8 @@ export class TitularesComponent implements OnInit {
   }
 
   btnGol(jugador: any): void{
-    const detalle = {accion: 'gol', idJugador: jugador.id};
-    this.pasoDatos.setPantallaDetalle(detalle);
+    const detalle = {accion: Acciones.gol, jugador: jugador};
+    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores
@@ -95,8 +96,8 @@ export class TitularesComponent implements OnInit {
   }
 
   btnGolRival(jugador: any): void{
-    const detalle = {accion: 'gol rival', idJugador: jugador.id};
-    this.pasoDatos.setPantallaDetalle(detalle);
+    const detalle = {accion: Acciones.gol_rival, jugador: jugador};
+    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores
@@ -104,8 +105,8 @@ export class TitularesComponent implements OnInit {
   }
 
   btnLanzamiento(jugador: any): void{
-    const detalle = {accion: 'lanzamiento', idJugador: jugador.id};
-    this.pasoDatos.setPantallaDetalle(detalle);
+    const detalle = {accion: Acciones.lanzamiento, jugador: jugador};
+    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores
@@ -113,8 +114,8 @@ export class TitularesComponent implements OnInit {
   }
 
   btnParada(jugador: any): void{
-    const detalle = {accion: 'parada', idJugador: jugador.id};
-    this.pasoDatos.setPantallaDetalle(detalle);
+    const detalle = {accion: Acciones.parada, idJugador: jugador.id};
+    this.pasoDatos.setPantalla('detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
     // Cerramos el acordeón de jugadores
