@@ -1,8 +1,9 @@
-import { PasoDatosService } from './../../services/paso-datos.service';
-import { CronoService } from './../crono/crono.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
+
+import { PasoDatosService } from './../../services/paso-datos.service';
+import { CronoService } from './../crono/crono.service';
 import { Acciones } from 'src/app/services/eventos.service';
 
 @Component({
@@ -82,8 +83,8 @@ export class TitularesComponent implements OnInit {
         }
       }
     }
-
   }
+
 
   btnGol(jugador: any): void{
     const detalle = {accion: Acciones.gol, jugador: jugador};
@@ -196,50 +197,50 @@ export class TitularesComponent implements OnInit {
       // Cerramos el acordeón de jugadores
       this.acordeonJugadores.value = undefined;
 
+  }
+
+  btnCambio(titular: any, cambio: any, esPortero: any){
+    let jugSale: any;
+
+    if (esPortero){
+      jugSale = this.portero.splice(0,1);
+
+    } else {
+      const sale = this.jugCampo.findIndex(res => res.id === titular);
+      jugSale = this.jugCampo.splice(sale, 1);
+    }
+    // Cambio en las listas
+
+    const entra = this.listaBanquillo.findIndex(res => res.id === cambio);
+    const jugEntra = this.listaBanquillo.splice(entra, 1);
+
+    //console.log('Entra: ', jugEntra[0]);
+    //console.log('Sale: ', jugSale[0]);
+    if (esPortero){
+      this.portero.push(jugEntra[0]);
+    } else {
+      this.jugCampo.push(jugEntra[0]);
     }
 
-    btnCambio(titular: any, cambio: any, esPortero: any){
-      let jugSale: any;
+    this.listaBanquillo.push(jugSale[0]);
 
-      if (esPortero){
-        jugSale = this.portero.splice(0,1);
+    //console.log('Titulares: ', this.jugCampo);
+    //console.log('Banquillo: ', this.listaBanquillo);
 
-      } else {
-        const sale = this.jugCampo.findIndex(res => res.id === titular);
-        jugSale = this.jugCampo.splice(sale, 1);
-      }
-      // Cambio en las listas
+    const mensaje = 'Sale ' + jugSale[0].nombre + ' y entra ' + jugEntra[0].nombre;
+    this.toastOk(mensaje);
 
-      const entra = this.listaBanquillo.findIndex(res => res.id === cambio);
-      const jugEntra = this.listaBanquillo.splice(entra, 1);
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
+  }
 
-      //console.log('Entra: ', jugEntra[0]);
-      //console.log('Sale: ', jugSale[0]);
-      if (esPortero){
-        this.portero.push(jugEntra[0]);
-      } else {
-        this.jugCampo.push(jugEntra[0]);
-      }
+  async toastOk(mensaje: string){
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'middle'
+    });
 
-      this.listaBanquillo.push(jugSale[0]);
-
-      //console.log('Titulares: ', this.jugCampo);
-      //console.log('Banquillo: ', this.listaBanquillo);
-
-      const mensaje = 'Sale ' + jugSale[0].nombre + ' y entra ' + jugEntra[0].nombre;
-      this.toastOk(mensaje);
-
-      // Cerramos el acordeón de jugadores
-      this.acordeonJugadores.value = undefined;
-    }
-
-    async toastOk(mensaje: string){
-      const toast = await this.toastController.create({
-        message: mensaje,
-        duration: 2000,
-        position: 'middle'
-      });
-
-      toast.present();
-    }
+    toast.present();
+  }
 }

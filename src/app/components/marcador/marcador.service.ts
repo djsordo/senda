@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +10,8 @@ export class MarcadorService {
     rival: 0,
   };
 
-  constructor() { }
+  constructor( ) {
+  }
 
   gol(){
     this.marcador.nuestro++;

@@ -13,9 +13,9 @@ export class MarcadorComponent implements OnInit, DoCheck {
   @Input() nosotros: boolean;
 
   encendido: boolean;
-
+  
   constructor(private cronoService: CronoService,
-             private marcadorService: MarcadorService) {
+              private marcadorService: MarcadorService) {
    }
 
   ngOnInit() {

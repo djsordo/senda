@@ -1,24 +1,23 @@
 import { Injectable  } from "@angular/core";
 
 import { CronoService } from "../components/crono/crono.service";
-
 import { Accion, TipoAccion } from '../modelo/accion';
 import { Evento } from '../modelo/evento';
 
 
 export enum Acciones {
-  parada = 'parada', 
-  gol_rival = 'gol_rival',
-  lanzamiento = 'lanzamiento',
-  gol = 'gol', 
-  tiro = 'tiro',
-  perdida = 'perdida',
-  robo = 'robo', 
-  cambio = 'cambio', 
-  dos_minutos = '2_minutos', 
-  tarjeta_amarilla = 'tarjeta_amarilla', 
-  tarjeta_roja = 'tarjeta_roja', 
-  tarjeta_azul = 'tarjeta_azul'
+  parada = 'accion.parada', 
+  gol_rival = 'accion.gol_rival',
+  lanzamiento = 'accion.lanzamiento',
+  gol = 'accion.gol', 
+  tiro = 'accion.tiro',
+  perdida = 'accion.perdida',
+  robo = 'accion.robo', 
+  cambio = 'accion.cambio', 
+  dos_minutos = 'accion.2_minutos', 
+  tarjeta_amarilla = 'accion.tarjeta_amarilla', 
+  tarjeta_roja = 'accion.tarjeta_roja', 
+  tarjeta_azul = 'accion.tarjeta_azul'
 }
 
 @Injectable({
@@ -69,6 +68,14 @@ export class EventosService {
 
   public getAcciones( ){
     return this.acciones;
+  }
+
+  public getAccionById( idAccion : Acciones ) {
+    for( let accion of this.acciones ){
+      if( accion.id === idAccion )
+        return accion;
+    }
+    return null;
   }
 
   /**

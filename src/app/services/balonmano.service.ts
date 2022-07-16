@@ -2,33 +2,33 @@ import { Injectable } from '@angular/core';
 
 
 export enum PosicionPorteria {
-  arriba_izquierda = 'arr_izq', 
-  arriba_centro = 'arr_cen',
-  arriba_derecha = 'arr_der',
-  centro_izquierda = 'cen_izq', 
-  centro_centro = 'cen_cen',
-  centro_derecha = 'cen_der',
-  abajo_izquierda = 'aba_izq',
-  abajo_centro = 'aba_cen', 
-  abajo_derecha = 'aba_der',
-  fuera_izquierda = 'fuera_izq',
-  fuera_arriba = 'fuera_arr',
-  fuera_derecha = 'fuera_der'
+  arriba_izquierda = 'porteria.arr_izq', 
+  arriba_centro = 'porteria.arr_cen',
+  arriba_derecha = 'porteria.arr_der',
+  centro_izquierda = 'porteria.cen_izq', 
+  centro_centro = 'porteria.cen_cen',
+  centro_derecha = 'porteria.cen_der',
+  abajo_izquierda = 'porteria.ba_izq',
+  abajo_centro = 'porteria.aba_cen', 
+  abajo_derecha = 'porteria.aba_der',
+  fuera_izquierda = 'porteria.fuera_izq',
+  fuera_arriba = 'porteria.fuera_arr',
+  fuera_derecha = 'porteria.fuera_der'
 };
 
 
 export enum PosicionCampo {
-  contras = 'contras',
-  siete_m = '7m',
-  extremo_izquierda = 'ext_izq',
-  extermo_derecha = 'ext_der',
-  seis_m_izq = '6m_izq',
-  seis_m_cen = '6m_cen',
-  seis_m_der = '6m_der',
-  nueve_m_izq = '9m_izq', 
-  nueve_m_cen = '9m_cen',
-  nueve_m_der = '9m_der',
-  otros = 'otros',
+  contras = 'posicion.contras',
+  siete_m = 'posicion.7m',
+  extremo_izquierda = 'posicion.ext_izq',
+  extermo_derecha = 'posicion.ext_der',
+  seis_m_izq = 'posicion.6m_izq',
+  seis_m_cen = 'posicion.6m_cen',
+  seis_m_der = 'posicion.6m_der',
+  nueve_m_izq = 'posicion.9m_izq', 
+  nueve_m_cen = 'posicion.9m_cen',
+  nueve_m_der = 'posicion.9m_der',
+  otros = 'posicion.otros',
 
 }
 

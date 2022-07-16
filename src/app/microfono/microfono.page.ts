@@ -3,6 +3,7 @@ import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 import { JugadorIntentEs } from '../components/jugador-intent/jugador-intent-es';
 import { Evento } from '../modelo/evento';
 import { NavegacionService } from '../services/navegacion.service';
+import { PasoDatosService } from '../services/paso-datos.service';
 
 @Component({
   selector: 'app-microfono',
@@ -13,14 +14,15 @@ export class MicrofonoPage implements OnInit {
 
 
   public isAvailable = false;
-  private lastText = '';
+  public lastText = '';
   private lastEvent : Evento = null;
   private microfonoOn = './assets/mic-animation.gif';
   private microfonoOff = "./assets/mic-animation-disabled.gif";
   public microfonoImgSrc = this.microfonoOn;
 
   constructor(  private navegacion : NavegacionService, 
-                private intentParser : JugadorIntentEs ) {
+                private intentParser : JugadorIntentEs,
+                private pasoDatos : PasoDatosService ) {
   }
 
   ngOnInit() {
@@ -70,8 +72,14 @@ export class MicrofonoPage implements OnInit {
     }
   }
 
-  public onSentenceReady() : Evento {
-    return this.intentParser.parseSentence( this.lastText );
+  public btnSentenceTyped(){
+    this.onSentenceReady();
+    this.irAtras();
+  }
+
+  public onSentenceReady( ) : void {
+    const evento : Evento =  this.intentParser.parseSentence( this.lastText );
+    this.pasoDatos.onEventoJugador( evento );
   }
 
   public irAtras(){

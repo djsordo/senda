@@ -73,7 +73,7 @@ export class MapaComponent implements OnInit {
     return this.cachedPolygons;
   }
 
-  public onClickPolygon( event ) : void {
+  public onClickPolygon( event : any ) : void {
     if( event.srcElement.id !== "equis" ){
       let x = event.offsetX;
       let y = event.offsetY;

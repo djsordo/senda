@@ -1,6 +1,7 @@
 import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { NavegacionService } from './services/navegacion.service';
+import { PasoDatosService } from './services/paso-datos.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.navegacion.init();    
+    this.navegacion.init();
   }
 
   escribeUsuario() {

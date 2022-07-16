@@ -1,4 +1,3 @@
-import { MarcadorService } from './../components/marcador/marcador.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -7,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Jugador } from '../modelo/jugador';
 import { PasoDatosService } from '../services/paso-datos.service';
 import { BalonmanoService } from '../services/balonmano.service';
-import { EventosService } from '../services/eventos.service';
+import { Acciones, EventosService } from '../services/eventos.service';
 import { TradService } from '../services/trad.service';
 
 
@@ -20,12 +19,11 @@ export class DetalleJugadorPage implements OnInit {
 
   private area_campo = '';
   private area_porteria = '';
-  private accion = ''; 
+  private accion: Acciones = null; 
   private jugador: Jugador = null;
 
   constructor(private toastController: ToastController,
     private router: Router,
-    private marcadorService: MarcadorService,
     private pasoDatos: PasoDatosService, 
     public balonmanoService : BalonmanoService, 
     private eventosService : EventosService,
@@ -39,38 +37,33 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   public onCampoClicked( event : string ){
-    console.log( event );
     this.area_campo = event;
   }
 
   public onPorteriaClicked( event : string ){
-    console.log( event );
     this.area_porteria = event;
   }
 
   btnOk(){
-    if (this.detalle.accion === 'gol'){
-      this.marcadorService.gol();
-    } else if (this.detalle.accion === 'gol rival'){
-      this.marcadorService.golRival();
-    }
-
-    const mensaje = this.detalle.accion + ' de ' + this.detalle.idJugador + ' desde el ' + this.area_campo + ' que ha entrado por el ' + this.area_porteria;
-    this.toastOk(mensaje);
+    let eventoJugador = this.eventosService.newEvento();
+    eventoJugador.accion = this.eventosService.getAccionById( this.accion ); 
+    eventoJugador.jugador = this.jugador; 
+    eventoJugador.posicionCampo = this.area_campo;
+    eventoJugador.posicionPorteria = this.area_porteria;
+    this.pasoDatos.onEventoJugador( eventoJugador );
     this.router.navigate(['/modo-jugador']);
   }
 
-  async toastOk(mensaje: string){
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000,
-      position: 'middle'
-    });
-
-    toast.present();
-  }
-
   public getTituloPagina() {
-    return `${this.trad.t('accion.'+this.accion)} de ${this.jugador.nombre}`;
+    try{
+      return `${this.trad.t(this.accion)} de ${this.jugador.nombre}`;
+    }catch( error ) {
+      return "Registra la acción del jugador";
+    }
   }
+
+  public getJugador(){
+    return this.jugador.nombre;
+  }
+
 }

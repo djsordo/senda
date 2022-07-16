@@ -10,7 +10,7 @@
      <polygon *ngFor="let polygon of getPolygonsConverted()"
          style="fill: transparent;"
          [attr.points]="polygon.points"
-         id="{{polygon.name}}"
+         id="{{polygon.id}}"
          (click)="onClickPolygon( $event )"/>
       <path 
       id="equis"

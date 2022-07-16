@@ -8,6 +8,13 @@
 
   <ion-grid>
     <ion-row>
+      <ion-col size="12">
+        <p>Indica posición desde la que tiró {{getJugador()}}
+          y en qué parte de la portería dió</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col size="12" size-md>
         <mapa id="campo"
           (areaClickedEvent)="onCampoClicked($event)"
@@ -21,7 +28,6 @@
             [polygons]="balonmanoService.porteria.polygons"></mapa>
       </ion-col>
     </ion-row>
-
 
     <ion-row>
       <ion-col col-12>
