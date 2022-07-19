@@ -22,7 +22,6 @@ export class PasoDatosService {
   constructor() {}
 
   suscribirmeAEventoJugador( callback : (data : Evento) => void ){
-    console.log('suscripcion a eventojugador');
     return this.eventoJugador.subscribe({ next: callback });
   }
 

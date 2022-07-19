@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Jugador } from '../modelo/jugador';
 import { PasoDatosService } from '../services/paso-datos.service';
-import { BalonmanoService } from '../services/balonmano.service';
+import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../services/balonmano.service';
 import { Acciones, EventosService } from '../services/eventos.service';
 import { TradService } from '../services/trad.service';
 
@@ -17,8 +17,8 @@ import { TradService } from '../services/trad.service';
 })
 export class DetalleJugadorPage implements OnInit {
 
-  private area_campo = '';
-  private area_porteria = '';
+  public area_campo = '';
+  public area_porteria = '';
   private accion: Acciones = null; 
   private jugador: Jugador = null;
 
@@ -37,10 +37,12 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   public onCampoClicked( event : string ){
+    console.log( "campo: ", event );
     this.area_campo = event;
   }
 
   public onPorteriaClicked( event : string ){
+    console.log( "porteria: ", event );
     this.area_porteria = event;
   }
 
@@ -60,6 +62,24 @@ export class DetalleJugadorPage implements OnInit {
     }catch( error ) {
       return "Registra la acción del jugador";
     }
+  }
+
+  public getCampoName( ) : string {
+    let polygon = this.balonmanoService.campo.polygons.filter( 
+        polygon => polygon.id === <PosicionCampo> this.area_campo );
+    if( polygon.length )
+      return polygon[0].name.es[0];
+    else
+      return '';
+  }
+
+  public getPorteriaName( ): string{
+    let polygon = this.balonmanoService.porteria.polygons.filter( 
+      polygon => polygon.id === <PosicionPorteria> this.area_porteria );
+    if( polygon.length )
+      return polygon[0].name.es[0];
+    else
+      return '';
   }
 
   public getJugador(){
