@@ -28,7 +28,7 @@ export class JugadoresService {
       {id: '14', numero: '29', nombre: 'Santiago Luna',   portero: false, posicion:'', foto: 'SinImagen.jpg'},
       {id: '15', numero: '56', nombre: 'Jesús Hernández', portero: false, posicion:'', foto: 'SinImagen.jpg'},
       {id: '16', numero: '28', nombre: 'César Vitores',   portero: false, posicion:'', foto: 'Cesar_Vitores_Cosmes.jpeg'},
-    ];  
+    ];
   }
 
   public getJugadores(){

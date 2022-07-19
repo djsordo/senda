@@ -79,7 +79,8 @@ export class MicrofonoPage implements OnInit {
 
   public onSentenceReady( ) : void {
     const evento : Evento =  this.intentParser.parseSentence( this.lastText );
-    this.pasoDatos.onEventoJugador( evento );
+    if( evento )
+      this.pasoDatos.onEventoJugador( evento );
   }
 
   public irAtras(){

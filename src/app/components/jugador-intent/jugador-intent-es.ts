@@ -35,8 +35,6 @@ export class JugadorIntentEs{
   private acciones : Accion[];
   private preposicion = ["a", "con", "de", "desde", "en", "por" ];
   private jugadores : Jugador[];
-  private intent1 : object[];
-  private allIntents : object[];
 
   constructor( private eventosService : EventosService,
                private jugadoresService : JugadoresService,
