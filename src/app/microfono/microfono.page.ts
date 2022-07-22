@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 import { JugadorIntentEs } from '../components/jugador-intent/jugador-intent-es';
 import { Evento } from '../modelo/evento';
 import { NavegacionService } from '../services/navegacion.service';
 import { PasoDatosService } from '../services/paso-datos.service';
+import { ColorScheme, StylesService } from '../services/styles.service';
 
 @Component({
   selector: 'app-microfono',
@@ -11,7 +12,6 @@ import { PasoDatosService } from '../services/paso-datos.service';
   styleUrls: ['./microfono.page.scss'],
 })
 export class MicrofonoPage implements OnInit {
-
 
   public isAvailable = false;
   public lastText = '';
@@ -22,17 +22,19 @@ export class MicrofonoPage implements OnInit {
 
   constructor(  private navegacion : NavegacionService, 
                 private intentParser : JugadorIntentEs,
-                private pasoDatos : PasoDatosService ) {
-    if(this.isDarkMode()){
+                private pasoDatos : PasoDatosService, 
+                private stylesService : StylesService ) {
+  }
+
+  ngOnInit() {
+    if(this.stylesService.getCurrentMode() === ColorScheme.darkMode ){
       this.microfonoOn = "./assets/mic-animation_dark.gif";
       this.microfonoOff = "./assets/mic-animation-disabled_dark.gif";
     }else{
       this.microfonoOn = "./assets/mic-animation.gif";
       this.microfonoOff = "./assets/mic-animation-disabled.gif";
     }
-  }
-
-  ngOnInit() {
+    this.microfonoImgSrc = this.microfonoOn;
     SpeechRecognition.available()
       .then( value => { this.isAvailable = value['available'];
                         if( this.isAvailable )
@@ -41,18 +43,21 @@ export class MicrofonoPage implements OnInit {
                           this.startRecognition();
                        } )
       .catch( value => { this.isAvailable = false; } );
+      // this.stylesService.suscribirmeACambioColorScheme( 
+      //   ( colorScheme ) => {
+      //       this.onCambioColorScheme( this, colorScheme );
+      //   } );
   }
 
-  /**
-   * Retorna true si la preferencia de color del dispositivo es oscura
-   */
-  private isDarkMode(){
-    try{
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }catch( error ) {
-      return false;
-    }
-  }
+  // private onCambioColorScheme( currentComponent : MicrofonoPage, mode : ColorScheme ){
+  //   if( mode === ColorScheme.darkMode ){
+  //     currentComponent.microfonoOn = "./assets/mic-animation_dark.gif";
+  //     currentComponent.microfonoOff = "./assets/mic-animation-disabled_dark.gif";
+  //   }else{
+  //     currentComponent.microfonoOn = "./assets/mic-animation.gif";
+  //     currentComponent.microfonoOff = "./assets/mic-animation-disabled.gif";
+  //   }
+  // }
 
   async startRecognition() {
     this.microfonoImgSrc = this.microfonoOn;

@@ -19,10 +19,10 @@
     </ion-row>
     <ion-row>
       <ion-col class="ion-text-left" size="10">
-        <ion-img [src]="microfonoImgSrc"
-          *ngIf="isAvailable"
-          (click)="onClickMicro()"></ion-img>
-        <ion-input 
+        <ion-img *ngIf="true || isAvailable" 
+        [src]="microfonoImgSrc"
+        (click)="onClickMicro()"></ion-img>
+        <ion-input  
         type="text" 
         clearInput 
         placeholder="Micro no disponible, escribe aquí"
