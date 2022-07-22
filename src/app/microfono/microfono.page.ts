@@ -16,13 +16,20 @@ export class MicrofonoPage implements OnInit {
   public isAvailable = false;
   public lastText = '';
   private lastEvent : Evento = null;
-  private microfonoOn = './assets/mic-animation.gif';
+  private microfonoOn = "./assets/mic-animation.gif";
   private microfonoOff = "./assets/mic-animation-disabled.gif";
   public microfonoImgSrc = this.microfonoOn;
 
   constructor(  private navegacion : NavegacionService, 
                 private intentParser : JugadorIntentEs,
                 private pasoDatos : PasoDatosService ) {
+    if(this.isDarkMode()){
+      this.microfonoOn = "./assets/mic-animation_dark.gif";
+      this.microfonoOff = "./assets/mic-animation-disabled_dark.gif";
+    }else{
+      this.microfonoOn = "./assets/mic-animation.gif";
+      this.microfonoOff = "./assets/mic-animation-disabled.gif";
+    }
   }
 
   ngOnInit() {
@@ -34,6 +41,17 @@ export class MicrofonoPage implements OnInit {
                           this.startRecognition();
                        } )
       .catch( value => { this.isAvailable = false; } );
+  }
+
+  /**
+   * Retorna true si la preferencia de color del dispositivo es oscura
+   */
+  private isDarkMode(){
+    try{
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }catch( error ) {
+      return false;
+    }
   }
 
   async startRecognition() {

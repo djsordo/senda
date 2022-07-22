@@ -35,7 +35,8 @@
         <ion-button color="primary"
         shape="round"
         id="btnSentenceTyped"
-        (click)="btnSentenceTyped()">
+        (click)="btnSentenceTyped()"
+        *ngIf="!isAvailable">
           <ion-icon 
           name="caret-forward-outline"></ion-icon>
         </ion-button>

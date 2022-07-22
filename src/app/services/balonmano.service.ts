@@ -42,6 +42,7 @@ export class BalonmanoService {
 
   campo = {
     img : './assets/campo2.png',
+    img_dark : './assets/campo2_dark.png',
     polygons : [{id: PosicionCampo.contras,
                 name : { es : [ 'contraataques' ] },
                 points : [[0.110666666666667, 0.028328611898017],
@@ -186,6 +187,7 @@ export class BalonmanoService {
 
   porteria = {
     img : './assets/porteria5.png',
+    img_dark : './assets/porteria5_dark.png',
     polygons : [{ id : PosicionPorteria.arriba_izquierda,
               name : { es : [ 'arriba izquierda',
                                   'arriba a la izquierda',
