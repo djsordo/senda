@@ -2,9 +2,9 @@
 # http://git-scm.com/docs/gitignore
 
 
-environments/environment.prod.ts
-environments/environment.desa.ts
-environments/environment.ts
+src/environments/environment.prod.ts
+src/environments/environment.desa.ts
+src/environments/environment.ts
 
 
 *~
