@@ -42,9 +42,9 @@ export class ModoJugadorPage implements OnInit {
     this.miSuscripcionAEventoJugador = 
     this.pasoDatos.suscribirmeAEventoJugador( (evento : Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );
-      if( evento.accion.id === Acciones.gol )
+      if( evento.accion === Acciones.gol )
         this.marcadorService.gol();
-      if( evento.accion.id === Acciones.gol_rival )
+      if( evento.accion === Acciones.gol_rival )
         this.marcadorService.golRival();
       } );
 
@@ -72,15 +72,15 @@ export class ModoJugadorPage implements OnInit {
 
   private construyeMensajeEvento( evento: Evento ){
     if( !evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion.id)} de ${evento.jugador.nombre}`;
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}`;
     }else if( evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion.id)} de ${evento.jugador.nombre}\
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}\
           desde ${this.tradService.t(evento.posicionCampo)}`;
     }else if( !evento.posicionCampo && evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion.id)} de ${evento.jugador.nombre}\
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}\
       hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }else{
-      return `${this.tradService.t(evento.accion.id)} de ${evento.jugador.nombre}\
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}\
       desde ${this.tradService.t(evento.posicionCampo)} hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }
   }

@@ -6,7 +6,7 @@ import { Jugador } from '../../modelo/jugador';
 import { JugadoresService } from 'src/app/services/jugadores.service';
 
 import { Accion } from '../../modelo/accion';
-import { EventosService } from '../../services/eventos.service';
+import { Acciones, EventosService } from '../../services/eventos.service';
 
 import { Evento } from '../../modelo/evento';
 
@@ -32,7 +32,8 @@ import { Evento } from '../../modelo/evento';
 })
 export class JugadorIntentEs{
 
-  private acciones : Accion[];
+  private acciones : Acciones[];
+  private aliasAcciones : { accion: Acciones, alias : string[] }[];
   private preposicion = ["a", "con", "de", "desde", "en", "por" ];
   private jugadores : Jugador[];
 
@@ -41,11 +42,18 @@ export class JugadorIntentEs{
                private balonmanoService : BalonmanoService ){
     this.acciones = this.eventosService.getAcciones();
     this.jugadores = this.jugadoresService.getJugadores();
-
-    // this.intent1 = [ this.acciones, 
-    //   this.preposicion, 
-    //   this.jugador ];
-    // this.allIntents = [ this.intent1 ];
+    this.aliasAcciones = [  { accion: Acciones.parada, alias: ['parada', 'paradón'] },
+                            { accion: Acciones.gol_rival, alias: ['gol rival', 'gol del rival'] }, 
+                            { accion: Acciones.gol, alias: ['gol', 'golazo', 'tanto'] }, 
+                            { accion: Acciones.tiro, alias: ['tiro', 'tiro a puerta'] },
+                            { accion: Acciones.perdida, alias: ['pérdida'] }, 
+                            { accion: Acciones.robo, alias: ['robo', 'robada'] },
+                            { accion: Acciones.cambio, alias: ['cambio', 'se cambia', 'se cambia por'] },
+                            { accion: Acciones.dos_minutos, alias: ['dos minutos', '2 minutos'] },
+                            { accion: Acciones.tarjeta_amarilla, alias: ['tarjeta amarilla', 'amarilla'] },
+                            { accion: Acciones.tarjeta_roja, alias: ['tarjeta roja', 'roja'] },
+                            { accion: Acciones.tarjeta_azul, alias: ['tarjeta azul', 'azul'] }
+                          ];
   }
 
   /**
@@ -129,8 +137,9 @@ export class JugadorIntentEs{
 
   private parseAccion( sentenceAsWords : string[], eventParsed : Evento ){
     for( let accion of this.acciones ){
-      for( let alias_accion of accion.alias ) {
-        let aliasAsWords = alias_accion.split(' ');
+      let currentAccionAlias = this.aliasAcciones.filter( (elem) => elem.accion === accion )[0]['alias'];
+      for( let aliasAccion of currentAccionAlias ) {
+        let aliasAsWords = aliasAccion.split(' ');
         if( this.beginsWith( sentenceAsWords, aliasAsWords ) ){
           eventParsed.accion = accion;
           sentenceAsWords.splice( 0, aliasAsWords.length );

@@ -48,7 +48,7 @@ export class DetalleJugadorPage implements OnInit {
 
   btnOk(){
     let eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = this.eventosService.getAccionById( this.accion ); 
+    eventoJugador.accion = this.accion; 
     eventoJugador.jugador = this.jugador; 
     eventoJugador.posicionCampo = this.area_campo;
     eventoJugador.posicionPorteria = this.area_porteria;

@@ -25,57 +25,26 @@ export enum Acciones {
 })
 export class EventosService {
 
-  acciones : Array<Accion>;
-  eventos : Array<Evento>;
+  acciones : Acciones[];
+  eventos : Evento[];
 
   constructor( private cronoService : CronoService ) {
-    this.acciones = [
-      { id: Acciones.parada, 
-        alias: ['parada', 'paradón'], 
-        positivo: TipoAccion.positivo }, 
-      { id: Acciones.gol_rival, 
-        alias: ['gol rival', 'gol del rival'], 
-        positivo: TipoAccion.negativo }, 
-      { id: Acciones.gol, 
-        alias: ['gol', 'golazo', 'tanto'], 
-        positivo: TipoAccion.positivo }, 
-      { id: Acciones.tiro, 
-        alias: ['tiro', 'tiro a puerta'], 
-        positivo: TipoAccion.positivo },
-      { id: Acciones.perdida, 
-        alias: ['pérdida'], 
-        positivo: TipoAccion.negativo }, 
-      { id: Acciones.robo, 
-        alias: ['robo', 'robada'], 
-        positivo: TipoAccion.positivo },
-      { id: Acciones.cambio,  
-        alias: ['cambio', 'se cambia', 'se cambia por'], 
-        positivo: TipoAccion.neutro },
-      { id: Acciones.dos_minutos, 
-        alias: ['dos minutos', '2 minutos'], 
-        positivo: TipoAccion.negativo },
-      { id: Acciones.tarjeta_amarilla,  
-        alias: ['tarjeta amarilla', 'amarilla'], 
-        positivo: TipoAccion.negativo },
-      { id: Acciones.tarjeta_roja, 
-        alias: ['tarjeta roja', 'roja'], 
-        positivo: TipoAccion.negativo },
-      { id: Acciones.tarjeta_azul, 
-        alias: ['tarjeta azul', 'azul'], 
-        positivo: TipoAccion.negativo }
-    ];
+    this.acciones = 
+    [ Acciones.parada, 
+      Acciones.gol_rival,
+      Acciones.gol,
+      Acciones.tiro, 
+      Acciones.perdida, 
+      Acciones.robo, 
+      Acciones.cambio,  
+      Acciones.dos_minutos, 
+      Acciones.tarjeta_amarilla,  
+      Acciones.tarjeta_roja, 
+      Acciones.tarjeta_azul ];
   }
 
-  public getAcciones( ){
+  public getAcciones( ) : Acciones[] {
     return this.acciones;
-  }
-
-  public getAccionById( idAccion : Acciones ) {
-    for( let accion of this.acciones ){
-      if( accion.id === idAccion )
-        return accion;
-    }
-    return null;
   }
 
   /**
