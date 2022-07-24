@@ -114,8 +114,8 @@ export class TitularesComponent implements OnInit {
     this.acordeonJugadores.value = undefined;
   }
 
-  btnParada(jugador: any): void{
-    const detalle = {accion: Acciones.parada, idJugador: jugador.id};
+  btnParada(jugador: any): void {
+    const detalle = {accion: Acciones.parada, jugador: jugador};
     this.pasoDatos.setPantalla('detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 

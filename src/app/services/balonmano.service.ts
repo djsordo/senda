@@ -8,7 +8,7 @@ export enum PosicionPorteria {
   centro_izquierda = 'porteria.cen_izq', 
   centro_centro = 'porteria.cen_cen',
   centro_derecha = 'porteria.cen_der',
-  abajo_izquierda = 'porteria.ba_izq',
+  abajo_izquierda = 'porteria.aba_izq',
   abajo_centro = 'porteria.aba_cen', 
   abajo_derecha = 'porteria.aba_der',
   fuera_izquierda = 'porteria.fuera_izq',
