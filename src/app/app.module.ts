@@ -24,8 +24,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
   ],
     providers: [{ provide: RouteReuseStrategy,
                   useClass: IonicRouteStrategy,
-                },
-    StylesService ],
+                }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
