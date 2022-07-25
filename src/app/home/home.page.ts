@@ -12,7 +12,7 @@ import { Usuario } from '../modelo/usuario';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  usuarios: Usuario[];
+  usuarios: Usuario;
 
   proximosPartidos: any;
   anterioresPartidos: any;
@@ -26,7 +26,7 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.usuarioService.getUsuario().subscribe(usuarios => {
-      this.usuarios = usuarios;
+      this.usuarios = usuarios[0];
       console.log(usuarios);
     });
 
