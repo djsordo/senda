@@ -14,20 +14,21 @@ import { Acciones } from 'src/app/services/eventos.service';
 export class TitularesComponent implements OnInit {
   listaInicial: any;
   listaBanquillo: any;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
 
   listaExcluidos: any;
   portero: any;
   jugCampo: any;
 
-  listaRobos= [{nombre: 'Pase'}, 
-              {nombre: 'Falta en ataque'}, 
-              {nombre: 'Intercepción'}, 
+  listaRobos= [{nombre: 'Pase'},
+              {nombre: 'Falta en ataque'},
+              {nombre: 'Intercepción'},
               {nombre: 'Otros'}];
-  listaPerdidas= [{nombre: 'Pase'}, 
-              {nombre: 'Falta en ataque'}, 
-              {nombre: 'Pasos'}, 
-              {nombre: 'Dobles'}, 
+  listaPerdidas= [{nombre: 'Pase'},
+              {nombre: 'Falta en ataque'},
+              {nombre: 'Pasos'},
+              {nombre: 'Dobles'},
               {nombre: 'Otros'}];
 
   ev: Event;
