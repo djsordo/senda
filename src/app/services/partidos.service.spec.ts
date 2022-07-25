@@ -13,4 +13,14 @@ describe('PartidosService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('un partido se crea sin problemas', () => {
+    let p = service.newPartido();
+    p.equipo = "yaveremos";
+    p.fecha = new Date
+    service.addPartido
+
+  });
+
+
 });
