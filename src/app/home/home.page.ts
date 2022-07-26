@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Observable } from 'rxjs';
 import { UsuarioService } from './../services/usuario.service';
 import { PartidosService } from './../services/partidos.service';
 import { Component, OnInit } from '@angular/core';
@@ -25,7 +24,7 @@ export class HomePage implements OnInit {
 
 
   ngOnInit() {
-    this.usuarioService.getUsuario().subscribe(usuarios => {
+    this.usuarioService.getUsuario(localStorage.getItem('emailUsuario')).subscribe(usuarios => {
       this.usuarios = usuarios[0];
       console.log(usuarios);
     });
