@@ -18,13 +18,15 @@
       <ion-col size="12" size-md>
         <mapa id="campo"
           (areaClickedEvent)="onCampoClicked($event)"
-          image="{{balonmanoService.campo.img}}"
+          [image]="balonmanoService.campo.img"
+          [image_dark]="balonmanoService.campo.img_dark"
           [polygons]="balonmanoService.campo.polygons"></mapa>
       </ion-col>
       <ion-col size="12" size-md>
         <mapa id="porteria"
            (areaClickedEvent)="onPorteriaClicked($event)"
             [image]="balonmanoService.porteria.img"
+            [image_dark]="balonmanoService.porteria.img_dark"
             [polygons]="balonmanoService.porteria.polygons"></mapa>
       </ion-col>
     </ion-row>

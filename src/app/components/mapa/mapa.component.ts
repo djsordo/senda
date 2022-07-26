@@ -6,6 +6,7 @@ import { Component,
         HostListener,
         ElementRef,
         EventEmitter} from '@angular/core';
+import { ColorScheme, StylesService } from 'src/app/services/styles.service';
 
 const X = 0; 
 const Y = 1;
@@ -28,21 +29,39 @@ export class MapaComponent implements OnInit {
             left: '0px', 
             top : '0px' };
   @Input() image : string;
+  @Input() image_dark : string;
   @Input() polygons;
   private cachedActualWidth : number;
   private cachedActualHeight : number;
   private cachedPolygons : Array<object>;
-  @Input() pointerStyle = {'visibility': 'hidden', 
+  @Input() pointerStyle : any;
+  pointerDots : string;
+  @Output() areaClickedEvent = new EventEmitter<string>();
+
+  constructor( private stylesService : StylesService ) { 
+  }
+
+  ngOnInit() {
+    if( this.stylesService.getCurrentMode() === ColorScheme.darkMode )
+      this.pointerStyle = {'visibility': 'hidden', 
+                          'stroke': '#a26b6b',
+                          'strokeWidth' :5.556,
+                          'strokeLinecap' : 'round',
+                          'strokeMiterlimit' : 4};
+    else
+      this.pointerStyle = {'visibility': 'hidden', 
                           'stroke': '#420b0b',
                           'strokeWidth' :5.556,
                           'strokeLinecap' : 'round',
                           'strokeMiterlimit' : 4};
-  pointerDots : string;
-  @Output() areaClickedEvent = new EventEmitter<string>();
+  }
 
-  constructor( ) {  }
-
-  ngOnInit() {
+  public getImageSrc() : string {
+    if( this.stylesService.getCurrentMode() === ColorScheme.darkMode 
+        && this.image_dark )
+      return this.image_dark;
+    else
+      return this.image;
   }
 
   @HostListener('window:resize', ['$event'] )

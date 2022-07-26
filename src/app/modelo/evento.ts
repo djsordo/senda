@@ -1,7 +1,7 @@
 
 import { Jugador } from './jugador';
-import { Accion } from './accion';
 import { Equipo } from './equipo'; 
+import { Acciones } from '../services/eventos.service';
 
 export interface Evento {
 
@@ -9,7 +9,7 @@ export interface Evento {
   timestamp? : Date;
   jugador : Jugador;
   equipo? : Equipo; 
-  accion : Accion;
+  accion : Acciones;
   posicionCampo? : string, 
   posicionPorteria? : string, 
   crono : { parte : number, 

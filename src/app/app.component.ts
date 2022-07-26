@@ -1,7 +1,6 @@
 import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { NavegacionService } from './services/navegacion.service';
-import { PasoDatosService } from './services/paso-datos.service';
 
 
 @Component({

@@ -14,20 +14,21 @@ import { Acciones } from 'src/app/services/eventos.service';
 export class TitularesComponent implements OnInit {
   listaInicial: any;
   listaBanquillo: any;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
 
   listaExcluidos: any;
   portero: any;
   jugCampo: any;
 
-  listaRobos= [{nombre: 'Pase'}, 
-              {nombre: 'Falta en ataque'}, 
-              {nombre: 'Intercepción'}, 
+  listaRobos= [{nombre: 'Pase'},
+              {nombre: 'Falta en ataque'},
+              {nombre: 'Intercepción'},
               {nombre: 'Otros'}];
-  listaPerdidas= [{nombre: 'Pase'}, 
-              {nombre: 'Falta en ataque'}, 
-              {nombre: 'Pasos'}, 
-              {nombre: 'Dobles'}, 
+  listaPerdidas= [{nombre: 'Pase'},
+              {nombre: 'Falta en ataque'},
+              {nombre: 'Pasos'},
+              {nombre: 'Dobles'},
               {nombre: 'Otros'}];
 
   ev: Event;
@@ -114,8 +115,8 @@ export class TitularesComponent implements OnInit {
     this.acordeonJugadores.value = undefined;
   }
 
-  btnParada(jugador: any): void{
-    const detalle = {accion: Acciones.parada, idJugador: jugador.id};
+  btnParada(jugador: any): void {
+    const detalle = {accion: Acciones.parada, jugador: jugador};
     this.pasoDatos.setPantalla('detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 

@@ -15,6 +15,10 @@
   </ion-header>
 
   <div id="container">
+    <ion-item>
+      {{usuarios?.nombre + ' ' + usuarios?.apellidos}}
+    </ion-item>
+
     <ion-list>
       <ion-list-header> <h1>Próximos Partidos</h1> </ion-list-header>
       <ion-item *ngFor="let p of proximosPartidos">
