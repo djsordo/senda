@@ -12,7 +12,7 @@ import { Partido } from '../modelo/partido';
 })
 export class PartidosService {
 
-  const partidoRef : CollectionReference<DocumentData>;
+  private partidoRef : CollectionReference<DocumentData>;
 
   proximosPartidos = [
     {fecha: '12/06/2022', partido: 'B.M. Laguna vs. San Agustín', lugar: 'Polideportivo Laguna'},

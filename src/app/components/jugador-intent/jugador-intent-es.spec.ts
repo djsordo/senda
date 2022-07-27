@@ -5,7 +5,7 @@ import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { JugadorIntentEs } from './jugador-intent-es';
 import { PosicionCampo, PosicionPorteria } from 'src/app/services/balonmano.service';
 
-fdescribe('JugadorIntentEs', () => {
+describe('JugadorIntentEs', () => {
   let jugadorIntent : JugadorIntentEs; 
   
   beforeEach( () => {
