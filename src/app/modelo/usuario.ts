@@ -4,14 +4,17 @@ export interface Usuario{
   apellidos: string;
   email: string;
   club: {
-    deporte: {
-      nombre: string;
-    };
+    clubId: string;
     nombre: string;
   };
   roles: [
     {
-      equipo: string;
+      equipo: {
+        equipoId: string;
+        nombre: string;
+        categoria: string;
+        genero: string;
+      };
       nombre: string;
     }
   ];

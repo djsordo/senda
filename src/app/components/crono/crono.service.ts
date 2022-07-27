@@ -23,10 +23,6 @@ export class CronoService {
         this.pasoTiempo();
         this.tiempo.segundo = this.tiempo.segundo + 1;
 
-/*         if (this.tiempo.segundo === 60) {
-          this.tiempo.minuto++;
-          this.tiempo.segundo = 0;
-        } */
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i = 0; i < this.cronos2min.length; i++){
           this.cronos2min[i].segundos = this.cronos2min[i].segundos - 1;
