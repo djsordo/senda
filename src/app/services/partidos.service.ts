@@ -30,4 +30,6 @@ export class PartidosService {
     const partidoRef = query(collection(this.firestore, 'partidos'), where('equipoId', '==', equipoId));
     return collectionData(partidoRef, {idField: 'id'}) as Observable<Partido[]>;
   }
+
 }
+

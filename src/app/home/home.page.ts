@@ -13,7 +13,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  usuarios: Usuario;
+  usuario: Usuario;
   partidos: Partido[];
 
   proximosPartidos: any;
@@ -30,10 +30,9 @@ export class HomePage implements OnInit {
     this.partidos = [];
 
     this.usuarioService.getUsuario(localStorage.getItem('emailUsuario'))
-    .pipe(finalize(() => this.obtenerPartidos()))
     .subscribe(usuarios => {
-      this.usuarios = usuarios[0];
-      console.log(usuarios);
+      this.usuario = usuarios[0];
+      console.log('usuario: ', usuarios);
     });
 
     this.proximosPartidos = this.partidosService.obtenerProximosPartidos();
@@ -42,13 +41,14 @@ export class HomePage implements OnInit {
 
   obtenerPartidos(){
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < this.usuarios.roles.length; i++ ){
-      const equipoId = this.usuarios.roles[i].equipo.equipoId;
+    for (let i = 0; i < this.usuario?.roles.length; i++ ){
+      const equipoId = this.usuario.roles[i].equipo.equipoId;
       this.partidosService.getPartidos(equipoId).subscribe(partidos => {
         this.partidos = this.partidos.concat(partidos);
-        console.log(partidos);
+        console.log('Partidos: ', partidos);
       });
     }
+
   }
 
   irAModo(){

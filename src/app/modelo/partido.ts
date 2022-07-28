@@ -6,4 +6,5 @@ export interface Partido{
   temporadaId: string;
   tipo: string;
   ubicacion: string;
+  jugado: boolean;
 }

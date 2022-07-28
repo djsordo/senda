@@ -1,3 +1,5 @@
+import { Partido } from './partido';
+
 export interface Usuario{
   id?: string;
   nombre: string;
@@ -14,6 +16,7 @@ export interface Usuario{
         nombre: string;
         categoria: string;
         genero: string;
+        partidos: Partido[];
       };
       nombre: string;
     }

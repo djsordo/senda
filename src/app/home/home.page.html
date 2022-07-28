@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{usuarios?.club.nombre}}</ion-title>
+    <ion-title>{{usuario?.club.nombre}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,35 +17,18 @@
 
 
   <div id="container">
-    <ion-card>
-      <ion-card-title>{{usuarios?.nombre + ' ' + usuarios?.apellidos}}</ion-card-title>
-      <ion-item *ngFor="let rol of usuarios?.roles">
-        <ion-card-subtitle>{{rol.nombre}}</ion-card-subtitle>
-        <ion-card-subtitle>{{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.nombre}}</ion-card-subtitle>
-      </ion-item>
-    </ion-card>
-    <ion-list>
-      <ion-list-header> <h1>Próximos Partidos</h1> </ion-list-header>
-      <ion-item *ngFor="let p of partidos">
-        <ion-label>
-          <h2>{{p?.fecha}}</h2>
-          <h3>{{p?.rival}}</h3>
-          <p>{{p?.ubicacion}}</p>
-        </ion-label>
-        <ion-icon name="chevron-forward-outline" (click)="irAModo()"></ion-icon>
-      </ion-item>
-    </ion-list>
+    <ion-item>
+      Calendario de {{usuario?.nombre + ' ' + usuario?.apellidos}}
+    </ion-item>
 
-    <ion-list>
-      <ion-list-header> <h1>Partidos anteriores</h1></ion-list-header>
-      <ion-item *ngFor="let p of anterioresPartidos">
-        <ion-label>
-          <h2>{{p.fecha}}</h2>
-          <h3>{{p.partido}}</h3>
-          <p>{{p.lugar}}</p>
-        </ion-label>
-        <ion-icon name="chevron-forward-outline"></ion-icon>
-      </ion-item>
+    <ion-list *ngFor="let rol of usuario?.roles">
+      <ion-list-header>Partidos como {{rol.nombre}} del equipo {{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</ion-list-header>
+        <ion-item *ngFor="let partido of rol.equipo.partidos" (click)="irAModo()">
+          <p>{{partido.fecha}}</p>
+          <p>{{partido.rival}}</p>
+          <p>{{partido.ubicacion}}</p>
+          <p>{{partido.tipo}}</p>
+        </ion-item>
     </ion-list>
   </div>
 </ion-content>
