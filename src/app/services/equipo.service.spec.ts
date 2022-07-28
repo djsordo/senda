@@ -6,6 +6,7 @@ import { initializeApp,
 
 import { environment } from './../../environments/environment';
 import { EquipoService } from "./equipo.service";
+import { Equipo } from "../modelo/equipo";
 
 
 fdescribe( 'EquipoService', () => {
@@ -22,6 +23,32 @@ fdescribe( 'EquipoService', () => {
 
   it('should be created', () => {
     expect( equipoService ).toBeTruthy();
+  });
+
+  it('probamos a consultar un equipo', ( endFunctionCall ) => {
+    // comenzamos creando varios equipos
+    Promise.all([
+      equipoService.addEquipo( { nombre : 'rlunaro.sandia' } as Equipo ),
+      equipoService.addEquipo( { nombre : 'rlunaro.melones' } as Equipo ),
+      equipoService.addEquipo( { nombre : 'rlunaro.melocotones' } as Equipo )])
+        .then( ([ ref1, ref2, ref3 ]) => {
+          console.log('creados los tres documentos:');
+          console.log( ref1 );
+          console.log( ref2 );
+          console.log( ref3 );
+          equipoService.queryEquipos( 'rlunaro.sandia' )
+            .then( (docList) => {
+              console.log( 'value of docList:');
+              console.log( docList );
+              expect( docList ).toBeTrue();
+              endFunctionCall();
+              Promise.all([
+                //equipoService.deleteEquipo( ref1 ),
+                //equipoService.deleteEquipo( ref2 ),
+                //equipoService.deleteEquipo( ref3 )
+              ]);
+            });
+        });
   });
 
   it('guardamos un equipo', ()=>{

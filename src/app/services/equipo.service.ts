@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Firestore } from '@angular/fire/firestore';
-import { addDoc, 
-        CollectionReference,
-        deleteDoc,
-        collection,
-        DocumentData } from 'firebase/firestore';
+import { Firestore, addDoc, 
+          CollectionReference,
+          deleteDoc,
+          collection,
+          DocumentData, 
+          query} from '@angular/fire/firestore';
+import { Query} from 'firebase/firestore';
 
 import { Equipo } from "../modelo/equipo";
 
@@ -26,6 +27,10 @@ export class EquipoService {
 
   async addEquipo( equipo : Equipo ){
     return addDoc( this.equipoRef, equipo );
+  }
+
+  async queryEquipos( nameContains : string ){
+    return query( this.equipoRef );
   }
 
   async deleteEquipo( document : any ){
