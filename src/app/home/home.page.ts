@@ -1,11 +1,12 @@
+import { PasoDatosService } from './../services/paso-datos.service';
 /* eslint-disable @typescript-eslint/member-ordering */
 import { UsuarioService } from './../services/usuario.service';
-import { PartidosService } from './../services/partidos.service';
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
-import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-home',
@@ -16,12 +17,9 @@ export class HomePage implements OnInit {
   usuario: Usuario;
   partidos: Partido[];
 
-  proximosPartidos: any;
-  anterioresPartidos: any;
-
-  constructor(private partidosService: PartidosService,
-              private router: Router,
-              private usuarioService: UsuarioService
+  constructor(private router: Router,
+              private usuarioService: UsuarioService,
+              private pasoDatosService: PasoDatosService
               ) {
   }
 
@@ -34,25 +32,11 @@ export class HomePage implements OnInit {
       this.usuario = usuarios[0];
       console.log('usuario: ', usuarios);
     });
-
-    this.proximosPartidos = this.partidosService.obtenerProximosPartidos();
-    this.anterioresPartidos = this.partidosService.obtenerAnterioresPartidos();
   }
 
-  obtenerPartidos(){
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < this.usuario?.roles.length; i++ ){
-      const equipoId = this.usuario.roles[i].equipo.equipoId;
-      this.partidosService.getPartidos(equipoId).subscribe(partidos => {
-        this.partidos = this.partidos.concat(partidos);
-        console.log('Partidos: ', partidos);
-      });
-    }
-
-  }
-
-  irAModo(){
+  irAModo(equipoId: string){
     /* this.router.navigate(['/modo-jugador']); */
+    this.pasoDatosService.setEquipoId(equipoId);
     this.router.navigate(['/inicio-sel-jugadores']);
   }
 

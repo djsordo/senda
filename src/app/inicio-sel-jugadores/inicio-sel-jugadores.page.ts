@@ -29,6 +29,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
   jugadores: Array<Jugador> = [];
 
+  equipoId: string;
   listaInicial = [];
   listaBanquillo = [];
   listaNoConvocados = [];
@@ -45,7 +46,9 @@ export class InicioSelJugadoresPage implements OnInit {
     private pasoDatos: PasoDatosService,
     private jugadoresService: JugadoresService) {
 
-      this.jugadores = this.jugadoresService.getJugadores();
+      /* this.jugadores = this.jugadoresService.getJugadores(); */
+
+
 
     }
 
@@ -54,7 +57,16 @@ export class InicioSelJugadoresPage implements OnInit {
     this.updateGestures();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.equipoId = this.pasoDatos.getEquipoId();
+
+    this.jugadoresService.getJugadoresEquipo(this.equipoId)
+    .subscribe(jugadores => {
+      this.jugadores = jugadores;
+      console.log('jugadores: ', jugadores);
+    });
+  }
 
   updateGestures() {
     this.gestureArray.map(gesture => gesture.destroy());
