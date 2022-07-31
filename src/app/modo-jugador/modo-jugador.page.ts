@@ -7,6 +7,7 @@ import { ToastController } from '@ionic/angular';
 import { Evento } from '../modelo/evento';
 import { MarcadorService } from '../components/marcador/marcador.service';
 import { Acciones } from '../services/eventos.service';
+import { EstadJugador } from '../modelo/estadJugador';
 
 @Component({
   selector: 'app-modo-jugador',
@@ -14,9 +15,10 @@ import { Acciones } from '../services/eventos.service';
   styleUrls: ['./modo-jugador.page.scss'],
 })
 export class ModoJugadorPage implements OnInit {
-  listaInicial: any;
-  listaBanquillo: any;
-  miSuscripcionAEventoJugador : any = null;
+  listaInicial: Array<EstadJugador> = [];
+  listaBanquillo: Array<EstadJugador> = [];
+
+  miSuscripcionAEventoJugador: any = null;
 
   nombres= {
     casa: 'B. M. LAGUNA',
@@ -29,31 +31,57 @@ export class ModoJugadorPage implements OnInit {
   };
 
   constructor(private router: Router,
-              private toastController : ToastController,
+              private toastController: ToastController,
               private pasoDatos: PasoDatosService,
-              private marcadorService : MarcadorService,
-              private tradService : TradService) {
+              private marcadorService: MarcadorService,
+              private tradService: TradService) {
     }
 
   ngOnInit() {
-    this.listaInicial = this.pasoDatos.getListaInicial();
-    this.listaBanquillo = this.pasoDatos.getListaBanquillo();
+    const listaInicialPrevia = this.pasoDatos.getListaInicial();
+    const listaBanquilloPrevia = this.pasoDatos.getListaBanquillo();
 
+    listaInicialPrevia.forEach(jugadorPrevia => {
+      const jugador = {} as EstadJugador;
+      jugador.datos = jugadorPrevia;
+      jugador.amarillas = 0;
+      jugador.azules = 0;
+      jugador.exclusiones = 0;
+      jugador.goles = 0;
+      jugador.lanzFallados = 0;
+      jugador.perdidas = 0;
+      jugador.robos = 0;
+      jugador.rojas = 0;
+      jugador.segExclusion = 0;
+      this.listaInicial.push(jugador);
+    });
+    listaBanquilloPrevia.forEach(jugadorPrevia => {
+      const jugador = {} as EstadJugador;
+      jugador.datos = jugadorPrevia;
+      jugador.amarillas = 0;
+      jugador.azules = 0;
+      jugador.exclusiones = 0;
+      jugador.goles = 0;
+      jugador.lanzFallados = 0;
+      jugador.perdidas = 0;
+      jugador.robos = 0;
+      jugador.rojas = 0;
+      jugador.segExclusion = 0;
+      this.listaBanquillo.push(jugador);
+    });
+    console.log('lista titulares: ',this.listaInicial);
+    console.log('listaBanquillo. ', this.listaBanquillo);
     this.miSuscripcionAEventoJugador =
-    this.pasoDatos.suscribirmeAEventoJugador( (evento : Evento) => {
+    this.pasoDatos.suscribirmeAEventoJugador( (evento: Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );
-      if( evento.accion === Acciones.gol )
+      if( evento.accion === Acciones.gol ){
         this.marcadorService.gol();
-      if( evento.accion === Acciones.gol_rival )
+      }
+      if( evento.accion === Acciones.gol_rival ){
         this.marcadorService.golRival();
-      } );
-      console.log('Entra en subs');
-/*      if (!this.listaInicial){
-      this.pasoDatos.$getListaInicial.subscribe(data => this.listaInicial = data).unsubscribe();
-    }
-    if (!this.listaBanquillo){
-      this.pasoDatos.$getListaBanquillo.subscribe(data => this.listaBanquillo = data).unsubscribe();
-    } */
+      }
+    } );
+    console.log('Entra en subs');
   }
 
   cambiarModo(){
