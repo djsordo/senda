@@ -30,9 +30,9 @@ export class InicioSelJugadoresPage implements OnInit {
   jugadores: Array<Jugador> = [];
 
   equipoId: string;
-  listaInicial = [];
-  listaBanquillo = [];
-  listaNoConvocados = [];
+  listaInicial: Array<Jugador> = [];
+  listaBanquillo: Array<Jugador> = [];
+  listaNoConvocados: Array<Jugador> = [];
 
   posiciones = ['EI', 'ED', 'PI', 'LI', 'LD', 'CE', 'PO'];
   numJugadores = this.posiciones.length;
@@ -251,7 +251,7 @@ export class InicioSelJugadoresPage implements OnInit {
   }
 
   irAModo() {
-
+console.log('li: ',this.listaBanquillo);
     this.pasoDatos.setListaInicial(this.listaInicial);
     this.pasoDatos.setListaBanquillo(this.listaBanquillo);
 
