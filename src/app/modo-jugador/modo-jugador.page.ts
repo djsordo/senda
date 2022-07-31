@@ -39,7 +39,7 @@ export class ModoJugadorPage implements OnInit {
     this.listaInicial = this.pasoDatos.getListaInicial();
     this.listaBanquillo = this.pasoDatos.getListaBanquillo();
 
-    this.miSuscripcionAEventoJugador = 
+    this.miSuscripcionAEventoJugador =
     this.pasoDatos.suscribirmeAEventoJugador( (evento : Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );
       if( evento.accion === Acciones.gol )
@@ -47,7 +47,7 @@ export class ModoJugadorPage implements OnInit {
       if( evento.accion === Acciones.gol_rival )
         this.marcadorService.golRival();
       } );
-
+      console.log('Entra en subs');
 /*      if (!this.listaInicial){
       this.pasoDatos.$getListaInicial.subscribe(data => this.listaInicial = data).unsubscribe();
     }

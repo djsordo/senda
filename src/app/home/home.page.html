@@ -18,17 +18,25 @@
 
   <div id="container">
     <ion-item>
-      Calendario de {{usuario?.nombre + ' ' + usuario?.apellidos}}
+      <h2>Calendario de {{usuario?.nombre + ' ' + usuario?.apellidos}}</h2>
     </ion-item>
 
     <ion-list *ngFor="let rol of usuario?.roles">
-      <ion-list-header>Partidos como {{rol.nombre}} del equipo {{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</ion-list-header>
-        <ion-item *ngFor="let partido of rol.equipo.partidos" (click)="irAModo(rol.equipo.equipoId)">
-          <p>{{partido.fecha}}</p>
-          <p>{{partido.rival}}</p>
-          <p>{{partido.ubicacion}}</p>
-          <p>{{partido.tipo}}</p>
-        </ion-item>
+      <ion-list-header><h3>Partidos como {{rol.nombre}} del equipo {{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</h3></ion-list-header>
+        <ion-card *ngFor="let partido of rol.equipo.partidos" (click)="irAModo(rol.equipo.equipoId)">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">{{partido.fecha}}</ion-col>
+              <ion-col size="6">{{partido.tipo}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">{{rol.equipo.nombre + ' vs. ' + partido.rival}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="12">{{partido.ubicacion}}</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
     </ion-list>
   </div>
 </ion-content>
