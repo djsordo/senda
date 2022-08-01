@@ -1,3 +1,4 @@
+import { Equipo } from './../modelo/equipo';
 import { PasoDatosService } from './../services/paso-datos.service';
 /* eslint-disable @typescript-eslint/member-ordering */
 import { UsuarioService } from './../services/usuario.service';
@@ -34,9 +35,18 @@ export class HomePage implements OnInit {
     });
   }
 
-  irAModo(equipoId: string){
+  irAModo(equipo: Equipo, partido: Partido){
     /* this.router.navigate(['/modo-jugador']); */
-    this.pasoDatosService.setEquipoId(equipoId);
+    console.log('Equipo: ', equipo);
+    console.log('Partido: ', partido);
+    this.pasoDatosService.setEquipoId(equipo.equipoId);
+
+    const nombresEquipos = {casa: '', fuera: ''};
+
+    nombresEquipos.casa = equipo.nombre;
+    nombresEquipos.fuera = partido.rival;
+    this.pasoDatosService.setNombresEquipos(nombresEquipos);
+
     this.router.navigate(['/inicio-sel-jugadores']);
   }
 
