@@ -24,6 +24,13 @@ export class PasoDatosService {
     fuera: string;
   };
 
+  private sumaEstad: {
+    suma: false;
+    accion: '';
+    jugadorId: '';
+  };
+
+
   private datosPantalla: any = {};
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public eventoJugador = new Subject<Evento>();
@@ -68,6 +75,16 @@ export class PasoDatosService {
 
   getEquipoId(){
     return this.equipoId;
+  }
+
+  setSumaEstad(dato: any){
+    this.sumaEstad.suma = dato.suma;
+    this.sumaEstad.accion = dato.accion;
+    this.sumaEstad.jugadorId = dato.jugadorId;
+  }
+
+  getSumaEstad(){
+    return this.sumaEstad;
   }
 
   setNombresEquipos(datos: any){

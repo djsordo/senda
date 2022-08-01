@@ -2,8 +2,6 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
-
-import { Jugador } from '../modelo/jugador';
 import { PasoDatosService } from '../services/paso-datos.service';
 import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../services/balonmano.service';
 import { Acciones, EventosService } from '../services/eventos.service';
@@ -28,7 +26,8 @@ export class DetalleJugadorPage implements OnInit {
     private pasoDatos: PasoDatosService,
     public balonmanoService: BalonmanoService,
     private eventosService: EventosService,
-    private trad: TradService ) {}
+    private trad: TradService,
+    ) {}
 
   detalle: any;
 
@@ -54,6 +53,8 @@ export class DetalleJugadorPage implements OnInit {
     eventoJugador.posicionCampo = this.area_campo;
     eventoJugador.posicionPorteria = this.area_porteria;
     this.pasoDatos.onEventoJugador( eventoJugador );
+
+    this.pasoDatos.setSumaEstad({accion: this.accion, jugadorId: this.jugador.datos.id, suma: true});
     this.router.navigate(['/modo-jugador']);
   }
 

@@ -1,3 +1,4 @@
+import { Accion } from './../../modelo/accion';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -66,6 +67,7 @@ export class TitularesComponent implements OnInit {
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
     /* this.listaExcluidos = []; */
 
+    this.pasoDatos.setSumaEstad({accion: '', jugadorId: '', suma: false});
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -89,6 +91,13 @@ export class TitularesComponent implements OnInit {
         }
       }
     }
+
+    const suma = this.pasoDatos.getSumaEstad();
+    console.log(suma);
+    if (suma?.suma){
+      this.sumaEstad(suma.accion, suma.jugadorId);
+      this.pasoDatos.setSumaEstad({accion: '', jugadorId: '', suma: false});
+    }
   }
 
 
@@ -99,7 +108,7 @@ export class TitularesComponent implements OnInit {
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
-
+    /* this.sumaEstad('goles', jugador.datos.id); */
   }
 
   btnGolRival(jugador: EstadJugador): void{
@@ -129,26 +138,26 @@ export class TitularesComponent implements OnInit {
     this.acordeonJugadores.value = undefined;
   }
 
-  btnAmarilla(jugador: any): void{
-    const mensaje = 'Tarjeta amarilla para ' + jugador.nombre;
+  btnAmarilla(jugador: EstadJugador): void{
+    const mensaje = 'Tarjeta amarilla para ' + jugador.datos.nombre;
     this.toastOk(mensaje);
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
   }
 
-  btnRoja(jugador: any): void{
+  btnRoja(jugador: EstadJugador): void{
     /* this.dosMinutos(jugador.numero); */
-    const mensaje = 'Tarjeta roja para ' + jugador.nombre;
+    const mensaje = 'Tarjeta roja para ' + jugador.datos.nombre;
     this.toastOk(mensaje);
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
   }
 
-  btnAzul(jugador: any): void{
+  btnAzul(jugador: EstadJugador): void{
     /* this.dosMinutos(jugador.numero); */
-    const mensaje = 'Tarjeta azul para ' + jugador.nombre;
+    const mensaje = 'Tarjeta azul para ' + jugador.datos.nombre;
     this.toastOk(mensaje);
 
     // Cerramos el acordeón de jugadores
@@ -238,6 +247,17 @@ export class TitularesComponent implements OnInit {
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
+  }
+
+  sumaEstad(accion: any, jugadorId: any){
+    if (accion === 'goles' || accion === 'lanzFallados'){
+      const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
+      if (accion === 'goles'){
+        this.jugCampo[indice].goles++;
+      } else {
+        this.jugCampo[indice].lanzFallados++;
+      }
+    }
   }
 
   async toastOk(mensaje: string){
