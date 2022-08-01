@@ -3,18 +3,18 @@
     <h2>Jugadores en la pista</h2>  <microfono></microfono>
   </ion-list-header>
   <ion-accordion-group #acordeonJugadores>
-    <ion-accordion *ngIf="portero[0]" value="{{portero[0].numero}}">
+    <ion-accordion *ngIf="portero[0]" value="{{portero[0].datos.numero}}">
       <ion-item slot="header">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <b>{{ portero[0].numero }}</b>
+              <b>{{ portero[0].datos.numero }}</b>
             </ion-col>
             <ion-col size="1">
               <ion-img src="../../../assets/portero.png"></ion-img>
             </ion-col>
             <ion-col size="9">
-              <ion-label>{{ portero[0].nombre }}</ion-label>
+              <ion-label>{{ portero[0].datos.nombre }}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -38,10 +38,10 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Robo" numJugador="{{portero[0].numero}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
+              <app-boton-lista nombreBoton="Robo" numJugador="{{portero[0].datos.numero}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
             </ion-col>
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Pérdida" numJugador="{{portero[0].numero}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
+              <app-boton-lista nombreBoton="Pérdida" numJugador="{{portero[0].datos.numero}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
             </ion-col>
           </ion-row>
           <ion-row class="ion-text-center">
@@ -53,15 +53,15 @@
               <ion-popover trigger="cambioPortero" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-list>
-                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(portero[0].id, elemento.id, true)">
-                      {{elemento.numero + ' ' + elemento.nombre}}
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(portero[0].datos.id, elemento.datos.id, true)">
+                      {{elemento.datos.numero + ' ' + elemento.datos.nombre}}
                     </ion-item>
                   </ion-list>
                 </ng-template>
               </ion-popover>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(portero[0].numero)">
+              <ion-item button color="danger" (click)="dosMinutos(portero[0].datos.numero)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
@@ -82,16 +82,16 @@
       </ion-card>
     </ion-accordion>
 
-    <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.numero}}">
+    <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.datos.numero}}">
       <ion-item slot="header">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <b>{{ titular.numero }}</b>
+              <b>{{ titular.datos.numero }}</b>
             </ion-col>
             <ion-col size="1"></ion-col>
             <ion-col size="9">
-              <ion-label>{{ titular.nombre }}</ion-label>
+              <ion-label>{{ titular.datos.nombre }}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -114,30 +114,30 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Robo" numJugador="{{titular.numero}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
+              <app-boton-lista nombreBoton="Robo" numJugador="{{titular.datos.numero}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
             </ion-col>
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Pérdida" numJugador="{{titular.numero}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
+              <app-boton-lista nombreBoton="Pérdida" numJugador="{{titular.datos.numero}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
             </ion-col>
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" id="{{'cambio' + titular.id}}">
+              <ion-item button color="success" id="{{'cambio' + titular.datos.id}}">
                 <ion-icon name="repeat"></ion-icon>
                 <ion-label slot="end">Cambio</ion-label>
               </ion-item>
-              <ion-popover trigger="{{'cambio' + titular.id}}" [dismissOnSelect]="true">
+              <ion-popover trigger="{{'cambio' + titular.datos.id}}" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-list>
-                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular.id, elemento.id, false)">
-                      {{elemento.numero + ' ' + elemento.nombre}}
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular.datos.id, elemento.datos.id, false)">
+                      {{elemento.datos.numero + ' ' + elemento.datos.nombre}}
                     </ion-item>
                   </ion-list>
                 </ng-template>
               </ion-popover>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(titular.numero)">
+              <ion-item button color="danger" (click)="dosMinutos(titular.datos.numero)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
@@ -158,16 +158,16 @@
       </ion-card>
     </ion-accordion>
 
-    <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.numero}}">
+    <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.datos.numero}}">
       <ion-item slot="header" color="danger">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <b>{{ titular.numero }}</b>
+              <b>{{ titular.datos.numero }}</b>
             </ion-col>
             <ion-col size="1"></ion-col>
             <ion-col size="7">
-              <ion-label>{{ titular.nombre }}</ion-label>
+              <ion-label>{{ titular.datos.nombre }}</ion-label>
             </ion-col>
             <ion-col size="2">
               <ion-label>{{titular.segExclusion*1000 | date: 'm:ss'}}</ion-label>
@@ -179,7 +179,7 @@
         <ion-grid>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(titular.numero)">
+              <ion-item button color="danger" (click)="dosMinutos(titular.datos.numero)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>

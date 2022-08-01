@@ -23,7 +23,7 @@
 
     <ion-list *ngFor="let rol of usuario?.roles">
       <ion-list-header><h3>Partidos como {{rol.nombre}} del equipo {{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</h3></ion-list-header>
-        <ion-card *ngFor="let partido of rol.equipo.partidos" (click)="irAModo(rol.equipo.equipoId)">
+        <ion-card *ngFor="let partido of rol.equipo.partidos" (click)="irAModo(rol.equipo, partido)">
           <ion-grid>
             <ion-row>
               <ion-col size="6">{{partido.fecha}}</ion-col>

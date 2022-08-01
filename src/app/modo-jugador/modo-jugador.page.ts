@@ -40,6 +40,7 @@ export class ModoJugadorPage implements OnInit {
   ngOnInit() {
     const listaInicialPrevia = this.pasoDatos.getListaInicial();
     const listaBanquilloPrevia = this.pasoDatos.getListaBanquillo();
+    this.nombres = this.pasoDatos.getNombresEquipos();
 
     listaInicialPrevia.forEach(jugadorPrevia => {
       const jugador = {} as EstadJugador;
@@ -53,6 +54,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.robos = 0;
       jugador.rojas = 0;
       jugador.segExclusion = 0;
+      jugador.exclusion = false;
       this.listaInicial.push(jugador);
     });
     listaBanquilloPrevia.forEach(jugadorPrevia => {
@@ -67,6 +69,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.robos = 0;
       jugador.rojas = 0;
       jugador.segExclusion = 0;
+      jugador.exclusion = false;
       this.listaBanquillo.push(jugador);
     });
     console.log('lista titulares: ',this.listaInicial);
@@ -100,15 +103,15 @@ export class ModoJugadorPage implements OnInit {
 
   private construyeMensajeEvento( evento: Evento ){
     if( !evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}`;
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}`;
     }else if( evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}\
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
           desde ${this.tradService.t(evento.posicionCampo)}`;
     }else if( !evento.posicionCampo && evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}\
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
       hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }else{
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.nombre}\
+      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
       desde ${this.tradService.t(evento.posicionCampo)} hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }
   }

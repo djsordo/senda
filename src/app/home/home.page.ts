@@ -39,7 +39,7 @@ export class HomePage implements OnInit {
     /* this.router.navigate(['/modo-jugador']); */
     console.log('Equipo: ', equipo);
     console.log('Partido: ', partido);
-    this.pasoDatosService.setEquipoId(equipo.equipoId);
+    this.pasoDatosService.setEquipoId(equipo.id);
 
     const nombresEquipos = {casa: '', fuera: ''};
 

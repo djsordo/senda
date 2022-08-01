@@ -19,6 +19,10 @@ export class PasoDatosService {
   private listaInicial: any;
   private listaBanquillo: any;
   private equipoId: string;
+  private nombresEquipos: {
+    casa: string;
+    fuera: string;
+  };
 
   private datosPantalla: any = {};
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -64,6 +68,14 @@ export class PasoDatosService {
 
   getEquipoId(){
     return this.equipoId;
+  }
+
+  setNombresEquipos(datos: any){
+    this.nombresEquipos = datos;
+  }
+
+  getNombresEquipos(){
+    return this.nombresEquipos;
   }
   /**
    * Paso de datos entre pantallas.

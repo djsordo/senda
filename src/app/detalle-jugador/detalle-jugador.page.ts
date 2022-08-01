@@ -8,6 +8,7 @@ import { PasoDatosService } from '../services/paso-datos.service';
 import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../services/balonmano.service';
 import { Acciones, EventosService } from '../services/eventos.service';
 import { TradService } from '../services/trad.service';
+import { EstadJugador } from '../modelo/estadJugador';
 
 
 @Component({
@@ -19,37 +20,37 @@ export class DetalleJugadorPage implements OnInit {
 
   public area_campo = '';
   public area_porteria = '';
-  private accion: Acciones = null; 
-  private jugador: Jugador = null;
+  private accion: Acciones = null;
+  private jugador: EstadJugador = null;
 
   constructor(private toastController: ToastController,
     private router: Router,
-    private pasoDatos: PasoDatosService, 
-    public balonmanoService : BalonmanoService, 
-    private eventosService : EventosService,
-    private trad : TradService ) {}
+    private pasoDatos: PasoDatosService,
+    public balonmanoService: BalonmanoService,
+    private eventosService: EventosService,
+    private trad: TradService ) {}
 
   detalle: any;
 
   ngOnInit() {
-    this.accion = this.pasoDatos.getPantalla("detalle-jugador").accion;
-    this.jugador = this.pasoDatos.getPantalla("detalle-jugador").jugador;
+    this.accion = this.pasoDatos.getPantalla('detalle-jugador').accion;
+    this.jugador = this.pasoDatos.getPantalla('detalle-jugador').jugador;
   }
 
-  public onCampoClicked( event : string ){
-    console.log( "campo: ", event );
+  public onCampoClicked( event: string ){
+    console.log( 'campo: ', event );
     this.area_campo = event;
   }
 
-  public onPorteriaClicked( event : string ){
-    console.log( "porteria: ", event );
+  public onPorteriaClicked( event: string ){
+    console.log( 'porteria: ', event );
     this.area_porteria = event;
   }
 
   btnOk(){
     let eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = this.accion; 
-    eventoJugador.jugador = this.jugador; 
+    eventoJugador.accion = this.accion;
+    eventoJugador.jugador = this.jugador;
     eventoJugador.posicionCampo = this.area_campo;
     eventoJugador.posicionPorteria = this.area_porteria;
     this.pasoDatos.onEventoJugador( eventoJugador );
@@ -58,14 +59,14 @@ export class DetalleJugadorPage implements OnInit {
 
   public getTituloPagina() {
     try{
-      return `${this.trad.t(this.accion)} de ${this.jugador.nombre}`;
+      return `${this.trad.t(this.accion)} de ${this.jugador.datos.nombre}`;
     }catch( error ) {
       return "Registra la acción del jugador";
     }
   }
 
   public getCampoName( ) : string {
-    let polygon = this.balonmanoService.campo.polygons.filter( 
+    let polygon = this.balonmanoService.campo.polygons.filter(
         polygon => polygon.id === <PosicionCampo> this.area_campo );
     if( polygon.length )
       return polygon[0].name.es[0];
@@ -74,7 +75,7 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   public getPorteriaName( ): string{
-    let polygon = this.balonmanoService.porteria.polygons.filter( 
+    let polygon = this.balonmanoService.porteria.polygons.filter(
       polygon => polygon.id === <PosicionPorteria> this.area_porteria );
     if( polygon.length )
       return polygon[0].name.es[0];
@@ -83,7 +84,7 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   public getJugador(){
-    return this.jugador.nombre;
+    return this.jugador.datos.nombre;
   }
 
 }

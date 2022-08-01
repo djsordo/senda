@@ -60,7 +60,7 @@ export class InicioSelJugadoresPage implements OnInit {
   ngOnInit() {
 
     this.equipoId = this.pasoDatos.getEquipoId();
-
+console.log(this.equipoId);
     this.jugadoresService.getJugadoresEquipo(this.equipoId)
     .subscribe(jugadores => {
       this.jugadores = jugadores;

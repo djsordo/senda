@@ -1,4 +1,4 @@
-import { Partido } from './partido';
+import { Equipo } from './equipo';
 
 export interface Usuario{
   id?: string;
@@ -11,13 +11,7 @@ export interface Usuario{
   };
   roles: [
     {
-      equipo: {
-        equipoId: string;
-        nombre: string;
-        categoria: string;
-        genero: string;
-        partidos: Partido[];
-      };
+      equipo: Equipo;
       nombre: string;
     }
   ];

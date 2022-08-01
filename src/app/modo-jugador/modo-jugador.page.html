@@ -19,10 +19,10 @@
     </ion-row>
     <ion-row>
       <ion-col class="ion-no-padding">
-        <app-marcador [nombreEquipo]="nombres.casa" [marcador]="marcador.nuestro" [nosotros]="true"></app-marcador>
+        <app-marcador [nombreEquipo]="nombres.casa" [nosotros]="true"></app-marcador>
       </ion-col>
       <ion-col class="ion-no-padding">
-        <app-marcador [nombreEquipo]="nombres.fuera" [marcador]="marcador.rival" [nosotros]="false"></app-marcador>
+        <app-marcador [nombreEquipo]="nombres.fuera" [nosotros]="false"></app-marcador>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -31,7 +31,7 @@
     <ion-grid>
       <ion-row>
         <ion-col class="ion-no-padding ion-text-center">
-          <app-titulares></app-titulares>
+          <app-titulares [jugCampo]="listaInicial" [listaBanquillo]="listaBanquillo"></app-titulares>
         </ion-col>
       </ion-row>
     </ion-grid>
