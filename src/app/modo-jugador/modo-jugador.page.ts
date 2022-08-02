@@ -55,6 +55,8 @@ export class ModoJugadorPage implements OnInit {
       jugador.rojas = 0;
       jugador.segExclusion = 0;
       jugador.exclusion = false;
+      jugador.paradas = 0;
+      jugador.golesRival = 0;
       this.listaInicial.push(jugador);
     });
     listaBanquilloPrevia.forEach(jugadorPrevia => {
@@ -70,6 +72,8 @@ export class ModoJugadorPage implements OnInit {
       jugador.rojas = 0;
       jugador.segExclusion = 0;
       jugador.exclusion = false;
+      jugador.paradas = 0;
+      jugador.golesRival = 0;
       this.listaBanquillo.push(jugador);
     });
     console.log('lista titulares: ',this.listaInicial);
@@ -115,5 +119,4 @@ export class ModoJugadorPage implements OnInit {
       desde ${this.tradService.t(evento.posicionCampo)} hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }
   }
-
 }

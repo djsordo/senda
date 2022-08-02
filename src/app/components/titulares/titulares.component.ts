@@ -1,4 +1,3 @@
-import { Accion } from './../../modelo/accion';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,14 +16,11 @@ export class TitularesComponent implements OnInit {
   @Input() jugCampo: Array<EstadJugador>;
   @Input() listaBanquillo: Array<EstadJugador>;
 
-  /* listaInicial: any; */
-  /* listaBanquillo: any; */
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
 
   listaExcluidos: Array<EstadJugador> = [];
   portero: Array<EstadJugador> = [];
-  /* jugCampo: any; */
 
   listaRobos= [{nombre: 'Pase'},
               {nombre: 'Falta en ataque'},
@@ -41,33 +37,26 @@ export class TitularesComponent implements OnInit {
   constructor(private router: Router,
     private crono: CronoService,
     private pasoDatos: PasoDatosService,
-    private toastController: ToastController) {
-
-    }
+    private toastController: ToastController) {}
 
   ngOnInit() {
-    /* this.jugCampo = this.pasoDatos.getListaInicial(); */
-
     // divido la lista inicial en portero y jugadores de campo
     const indicePortero = this.jugCampo?.indexOf(this.jugCampo.find(po => po.datos.posicion === 'PO'));
 
     if (indicePortero >= 0 ){
       this.portero = this.jugCampo.splice(indicePortero, 1);
       this.portero[0].exclusion = false;
-      /* this.portero[0].segExclusion = 0; */
     }
 
     this.jugCampo = this.jugCampo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
     for (let i = 0; i < this.jugCampo?.length; i++){
      this.jugCampo[i].exclusion = false;
-     /* this.jugCampo[i].segExclusion = 0; */
     }
 
-    /* this.listaBanquillo = this.pasoDatos.getListaBanquillo()?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero)); */
     this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
-    /* this.listaExcluidos = []; */
 
-    this.pasoDatos.setSumaEstad({accion: '', jugadorId: '', suma: false});
+    localStorage.setItem('accion', '');
+    localStorage.setItem('jugadorId', '');
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -92,14 +81,13 @@ export class TitularesComponent implements OnInit {
       }
     }
 
-    const suma = this.pasoDatos.getSumaEstad();
-    console.log(suma);
-    if (suma?.suma){
-      this.sumaEstad(suma.accion, suma.jugadorId);
-      this.pasoDatos.setSumaEstad({accion: '', jugadorId: '', suma: false});
+    if (localStorage.getItem('accion') !== ''){
+      this.sumaEstad(localStorage.getItem('accion'), localStorage.getItem('jugadorId'));
+      localStorage.setItem('accion', '');
+      localStorage.setItem('jugadorId', '');
+
     }
   }
-
 
   btnGol(jugador: EstadJugador): void{
     const detalle = {accion: Acciones.gol, jugador};
@@ -108,7 +96,6 @@ export class TitularesComponent implements OnInit {
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
-    /* this.sumaEstad('goles', jugador.datos.id); */
   }
 
   btnGolRival(jugador: EstadJugador): void{
@@ -229,8 +216,6 @@ export class TitularesComponent implements OnInit {
     const entra = this.listaBanquillo.findIndex(res => res.datos.id === cambio);
     const jugEntra = this.listaBanquillo.splice(entra, 1);
 
-    //console.log('Entra: ', jugEntra[0]);
-    //console.log('Sale: ', jugSale[0]);
     if (esPortero){
       this.portero.push(jugEntra[0]);
     } else {
@@ -239,27 +224,47 @@ export class TitularesComponent implements OnInit {
 
     this.listaBanquillo.push(jugSale[0]);
 
-    //console.log('Titulares: ', this.jugCampo);
-    //console.log('Banquillo: ', this.listaBanquillo);
-
-    const mensaje = 'Sale ' + jugSale[0].nombre + ' y entra ' + jugEntra[0].datos.nombre;
+    const mensaje = 'Sale ' + jugSale[0].datos.nombre + ' y entra ' + jugEntra[0].datos.nombre;
     this.toastOk(mensaje);
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
   }
 
-  sumaEstad(accion: any, jugadorId: any){
-    if (accion === 'goles' || accion === 'lanzFallados'){
+   sumaEstad(accion: any, jugadorId: any){
+    if (accion === 'accion.gol' || accion === 'accion.lanzamiento'){
       const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
-      if (accion === 'goles'){
+      if (accion === 'accion.gol'){
         this.jugCampo[indice].goles++;
       } else {
         this.jugCampo[indice].lanzFallados++;
       }
+    } else if (accion === 'accion.parada' || accion === 'accion.gol_rival'){
+      if (accion === 'accion.parada'){
+        this.portero[0].paradas++;
+      } else {
+        this.portero[0].golesRival++;
+      }
+    } else if (accion === 'accion.robo'){
+      if (this.portero[0].datos.id === jugadorId){
+        // Es un robo del portero
+        this.portero[0].robos++;
+      } else {
+        // Es un robo de un jugador de campo
+        const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
+        this.jugCampo[indice].robos++;
+      }
+    } else if (accion === 'accion.perdida'){
+      if (this.portero[0].datos.id === jugadorId){
+        // Es una pérdida del portero
+        this.portero[0].perdidas++;
+      } else {
+        // Es una pérdida de un jugador de campo
+        const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
+        this.jugCampo[indice].perdidas++;
+      }
     }
-  }
-
+   }
   async toastOk(mensaje: string){
     const toast = await this.toastController.create({
       message: mensaje,

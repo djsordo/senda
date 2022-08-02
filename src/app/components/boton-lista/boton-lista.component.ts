@@ -9,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class BotonListaComponent implements OnInit {
   @Input() nombreBoton: string;
   @Input() lista: any;
-  @Input() numJugador: string;
+  @Input() idJugador: string;
   @Input() icono: string;
   @Input() colorBoton: string;
 
@@ -18,6 +18,13 @@ export class BotonListaComponent implements OnInit {
   ngOnInit() {}
 
   eleccion(accion2: any, accion1: any){
+    localStorage.setItem('jugadorId', this.idJugador);
+    if (accion1 === 'Robo'){
+      localStorage.setItem('accion', 'accion.robo');
+    } else if (accion1 === 'Pérdida'){
+      localStorage.setItem('accion', 'accion.perdida');
+    }
+
     this.toastElegido(accion1 + ' - ' + accion2);
     console.log(accion1);
     console.log(accion2);

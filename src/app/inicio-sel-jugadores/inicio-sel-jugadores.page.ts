@@ -46,10 +46,7 @@ export class InicioSelJugadoresPage implements OnInit {
     private pasoDatos: PasoDatosService,
     private jugadoresService: JugadoresService) {
 
-      /* this.jugadores = this.jugadoresService.getJugadores(); */
-
-
-
+    /* this.jugadores = this.jugadoresService.getJugadores(); */
     }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface

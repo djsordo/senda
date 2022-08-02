@@ -15,11 +15,13 @@ import { EstadJugador } from '../modelo/estadJugador';
   styleUrls: ['./detalle-jugador.page.scss'],
 })
 export class DetalleJugadorPage implements OnInit {
+  detalle: any;
 
-  public area_campo = '';
-  public area_porteria = '';
+  public areaCampo = '';
+  public areaPorteria = '';
   private accion: Acciones = null;
   private jugador: EstadJugador = null;
+
 
   constructor(private toastController: ToastController,
     private router: Router,
@@ -29,8 +31,6 @@ export class DetalleJugadorPage implements OnInit {
     private trad: TradService,
     ) {}
 
-  detalle: any;
-
   ngOnInit() {
     this.accion = this.pasoDatos.getPantalla('detalle-jugador').accion;
     this.jugador = this.pasoDatos.getPantalla('detalle-jugador').jugador;
@@ -38,23 +38,24 @@ export class DetalleJugadorPage implements OnInit {
 
   public onCampoClicked( event: string ){
     console.log( 'campo: ', event );
-    this.area_campo = event;
+    this.areaCampo = event;
   }
 
   public onPorteriaClicked( event: string ){
     console.log( 'porteria: ', event );
-    this.area_porteria = event;
+    this.areaPorteria = event;
   }
 
   btnOk(){
-    let eventoJugador = this.eventosService.newEvento();
+    const eventoJugador = this.eventosService.newEvento();
     eventoJugador.accion = this.accion;
     eventoJugador.jugador = this.jugador;
-    eventoJugador.posicionCampo = this.area_campo;
-    eventoJugador.posicionPorteria = this.area_porteria;
+    eventoJugador.posicionCampo = this.areaCampo;
+    eventoJugador.posicionPorteria = this.areaPorteria;
     this.pasoDatos.onEventoJugador( eventoJugador );
+    localStorage.setItem('accion', this.accion);
+    localStorage.setItem('jugadorId', this.jugador.datos.id);
 
-    this.pasoDatos.setSumaEstad({accion: this.accion, jugadorId: this.jugador.datos.id, suma: true});
     this.router.navigate(['/modo-jugador']);
   }
 
@@ -62,26 +63,28 @@ export class DetalleJugadorPage implements OnInit {
     try{
       return `${this.trad.t(this.accion)} de ${this.jugador.datos.nombre}`;
     }catch( error ) {
-      return "Registra la acción del jugador";
+      return 'Registra la acción del jugador';
     }
   }
 
-  public getCampoName( ) : string {
-    let polygon = this.balonmanoService.campo.polygons.filter(
-        polygon => polygon.id === <PosicionCampo> this.area_campo );
-    if( polygon.length )
+  public getCampoName(): string {
+    const polygon = this.balonmanoService.campo.polygons.filter(
+        polygon => polygon.id === <PosicionCampo> this.areaCampo );
+    if( polygon.length ){
       return polygon[0].name.es[0];
-    else
+    } else {
       return '';
+    }
   }
 
   public getPorteriaName( ): string{
-    let polygon = this.balonmanoService.porteria.polygons.filter(
-      polygon => polygon.id === <PosicionPorteria> this.area_porteria );
-    if( polygon.length )
+    const polygon = this.balonmanoService.porteria.polygons.filter(
+      polygon => polygon.id === <PosicionPorteria> this.areaPorteria );
+    if( polygon.length ){
       return polygon[0].name.es[0];
-    else
+    } else {
       return '';
+    }
   }
 
   public getJugador(){

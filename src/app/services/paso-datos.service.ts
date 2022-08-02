@@ -1,10 +1,8 @@
 
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { StringDecoder } from 'string_decoder';
 
 import { Evento } from '../modelo/evento';
-import { Jugador } from '../modelo/jugador';
 
 @Injectable({
   providedIn: 'root'
@@ -23,13 +21,6 @@ export class PasoDatosService {
     casa: string;
     fuera: string;
   };
-
-  private sumaEstad: {
-    suma: false;
-    accion: '';
-    jugadorId: '';
-  };
-
 
   private datosPantalla: any = {};
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -75,16 +66,6 @@ export class PasoDatosService {
 
   getEquipoId(){
     return this.equipoId;
-  }
-
-  setSumaEstad(dato: any){
-    this.sumaEstad.suma = dato.suma;
-    this.sumaEstad.accion = dato.accion;
-    this.sumaEstad.jugadorId = dato.jugadorId;
-  }
-
-  getSumaEstad(){
-    return this.sumaEstad;
   }
 
   setNombresEquipos(datos: any){

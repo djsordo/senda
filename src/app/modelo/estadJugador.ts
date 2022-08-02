@@ -11,4 +11,6 @@ export interface EstadJugador{
   rojas: number;
   azules: number;
   exclusion: boolean;
+  paradas: number;
+  golesRival: number;
 };
