@@ -55,6 +55,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.rojas = 0;
       jugador.segExclusion = 0;
       jugador.exclusion = false;
+      jugador.exclusiones = 0;
       jugador.paradas = 0;
       jugador.golesRival = 0;
       this.listaInicial.push(jugador);
@@ -72,6 +73,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.rojas = 0;
       jugador.segExclusion = 0;
       jugador.exclusion = false;
+      jugador.exclusiones = 0;
       jugador.paradas = 0;
       jugador.golesRival = 0;
       this.listaBanquillo.push(jugador);
@@ -87,8 +89,9 @@ export class ModoJugadorPage implements OnInit {
       if( evento.accion === Acciones.gol_rival ){
         this.marcadorService.golRival();
       }
+      console.log('Entra en subs');
     } );
-    console.log('Entra en subs');
+
   }
 
   cambiarModo(){

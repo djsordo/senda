@@ -50,10 +50,10 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Robo" idJugador="{{portero[0].datos.id}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
+              <app-boton-lista nombreBoton="Robo" [jugador]="portero[0]" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
             </ion-col>
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Pérdida" idJugador="{{portero[0].datos.id}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
+              <app-boton-lista nombreBoton="Pérdida" [jugador]="portero[0]" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
             </ion-col>
           </ion-row>
           <ion-row class="ion-text-center">
@@ -65,7 +65,7 @@
               <ion-popover trigger="cambioPortero" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-list>
-                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(portero[0].datos.id, elemento.datos.id, true)">
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(portero[0], elemento, true)">
                       {{elemento.datos.numero + ' ' + elemento.datos.nombre}}
                     </ion-item>
                   </ion-list>
@@ -73,7 +73,7 @@
               </ion-popover>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(portero[0].datos.numero)">
+              <ion-item button color="danger" (click)="dosMinutos(portero[0])">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
@@ -138,10 +138,10 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Robo" idJugador="{{titular.datos.id}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
+              <app-boton-lista nombreBoton="Robo" [jugador]="titular" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
             </ion-col>
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Pérdida" idJugador="{{titular.datos.id}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
+              <app-boton-lista nombreBoton="Pérdida" [jugador]="titular" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
             </ion-col>
           </ion-row>
           <ion-row class="ion-text-center">
@@ -153,7 +153,7 @@
               <ion-popover trigger="{{'cambio' + titular.datos.id}}" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-list>
-                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular.datos.id, elemento.datos.id, false)">
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular, elemento, false)">
                       {{elemento.datos.numero + ' ' + elemento.datos.nombre}}
                     </ion-item>
                   </ion-list>
@@ -161,7 +161,7 @@
               </ion-popover>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(titular.datos.numero)">
+              <ion-item button color="danger" (click)="dosMinutos(titular)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
@@ -199,11 +199,25 @@
           </ion-row>
         </ion-grid>
       </ion-item>
+      <ion-item slot="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2" *ngIf="titular.datos.posicion !== 'PO'"><ion-icon name="football"></ion-icon>{{titular.goles}}</ion-col>
+            <ion-col size="2" *ngIf="titular.datos.posicion !== 'PO'"><ion-icon name="close"></ion-icon>{{titular.lanzFallados}}</ion-col>
+            <ion-col size="2" *ngIf="titular.datos.posicion === 'PO'"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{titular.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="titular.datos.posicion === 'PO'"><ion-icon name="football"></ion-icon>{{titular.golesRival}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{titular.robos}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{titular.perdidas}}</ion-col>
+            <ion-col size="2"><ion-icon name="stopwatch"></ion-icon>{{titular.exclusiones}}</ion-col>
+            <ion-col size="2"><ion-icon name="square" color="amarillo"></ion-icon>{{titular.amarillas}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
       <ion-card slot="content">
         <ion-grid>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(titular.datos.numero)">
+              <ion-item button color="danger" (click)="dosMinutos(titular)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>

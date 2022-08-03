@@ -17,7 +17,9 @@ export enum Acciones {
   dos_minutos = 'accion.2_minutos',
   tarjeta_amarilla = 'accion.tarjeta_amarilla',
   tarjeta_roja = 'accion.tarjeta_roja',
-  tarjeta_azul = 'accion.tarjeta_azul'
+  tarjeta_azul = 'accion.tarjeta_azul',
+  entra = 'accion.entra',
+  sale = 'accion.sale'
 }
 
 @Injectable({
@@ -40,7 +42,9 @@ export class EventosService {
       Acciones.dos_minutos,
       Acciones.tarjeta_amarilla,
       Acciones.tarjeta_roja,
-      Acciones.tarjeta_azul ];
+      Acciones.tarjeta_azul,
+      Acciones.entra,
+      Acciones.sale ];
   }
 
   public getAcciones( ): Acciones[] {
