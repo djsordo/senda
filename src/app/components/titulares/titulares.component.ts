@@ -20,6 +20,7 @@ export class TitularesComponent implements OnInit {
   @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
 
   listaExcluidos: Array<EstadJugador> = [];
+  listaEliminados: Array<EstadJugador> = [];
   portero: Array<EstadJugador> = [];
 
   listaRobos= [{nombre: 'Pase'},
@@ -71,12 +72,12 @@ export class TitularesComponent implements OnInit {
         if (this.listaExcluidos[i].segExclusion === 0) {
           this.listaExcluidos[i].exclusion = false;
           this.crono.deleteCrono2min(this.listaExcluidos[i].datos.id);
-          // devolvemos al jugador a la lista de titulares
+          // devolvemos al jugador a la lista de titulares, o si es la tercera exclusión, roja o azul a la de eliminados
           const titular = this.listaExcluidos.splice(i,1);
-          if (titular[0].datos.posicion === 'PO'){
-            this.portero.push(titular[0]);
+          if (titular[0].exclusiones === 3 || titular[0].rojas === 1 || titular[0].azules === 1) {
+            this.listaEliminados.push(titular[0]);
           } else {
-            this.jugCampo.push(titular[0]);
+            this.listaBanquillo.push(titular[0]);
           }
         }
       }
@@ -137,14 +138,13 @@ export class TitularesComponent implements OnInit {
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
-    /* const mensaje = 'Tarjeta amarilla para ' + jugador.datos.nombre;
-    this.toastOk(mensaje); */
-
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
   }
 
   btnRoja(jugador: EstadJugador): void{
+    this.dosMinutos(jugador);
+
     // Sumamos a la estadística
     localStorage.setItem('jugadorId', jugador.datos.id);
     localStorage.setItem('accion', Acciones.tarjeta_roja);
@@ -155,14 +155,13 @@ export class TitularesComponent implements OnInit {
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
-    /* const mensaje = 'Tarjeta roja para ' + jugador.datos.nombre;
-    this.toastOk(mensaje); */
-
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
   }
 
   btnAzul(jugador: EstadJugador): void{
+    this.dosMinutos(jugador);
+
     // Sumamos a la estadística
     localStorage.setItem('jugadorId', jugador.datos.id);
     localStorage.setItem('accion', Acciones.tarjeta_azul);
@@ -173,8 +172,23 @@ export class TitularesComponent implements OnInit {
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
-    /* const mensaje = 'Tarjeta azul para ' + jugador.datos.nombre;
-    this.toastOk(mensaje); */
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
+  }
+
+  btnDosMinutos(jugador: EstadJugador){
+    this.dosMinutos(jugador);
+
+    // Sumamos a la estadística
+    //this.sumaEstad(Acciones.dos_minutos, jugador.datos.id);
+    localStorage.setItem('jugadorId', jugador.datos.id);
+    localStorage.setItem('accion', Acciones.dos_minutos);
+
+    // Se crea el evento para la base de datos
+    const eventoJugador = this.eventosService.newEvento();
+    eventoJugador.accion = Acciones.dos_minutos;
+    eventoJugador.jugador = jugador;
+    this.pasoDatos.onEventoJugador( eventoJugador );
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
@@ -182,63 +196,43 @@ export class TitularesComponent implements OnInit {
 
   dosMinutos(jugador: EstadJugador){
     let excluido: Array<EstadJugador> = [];
-    if (this.portero[0]?.datos.id === jugador.datos.id){
-      this.portero[0].exclusion = true;
-      this.portero[0].segExclusion = 120;
+    let salir = false;
 
-      // Mandamos al portero a la lista de excluidos
-      excluido = this.portero.splice(0,1);
-      this.listaExcluidos.push(excluido[0]);
-      this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
-    } else {
-      // Jugadores de campo
-      for (let i = 0; i < this.jugCampo?.length; i++){
-        if (this.jugCampo[i].datos.id === jugador.datos.id){
-          this.jugCampo[i].exclusion = true;
-          this.jugCampo[i].segExclusion = 120;
+    // Si está ya en la lista de excluidos, sumamos 120 segundos
+    this.listaExcluidos.forEach(jugExc => {
+      if (jugExc.datos.id === jugador.datos.id){
+        jugExc.segExclusion += 120;
+        this.crono.sumaCrono2min(jugador.datos.id, 120);
+        salir = true;
+      }
+    });
 
-          // Mandamos al jugador a la lista de excluidos
-          excluido = this.jugCampo.splice(i,1);
-          this.listaExcluidos.push(excluido[0]);
-          this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
-          break;
-        }
-       }
+    // Si no está en la lista, lo añadimos
+    if (!salir){
+      if (this.portero[0]?.datos.id === jugador.datos.id){
+        this.portero[0].exclusion = true;
+        this.portero[0].segExclusion = 120;
 
-      // Jugadores ya excluidos
-      if (excluido === undefined) {
-        for (let i = 0; i < this.listaExcluidos?.length; i++){
-          if (this.listaExcluidos[i].datos.id === jugador.datos.id){
-            this.listaExcluidos[i].segExclusion = this.listaExcluidos[i].segExclusion + 120;
+        // Mandamos al portero a la lista de excluidos
+        excluido = this.portero.splice(0,1);
+        this.listaExcluidos.push(excluido[0]);
+        this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
+      } else {
+        // Jugadores de campo
+        for (let i = 0; i < this.jugCampo?.length; i++){
+          if (this.jugCampo[i].datos.id === jugador.datos.id){
+            this.jugCampo[i].exclusion = true;
+            this.jugCampo[i].segExclusion = 120;
 
             // Mandamos al jugador a la lista de excluidos
-            excluido = this.listaExcluidos.slice(i,i+1);
-            console.log(excluido);
-            this.crono.sumaCrono2min(jugador.datos.id, 120);
+            excluido = this.jugCampo.splice(i,1);
+            this.listaExcluidos.push(excluido[0]);
+            this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
             break;
           }
          }
+        }
       }
-
-      }
-
-      // Sumamos a la estadística
-      //this.sumaEstad(Acciones.dos_minutos, jugador.datos.id);
-      localStorage.setItem('jugadorId', jugador.datos.id);
-      localStorage.setItem('accion', Acciones.dos_minutos);
-
-      // Se crea el evento para la base de datos
-      const eventoJugador = this.eventosService.newEvento();
-      eventoJugador.accion = Acciones.dos_minutos;
-      eventoJugador.jugador = jugador;
-      this.pasoDatos.onEventoJugador( eventoJugador );
-
-      /* const mensaje = '2 minutos para ' + excluido[0].datos.nombre;
-      this.toastOk(mensaje); */
-
-      // Cerramos el acordeón de jugadores
-      this.acordeonJugadores.value = undefined;
-
   }
 
   btnCambio(titular: EstadJugador, cambio: EstadJugador, esPortero: boolean){
@@ -283,6 +277,50 @@ export class TitularesComponent implements OnInit {
     this.acordeonJugadores.value = undefined;
   }
 
+  btnEntra(jugador: EstadJugador){
+    // Entra al campo
+    if (jugador.datos.portero && this.portero.length === 0){
+      this.portero.push(jugador);
+    } else {
+      this.jugCampo.push(jugador);
+    }
+
+    // Sale de la lista de banquillo
+    const entra = this.listaBanquillo.findIndex(res => res.datos.id === jugador.datos.id);
+    this.listaBanquillo.splice(entra, 1);
+
+    // Jugador que entra al campo
+    const eventoEntra = this.eventosService.newEvento();
+    eventoEntra.accion = Acciones.entra;
+    eventoEntra.jugador = jugador;
+    this.pasoDatos.onEventoJugador( eventoEntra );
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
+  }
+
+  btnSale(jugador: EstadJugador, esPortero: boolean){
+    // Sale del campo al banquillo
+    this.listaBanquillo.push(jugador);
+
+    // Sale de la lista de portero o de jugCampo
+    if (esPortero){
+      this.portero.splice(0,1);
+
+    } else {
+      const sale = this.jugCampo.findIndex(res => res.datos.id === jugador.datos.id);
+      this.jugCampo.splice(sale, 1);
+    }
+
+    // Jugador que sale del campo
+    const eventoSale = this.eventosService.newEvento();
+    eventoSale.accion = Acciones.sale;
+    eventoSale.jugador = jugador;
+    this.pasoDatos.onEventoJugador( eventoSale );
+
+    // Cerramos el acordeón de jugadores
+    this.acordeonJugadores.value = undefined;
+  }
    sumaEstad(accion: any, jugadorId: any){
     if (accion === 'accion.gol' || accion === 'accion.lanzamiento'){
       const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
@@ -316,20 +354,29 @@ export class TitularesComponent implements OnInit {
         this.jugCampo[indice].perdidas++;
       }
     } else if (accion === Acciones.dos_minutos){
-      // 2 minutos de un jugador de campo
+      // 2 minutos de cualquier jugador
       const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
       this.listaExcluidos[indice].exclusiones++;
     } else if (accion === Acciones.tarjeta_amarilla){
       if (this.portero[0].datos.id === jugadorId){
-        // Es un robo del portero
+        // Amarilla del portero
         this.portero[0].amarillas++;
       } else {
-        // Es un robo de un jugador de campo
+        // Amarilla de un jugador de campo
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
         this.jugCampo[indice].amarillas++;
       }
+    } else if (accion === Acciones.tarjeta_roja){
+      // Roja de cualquier jugador
+      const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
+      this.listaExcluidos[indice].rojas++;
+    } else if (accion === Acciones.tarjeta_azul){
+      // Azul de cualquier jugador
+      const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
+      this.listaExcluidos[indice].azules++;
     }
    }
+
   async toastOk(mensaje: string){
     const toast = await this.toastController.create({
       message: mensaje,
