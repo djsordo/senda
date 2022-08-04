@@ -3,19 +3,34 @@
     <h2>Jugadores en la pista</h2>  <microfono></microfono>
   </ion-list-header>
   <ion-accordion-group #acordeonJugadores>
-    <ion-accordion *ngIf="portero[0]" value="{{portero[0].numero}}">
+    <ion-accordion *ngIf="portero[0]" value="{{portero[0].datos.numero}}">
       <ion-item slot="header">
         <ion-grid>
           <ion-row>
+            <ion-col size="1">
+              <ion-icon name="arrow-down" (click)="btnSale(portero[0], true)"></ion-icon>
+            </ion-col>
             <ion-col size="2">
-              <b>{{ portero[0].numero }}</b>
+              <b>{{ portero[0].datos.numero }}</b>
             </ion-col>
             <ion-col size="1">
               <ion-img src="../../../assets/portero.png"></ion-img>
             </ion-col>
-            <ion-col size="9">
-              <ion-label>{{ portero[0].nombre }}</ion-label>
+            <ion-col size="8">
+              <ion-label>{{ portero[0].datos.nombre }}</ion-label>
             </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item slot="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{portero[0].paradas}}</ion-col>
+            <ion-col size="2"><ion-icon name="football"></ion-icon>{{portero[0].golesRival}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{portero[0].robos}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{portero[0].perdidas}}</ion-col>
+            <ion-col size="2"><ion-icon name="stopwatch"></ion-icon>{{portero[0].exclusiones}}</ion-col>
+            <ion-col size="2"><ion-icon name="square" color="amarillo"></ion-icon>{{portero[0].amarillas}}</ion-col>
           </ion-row>
         </ion-grid>
       </ion-item>
@@ -38,10 +53,10 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Robo" numJugador="{{portero[0].numero}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
+              <app-boton-lista nombreBoton="Robo" [jugador]="portero[0]" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
             </ion-col>
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Pérdida" numJugador="{{portero[0].numero}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
+              <app-boton-lista nombreBoton="Pérdida" [jugador]="portero[0]" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
             </ion-col>
           </ion-row>
           <ion-row class="ion-text-center">
@@ -53,22 +68,22 @@
               <ion-popover trigger="cambioPortero" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-list>
-                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(portero[0].id, elemento.id, true)">
-                      {{elemento.numero + ' ' + elemento.nombre}}
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(portero[0], elemento, true)">
+                      {{elemento.datos.numero + ' ' + elemento.datos.nombre}}
                     </ion-item>
                   </ion-list>
                 </ng-template>
               </ion-popover>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(portero[0].numero)">
+              <ion-item button color="danger" (click)="btnDosMinutos(portero[0])">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo" (click)="btnAmarilla(portero[0])"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(portero[0])" *ngIf="portero[0].amarillas === 0"></ion-button>
               </ion-col>
               <ion-col>
                 <ion-button color="rojo" (click)="btnRoja(portero[0])"></ion-button>
@@ -82,17 +97,32 @@
       </ion-card>
     </ion-accordion>
 
-    <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.numero}}">
+    <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.datos.numero}}">
       <ion-item slot="header">
         <ion-grid>
           <ion-row>
+            <ion-col size="1">
+              <ion-icon name="arrow-down" (click)="btnSale(titular, false)"></ion-icon>
+            </ion-col>
             <ion-col size="2">
-              <b>{{ titular.numero }}</b>
+              <b>{{ titular.datos.numero }}</b>
             </ion-col>
             <ion-col size="1"></ion-col>
-            <ion-col size="9">
-              <ion-label>{{ titular.nombre }}</ion-label>
+            <ion-col size="8">
+              <ion-label>{{ titular.datos.nombre }}</ion-label>
             </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item slot="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2"><ion-icon name="football"></ion-icon>{{titular.goles}}</ion-col>
+            <ion-col size="2"><ion-icon name="close"></ion-icon>{{titular.lanzFallados}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{titular.robos}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{titular.perdidas}}</ion-col>
+            <ion-col size="2"><ion-icon name="stopwatch"></ion-icon>{{titular.exclusiones}}</ion-col>
+            <ion-col size="2"><ion-icon name="square" color="amarillo"></ion-icon>{{titular.amarillas}}</ion-col>
           </ion-row>
         </ion-grid>
       </ion-item>
@@ -114,37 +144,37 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Robo" numJugador="{{titular.numero}}" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
+              <app-boton-lista nombreBoton="Robo" [jugador]="titular" [lista]="listaRobos" icono="thumbs-up" colorBoton="success"></app-boton-lista>
             </ion-col>
             <ion-col size="6">
-              <app-boton-lista nombreBoton="Pérdida" numJugador="{{titular.numero}}" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
+              <app-boton-lista nombreBoton="Pérdida" [jugador]="titular" [lista]="listaPerdidas" icono="thumbs-down" colorBoton="danger"></app-boton-lista>
             </ion-col>
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" id="{{'cambio' + titular.id}}">
+              <ion-item button color="success" id="{{'cambio' + titular.datos.id}}">
                 <ion-icon name="repeat"></ion-icon>
                 <ion-label slot="end">Cambio</ion-label>
               </ion-item>
-              <ion-popover trigger="{{'cambio' + titular.id}}" [dismissOnSelect]="true">
+              <ion-popover trigger="{{'cambio' + titular.datos.id}}" [dismissOnSelect]="true">
                 <ng-template>
                   <ion-list>
-                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular.id, elemento.id, false)">
-                      {{elemento.numero + ' ' + elemento.nombre}}
+                    <ion-item *ngFor="let elemento of listaBanquillo" (click)="btnCambio(titular, elemento, false)">
+                      {{elemento.datos.numero + ' ' + elemento.datos.nombre}}
                     </ion-item>
                   </ion-list>
                 </ng-template>
               </ion-popover>
             </ion-col>
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(titular.numero)">
+              <ion-item button color="danger" (click)="btnDosMinutos(titular)">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo" (click)="btnAmarilla(titular)"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(titular)" *ngIf="titular.amarillas === 0"></ion-button>
               </ion-col>
               <ion-col>
                 <ion-button color="rojo" (click)="btnRoja(titular)"></ion-button>
@@ -158,16 +188,16 @@
       </ion-card>
     </ion-accordion>
 
-    <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.numero}}">
+    <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.datos.numero}}">
       <ion-item slot="header" color="danger">
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <b>{{ titular.numero }}</b>
+              <b>{{ titular.datos.numero }}</b>
             </ion-col>
             <ion-col size="1"></ion-col>
             <ion-col size="7">
-              <ion-label>{{ titular.nombre }}</ion-label>
+              <ion-label>{{ titular.datos.nombre }}</ion-label>
             </ion-col>
             <ion-col size="2">
               <ion-label>{{titular.segExclusion*1000 | date: 'm:ss'}}</ion-label>
@@ -175,26 +205,40 @@
           </ion-row>
         </ion-grid>
       </ion-item>
+      <ion-item slot="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2" *ngIf="titular.datos.posicion !== 'PO'"><ion-icon name="football"></ion-icon>{{titular.goles}}</ion-col>
+            <ion-col size="2" *ngIf="titular.datos.posicion !== 'PO'"><ion-icon name="close"></ion-icon>{{titular.lanzFallados}}</ion-col>
+            <ion-col size="2" *ngIf="titular.datos.posicion === 'PO'"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{titular.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="titular.datos.posicion === 'PO'"><ion-icon name="football"></ion-icon>{{titular.golesRival}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{titular.robos}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{titular.perdidas}}</ion-col>
+            <ion-col size="2"><ion-icon name="stopwatch"></ion-icon>{{titular.exclusiones}}</ion-col>
+            <ion-col size="2"><ion-icon name="square" color="amarillo"></ion-icon>{{titular.amarillas}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
       <ion-card slot="content">
         <ion-grid>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="danger" (click)="dosMinutos(titular.numero)">
+              <ion-item button color="danger" (click)="btnDosMinutos(titular)" *ngIf="titular.exclusiones !== 3 && titular.rojas === 0 && titular.azules === 0">
                 <ion-icon name="stopwatch"></ion-icon>
                 <ion-label slot="end">2 Minutos</ion-label>
               </ion-item>
             </ion-col>
             <ion-row class="ion-text-center">
               <ion-col>
-                <ion-button color="amarillo" (click)="btnAmarilla(titular)"></ion-button>
+                <ion-button color="amarillo" (click)="btnAmarilla(titular)" *ngIf="titular.amarillas === 0 && titular.rojas === 0 && titular.azules === 0"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="rojo" (click)="btnRoja(titular)"></ion-button>
+                <ion-button color="rojo" (click)="btnRoja(titular)" *ngIf="titular.rojas === 0 && titular.azules === 0"></ion-button>
               </ion-col>
               <ion-col>
-                <ion-button  color="azul" (click)="btnAzul(titular)"></ion-button>
+                <ion-button  color="azul" (click)="btnAzul(titular)" *ngIf="titular.rojas === 0 && titular.azules === 0"></ion-button>
               </ion-col>
-              </ion-row>
+            </ion-row>
           </ion-row>
         </ion-grid>
       </ion-card>
@@ -202,6 +246,91 @@
 
   </ion-accordion-group>
 </ion-list>
+
+<!-- Banquillo -->
+<ion-list inset="true">
+  <ion-list-header>
+    <h2>Banquillo</h2>
+  </ion-list-header>
+  <ion-accordion-group #acordeonBanquillo>
+    <ion-accordion *ngFor="let jugador of listaBanquillo" value="{{jugador.datos.id}}">
+      <ion-item slot="header">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="1">
+              <ion-icon *ngIf="portero.length + jugCampo.length + listaExcluidos.length !== 7" name="arrow-up" (click)="btnEntra(jugador)"></ion-icon>
+            </ion-col>
+            <ion-col size="2">
+              <b>{{ jugador.datos.numero }}</b>
+            </ion-col>
+            <ion-col size="1">
+              <ion-img *ngIf="jugador.datos.portero === true" src="../../../assets/portero.png"></ion-img>
+            </ion-col>
+            <ion-col size="8">
+              <ion-label>{{ jugador.datos.nombre }}</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item slot="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="football"></ion-icon>{{jugador.goles}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="close"></ion-icon>{{jugador.lanzFallados}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{jugador.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="football"></ion-icon>{{jugador.golesRival}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{jugador.robos}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{jugador.perdidas}}</ion-col>
+            <ion-col size="2"><ion-icon name="stopwatch"></ion-icon>{{jugador.exclusiones}}</ion-col>
+            <ion-col size="2"><ion-icon name="square" color="amarillo"></ion-icon>{{jugador.amarillas}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-list>
+
+<!-- Eliminados -->
+<ion-list inset="true">
+  <ion-list-header>
+    <h2>Eliminados</h2>
+  </ion-list-header>
+  <ion-accordion-group #acordeonEliminados>
+    <ion-accordion *ngFor="let jugador of listaEliminados" value="{{jugador.datos.id}}">
+      <ion-item slot="header" color="danger">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <b>{{ jugador.datos.numero }}</b>
+            </ion-col>
+            <ion-col size="1">
+              <ion-img *ngIf="jugador.datos.portero === true" src="../../../assets/portero.png"></ion-img>
+            </ion-col>
+            <ion-col size="9">
+              <ion-label>{{ jugador.datos.nombre }}</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item slot="content">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="football"></ion-icon>{{jugador.goles}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="close"></ion-icon>{{jugador.lanzFallados}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{jugador.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="football"></ion-icon>{{jugador.golesRival}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{jugador.robos}}</ion-col>
+            <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{jugador.perdidas}}</ion-col>
+            <ion-col size="2"><ion-icon name="stopwatch"></ion-icon>{{jugador.exclusiones}}</ion-col>
+            <ion-col size="2"><ion-icon name="square" color="amarillo"></ion-icon>{{jugador.amarillas}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-list>
+
 <ion-item>
   <ion-button color="success">Cambio Ataque/Defensa</ion-button>
 </ion-item>

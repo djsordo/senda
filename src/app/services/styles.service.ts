@@ -3,8 +3,8 @@ import { Subject } from 'rxjs';
 
 
 export enum ColorScheme {
-  dontKnow = 0, 
-  lightMode = 1, 
+  dontKnow = 0,
+  lightMode = 1,
   darkMode = 2
 }
 
@@ -19,7 +19,7 @@ export class StylesService {
   constructor() {
     window.matchMedia("(prefers-color-scheme: dark)")
           .addEventListener("change", (event : MediaQueryListEvent) =>{
-              this.onCambioColorScheme( this, event ); 
+              this.onCambioColorScheme( this, event );
           } );
     if( window.matchMedia('(prefers-color-scheme: dark)').matches )
       this.currentColorScheme = ColorScheme.darkMode;
@@ -27,16 +27,16 @@ export class StylesService {
       this.currentColorScheme = ColorScheme.lightMode;
   }
 
-  suscribirmeACambioColorScheme( callback : (data:any) => void ){
-    return this.eventoCambioColorScheme.subscribe( {next: callback } ); 
+  suscribirmeACambioColorScheme( callback: (data: any) => void ){
+    return this.eventoCambioColorScheme.subscribe( {next: callback } );
   }
 
   public getCurrentMode(){
     return this.currentColorScheme;
   }
 
-  private onCambioColorScheme( stylesService: StylesService, 
-                              event : MediaQueryListEvent ){
+  private onCambioColorScheme( stylesService: StylesService,
+                              event: MediaQueryListEvent ){
     if( event.matches ){
       stylesService.currentColorScheme = ColorScheme.darkMode;
     }

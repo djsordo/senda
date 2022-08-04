@@ -16,16 +16,23 @@ export class PasoDatosService {
 
   private listaInicial: any;
   private listaBanquillo: any;
-  private datosPantalla : any = {};
+  private equipoId: string;
+  private nombresEquipos: {
+    casa: string;
+    fuera: string;
+  };
+
+  private datosPantalla: any = {};
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public eventoJugador = new Subject<Evento>();
 
   constructor() {}
 
-  suscribirmeAEventoJugador( callback : (data : Evento) => void ){
+  suscribirmeAEventoJugador( callback: (data: Evento) => void ){
     return this.eventoJugador.subscribe({ next: callback });
   }
 
-  onEventoJugador( evento : Evento ){
+  onEventoJugador( evento: Evento ){
     this.eventoJugador.next( evento );
   }
 
@@ -36,6 +43,7 @@ export class PasoDatosService {
   enviaListaBanquillo(datos: any){
     this.listaBanquillo.next(datos);
   } */
+
   setListaInicial(datos: any){
     this.listaInicial = datos;
   }
@@ -52,17 +60,32 @@ export class PasoDatosService {
     return this.listaBanquillo;
   }
 
+  setEquipoId(datos: any){
+    this.equipoId = datos;
+  }
+
+  getEquipoId(){
+    return this.equipoId;
+  }
+
+  setNombresEquipos(datos: any){
+    this.nombresEquipos = datos;
+  }
+
+  getNombresEquipos(){
+    return this.nombresEquipos;
+  }
   /**
-   * Paso de datos entre pantallas. 
-   * 
-   * Mediante esta llamada se puede indicar un valor de pantalla 
+   * Paso de datos entre pantallas.
+   *
+   * Mediante esta llamada se puede indicar un valor de pantalla
    * y un objeto que se puede pasar a otra pantalla, que lo recogerá
-   * a su vez mediante getPantalla. 
-   * 
-   * @param url 
-   * @param datos 
+   * a su vez mediante getPantalla.
+   *
+   * @param url
+   * @param datos
    */
-  setPantalla(url : string, datos: any){
+  setPantalla(url: string, datos: any){
     this.datosPantalla[url] = datos;
   }
 

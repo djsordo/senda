@@ -1,17 +1,17 @@
+import { Equipo } from './equipo';
+
 export interface Usuario{
   id?: string;
   nombre: string;
   apellidos: string;
   email: string;
   club: {
-    deporte: {
-      nombre: string;
-    };
+    clubId: string;
     nombre: string;
   };
   roles: [
     {
-      equipo: string;
+      equipo: Equipo;
       nombre: string;
     }
   ];

@@ -1,19 +1,11 @@
-import { Equipo } from "./equipo";
-import { Temporada } from "./temporada";
-import { Ubicacion } from "./ubicacion";
 
-export enum TipoPartido {
-  amistoso = "amistoso"
-}
-
-export interface Partido {
-  id : string; 
-  equipo : Equipo; 
-  fecha: Date;
-  jornada: number;
+export interface Partido{
+  id?: string;
+  equipoId: string;
+  fecha: string;
   rival: string;
-  temporada: Temporada;
-  tipo : TipoPartido;
-  ubicacion : Ubicacion;
+  temporadaId: string;
+  tipo: string;
+  ubicacion: string;
+  jugado: boolean;
 }
-

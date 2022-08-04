@@ -23,10 +23,6 @@ export class CronoService {
         this.pasoTiempo();
         this.tiempo.segundo = this.tiempo.segundo + 1;
 
-/*         if (this.tiempo.segundo === 60) {
-          this.tiempo.minuto++;
-          this.tiempo.segundo = 0;
-        } */
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i = 0; i < this.cronos2min.length; i++){
           this.cronos2min[i].segundos = this.cronos2min[i].segundos - 1;
@@ -63,24 +59,24 @@ export class CronoService {
   }
 
   // Se activa un crono de 2 minutos
-  setCrono2min(numeroJug: any, seg: any){
-    const crono2min = {numero: numeroJug, segundos: seg};
+  setCrono2min(juadorId: any, seg: any){
+    const crono2min = {id: juadorId, segundos: seg};
     this.cronos2min.push(crono2min);
   }
 
-  sumaCrono2min(numeroJug: any, seg: any){
-    const indice = this.cronos2min.findIndex(crono => crono.numero === numeroJug);
+  sumaCrono2min(jugadorId: any, seg: any){
+    const indice = this.cronos2min.findIndex(crono => crono.id === jugadorId);
     this.cronos2min[indice].segundos += seg;
   }
 
   // Vemos el crono del jugador
-  getCrono2min(numeroJug: any){
-    return this.cronos2min.find(crono => crono.numero === numeroJug);
+  getCrono2min(jugadorId: any){
+    return this.cronos2min.find(crono => crono.id === jugadorId);
   }
 
   // Borra el crono del jugador
-  deleteCrono2min(numeroJug: any){
-    const indice = this.cronos2min.indexOf(this.cronos2min.find(crono => crono.numero === numeroJug));
+  deleteCrono2min(jugadorId: any){
+    const indice = this.cronos2min.indexOf(this.cronos2min.find(crono => crono.id === jugadorId));
     this.cronos2min.splice(indice, 1);
   }
 }

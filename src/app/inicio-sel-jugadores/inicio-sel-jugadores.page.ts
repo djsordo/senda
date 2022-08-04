@@ -29,9 +29,10 @@ export class InicioSelJugadoresPage implements OnInit {
 
   jugadores: Array<Jugador> = [];
 
-  listaInicial = [];
-  listaBanquillo = [];
-  listaNoConvocados = [];
+  equipoId: string;
+  listaInicial: Array<Jugador> = [];
+  listaBanquillo: Array<Jugador> = [];
+  listaNoConvocados: Array<Jugador> = [];
 
   posiciones = ['EI', 'ED', 'PI', 'LI', 'LD', 'CE', 'PO'];
   numJugadores = this.posiciones.length;
@@ -45,8 +46,7 @@ export class InicioSelJugadoresPage implements OnInit {
     private pasoDatos: PasoDatosService,
     private jugadoresService: JugadoresService) {
 
-      this.jugadores = this.jugadoresService.getJugadores();
-
+    /* this.jugadores = this.jugadoresService.getJugadores(); */
     }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -54,7 +54,16 @@ export class InicioSelJugadoresPage implements OnInit {
     this.updateGestures();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.equipoId = this.pasoDatos.getEquipoId();
+console.log(this.equipoId);
+    this.jugadoresService.getJugadoresEquipo(this.equipoId)
+    .subscribe(jugadores => {
+      this.jugadores = jugadores;
+      console.log('jugadores: ', jugadores);
+    });
+  }
 
   updateGestures() {
     this.gestureArray.map(gesture => gesture.destroy());
@@ -239,7 +248,7 @@ export class InicioSelJugadoresPage implements OnInit {
   }
 
   irAModo() {
-
+console.log('li: ',this.listaBanquillo);
     this.pasoDatos.setListaInicial(this.listaInicial);
     this.pasoDatos.setListaBanquillo(this.listaBanquillo);
 

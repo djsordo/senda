@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 import { Jugador } from '../modelo/jugador';
 
@@ -7,9 +9,9 @@ import { Jugador } from '../modelo/jugador';
 })
 export class JugadoresService {
 
-  jugadores : Array<Jugador> = [];
+  jugadores: Array<Jugador> = [];
 
-  constructor () {
+  constructor(private firestore: Firestore) {
     this.jugadores = [
       {id:  '0', numero: '70', nombre: 'Daniel Vaquero',  portero: true, posicion:'', foto: 'SinImagen.jpg'},
       {id:  '1', numero: '10', nombre: 'Mario Palomo',    portero: true, posicion:'', foto: 'SinImagen.jpg'},
@@ -39,5 +41,9 @@ export class JugadoresService {
     return {} as Jugador;
   }
 
+  getJugadoresEquipo(equipoId: string): Observable<Jugador[]>{
+    const jugadoresRef = query(collection(this.firestore, 'jugadores'), where('equipoId', '==', equipoId));
+    return collectionData(jugadoresRef, {idField: 'id'}) as Observable<Jugador[]>;
+  }
 }
 

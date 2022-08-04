@@ -2,12 +2,11 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
-
-import { Jugador } from '../modelo/jugador';
 import { PasoDatosService } from '../services/paso-datos.service';
 import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../services/balonmano.service';
 import { Acciones, EventosService } from '../services/eventos.service';
 import { TradService } from '../services/trad.service';
+import { EstadJugador } from '../modelo/estadJugador';
 
 
 @Component({
@@ -16,74 +15,80 @@ import { TradService } from '../services/trad.service';
   styleUrls: ['./detalle-jugador.page.scss'],
 })
 export class DetalleJugadorPage implements OnInit {
+  detalle: any;
 
-  public area_campo = '';
-  public area_porteria = '';
-  private accion: Acciones = null; 
-  private jugador: Jugador = null;
+  public areaCampo = '';
+  public areaPorteria = '';
+  private accion: Acciones = null;
+  private jugador: EstadJugador = null;
+
 
   constructor(private toastController: ToastController,
     private router: Router,
-    private pasoDatos: PasoDatosService, 
-    public balonmanoService : BalonmanoService, 
-    private eventosService : EventosService,
-    private trad : TradService ) {}
-
-  detalle: any;
+    private pasoDatos: PasoDatosService,
+    public balonmanoService: BalonmanoService,
+    private eventosService: EventosService,
+    private trad: TradService,
+    ) {}
 
   ngOnInit() {
-    this.accion = this.pasoDatos.getPantalla("detalle-jugador").accion;
-    this.jugador = this.pasoDatos.getPantalla("detalle-jugador").jugador;
+    this.accion = this.pasoDatos.getPantalla('detalle-jugador').accion;
+    this.jugador = this.pasoDatos.getPantalla('detalle-jugador').jugador;
   }
 
-  public onCampoClicked( event : string ){
-    console.log( "campo: ", event );
-    this.area_campo = event;
+  public onCampoClicked( event: string ){
+    console.log( 'campo: ', event );
+    this.areaCampo = event;
   }
 
-  public onPorteriaClicked( event : string ){
-    console.log( "porteria: ", event );
-    this.area_porteria = event;
+  public onPorteriaClicked( event: string ){
+    console.log( 'porteria: ', event );
+    this.areaPorteria = event;
   }
 
   btnOk(){
-    let eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = this.accion; 
-    eventoJugador.jugador = this.jugador; 
-    eventoJugador.posicionCampo = this.area_campo;
-    eventoJugador.posicionPorteria = this.area_porteria;
+    const eventoJugador = this.eventosService.newEvento();
+    eventoJugador.accion = this.accion;
+    eventoJugador.jugador = this.jugador;
+    eventoJugador.posicionCampo = this.areaCampo;
+    eventoJugador.posicionPorteria = this.areaPorteria;
     this.pasoDatos.onEventoJugador( eventoJugador );
+    localStorage.setItem('accion', this.accion);
+    localStorage.setItem('jugadorId', this.jugador.datos.id);
+
     this.router.navigate(['/modo-jugador']);
   }
 
   public getTituloPagina() {
     try{
-      return `${this.trad.t(this.accion)} de ${this.jugador.nombre}`;
+      return `${this.trad.t(this.accion)} de ${this.jugador.datos.nombre}`;
     }catch( error ) {
-      return "Registra la acción del jugador";
+      return 'Registra la acción del jugador';
     }
   }
 
-  public getCampoName( ) : string {
-    let polygon = this.balonmanoService.campo.polygons.filter( 
-        polygon => polygon.id === <PosicionCampo> this.area_campo );
-    if( polygon.length )
+  public getCampoName(): string {
+    const polygon = this.balonmanoService.campo.polygons.filter(
+        polygon => polygon.id === <PosicionCampo> this.areaCampo );
+    if( polygon.length ){
       return polygon[0].name.es[0];
-    else
+    } else {
       return '';
+    }
   }
 
   public getPorteriaName( ): string{
-    let polygon = this.balonmanoService.porteria.polygons.filter( 
-      polygon => polygon.id === <PosicionPorteria> this.area_porteria );
-    if( polygon.length )
+    const polygon = this.balonmanoService.porteria.polygons.filter(
+      polygon => polygon.id === <PosicionPorteria> this.areaPorteria );
+    if( polygon.length ){
       return polygon[0].name.es[0];
-    else
+    } else {
       return '';
+    }
   }
 
   public getJugador(){
-    return this.jugador.nombre;
+    return this.jugador.datos.nombre;
   }
 
 }

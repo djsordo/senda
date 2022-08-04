@@ -9,11 +9,11 @@ import { Component, DoCheck, Input, OnInit } from '@angular/core';
 })
 export class MarcadorComponent implements OnInit, DoCheck {
   @Input() nombreEquipo: string;
-  @Input() marcador: number;
   @Input() nosotros: boolean;
 
+  marcador: number;
   encendido: boolean;
-  
+
   constructor(private cronoService: CronoService,
               private marcadorService: MarcadorService) {
    }

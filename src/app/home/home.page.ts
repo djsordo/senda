@@ -1,10 +1,13 @@
+import { Equipo } from './../modelo/equipo';
+import { PasoDatosService } from './../services/paso-datos.service';
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Observable } from 'rxjs';
 import { UsuarioService } from './../services/usuario.service';
-import { PartidosService } from './../services/partidos.service';
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../modelo/usuario';
+import { Partido } from '../modelo/partido';
+
 
 @Component({
   selector: 'app-home',
@@ -12,30 +15,38 @@ import { Usuario } from '../modelo/usuario';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  usuarios: Usuario;
+  usuario: Usuario;
+  partidos: Partido[];
 
-  proximosPartidos: any;
-  anterioresPartidos: any;
-
-  constructor(private partidosService: PartidosService,
-              private router: Router,
-              private usuarioService: UsuarioService
+  constructor(private router: Router,
+              private usuarioService: UsuarioService,
+              private pasoDatosService: PasoDatosService
               ) {
   }
 
 
   ngOnInit() {
-    this.usuarioService.getUsuario().subscribe(usuarios => {
-      this.usuarios = usuarios[0];
-      console.log(usuarios);
-    });
+    this.partidos = [];
 
-    this.proximosPartidos = this.partidosService.obtenerProximosPartidos();
-    this.anterioresPartidos = this.partidosService.obtenerAnterioresPartidos();
+    this.usuarioService.getUsuario(localStorage.getItem('emailUsuario'))
+    .subscribe(usuarios => {
+      this.usuario = usuarios[0];
+      console.log('usuario: ', usuarios);
+    });
   }
 
-  irAModo(){
+  irAModo(equipo: Equipo, partido: Partido){
     /* this.router.navigate(['/modo-jugador']); */
+    console.log('Equipo: ', equipo);
+    console.log('Partido: ', partido);
+    this.pasoDatosService.setEquipoId(equipo.id);
+
+    const nombresEquipos = {casa: '', fuera: ''};
+
+    nombresEquipos.casa = equipo.nombre;
+    nombresEquipos.fuera = partido.rival;
+    this.pasoDatosService.setNombresEquipos(nombresEquipos);
+
     this.router.navigate(['/inicio-sel-jugadores']);
   }
 
