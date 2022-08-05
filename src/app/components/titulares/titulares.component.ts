@@ -1,10 +1,11 @@
+import { Observable } from 'rxjs';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
 import { PasoDatosService } from './../../services/paso-datos.service';
-import { CronoService } from './../crono/crono.service';
+import { CronoService, Tick } from './../crono/crono.service';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 
 @Component({
@@ -35,6 +36,9 @@ export class TitularesComponent implements OnInit {
 
   ev: Event;
 
+  // Ticks para los cronos
+  tick$: Observable<Tick>;
+
   constructor(private router: Router,
     private crono: CronoService,
     private pasoDatos: PasoDatosService,
@@ -59,20 +63,35 @@ export class TitularesComponent implements OnInit {
 
     localStorage.setItem('accion', '');
     localStorage.setItem('jugadorId', '');
+
+    // Observable ticks
+    this.tick$ = this.crono.tickObservable;
+
+
+    this.tick$.subscribe(res => {
+      if (res.segundos !== 0){
+        this.portero.forEach(jug => jug.segJugados++);
+        this.jugCampo.forEach(jug => jug.segJugados++);
+        this.listaExcluidos.forEach(jug => {
+          //console.log(this.listaExcluidos);
+          jug.segJugados++;
+          jug.segExclusion--;
+        });
+      }
+    });
   }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngDoCheck(){
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
-    /* console.log('ngDoCheck titulares'); */
     if (this.listaExcluidos !== undefined){
       for (let i = 0; i < this.listaExcluidos?.length; i++){
-        this.listaExcluidos[i].segExclusion = this.crono.getCrono2min(this.listaExcluidos[i].datos.id).segundos;
+        //this.listaExcluidos[i].segExclusion = this.crono.getCrono2min(this.listaExcluidos[i].datos.id).segundos;
         if (this.listaExcluidos[i].segExclusion === 0) {
           this.listaExcluidos[i].exclusion = false;
-          this.crono.deleteCrono2min(this.listaExcluidos[i].datos.id);
-          // devolvemos al jugador a la lista de titulares, o si es la tercera exclusión, roja o azul a la de eliminados
+          //this.crono.deleteCrono2min(this.listaExcluidos[i].datos.id);
+          // devolvemos al jugador a la lista de banquillo, o si es la tercera exclusión, roja o azul a la de eliminados
           const titular = this.listaExcluidos.splice(i,1);
           if (titular[0].exclusiones === 3 || titular[0].rojas === 1 || titular[0].azules === 1) {
             this.listaEliminados.push(titular[0]);
@@ -202,7 +221,7 @@ export class TitularesComponent implements OnInit {
     this.listaExcluidos.forEach(jugExc => {
       if (jugExc.datos.id === jugador.datos.id){
         jugExc.segExclusion += 120;
-        this.crono.sumaCrono2min(jugador.datos.id, 120);
+        //this.crono.sumaCrono2min(jugador.datos.id, 120);
         salir = true;
       }
     });
@@ -216,7 +235,7 @@ export class TitularesComponent implements OnInit {
         // Mandamos al portero a la lista de excluidos
         excluido = this.portero.splice(0,1);
         this.listaExcluidos.push(excluido[0]);
-        this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
+        //this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
       } else {
         // Jugadores de campo
         for (let i = 0; i < this.jugCampo?.length; i++){
@@ -227,7 +246,7 @@ export class TitularesComponent implements OnInit {
             // Mandamos al jugador a la lista de excluidos
             excluido = this.jugCampo.splice(i,1);
             this.listaExcluidos.push(excluido[0]);
-            this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
+            //this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
             break;
           }
          }

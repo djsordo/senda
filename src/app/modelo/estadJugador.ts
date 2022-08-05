@@ -13,4 +13,5 @@ export interface EstadJugador{
   exclusion: boolean;
   paradas: number;
   golesRival: number;
+  segJugados: number;
 };

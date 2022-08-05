@@ -58,6 +58,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.exclusiones = 0;
       jugador.paradas = 0;
       jugador.golesRival = 0;
+      jugador.segJugados = 0;
       this.listaInicial.push(jugador);
     });
     listaBanquilloPrevia.forEach(jugadorPrevia => {
@@ -76,6 +77,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.exclusiones = 0;
       jugador.paradas = 0;
       jugador.golesRival = 0;
+      jugador.segJugados = 0;
       this.listaBanquillo.push(jugador);
     });
     console.log('lista titulares: ',this.listaInicial);
@@ -91,7 +93,6 @@ export class ModoJugadorPage implements OnInit {
       }
       console.log('Entra en subs');
     } );
-
   }
 
   cambiarModo(){
