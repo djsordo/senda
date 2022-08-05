@@ -340,6 +340,7 @@ export class TitularesComponent implements OnInit {
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
   }
+
    sumaEstad(accion: any, jugadorId: any){
     if (accion === 'accion.gol' || accion === 'accion.lanzamiento'){
       const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);

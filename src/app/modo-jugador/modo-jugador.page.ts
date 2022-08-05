@@ -85,6 +85,7 @@ export class ModoJugadorPage implements OnInit {
     this.miSuscripcionAEventoJugador =
     this.pasoDatos.suscribirmeAEventoJugador( (evento: Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );
+
       if( evento.accion === Acciones.gol ){
         this.marcadorService.gol();
       }
