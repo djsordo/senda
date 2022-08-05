@@ -13,6 +13,20 @@ export class AppComponent implements OnInit {
     { title: 'Home', 
       url: '/home', 
       icon: 'home'},
+    { title: 'Admin', 
+      url: '/admin', 
+      submenu : [
+        { title : 'Clubes', 
+          url: '#', 
+          icon: 'people'},
+          { title : 'Clubes2', 
+          url: '#', 
+          icon: 'people'},
+          { title : 'Clubes3', 
+          url: '#', 
+          icon: 'people'}
+      ],
+      icon: 'cog'}
   ];
 
   usuarioActivo = {

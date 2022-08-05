@@ -34,6 +34,15 @@ const routes: Routes = [
   {
     path: 'microfono',
     loadChildren: () => import('./microfono/microfono.module').then( m => m.MicrofonoPageModule)
+  },
+  {
+    path: 'admin', 
+    redirectTo: 'admin-home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'admin-home',
+    loadChildren: () => import('./admin/admin-home/admin-home.module').then( m => m.AdminHomePageModule)
   }
 
 
