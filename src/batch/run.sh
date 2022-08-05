@@ -1,5 +1,5 @@
 
-
-tsc app 
-node app.js
+rm -rf dist/*
+tsc
+npm run ejecutar
 

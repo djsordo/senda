@@ -3,9 +3,11 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, 
         query,
         collection } from 'firebase/firestore';
-import { environment } from './environment';
-const readline = require('readline');
+import * as readline from 'readline';
 
+
+import { environment } from '../environments/environment';
+//import { EquipoService } from '../app/services/equipo.service';
 
 class Option{
   value : number;
@@ -16,9 +18,11 @@ class Option{
 // Initialize Firebase
 const app = initializeApp(environment.firebaseConfig);
 const firestore = getFirestore( app );
-const partidoRef = query( collection( firestore, 'partidos' ));
+//let equipoService = new EquipoService( firestore );
 
-console.log( partidoRef );
+//const partidoRef = query( collection( firestore, 'partidos' ));
+
+//console.log( partidoRef );
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -59,24 +63,22 @@ async function showMenuWaitForAnswer( title : string,
 async function menu( title: string, 
             options : Option[] ) {
   let wantsToExit = false;
-  while( !wantsToExit ){
+  let selectedOption = null;
+  while( selectedOption === null ){
     await showMenuWaitForAnswer( title, options )
       .then( (answer) => {
-                          if( answer.value === 0 ){
-                            wantsToExit = true;
-                          }else{
-                            answer.action();
-                          }
+                          selectedOption = answer;
                         } )
       .catch( (answer) => { 
                         console.log( `Opción incorrecta (${answer})` );
                         console.log( "" );} );
   }
+  return selectedOption;
 }
 
 
 async function menuPrincipal(){
-  await menu( 'Menu Principal', 
+  return menu( 'Menu Principal', 
                     [{value: 1, name: 'Equipos', action: menuEquipos },
                     {value: 2, name: 'Partidos', action: doNothing },
                     {value: 3, name: 'Usuarios', action: doNothing },
@@ -85,14 +87,18 @@ async function menuPrincipal(){
 
 
 async function menuEquipos(){
-  await menu( 'Equipos', 
+  return menu( 'Equipos', 
               [ {value: 1, name: 'Alta equipo', action: doNothing },
+                {value: 2, name: 'Baja equipo', action: doNothing },
+                {value: 3, name: 'Modificar equipo', action: doNothing },
                 {value: 0, name: 'Salir', action: doNothing }])
 }
 
 const main = async () => {
 
-  await menuPrincipal();
+  //let option1 = await menuPrincipal();
+  //let option2 = await option1.action();
+  await menuEquipos();
   rl.close();
 }
 

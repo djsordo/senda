@@ -1,7 +1,7 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
-
+src/batch/dist
 src/environments/environment.prod.ts
 src/environments/environment.desa.ts
 src/environments/environment.ts
