@@ -1,37 +1,46 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay" (ionWillOpen)="escribeUsuario()">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>{{usuarioActivo.nombre}}</ion-list-header>
-          <ion-note>{{usuarioActivo.email}}</ion-note>
-        </ion-list>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item routerDirection="root"
-                      *ngIf="!p.submenu" 
-                     [routerLink]="[p.url]" 
-                     lines="none" 
-                     detail="false" routerLinkActive="selected">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-            <ion-item routerDirection="root" 
-                      *ngIf="p.submenu" lines="none"
-                      (click)="p.showDetails = !p.showDetails"
-                      detail="true">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+      <ion-header>
+        <ion-toolbar color="transparent">
+          <ion-icon slot="start" name="menu" size="large" color="primary"
+            (click)="collapseMenu()"></ion-icon>
+          <ion-title>{{usuarioActivo.nombre}}</ion-title>
+          <ion-title size="small">{{usuarioActivo.email}}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list>
+
+          <span *ngFor="let p of appPages">
+            <ion-item #currentElement lines="none"
+            routerLinkActive="selected"
+            [routerLink]="p.url"
+            [detail]="p.submenu"
+            (click)="onClickElement( p, currentElement )">
+              <ion-icon slot="start" [name]="p.icon"
+              [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{p.title}}</ion-label>
             </ion-item>
             <div style="margin-left: 1.7em;" *ngIf="p.submenu && p.showDetails">
-                <ion-list>
-                  <ion-item *ngFor="let subp of p.submenu">
-                    <ion-icon slot="start" [ios]="subp.icon + '-outline'" [md]="subp.icon + '-sharp'"></ion-icon>
-                    <span>{{ subp.title }}</span>
-                  </ion-item>
-                </ion-list>
-              </div>
-          </ion-menu-toggle>
+              <ion-list>
+                <ion-item *ngFor="let subp of p.submenu">
+                  <ion-icon slot="start" 
+                            name="subp.icon"
+                            [ios]="subp.icon + '-outline'" 
+                            [md]="subp.icon + '-sharp'"></ion-icon>
+                  <ion-label>{{ subp.title }}</ion-label>
+                </ion-item>
+              </ion-list>
+            </div>
+          </span>
+
+
+
+        </ion-list>
+
 
       </ion-content>
     </ion-menu>

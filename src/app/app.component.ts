@@ -1,5 +1,5 @@
 import { MenuController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { NavegacionService } from './services/navegacion.service';
 
 
@@ -9,12 +9,16 @@ import { NavegacionService } from './services/navegacion.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
+
+
   public appPages = [
     { title: 'Home', 
       url: '/home', 
       icon: 'home'},
     { title: 'Admin', 
       url: '/admin', 
+      icon: 'cog',
+      showDetails: false,
       submenu : [
         { title : 'Clubes', 
           url: '#', 
@@ -25,8 +29,7 @@ export class AppComponent implements OnInit {
           { title : 'Clubes3', 
           url: '#', 
           icon: 'people'}
-      ],
-      icon: 'cog'}
+      ]}
   ];
 
   usuarioActivo = {
@@ -42,7 +45,23 @@ export class AppComponent implements OnInit {
     this.navegacion.init();
   }
 
-  escribeUsuario() {
+  public collapseMenu() : void {
+    this.menu.toggle();
+  }
+
+  public onClickElement( menuEntry : any, ionItem : any ) : void {
+    console.log( menuEntry );
+    if( menuEntry.submenu ){
+      menuEntry.showDetails = !menuEntry.showDetails;
+    }
+    if( menuEntry.showDetails ) 
+      ionItem.detailIcon = 'chevron-down'; 
+    else
+      ionItem.detailIcon = 'chevron-forward';
+    console.log( ionItem );
+  }
+
+  public escribeUsuario() {
     console.log('entra');
     this.usuarioActivo = {
       nombre: localStorage.getItem('nombreUsuario'),
