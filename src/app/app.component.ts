@@ -50,15 +50,15 @@ export class AppComponent implements OnInit {
   }
 
   public onClickElement( menuEntry : any, ionItem : any ) : void {
-    console.log( menuEntry );
     if( menuEntry.submenu ){
       menuEntry.showDetails = !menuEntry.showDetails;
+    }else{
+      this.menu.toggle();
     }
-    if( menuEntry.showDetails ) 
+    if( menuEntry.showDetails )
       ionItem.detailIcon = 'chevron-down'; 
     else
       ionItem.detailIcon = 'chevron-forward';
-    console.log( ionItem );
   }
 
   public escribeUsuario() {
