@@ -34,6 +34,7 @@ export class CronoService {
 
   pasoTiempo(){
     // Función que se ejecuta cada decima de segundo si el crono está encendido
+    // Valorar setInterval
     setTimeout(() => {
       if (this.tiempo.encendido){
         this.pasoTiempo();
