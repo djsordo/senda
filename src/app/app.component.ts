@@ -21,13 +21,7 @@ export class AppComponent implements OnInit {
       showDetails: false,
       submenu : [
         { title : 'Clubes', 
-          url: '#', 
-          icon: 'people'},
-          { title : 'Clubes2', 
-          url: '#', 
-          icon: 'people'},
-          { title : 'Clubes3', 
-          url: '#', 
+          url: '/admin/clubes', 
           icon: 'people'}
       ]}
   ];
