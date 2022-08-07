@@ -43,6 +43,10 @@ const routes: Routes = [
   {
     path: 'admin/home',
     loadChildren: () => import('./admin/home/admin-home.module').then( m => m.AdminHomePageModule)
+  }, 
+  {
+    path: 'admin/clubes', 
+    loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule )
   }
 
 

@@ -1,7 +1,6 @@
 import { Injectable  } from '@angular/core';
 
 import { CronoService } from '../components/crono/crono.service';
-import { Accion, TipoAccion } from '../modelo/accion';
 import { Evento } from '../modelo/evento';
 
 

@@ -5,7 +5,6 @@ import { BalonmanoService } from 'src/app/services/balonmano.service';
 import { Jugador } from '../../modelo/jugador';
 import { JugadoresService } from 'src/app/services/jugadores.service';
 
-import { Accion } from '../../modelo/accion';
 import { Acciones, EventosService } from '../../services/eventos.service';
 
 import { Evento } from '../../modelo/evento';

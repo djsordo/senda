@@ -1,5 +1,5 @@
 import { MenuController } from '@ionic/angular';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavegacionService } from './services/navegacion.service';
 
 
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
       url: '/home', 
       icon: 'home'},
     { title: 'Admin', 
-      url: '/admin', 
+      url: '/admin/home', 
       icon: 'cog',
       showDetails: false,
       submenu : [

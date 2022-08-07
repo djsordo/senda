@@ -12,4 +12,8 @@ export class AdminHomePage implements OnInit {
   ngOnInit() {
   }
 
+  public getPageTitle(){
+    return "Administración";
+  }
+
 }

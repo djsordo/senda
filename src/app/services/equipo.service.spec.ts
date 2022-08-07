@@ -9,7 +9,7 @@ import { EquipoService } from "./equipo.service";
 import { Equipo } from "../modelo/equipo";
 
 
-fdescribe( 'EquipoService', () => {
+describe( 'EquipoService', () => {
 
   let equipoService : EquipoService;
 
