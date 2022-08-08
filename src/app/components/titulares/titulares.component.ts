@@ -120,7 +120,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnGolRival(jugador: EstadJugador): void{
-    const detalle = {accion: Acciones.gol_rival, jugador};
+    const detalle = {accion: Acciones.golRival, jugador};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
@@ -149,11 +149,11 @@ export class TitularesComponent implements OnInit {
   btnAmarilla(jugador: EstadJugador): void{
     // Sumamos a la estadística
     localStorage.setItem('jugadorId', jugador.datos.id);
-    localStorage.setItem('accion', Acciones.tarjeta_amarilla);
+    localStorage.setItem('accion', Acciones.tarjetaAmarilla);
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.tarjeta_amarilla;
+    eventoJugador.accion = Acciones.tarjetaAmarilla;
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -166,11 +166,11 @@ export class TitularesComponent implements OnInit {
 
     // Sumamos a la estadística
     localStorage.setItem('jugadorId', jugador.datos.id);
-    localStorage.setItem('accion', Acciones.tarjeta_roja);
+    localStorage.setItem('accion', Acciones.tarjetaRoja);
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.tarjeta_roja;
+    eventoJugador.accion = Acciones.tarjetaRoja;
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -183,11 +183,11 @@ export class TitularesComponent implements OnInit {
 
     // Sumamos a la estadística
     localStorage.setItem('jugadorId', jugador.datos.id);
-    localStorage.setItem('accion', Acciones.tarjeta_azul);
+    localStorage.setItem('accion', Acciones.tarjetaAzul);
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.tarjeta_azul;
+    eventoJugador.accion = Acciones.tarjetaAzul;
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -201,11 +201,11 @@ export class TitularesComponent implements OnInit {
     // Sumamos a la estadística
     //this.sumaEstad(Acciones.dos_minutos, jugador.datos.id);
     localStorage.setItem('jugadorId', jugador.datos.id);
-    localStorage.setItem('accion', Acciones.dos_minutos);
+    localStorage.setItem('accion', Acciones.dosMinutos);
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.dos_minutos;
+    eventoJugador.accion = Acciones.dosMinutos;
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -289,9 +289,6 @@ export class TitularesComponent implements OnInit {
     eventoEntra.jugador = jugEntra[0];
     this.pasoDatos.onEventoJugador( eventoEntra );
 
-    /* const mensaje = 'Sale ' + jugSale[0].datos.nombre + ' y entra ' + jugEntra[0].datos.nombre;
-    this.toastOk(mensaje); */
-
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
   }
@@ -373,11 +370,11 @@ export class TitularesComponent implements OnInit {
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
         this.jugCampo[indice].perdidas++;
       }
-    } else if (accion === Acciones.dos_minutos){
+    } else if (accion === Acciones.dosMinutos){
       // 2 minutos de cualquier jugador
       const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
       this.listaExcluidos[indice].exclusiones++;
-    } else if (accion === Acciones.tarjeta_amarilla){
+    } else if (accion === Acciones.tarjetaAmarilla){
       if (this.portero[0].datos.id === jugadorId){
         // Amarilla del portero
         this.portero[0].amarillas++;
@@ -386,11 +383,11 @@ export class TitularesComponent implements OnInit {
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
         this.jugCampo[indice].amarillas++;
       }
-    } else if (accion === Acciones.tarjeta_roja){
+    } else if (accion === Acciones.tarjetaRoja){
       // Roja de cualquier jugador
       const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
       this.listaExcluidos[indice].rojas++;
-    } else if (accion === Acciones.tarjeta_azul){
+    } else if (accion === Acciones.tarjetaAzul){
       // Azul de cualquier jugador
       const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
       this.listaExcluidos[indice].azules++;

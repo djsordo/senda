@@ -8,12 +8,6 @@ import { Evento } from '../modelo/evento';
   providedIn: 'root'
 })
 export class PasoDatosService {
-  /* private listaInicial = new BehaviorSubject<[]>([]);
-  private listaBanquillo = new BehaviorSubject<[]>([]);
-
-  $getListaInicial = this.listaInicial.asObservable();
-  $getListaBanquillo = this.listaBanquillo.asObservable(); */
-
   private listaInicial: any;
   private listaBanquillo: any;
   private equipoId: string;
@@ -35,14 +29,6 @@ export class PasoDatosService {
   onEventoJugador( evento: Evento ){
     this.eventoJugador.next( evento );
   }
-
-/*   enviaListaInicial(datos: any){
-    this.listaInicial.next(datos);
-  }
-
-  enviaListaBanquillo(datos: any){
-    this.listaBanquillo.next(datos);
-  } */
 
   setListaInicial(datos: any){
     this.listaInicial = datos;

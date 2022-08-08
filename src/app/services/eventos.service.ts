@@ -1,23 +1,22 @@
 import { Injectable  } from '@angular/core';
 
 import { CronoService } from '../components/crono/crono.service';
-import { Accion, TipoAccion } from '../modelo/accion';
 import { Evento } from '../modelo/evento';
 
 
 export enum Acciones {
   parada = 'accion.parada',
-  gol_rival = 'accion.gol_rival',
+  golRival = 'accion.gol_rival',
   lanzamiento = 'accion.lanzamiento',
   gol = 'accion.gol',
   tiro = 'accion.tiro',
   perdida = 'accion.perdida',
   robo = 'accion.robo',
   cambio = 'accion.cambio',
-  dos_minutos = 'accion.2_minutos',
-  tarjeta_amarilla = 'accion.tarjeta_amarilla',
-  tarjeta_roja = 'accion.tarjeta_roja',
-  tarjeta_azul = 'accion.tarjeta_azul',
+  dosMinutos = 'accion.2_minutos',
+  tarjetaAmarilla = 'accion.tarjeta_amarilla',
+  tarjetaRoja = 'accion.tarjeta_roja',
+  tarjetaAzul = 'accion.tarjeta_azul',
   entra = 'accion.entra',
   sale = 'accion.sale'
 }
@@ -33,16 +32,16 @@ export class EventosService {
   constructor( private cronoService: CronoService ) {
     this.acciones =
     [ Acciones.parada,
-      Acciones.gol_rival,
+      Acciones.golRival,
       Acciones.gol,
       Acciones.tiro,
       Acciones.perdida,
       Acciones.robo,
       Acciones.cambio,
-      Acciones.dos_minutos,
-      Acciones.tarjeta_amarilla,
-      Acciones.tarjeta_roja,
-      Acciones.tarjeta_azul,
+      Acciones.dosMinutos,
+      Acciones.tarjetaAmarilla,
+      Acciones.tarjetaRoja,
+      Acciones.tarjetaAzul,
       Acciones.entra,
       Acciones.sale ];
   }

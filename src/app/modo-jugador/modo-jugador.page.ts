@@ -80,8 +80,8 @@ export class ModoJugadorPage implements OnInit {
       jugador.segJugados = 0;
       this.listaBanquillo.push(jugador);
     });
-    console.log('lista titulares: ',this.listaInicial);
-    console.log('listaBanquillo. ', this.listaBanquillo);
+    /* console.log('lista titulares: ',this.listaInicial);
+    console.log('listaBanquillo. ', this.listaBanquillo); */
     this.miSuscripcionAEventoJugador =
     this.pasoDatos.suscribirmeAEventoJugador( (evento: Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );
@@ -89,10 +89,10 @@ export class ModoJugadorPage implements OnInit {
       if( evento.accion === Acciones.gol ){
         this.marcadorService.gol();
       }
-      if( evento.accion === Acciones.gol_rival ){
+      if( evento.accion === Acciones.golRival ){
         this.marcadorService.golRival();
       }
-      console.log('Entra en subs');
+      /* console.log('Entra en subs'); */
     } );
   }
 
@@ -104,7 +104,7 @@ export class ModoJugadorPage implements OnInit {
     const toast = await this.toastController.create({
       message: mensaje,
       duration: 2000,
-      position: 'middle'
+      position: 'bottom'
     });
 
     toast.present();
