@@ -1,3 +1,4 @@
+import { Crono } from './../../modelo/crono';
 import { CronoService } from './crono.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,11 +8,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./crono.component.scss'],
 })
 export class CronoComponent implements OnInit {
-  tiempo = {
+  tiempo: Crono = {
     encendido: false,
     parte: 1,
-    minuto: 0,
-    segundo: 0
+    segundos: 0
   };
 
   constructor(private cronoService: CronoService) {

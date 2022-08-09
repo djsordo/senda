@@ -78,6 +78,7 @@ export class JugadorIntentEs{
    * Ejemplos de una frase sencilla:
    * - "gol de cesar"
    * - "paradón de vaquero"
+   *
    * @param sentence
    * @param eventParsed
    * @returns
@@ -94,6 +95,7 @@ export class JugadorIntentEs{
   /**
    * Ejemplos de una frase compleja:
    * - gol de [nombre jugador] desde [posicion] a [porteria]
+   *
    * @param sentence
    * @param eventParsed
    */
@@ -124,7 +126,7 @@ export class JugadorIntentEs{
     return false;
   }
 
-  private parsePorteriaPosicion( sentenceAsWords : string[], eventParsed : Evento ){
+  private parsePorteriaPosicion( sentenceAsWords: string[], eventParsed: Evento ){
     for( let posicion of this.balonmanoService.porteria.polygons ){
       for( let aliasPosicionPorteria of posicion.name.es ){
         let aliasAsWords = aliasPosicionPorteria.split( ' ' );
@@ -138,13 +140,13 @@ export class JugadorIntentEs{
     return false;
   }
 
-  private parseAccion( sentenceAsWords : string[], eventParsed : Evento ){
+  private parseAccion( sentenceAsWords: string[], eventParsed: Evento ){
     for( let accion of this.acciones ){
       let currentAccionAlias = this.aliasAcciones.filter( (elem) => elem.accion === accion )[0]['alias'];
       for( let aliasAccion of currentAccionAlias ) {
         let aliasAsWords = aliasAccion.split(' ');
         if( this.beginsWith( sentenceAsWords, aliasAsWords ) ){
-          eventParsed.accion = accion;
+          eventParsed.accionPrincipal = accion;
           sentenceAsWords.splice( 0, aliasAsWords.length );
           return true;
         }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Crono } from 'src/app/modelo/crono';
 
 export interface Tick {
   segundos: number;
@@ -9,20 +10,16 @@ export interface Tick {
   providedIn: 'root'
 })
 export class CronoService {
-  tiempo = {
+  tiempo: Crono = {
     encendido: false,
     parte: 1,
-    minuto: 0,
-    segundo: 0
+    segundos: 0
   };
-
-  // En este array se llevan los 2 minutos
-  /* cronos2min = []; */
 
   // Observable que de un tick cada segundo cuando el crono está encendido
   private tickObservablePrivate: BehaviorSubject<Tick> = new BehaviorSubject<Tick>({segundos: 0});
 
-  constructor() { }
+  constructor() {}
 
   get tickObservable(){
     return this.tickObservablePrivate.asObservable();
@@ -38,13 +35,8 @@ export class CronoService {
     setTimeout(() => {
       if (this.tiempo.encendido){
         this.pasoTiempo();
-        this.tiempo.segundo = this.tiempo.segundo + 1;
-        this.tickObservableData = {segundos: this.tiempo.segundo};
-
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
-/*         for (let i = 0; i < this.cronos2min.length; i++){
-          this.cronos2min[i].segundos = this.cronos2min[i].segundos - 1;
-        }; */
+        this.tiempo.segundos = this.tiempo.segundos + 1;
+        this.tickObservableData = {segundos: this.tiempo.segundos};
       };
     }, 1000);
 
@@ -53,12 +45,15 @@ export class CronoService {
 
   marcaTiempo(){
     // Función que devuelve el instante actual
-    const ahora = {
+    console.log(this.tiempo);
+
+    /* const ahora: Crono = {
       parte: this.tiempo.parte,
-      minuto: this.tiempo.minuto,
-      segundo: this.tiempo.segundo
-    };
-    return ahora;
+      segundos: this.tiempo.segundos,
+      encendido: this.tiempo.encendido
+    }; */
+
+    return JSON.parse(JSON.stringify(this.tiempo));
   }
 
   getEncendido(){
@@ -76,25 +71,4 @@ export class CronoService {
     this.tiempo.encendido = false;
   }
 
-  // Se activa un crono de 2 minutos
-  /* setCrono2min(juadorId: any, seg: any){
-    const crono2min = {id: juadorId, segundos: seg};
-    this.cronos2min.push(crono2min);
-  } */
-
-  /* sumaCrono2min(jugadorId: any, seg: any){
-    const indice = this.cronos2min.findIndex(crono => crono.id === jugadorId);
-    this.cronos2min[indice].segundos += seg;
-  } */
-
-  // Vemos el crono del jugador
-  /* getCrono2min(jugadorId: any){
-    return this.cronos2min.find(crono => crono.id === jugadorId);
-  } */
-
-  // Borra el crono del jugador
-  /* deleteCrono2min(jugadorId: any){
-    const indice = this.cronos2min.indexOf(this.cronos2min.find(crono => crono.id === jugadorId));
-    this.cronos2min.splice(indice, 1);
-  } */
 }

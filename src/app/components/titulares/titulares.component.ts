@@ -1,3 +1,4 @@
+import { Crono } from './../../modelo/crono';
 import { Observable } from 'rxjs';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
@@ -35,6 +36,7 @@ export class TitularesComponent implements OnInit {
               {nombre: 'Otros'}];
 
   ev: Event;
+  marcaTiempo: Crono;
 
   // Ticks para los cronos
   tick$: Observable<Tick>;
@@ -87,10 +89,10 @@ export class TitularesComponent implements OnInit {
     // Actualizo los cronos de 2 minutos de exclusión
     if (this.listaExcluidos !== undefined){
       for (let i = 0; i < this.listaExcluidos?.length; i++){
-        //this.listaExcluidos[i].segExclusion = this.crono.getCrono2min(this.listaExcluidos[i].datos.id).segundos;
+
         if (this.listaExcluidos[i].segExclusion === 0) {
           this.listaExcluidos[i].exclusion = false;
-          //this.crono.deleteCrono2min(this.listaExcluidos[i].datos.id);
+
           // devolvemos al jugador a la lista de banquillo, o si es la tercera exclusión, roja o azul a la de eliminados
           const titular = this.listaExcluidos.splice(i,1);
           if (titular[0].exclusiones === 3 || titular[0].rojas === 1 || titular[0].azules === 1) {
@@ -111,7 +113,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnGol(jugador: EstadJugador): void{
-    const detalle = {accion: Acciones.gol, jugador};
+    const detalle = {accion: Acciones.gol, jugador, marcaTiempo: this.crono.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
@@ -120,7 +122,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnGolRival(jugador: EstadJugador): void{
-    const detalle = {accion: Acciones.golRival, jugador};
+    const detalle = {accion: Acciones.golRival, jugador, marcaTiempo: this.crono.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
@@ -129,7 +131,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnLanzamiento(jugador: EstadJugador): void{
-    const detalle = {accion: Acciones.lanzamiento, jugador};
+    const detalle = {accion: Acciones.lanzamiento, jugador, marcaTiempo: this.crono.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
@@ -138,7 +140,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnParada(jugador: EstadJugador): void {
-    const detalle = {accion: Acciones.parada, jugador};
+    const detalle = {accion: Acciones.parada, jugador, marcaTiempo: this.crono.marcaTiempo()};
     this.pasoDatos.setPantalla('detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
@@ -153,8 +155,11 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.tarjetaAmarilla;
+    eventoJugador.accionPrincipal = Acciones.tarjetaAmarilla;
     eventoJugador.jugador = jugador;
+    eventoJugador.jugadorId = jugador.datos.id;
+    eventoJugador.partidoId = localStorage.getItem('partidoId');
+    eventoJugador.equipoId = localStorage.getItem('equipoId');
     this.pasoDatos.onEventoJugador( eventoJugador );
 
     // Cerramos el acordeón de jugadores
@@ -170,7 +175,10 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.tarjetaRoja;
+    eventoJugador.accionPrincipal = Acciones.tarjetaRoja;
+    eventoJugador.jugadorId = jugador.datos.id;
+    eventoJugador.partidoId = localStorage.getItem('partidoId');
+    eventoJugador.equipoId = localStorage.getItem('equipoId');
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -187,7 +195,10 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.tarjetaAzul;
+    eventoJugador.accionPrincipal = Acciones.tarjetaAzul;
+    eventoJugador.jugadorId = jugador.datos.id;
+    eventoJugador.partidoId = localStorage.getItem('partidoId');
+    eventoJugador.equipoId = localStorage.getItem('equipoId');
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -205,7 +216,10 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = Acciones.dosMinutos;
+    eventoJugador.accionPrincipal = Acciones.dosMinutos;
+    eventoJugador.jugadorId = jugador.datos.id;
+    eventoJugador.partidoId = localStorage.getItem('partidoId');
+    eventoJugador.equipoId = localStorage.getItem('equipoId');
     eventoJugador.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -254,6 +268,11 @@ export class TitularesComponent implements OnInit {
       }
   }
 
+  btnCambioMarca(){
+    // Se establece una marca de tiempo cuando el usuario presiona el botón de cambio.
+    this.marcaTiempo = this.crono.marcaTiempo();
+  }
+
   btnCambio(titular: EstadJugador, cambio: EstadJugador, esPortero: boolean){
     let jugSale: EstadJugador[];
 
@@ -280,12 +299,23 @@ export class TitularesComponent implements OnInit {
     // Se crean los eventos para la base de datos
     // Jugador que sale del campo
     const eventoSale = this.eventosService.newEvento();
-    eventoSale.accion = Acciones.sale;
+    eventoSale.crono = this.marcaTiempo;
+    eventoSale.accionPrincipal = Acciones.cambio;
+    eventoSale.accionSecundaria = Acciones.sale;
+    eventoSale.jugadorId = jugSale[0].datos.id;
+    eventoSale.partidoId = localStorage.getItem('partidoId');
+    eventoSale.equipoId = localStorage.getItem('equipoId');
     eventoSale.jugador = jugSale[0];
     this.pasoDatos.onEventoJugador( eventoSale );
     // Jugador que entra al campo
     const eventoEntra = this.eventosService.newEvento();
-    eventoEntra.accion = Acciones.entra;
+    eventoEntra.crono = this.marcaTiempo;
+    eventoEntra.accionPrincipal = Acciones.cambio;
+    eventoEntra.accionSecundaria = Acciones.entra;
+    eventoEntra.jugadorId = jugEntra[0].datos.id;
+    eventoEntra.partidoId = localStorage.getItem('partidoId');
+    eventoEntra.equipoId = localStorage.getItem('equipoId');
+
     eventoEntra.jugador = jugEntra[0];
     this.pasoDatos.onEventoJugador( eventoEntra );
 
@@ -307,7 +337,11 @@ export class TitularesComponent implements OnInit {
 
     // Jugador que entra al campo
     const eventoEntra = this.eventosService.newEvento();
-    eventoEntra.accion = Acciones.entra;
+    eventoEntra.accionPrincipal = Acciones.cambio;
+    eventoEntra.accionSecundaria = Acciones.entra;
+    eventoEntra.jugadorId = jugador.datos.id;
+    eventoEntra.partidoId = localStorage.getItem('partidoId');
+    eventoEntra.equipoId = localStorage.getItem('equipoId');
     eventoEntra.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoEntra );
 
@@ -330,7 +364,11 @@ export class TitularesComponent implements OnInit {
 
     // Jugador que sale del campo
     const eventoSale = this.eventosService.newEvento();
-    eventoSale.accion = Acciones.sale;
+    eventoSale.accionPrincipal = Acciones.cambio;
+    eventoSale.accionSecundaria = Acciones.sale;
+    eventoSale.jugadorId = jugador.datos.id;
+    eventoSale.partidoId = localStorage.getItem('partidoId');
+    eventoSale.equipoId = localStorage.getItem('equipoId');
     eventoSale.jugador = jugador;
     this.pasoDatos.onEventoJugador( eventoSale );
 

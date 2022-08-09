@@ -1,3 +1,4 @@
+import { EventosService } from 'src/app/services/eventos.service';
 import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -34,7 +35,8 @@ export class ModoJugadorPage implements OnInit {
               private toastController: ToastController,
               private pasoDatos: PasoDatosService,
               private marcadorService: MarcadorService,
-              private tradService: TradService) {
+              private tradService: TradService,
+              private eventosService: EventosService) {
     }
 
   ngOnInit() {
@@ -86,12 +88,16 @@ export class ModoJugadorPage implements OnInit {
     this.pasoDatos.suscribirmeAEventoJugador( (evento: Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );
 
-      if( evento.accion === Acciones.gol ){
+      if( evento.accionPrincipal === Acciones.gol ){
         this.marcadorService.gol();
       }
-      if( evento.accion === Acciones.golRival ){
+      if( evento.accionPrincipal === Acciones.golRival ){
         this.marcadorService.golRival();
       }
+
+      // Aquí llamo a la función que inserta el evento en la base de datos.
+      console.log('Evento que se guardará: ', evento);
+      this.eventosService.addEventoBD(evento);
       /* console.log('Entra en subs'); */
     } );
   }
@@ -112,15 +118,15 @@ export class ModoJugadorPage implements OnInit {
 
   private construyeMensajeEvento( evento: Evento ){
     if( !evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}`;
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}`;
     }else if( evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}\
           desde ${this.tradService.t(evento.posicionCampo)}`;
     }else if( !evento.posicionCampo && evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}\
       hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }else{
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}\
       desde ${this.tradService.t(evento.posicionCampo)} hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }
   }
