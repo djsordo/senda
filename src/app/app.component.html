@@ -27,7 +27,10 @@
             </ion-item>
             <div style="margin-left: 1.7em;" *ngIf="p.submenu && p.showDetails">
               <ion-list>
-                <ion-item *ngFor="let subp of p.submenu">
+                <ion-item #currentSubmenu *ngFor="let subp of p.submenu"
+                    routerLinkActive="selected"
+                    [routerLink]="subp.url"
+                    (click)="onClickElement( subp, currentSubmenu )">
                   <ion-icon slot="start" 
                             name="subp.icon"
                             [ios]="subp.icon + '-outline'" 

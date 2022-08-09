@@ -87,13 +87,20 @@ fdescribe( 'ClubesService', () => {
 
   it( 'conseguir la lista de clubes', ( callMeOnFinish ) => {
     clubesService.getClubes()
-      .then( (docList) => {
-        expect( docList ).toBeTruthy();
-        docList.forEach( (docRef) =>{
-          console.log( docRef.data() );
-          });
-        callMeOnFinish();
+      .then( (clubList) => {
+        console.log( clubList );
+        // ejemplo de recorrer la lista como un array
+        for( let docSnap of clubList.docs ){
+          console.log( docSnap.data() );
+          expect( docSnap.data() ).toBeTruthy();
+        }
+        // ejemplo de recorrer la lista con un forEach()
+        clubList.forEach( (docSnap) => {
+          console.log( docSnap.data() );
+          expect( docSnap.data() ).toBeTruthy();
         });
+        callMeOnFinish();
+      });
   });
 
 });

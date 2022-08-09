@@ -27,6 +27,15 @@ export class ClubesService {
     return {} as Club;
   }
 
+  async getClubesNOMEFUNCIONA(){
+    let docList = await getDocs( query( this.clubesRef ) );
+    return new Promise( (resolve) => {
+      resolve( docList.forEach( (docRef) => {
+        docRef.data()
+      }) );
+    } );
+  }
+
   async getClubes(){
     return getDocs( query( this.clubesRef ) );
   }

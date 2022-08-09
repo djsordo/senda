@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { ClubesService } from "src/app/services/clubes.service";
 
 
 @Component({
@@ -8,5 +9,13 @@ import { Component } from "@angular/core";
 })
 export class AdminClubesPage {
 
+  constructor( private clubesService : ClubesService ){
+
+  }
+
+  async getClubes() {
+    return this.clubesService.getClubes();
+  }
 
 }
+
