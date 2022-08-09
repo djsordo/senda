@@ -1,3 +1,4 @@
+import { Crono } from './../modelo/crono';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -21,6 +22,7 @@ export class DetalleJugadorPage implements OnInit {
   public areaPorteria = '';
   private accion: Acciones = null;
   private jugador: EstadJugador = null;
+  private marcaTiempo: Crono = null;
 
 
   constructor(private toastController: ToastController,
@@ -34,6 +36,7 @@ export class DetalleJugadorPage implements OnInit {
   ngOnInit() {
     this.accion = this.pasoDatos.getPantalla('detalle-jugador').accion;
     this.jugador = this.pasoDatos.getPantalla('detalle-jugador').jugador;
+    this.marcaTiempo = this.pasoDatos.getPantalla('detalle-jugador').marcaTiempo;
   }
 
   public onCampoClicked( event: string ){
@@ -48,7 +51,11 @@ export class DetalleJugadorPage implements OnInit {
 
   btnOk(){
     const eventoJugador = this.eventosService.newEvento();
-    eventoJugador.accion = this.accion;
+    eventoJugador.crono = this.marcaTiempo;
+    eventoJugador.accionPrincipal = this.accion;
+    eventoJugador.jugadorId = this.jugador.datos.id;
+    eventoJugador.partidoId = localStorage.getItem('partidoId');
+    eventoJugador.equipoId = localStorage.getItem('equipoId');
     eventoJugador.jugador = this.jugador;
     eventoJugador.posicionCampo = this.areaCampo;
     eventoJugador.posicionPorteria = this.areaPorteria;

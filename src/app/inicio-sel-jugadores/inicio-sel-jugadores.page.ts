@@ -1,3 +1,4 @@
+import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { Gesture, GestureController } from '@ionic/angular';
 import {
   ChangeDetectorRef,
@@ -44,7 +45,8 @@ export class InicioSelJugadoresPage implements OnInit {
     private gestureCtrl: GestureController,
     private changeDetectorRef: ChangeDetectorRef,
     private pasoDatos: PasoDatosService,
-    private jugadoresService: JugadoresService) {
+    private jugadoresService: JugadoresService,
+    private eventosService: EventosService) {
 
     /* this.jugadores = this.jugadoresService.getJugadores(); */
     }
@@ -57,11 +59,11 @@ export class InicioSelJugadoresPage implements OnInit {
   ngOnInit() {
 
     this.equipoId = this.pasoDatos.getEquipoId();
-console.log(this.equipoId);
+/* console.log(this.equipoId); */
     this.jugadoresService.getJugadoresEquipo(this.equipoId)
     .subscribe(jugadores => {
       this.jugadores = jugadores;
-      console.log('jugadores: ', jugadores);
+      //console.log('jugadores: ', jugadores);
     });
   }
 
@@ -248,7 +250,49 @@ console.log(this.equipoId);
   }
 
   irAModo() {
-console.log('li: ',this.listaBanquillo);
+    // Se crean eventos de titulares, banquillo y no convocado.
+    this.listaInicial.forEach(jug => {
+      // Se crea el evento para la base de datos
+      const eventoJugador = this.eventosService.newEvento();
+      eventoJugador.accionPrincipal = Acciones.titular;
+      eventoJugador.jugador = null;
+      eventoJugador.jugadorId = jug.id;
+      eventoJugador.partidoId = localStorage.getItem('partidoId');
+      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( eventoJugador );
+
+      console.log('Evento que se guardará: ', eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador);
+    });
+
+    this.listaBanquillo.forEach(jug => {
+      // Se crea el evento para la base de datos
+      const eventoJugador = this.eventosService.newEvento();
+      eventoJugador.accionPrincipal = Acciones.banquillo;
+      eventoJugador.jugador = null;
+      eventoJugador.jugadorId = jug.id;
+      eventoJugador.partidoId = localStorage.getItem('partidoId');
+      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( eventoJugador );
+
+      console.log('Evento que se guardará: ', eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador);
+    });
+
+    this.listaNoConvocados.forEach(jug => {
+      // Se crea el evento para la base de datos
+      const eventoJugador = this.eventosService.newEvento();
+      eventoJugador.accionPrincipal = Acciones.noConvocado;
+      eventoJugador.jugador = null;
+      eventoJugador.jugadorId = jug.id;
+      eventoJugador.partidoId = localStorage.getItem('partidoId');
+      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( eventoJugador );
+
+      console.log('Evento que se guardará: ', eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador);
+    });
+
     this.pasoDatos.setListaInicial(this.listaInicial);
     this.pasoDatos.setListaBanquillo(this.listaBanquillo);
 

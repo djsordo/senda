@@ -39,6 +39,11 @@ export class HomePage implements OnInit {
     /* this.router.navigate(['/modo-jugador']); */
     console.log('Equipo: ', equipo);
     console.log('Partido: ', partido);
+    // Meto el partidoId y el equipoId en el localStorage, porque los usaré más tarde.
+    localStorage.setItem('partidoId', partido.id);
+    localStorage.setItem('equipoId', equipo.id);
+
+    // Probablemente pueda quitar esto, ya que el dato está ya en localStorage
     this.pasoDatosService.setEquipoId(equipo.id);
 
     const nombresEquipos = {casa: '', fuera: ''};
