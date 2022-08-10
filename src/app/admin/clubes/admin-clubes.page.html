@@ -24,10 +24,10 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-card>
+        <ion-card *ngFor="let p of prueba">
           <ion-card-header>
             <ion-icon name="football" size="large"></ion-icon>
-            <ion-card-title>Club balonmano laguna</ion-card-title>
+            <ion-card-title>{{p.nombre}}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
             
