@@ -3,7 +3,6 @@ import { Crono } from './../../modelo/crono';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
-import { ToastController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -20,8 +19,7 @@ export class BotonListaComponent implements OnInit {
 
   marcaTiempo: Crono;
 
-  constructor(private toastController: ToastController,
-              private eventosService: EventosService,
+  constructor(private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
               private crono: CronoService) {}
 
@@ -51,7 +49,7 @@ export class BotonListaComponent implements OnInit {
     eventoJugador.jugadorId = this.jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
     eventoJugador.equipoId = localStorage.getItem('equipoId');
-    eventoJugador.jugador = this.jugador;
+    eventoJugador.creadorEvento = this.jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
     console.log(accion1);

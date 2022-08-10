@@ -154,7 +154,7 @@ export class JugadorIntentEs{
     return false;
   }
 
-  private parseJugador( sentenceAsWords : string[], eventParsed : Evento ){
+  private parseJugador( sentenceAsWords: string[], eventParsed : Evento ){
     let result = false;
     if( sentenceAsWords.length > 1 ) {
       // intentaremos identificar un nombre especificado como nombre y apellido
@@ -162,7 +162,10 @@ export class JugadorIntentEs{
       let jugadorEncontrado;
       if( (jugadorEncontrado = this.encontradoUnJugador( sentenceAsWords.slice(0,2) ) ) ){
         sentenceAsWords.splice(0, 2);
-        eventParsed.jugador = jugadorEncontrado;
+        // esto está cambiado porque he cambiado el interfaz de Evento
+        /* eventParsed.jugador = jugadorEncontrado; */
+        eventParsed.creadorEvento = jugadorEncontrado.datos.nombre;
+        //------------------------------------------------------------
         result = true;
       }
     }
@@ -172,7 +175,10 @@ export class JugadorIntentEs{
       let jugadorEncontrado;
       if( (jugadorEncontrado = this.encontradoUnJugador( [sentenceAsWords[0]] ) ) ){
         sentenceAsWords.splice(0, 1);
-        eventParsed.jugador = jugadorEncontrado;
+        // esto está cambiado porque he cambiado el interfaz de Evento
+        /* eventParsed.jugador = jugadorEncontrado; */
+        eventParsed.creadorEvento = jugadorEncontrado.datos.nombre;
+        //------------------------------------------------------------
         result = true;
       }
     }

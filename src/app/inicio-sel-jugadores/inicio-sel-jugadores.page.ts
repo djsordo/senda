@@ -1,3 +1,4 @@
+import { EstadJugador } from './../modelo/estadJugador';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { Gesture, GestureController } from '@ionic/angular';
 import {
@@ -255,42 +256,42 @@ export class InicioSelJugadoresPage implements OnInit {
       // Se crea el evento para la base de datos
       const eventoJugador = this.eventosService.newEvento();
       eventoJugador.accionPrincipal = Acciones.titular;
-      eventoJugador.jugador = null;
+      eventoJugador.creadorEvento = jug.nombre;
       eventoJugador.jugadorId = jug.id;
       eventoJugador.partidoId = localStorage.getItem('partidoId');
       eventoJugador.equipoId = localStorage.getItem('equipoId');
       this.pasoDatos.onEventoJugador( eventoJugador );
 
       console.log('Evento que se guardará: ', eventoJugador);
-      this.eventosService.addEventoBD(eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
 
     this.listaBanquillo.forEach(jug => {
       // Se crea el evento para la base de datos
       const eventoJugador = this.eventosService.newEvento();
       eventoJugador.accionPrincipal = Acciones.banquillo;
-      eventoJugador.jugador = null;
+      eventoJugador.creadorEvento = jug.nombre;
       eventoJugador.jugadorId = jug.id;
       eventoJugador.partidoId = localStorage.getItem('partidoId');
       eventoJugador.equipoId = localStorage.getItem('equipoId');
       this.pasoDatos.onEventoJugador( eventoJugador );
 
       console.log('Evento que se guardará: ', eventoJugador);
-      this.eventosService.addEventoBD(eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
 
     this.listaNoConvocados.forEach(jug => {
       // Se crea el evento para la base de datos
       const eventoJugador = this.eventosService.newEvento();
       eventoJugador.accionPrincipal = Acciones.noConvocado;
-      eventoJugador.jugador = null;
+      eventoJugador.creadorEvento = jug.nombre;
       eventoJugador.jugadorId = jug.id;
       eventoJugador.partidoId = localStorage.getItem('partidoId');
       eventoJugador.equipoId = localStorage.getItem('equipoId');
       this.pasoDatos.onEventoJugador( eventoJugador );
 
       console.log('Evento que se guardará: ', eventoJugador);
-      this.eventosService.addEventoBD(eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
 
     this.pasoDatos.setListaInicial(this.listaInicial);

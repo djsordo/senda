@@ -16,7 +16,10 @@
           <ion-text>{{marcador}}</ion-text>
         </ion-col>
         <ion-col class="ion-text-end">
-          <ion-icon name="chevron-forward-outline" size="large"></ion-icon>
+          <ion-button *ngIf="!nosotros" color="danger" size="small" (click)="dosMinRival()">
+            <b>2 m</b>
+          </ion-button>
+          <ion-icon *ngIf="nosotros" name="chevron-forward-outline" size="large"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -97,8 +97,7 @@ export class ModoJugadorPage implements OnInit {
 
       // Aquí llamo a la función que inserta el evento en la base de datos.
       console.log('Evento que se guardará: ', evento);
-      this.eventosService.addEventoBD(evento);
-      /* console.log('Entra en subs'); */
+      this.eventosService.addEventoBD(evento).then(even => {evento.id = even.id;});
     } );
   }
 
@@ -118,15 +117,15 @@ export class ModoJugadorPage implements OnInit {
 
   private construyeMensajeEvento( evento: Evento ){
     if( !evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}`;
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}`;
     }else if( evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}\
           desde ${this.tradService.t(evento.posicionCampo)}`;
     }else if( !evento.posicionCampo && evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}\
       hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }else{
-      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}\
       desde ${this.tradService.t(evento.posicionCampo)} hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }
   }

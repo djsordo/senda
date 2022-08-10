@@ -47,9 +47,11 @@ const routes: Routes = [
   {
     path: 'admin/clubes', 
     loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule )
+  },
+  {
+    path: 'modo-ver',
+    loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
   }
-
-
 ];
 
 @NgModule({

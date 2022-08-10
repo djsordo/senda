@@ -1,3 +1,5 @@
+import { PasoDatosService } from './../../services/paso-datos.service';
+import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { MarcadorService } from './../marcador/marcador.service';
 import { CronoService } from './../crono/crono.service';
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
@@ -15,7 +17,9 @@ export class MarcadorComponent implements OnInit, DoCheck {
   encendido: boolean;
 
   constructor(private cronoService: CronoService,
-              private marcadorService: MarcadorService) {
+              private marcadorService: MarcadorService,
+              private eventosService: EventosService,
+              private pasoDatos: PasoDatosService) {
    }
 
   ngOnInit() {
@@ -29,8 +33,29 @@ export class MarcadorComponent implements OnInit, DoCheck {
     this.marcador = this.marcadorService.getMarcador(this.nosotros);
   }
 
+  dosMinRival(){
+    // Se crea el evento para la base de datos
+    const evento = this.eventosService.newEvento();
+    evento.accionPrincipal = Acciones.dosMinutosRival;
+    evento.creadorEvento = this.nombreEquipo;
+    evento.partidoId = localStorage.getItem('partidoId');
+    evento.equipoId = localStorage.getItem('equipoId');
+    this.pasoDatos.onEventoJugador( evento );
+  }
+
   tiempoMuerto(){
     this.cronoService.apagar();
-    console.log(this.cronoService.marcaTiempo());
+
+    // Se crea el evento para la base de datos
+    const evento = this.eventosService.newEvento();
+    if (this.nosotros){
+      evento.accionPrincipal = Acciones.tm;
+    } else {
+      evento.accionPrincipal = Acciones.tmRival;
+    }
+    evento.creadorEvento = this.nombreEquipo;
+    evento.partidoId = localStorage.getItem('partidoId');
+    evento.equipoId = localStorage.getItem('equipoId');
+    this.pasoDatos.onEventoJugador( evento );
   }
 }

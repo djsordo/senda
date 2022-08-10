@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /**
  * Servidor de traducciones
@@ -10,9 +10,9 @@ export class TradService{
 
 
   private dict = {
-    'es' :
+    es:
       { 'accion.parada' : 'parada',
-        'accion.gol_rival' : 'gol rival',
+        'accion.golRival' : 'gol rival',
         'accion.lanzamiento' : 'lanzamiento',
         'accion.gol' : 'gol',
         'accion.tiro' : 'tiro',
@@ -21,10 +21,13 @@ export class TradService{
         'accion.cambio' : 'cambio',
         'accion.entra' : 'entra',
         'accion.sale' : 'sale',
-        'accion.2_minutos' : '2 minutos',
-        'accion.tarjeta_amarilla': 'tarjeta amarilla',
-        'accion.tarjeta_roja' : 'tarjeta roja',
-        'accion.tarjeta_azul' : 'tarjeta azul',
+        'accion.2Minutos' : '2 minutos',
+        'accion.2MinutosRival' : '2 minutos',
+        'accion.tarjetaAmarilla': 'tarjeta amarilla',
+        'accion.tarjetaRoja' : 'tarjeta roja',
+        'accion.tarjetaAzul' : 'tarjeta azul',
+        'accion.tiempoMuerto': 'tiempo muerto',
+        'accion.tiempoMuertoRival': 'tiempo muerto',
         'posicion.contras' : 'contras',
         'posicion.7m' : 'siete metros',
         'posicion.ext_izq' : 'extremo izquierdo',
@@ -68,12 +71,13 @@ export class TradService{
   constructor(){
   }
 
-  public t(key : string) : string {
+  public t(key: string): string {
     try{
-      if( this.dict[this.idiomaActual][key] )
+      if( this.dict[this.idiomaActual][key] ){
         return this.dict[this.idiomaActual][key];
-      else
+      } else {
         return `???${this.idiomaActual}.${key}???`;
+      }
     }catch( error ){
       return `???${this.idiomaActual}.${key}???`;
     }
