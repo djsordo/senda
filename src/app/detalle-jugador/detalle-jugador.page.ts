@@ -56,7 +56,7 @@ export class DetalleJugadorPage implements OnInit {
     eventoJugador.jugadorId = this.jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
     eventoJugador.equipoId = localStorage.getItem('equipoId');
-    eventoJugador.jugador = this.jugador;
+    eventoJugador.creadorEvento = this.jugador.datos.nombre;
     eventoJugador.posicionCampo = this.areaCampo;
     eventoJugador.posicionPorteria = this.areaPorteria;
     this.pasoDatos.onEventoJugador( eventoJugador );

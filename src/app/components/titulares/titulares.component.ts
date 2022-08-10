@@ -156,7 +156,7 @@ export class TitularesComponent implements OnInit {
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
     eventoJugador.accionPrincipal = Acciones.tarjetaAmarilla;
-    eventoJugador.jugador = jugador;
+    eventoJugador.creadorEvento = jugador.datos.nombre;
     eventoJugador.jugadorId = jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
     eventoJugador.equipoId = localStorage.getItem('equipoId');
@@ -179,7 +179,7 @@ export class TitularesComponent implements OnInit {
     eventoJugador.jugadorId = jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
     eventoJugador.equipoId = localStorage.getItem('equipoId');
-    eventoJugador.jugador = jugador;
+    eventoJugador.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
     // Cerramos el acordeón de jugadores
@@ -199,7 +199,7 @@ export class TitularesComponent implements OnInit {
     eventoJugador.jugadorId = jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
     eventoJugador.equipoId = localStorage.getItem('equipoId');
-    eventoJugador.jugador = jugador;
+    eventoJugador.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
     // Cerramos el acordeón de jugadores
@@ -220,7 +220,7 @@ export class TitularesComponent implements OnInit {
     eventoJugador.jugadorId = jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
     eventoJugador.equipoId = localStorage.getItem('equipoId');
-    eventoJugador.jugador = jugador;
+    eventoJugador.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
     // Cerramos el acordeón de jugadores
@@ -305,7 +305,7 @@ export class TitularesComponent implements OnInit {
     eventoSale.jugadorId = jugSale[0].datos.id;
     eventoSale.partidoId = localStorage.getItem('partidoId');
     eventoSale.equipoId = localStorage.getItem('equipoId');
-    eventoSale.jugador = jugSale[0];
+    eventoSale.creadorEvento = jugSale[0].datos.nombre;
     this.pasoDatos.onEventoJugador( eventoSale );
     // Jugador que entra al campo
     const eventoEntra = this.eventosService.newEvento();
@@ -316,7 +316,7 @@ export class TitularesComponent implements OnInit {
     eventoEntra.partidoId = localStorage.getItem('partidoId');
     eventoEntra.equipoId = localStorage.getItem('equipoId');
 
-    eventoEntra.jugador = jugEntra[0];
+    eventoEntra.creadorEvento = jugEntra[0].datos.nombre;
     this.pasoDatos.onEventoJugador( eventoEntra );
 
     // Cerramos el acordeón de jugadores
@@ -342,7 +342,7 @@ export class TitularesComponent implements OnInit {
     eventoEntra.jugadorId = jugador.datos.id;
     eventoEntra.partidoId = localStorage.getItem('partidoId');
     eventoEntra.equipoId = localStorage.getItem('equipoId');
-    eventoEntra.jugador = jugador;
+    eventoEntra.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoEntra );
 
     // Cerramos el acordeón de jugadores
@@ -369,7 +369,7 @@ export class TitularesComponent implements OnInit {
     eventoSale.jugadorId = jugador.datos.id;
     eventoSale.partidoId = localStorage.getItem('partidoId');
     eventoSale.equipoId = localStorage.getItem('equipoId');
-    eventoSale.jugador = jugador;
+    eventoSale.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoSale );
 
     // Cerramos el acordeón de jugadores

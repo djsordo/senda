@@ -43,7 +43,11 @@ const routes: Routes = [
   {
     path: 'admin-home',
     loadChildren: () => import('./admin/admin-home/admin-home.module').then( m => m.AdminHomePageModule)
+  },  {
+    path: 'modo-ver',
+    loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
   }
+
 
 
 ];

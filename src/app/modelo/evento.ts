@@ -11,8 +11,8 @@ export interface Evento {
   equipoId: string;
   partidoId: string;
   timestamp?: Date;
-  jugador: EstadJugador;
-  /* equipo?: Equipo; */
+  /* jugador: EstadJugador; */
+  creadorEvento: string;
   accionPrincipal: Acciones;
   accionSecundaria?: string;
   posicionCampo?: string;

@@ -15,3 +15,4 @@ export interface EstadJugador{
   golesRival: number;
   segJugados: number;
 };
+

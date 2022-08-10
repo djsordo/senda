@@ -7,22 +7,25 @@ import { Evento } from '../modelo/evento';
 
 export enum Acciones {
   parada = 'accion.parada',
-  golRival = 'accion.gol_rival',
+  golRival = 'accion.golRival',
   lanzamiento = 'accion.lanzamiento',
   gol = 'accion.gol',
   tiro = 'accion.tiro',
   perdida = 'accion.perdida',
   robo = 'accion.robo',
   cambio = 'accion.cambio',
-  dosMinutos = 'accion.2_minutos',
-  tarjetaAmarilla = 'accion.tarjeta_amarilla',
-  tarjetaRoja = 'accion.tarjeta_roja',
-  tarjetaAzul = 'accion.tarjeta_azul',
+  dosMinutos = 'accion.2Minutos',
+  dosMinutosRival = 'accion.2MinutosRival',
+  tarjetaAmarilla = 'accion.tarjetaAmarilla',
+  tarjetaRoja = 'accion.tarjetaRoja',
+  tarjetaAzul = 'accion.tarjetaAzul',
   entra = 'accion.entra',
   sale = 'accion.sale',
   titular = 'accion.titular',
   banquillo = 'accion.banquillo',
-  noConvocado = 'accion.noConvocado'
+  noConvocado = 'accion.noConvocado',
+  tm = 'accion.tiempoMuerto',
+  tmRival = 'accion.tiempoMuertoRival'
 }
 
 @Injectable({
@@ -43,6 +46,7 @@ export class EventosService {
       Acciones.robo,
       Acciones.cambio,
       Acciones.dosMinutos,
+      Acciones.dosMinutosRival,
       Acciones.tarjetaAmarilla,
       Acciones.tarjetaRoja,
       Acciones.tarjetaAzul,
@@ -50,7 +54,9 @@ export class EventosService {
       Acciones.sale,
       Acciones.titular,
       Acciones.banquillo,
-      Acciones.noConvocado ];
+      Acciones.noConvocado,
+      Acciones.tm,
+      Acciones.tmRival ];
   }
 
   public getAcciones( ): Acciones[] {
@@ -70,7 +76,7 @@ export class EventosService {
       posicionPorteria: null,
       timestamp: new Date(),
       crono: this.cronoService.marcaTiempo(),
-      jugador: null,
+      creadorEvento: null,
       accionPrincipal: null,
       accionSecundaria: null,
     } as Evento;
@@ -80,10 +86,13 @@ export class EventosService {
     this.eventos.push( evento );
   }
 
+  getEventos(){
+    return this.eventos;
+  }
   // BASE DE DATOS
-  addEventoBD(evento: Evento){
+  async addEventoBD(evento: Evento){
     const eventoRef = collection(this.firestore, 'eventos');
-    return addDoc(eventoRef, evento);
+    return await addDoc(eventoRef, evento);
   }
 }
 
