@@ -35,4 +35,7 @@ export class EstadPartidoService {
     this.estadPartido[campo]++;
     console.log(this.estadPartido);
   }
+
+  //Funciones de Base de Datos
+
 }

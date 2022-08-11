@@ -5,6 +5,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-item>{{estadPartido.nombreEquipo}}</ion-item>
+    <ion-item>{{estadPartido.nombreRival}}</ion-item>
+  </ion-card>
   <ion-list>
     <ion-item *ngFor="let evento of eventos">
       {{evento.creadorEvento + ' ' + evento.accionPrincipal + ' ' + evento.accionSecundaria}}
