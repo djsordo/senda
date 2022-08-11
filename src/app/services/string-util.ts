@@ -1,10 +1,22 @@
+import { Injectable } from "@angular/core";
 
 
 /**
  * Utilidades para cadenas de caracteres, por ejemplo un comparador 
  * por contenido que ignore mayúsculas y minúsculas. 
  */
+@Injectable({
+  providedIn : 'root'
+})
 export class StringUtil{
+
+  subtitutions = {
+    'a' : 'áàäã',
+    'e' : 'éèë',
+    'i' : 'íìï',
+    'o' : 'óòö',
+    'u' : 'úùü'
+  };
 
   /**
    * Comparación flexible: 
@@ -16,7 +28,32 @@ export class StringUtil{
    * @param str 
    * @param pattern 
    */
-  public like( str : string, pattern: string ){
-    return false;
+  public like( pajar : string, aguja : string ){
+
+    pajar = pajar.toLowerCase(); 
+    aguja = aguja.toLowerCase();
+
+    const anyWhiteSpace = /\s+/ig;
+    aguja = aguja.replaceAll( anyWhiteSpace, ' ' );
+    aguja = this.replaceDiacritics( aguja );
+    pajar = pajar.replaceAll( anyWhiteSpace, ' ' );
+    pajar = this.replaceDiacritics( pajar );
+
+
+    if( pajar.search( aguja ) >= 0 )
+      return true; 
+    else
+      return false;
+  }
+
+  private replaceDiacritics( str : string ){
+    for( let character in this.subtitutions ){
+      const charactersToReplace = this.subtitutions[ character ];
+      for( let characterToLocate of charactersToReplace ){
+        str = str.replaceAll( characterToLocate, character );
+      }
+    }
+    return str; 
   }
 }
+
