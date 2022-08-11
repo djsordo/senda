@@ -1,9 +1,9 @@
 import { Injectable  } from '@angular/core';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 import { CronoService } from '../components/crono/crono.service';
 import { Evento } from '../modelo/evento';
-
 
 export enum Acciones {
   parada = 'accion.parada',
@@ -86,13 +86,15 @@ export class EventosService {
     this.eventos.push( evento );
   }
 
-  getEventos(){
-    return this.eventos;
-  }
   // BASE DE DATOS
   async addEventoBD(evento: Evento){
     const eventoRef = collection(this.firestore, 'eventos');
     return await addDoc(eventoRef, evento);
+  }
+
+  getEventos(partidoId: string): Observable<Evento[]>{
+    const eventosRef = query(collection(this.firestore, 'eventos'), where('partidoId', '==', partidoId));
+    return collectionData(eventosRef, {idField: 'id'}) as Observable<Evento[]>;
   }
 }
 
