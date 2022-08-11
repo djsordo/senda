@@ -13,27 +13,37 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-input placeholder="Buscar por..." 
-          clear-input="true" 
-          autofocus="true" 
-          inputmode="text" 
-          type="text"></ion-input>
-          <ion-icon name="search"></ion-icon>
+          <form (ngSubmit)="onClickSearch()">
+            <ion-input name="searchText"
+            placeholder="Buscar por..." 
+            autofocus="true" 
+            inputmode="text" 
+            type="text"
+            [(ngModel)]="searchText"></ion-input>
+            <ion-icon name="search"
+              (click)="onClickSearch()"></ion-icon>
+          </form>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-card *ngFor="let p of prueba">
+        <ion-card #resultCard id="{{p.id}}" *ngFor="let p of clubes" (click)="onCardSelected( p.id )">
           <ion-card-header>
             <ion-icon name="football" size="large"></ion-icon>
             <ion-card-title>{{p.nombre}}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            
             <p class="list-elem">Deporte: balonmano</p>
           </ion-card-content>
         </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col >
+        <ion-button color="primary">Nuevo</ion-button>
+        <ion-button color="secondary" [disabled]="!selectedId">Cambiar</ion-button>
+        <ion-button color="danger" [disabled]="!selectedId">Borrar</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
