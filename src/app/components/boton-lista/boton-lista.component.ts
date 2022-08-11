@@ -1,3 +1,4 @@
+import { EstadPartidoService } from './../../services/estad-partido.service';
 import { CronoService } from './../crono/crono.service';
 import { Crono } from './../../modelo/crono';
 import { EstadJugador } from './../../modelo/estadJugador';
@@ -21,7 +22,8 @@ export class BotonListaComponent implements OnInit {
 
   constructor(private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
-              private crono: CronoService) {}
+              private crono: CronoService,
+              private estadPartidoService: EstadPartidoService) {}
 
   ngOnInit() { }
 
@@ -37,10 +39,12 @@ export class BotonListaComponent implements OnInit {
 
     localStorage.setItem('jugadorId', this.jugador.datos.id);
     if (accion1 === 'Robo'){
+      this.estadPartidoService.suma('robos');
       localStorage.setItem('accion', Acciones.robo);
       eventoJugador.accionPrincipal = Acciones.robo;
       eventoJugador.accionSecundaria = accion2;
     } else if (accion1 === 'Pérdida'){
+      this.estadPartidoService.suma('perdidas');
       localStorage.setItem('accion', Acciones.perdida);
       eventoJugador.accionPrincipal = Acciones.perdida;
       eventoJugador.accionSecundaria = accion2;

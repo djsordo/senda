@@ -1,3 +1,4 @@
+import { EstadPartidoService } from './../../services/estad-partido.service';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { MarcadorService } from './../marcador/marcador.service';
@@ -19,7 +20,8 @@ export class MarcadorComponent implements OnInit, DoCheck {
   constructor(private cronoService: CronoService,
               private marcadorService: MarcadorService,
               private eventosService: EventosService,
-              private pasoDatos: PasoDatosService) {
+              private pasoDatos: PasoDatosService,
+              private estadPartidoService: EstadPartidoService) {
    }
 
   ngOnInit() {
@@ -34,6 +36,7 @@ export class MarcadorComponent implements OnInit, DoCheck {
   }
 
   dosMinRival(){
+    this.estadPartidoService.suma('dosMinutosRival');
     // Se crea el evento para la base de datos
     const evento = this.eventosService.newEvento();
     evento.accionPrincipal = Acciones.dosMinutosRival;
@@ -49,8 +52,10 @@ export class MarcadorComponent implements OnInit, DoCheck {
     // Se crea el evento para la base de datos
     const evento = this.eventosService.newEvento();
     if (this.nosotros){
+      this.estadPartidoService.suma('tm');
       evento.accionPrincipal = Acciones.tm;
     } else {
+      this.estadPartidoService.suma('tmRival');
       evento.accionPrincipal = Acciones.tmRival;
     }
     evento.creadorEvento = this.nombreEquipo;

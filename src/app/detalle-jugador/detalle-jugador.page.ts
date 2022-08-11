@@ -1,3 +1,4 @@
+import { EstadPartidoService } from './../services/estad-partido.service';
 import { Crono } from './../modelo/crono';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -31,6 +32,7 @@ export class DetalleJugadorPage implements OnInit {
     public balonmanoService: BalonmanoService,
     private eventosService: EventosService,
     private trad: TradService,
+    private estadPartidoService: EstadPartidoService
     ) {}
 
   ngOnInit() {
@@ -50,6 +52,16 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   btnOk(){
+    if (this.accion === 'accion.gol'){
+      this.estadPartidoService.suma('goles');
+    } else if (this.accion === 'accion.golRival'){
+      this.estadPartidoService.suma('golesRival');
+    }if (this.accion === 'accion.lanzamiento'){
+      this.estadPartidoService.suma('lanzFallados');
+    }if (this.accion === 'accion.parada'){
+      this.estadPartidoService.suma('paradas');
+    }
+
     const eventoJugador = this.eventosService.newEvento();
     eventoJugador.crono = this.marcaTiempo;
     eventoJugador.accionPrincipal = this.accion;

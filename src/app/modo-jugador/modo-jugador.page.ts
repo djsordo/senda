@@ -9,6 +9,8 @@ import { Evento } from '../modelo/evento';
 import { MarcadorService } from '../components/marcador/marcador.service';
 import { Acciones } from '../services/eventos.service';
 import { EstadJugador } from '../modelo/estadJugador';
+import { EstadPartido } from '../modelo/estadPartido';
+import { EstadPartidoService } from '../services/estad-partido.service';
 
 @Component({
   selector: 'app-modo-jugador',
@@ -36,7 +38,8 @@ export class ModoJugadorPage implements OnInit {
               private pasoDatos: PasoDatosService,
               private marcadorService: MarcadorService,
               private tradService: TradService,
-              private eventosService: EventosService) {
+              private eventosService: EventosService,
+              private estadPartidoService: EstadPartidoService) {
     }
 
   ngOnInit() {
@@ -82,8 +85,11 @@ export class ModoJugadorPage implements OnInit {
       jugador.segJugados = 0;
       this.listaBanquillo.push(jugador);
     });
-    /* console.log('lista titulares: ',this.listaInicial);
-    console.log('listaBanquillo. ', this.listaBanquillo); */
+
+    this.estadPartidoService.actualiza('nombreEquipo', this.nombres.casa);
+    this.estadPartidoService.actualiza('nombreRival', this.nombres.fuera);
+    this.estadPartidoService.actualiza('partidoId', localStorage.getItem('partidoId'));
+
     this.miSuscripcionAEventoJugador =
     this.pasoDatos.suscribirmeAEventoJugador( (evento: Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );

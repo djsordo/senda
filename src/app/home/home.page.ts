@@ -36,27 +36,26 @@ export class HomePage implements OnInit {
   }
 
   irAModo(equipo: Equipo, partido: Partido, modo){
+    console.log('Equipo: ', equipo);
+    console.log('Partido: ', partido);
+    // Meto el partidoId y el equipoId en el localStorage, porque los usaré más tarde.
+    localStorage.setItem('partidoId', partido.id);
+    localStorage.setItem('equipoId', equipo.id);
+
+    // Probablemente pueda quitar esto, ya que el dato está ya en localStorage
+    this.pasoDatosService.setEquipoId(equipo.id);
+
+    const nombresEquipos = {casa: '', fuera: ''};
+
+    nombresEquipos.casa = equipo.nombre;
+    nombresEquipos.fuera = partido.rival;
+    this.pasoDatosService.setNombresEquipos(nombresEquipos);
+
     if (modo === 'generar'){
-      /* this.router.navigate(['/modo-jugador']); */
-      console.log('Equipo: ', equipo);
-      console.log('Partido: ', partido);
-      // Meto el partidoId y el equipoId en el localStorage, porque los usaré más tarde.
-      localStorage.setItem('partidoId', partido.id);
-      localStorage.setItem('equipoId', equipo.id);
-
-      // Probablemente pueda quitar esto, ya que el dato está ya en localStorage
-      this.pasoDatosService.setEquipoId(equipo.id);
-
-      const nombresEquipos = {casa: '', fuera: ''};
-
-      nombresEquipos.casa = equipo.nombre;
-      nombresEquipos.fuera = partido.rival;
-      this.pasoDatosService.setNombresEquipos(nombresEquipos);
-
-      this.router.navigate(['/inicio-sel-jugadores']);
-    } else if (modo === 'ver'){
-      this.router.navigate(['/modo-ver']);
-    }
+        this.router.navigate(['/inicio-sel-jugadores']);
+      } else if (modo === 'ver'){
+        this.router.navigate(['/modo-ver']);
+      }
   }
 
 }

@@ -48,8 +48,6 @@ export class InicioSelJugadoresPage implements OnInit {
     private pasoDatos: PasoDatosService,
     private jugadoresService: JugadoresService,
     private eventosService: EventosService) {
-
-    /* this.jugadores = this.jugadoresService.getJugadores(); */
     }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -58,9 +56,8 @@ export class InicioSelJugadoresPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.equipoId = this.pasoDatos.getEquipoId();
-/* console.log(this.equipoId); */
+
     this.jugadoresService.getJugadoresEquipo(this.equipoId)
     .subscribe(jugadores => {
       this.jugadores = jugadores;

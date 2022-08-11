@@ -13,8 +13,16 @@ export class ModoVerPage implements OnInit {
   constructor(private eventosService: EventosService) { }
 
   ngOnInit() {
-    this.eventos = this.eventosService.getEventos();
-    console.log(this.eventos);
+    this.eventos = [];
+
+    this.eventosService.getEventos(localStorage.getItem('partidoId'))
+    .subscribe(evento => {
+      this.eventos = evento;
+      // Ordenamos por Timestamp del evento.
+      this.eventos.sort((a, b) =>
+        (a.timestamp < b.timestamp) ? 1 : -1
+      );
+    });
   }
 
 }

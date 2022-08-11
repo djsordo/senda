@@ -1,3 +1,4 @@
+import { EstadPartidoService } from './../../services/estad-partido.service';
 import { Crono } from './../../modelo/crono';
 import { Observable } from 'rxjs';
 import { EstadJugador } from './../../modelo/estadJugador';
@@ -45,7 +46,8 @@ export class TitularesComponent implements OnInit {
     private crono: CronoService,
     private pasoDatos: PasoDatosService,
     private toastController: ToastController,
-    private eventosService: EventosService) {}
+    private eventosService: EventosService,
+    private estadPartidoService: EstadPartidoService) {}
 
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
@@ -149,6 +151,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnAmarilla(jugador: EstadJugador): void{
+    this.estadPartidoService.suma('amarillas');
     // Sumamos a la estadística
     localStorage.setItem('jugadorId', jugador.datos.id);
     localStorage.setItem('accion', Acciones.tarjetaAmarilla);
@@ -167,6 +170,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnRoja(jugador: EstadJugador): void{
+    this.estadPartidoService.suma('rojas');
     this.dosMinutos(jugador);
 
     // Sumamos a la estadística
@@ -187,6 +191,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnAzul(jugador: EstadJugador): void{
+    this.estadPartidoService.suma('azules');
     this.dosMinutos(jugador);
 
     // Sumamos a la estadística
@@ -207,6 +212,7 @@ export class TitularesComponent implements OnInit {
   }
 
   btnDosMinutos(jugador: EstadJugador){
+    this.estadPartidoService.suma('dosMinutos');
     this.dosMinutos(jugador);
 
     // Sumamos a la estadística
