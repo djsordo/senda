@@ -1,12 +1,21 @@
 import { TestBed } from '@angular/core/testing';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { provideFirestore } from '@angular/fire/firestore';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { environment } from 'src/environments/environment';
 
 import { EventosService } from './eventos.service';
 
 fdescribe( 'EventoPrototipoService', () => {
+
   let eventosService: EventosService;
 
-  beforeEach( () => {
-    TestBed.configureTestingModule({});
+  beforeAll( () => {
+    TestBed.configureTestingModule({
+      imports: [ provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+        provideFirestore(() => getFirestore()) ]
+    });
     eventosService = TestBed.inject( EventosService );
   });
 
