@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 
 import { EventosService } from './eventos.service';
 
-fdescribe( 'EventoPrototipoService', () => {
+describe( 'EventoPrototipoService', () => {
 
   let eventosService: EventosService;
 
