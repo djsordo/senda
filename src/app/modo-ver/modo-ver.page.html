@@ -5,6 +5,83 @@
 </ion-header>
 
 <ion-content>
+  <div *ngFor="let ep of estadPartido">
+    <ion-card>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="ion-text-center">{{ep.nombreEquipo}}</div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="ion-text-center">{{ep.nombreRival}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4">
+            <div class="ion-text-center grande">{{ep.goles}}</div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="ion-text-center">{{ep.segundos*1000 | date: 'mm:ss'}}</div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="ion-text-center grande">{{ep.golesRival}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+    <ion-card>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="2"><div class="ion-text-center"><ion-icon name="football"></ion-icon></div></ion-col>
+          <ion-col size="6">
+            <div class="ion-text-left">Goles/Tiros: {{ep.goles}}/{{ep.goles + ep.lanzFallados}}</div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="ion-text-center">{{ep.goles/(ep.goles+ep.lanzFallados) | percent: '2.1-2'}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2"><div class="ion-text-center"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon></div></ion-col>
+          <ion-col size="6">
+            <div class="ion-text-left">Paradas/Tiros: {{ep.paradas}}/{{ep.golesRival + ep.paradas}}</div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="ion-text-center">{{ep.paradas/(ep.paradas+ep.golesRival) | percent: '2.1-2'}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2"><div class="ion-text-center"><ion-icon name="thumbs-up"></ion-icon></div></ion-col>
+          <ion-col size="10">
+            <div class="ion-text-left">Recuperaciones: {{ep.robos}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2"><div class="ion-text-center"><ion-icon name="thumbs-down"></ion-icon></div></ion-col>
+          <ion-col size="10">
+            <div class="ion-text-left">Pérdidas: {{ep.perdidas}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="1"><div class="ion-text-center"><ion-icon name="stopwatch"></ion-icon></div></ion-col>
+          <ion-col size="2">
+            <div class="ion-text-left">{{ep.exclusiones}}</div>
+          </ion-col>
+          <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="amarillo"></ion-icon></div></ion-col>
+          <ion-col size="2">
+            <div class="ion-text-left">{{ep.amarillas}}</div>
+          </ion-col>
+          <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="rojo"></ion-icon></div></ion-col>
+          <ion-col size="2">
+            <div class="ion-text-left">{{ep.rojas}}</div>
+          </ion-col>
+          <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="azul"></ion-icon></div></ion-col>
+          <ion-col size="2">
+            <div class="ion-text-left">{{ep.azules}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
   <ion-list>
     <ion-item *ngFor="let evento of eventos">
       {{evento.creadorEvento + ' ' + evento.accionPrincipal + ' ' + evento.accionSecundaria}}

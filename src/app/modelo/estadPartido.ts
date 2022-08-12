@@ -1,4 +1,5 @@
 export interface EstadPartido{
+  id?: string;
   partidoId: string;
   nombreEquipo: string;
   nombreRival: string;
@@ -16,4 +17,5 @@ export interface EstadPartido{
   dosMinutosRival: number;
   tm: number;
   tmRival: number;
+  segundos: number;
 };

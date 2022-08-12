@@ -151,13 +151,14 @@ export class TitularesComponent implements OnInit {
   }
 
   btnAmarilla(jugador: EstadJugador): void{
-    this.estadPartidoService.suma('amarillas');
     // Sumamos a la estadística
     localStorage.setItem('jugadorId', jugador.datos.id);
     localStorage.setItem('accion', Acciones.tarjetaAmarilla);
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
+    this.estadPartidoService.suma('amarillas', eventoJugador.crono.segundos);
+
     eventoJugador.accionPrincipal = Acciones.tarjetaAmarilla;
     eventoJugador.creadorEvento = jugador.datos.nombre;
     eventoJugador.jugadorId = jugador.datos.id;
@@ -170,7 +171,6 @@ export class TitularesComponent implements OnInit {
   }
 
   btnRoja(jugador: EstadJugador): void{
-    this.estadPartidoService.suma('rojas');
     this.dosMinutos(jugador);
 
     // Sumamos a la estadística
@@ -179,6 +179,8 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
+    this.estadPartidoService.suma('rojas', eventoJugador.crono.segundos);
+
     eventoJugador.accionPrincipal = Acciones.tarjetaRoja;
     eventoJugador.jugadorId = jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
@@ -191,7 +193,6 @@ export class TitularesComponent implements OnInit {
   }
 
   btnAzul(jugador: EstadJugador): void{
-    this.estadPartidoService.suma('azules');
     this.dosMinutos(jugador);
 
     // Sumamos a la estadística
@@ -200,6 +201,8 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
+    this.estadPartidoService.suma('azules', eventoJugador.crono.segundos);
+
     eventoJugador.accionPrincipal = Acciones.tarjetaAzul;
     eventoJugador.jugadorId = jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
@@ -212,7 +215,6 @@ export class TitularesComponent implements OnInit {
   }
 
   btnDosMinutos(jugador: EstadJugador){
-    this.estadPartidoService.suma('dosMinutos');
     this.dosMinutos(jugador);
 
     // Sumamos a la estadística
@@ -222,6 +224,8 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
+    this.estadPartidoService.suma('dosMinutos', eventoJugador.crono.segundos);
+
     eventoJugador.accionPrincipal = Acciones.dosMinutos;
     eventoJugador.jugadorId = jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');

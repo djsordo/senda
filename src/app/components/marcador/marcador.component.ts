@@ -36,9 +36,10 @@ export class MarcadorComponent implements OnInit, DoCheck {
   }
 
   dosMinRival(){
-    this.estadPartidoService.suma('dosMinutosRival');
     // Se crea el evento para la base de datos
     const evento = this.eventosService.newEvento();
+    this.estadPartidoService.suma('dosMinutosRival', evento.crono.segundos);
+
     evento.accionPrincipal = Acciones.dosMinutosRival;
     evento.creadorEvento = this.nombreEquipo;
     evento.partidoId = localStorage.getItem('partidoId');
@@ -52,10 +53,10 @@ export class MarcadorComponent implements OnInit, DoCheck {
     // Se crea el evento para la base de datos
     const evento = this.eventosService.newEvento();
     if (this.nosotros){
-      this.estadPartidoService.suma('tm');
+      this.estadPartidoService.suma('tm', evento.crono.segundos);
       evento.accionPrincipal = Acciones.tm;
     } else {
-      this.estadPartidoService.suma('tmRival');
+      this.estadPartidoService.suma('tmRival', evento.crono.segundos);
       evento.accionPrincipal = Acciones.tmRival;
     }
     evento.creadorEvento = this.nombreEquipo;

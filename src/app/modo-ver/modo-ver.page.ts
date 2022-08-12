@@ -1,3 +1,5 @@
+import { EstadPartidoService } from './../services/estad-partido.service';
+import { EstadPartido } from './../modelo/estadPartido';
 import { EventosService } from 'src/app/services/eventos.service';
 import { Component, OnInit } from '@angular/core';
 import { Evento } from '../modelo/evento';
@@ -9,11 +11,20 @@ import { Evento } from '../modelo/evento';
 })
 export class ModoVerPage implements OnInit {
   eventos: Array<Evento>;
+  estadPartido: Array<EstadPartido>;
 
-  constructor(private eventosService: EventosService) { }
+  constructor(private eventosService: EventosService,
+              private estadPartidoService: EstadPartidoService) { }
 
   ngOnInit() {
     this.eventos = [];
+    this.estadPartido = [];
+
+    this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))
+    .subscribe(estadP => {
+      console.log(estadP);
+      this.estadPartido = estadP;
+    });
 
     this.eventosService.getEventos(localStorage.getItem('partidoId'))
     .subscribe(evento => {
