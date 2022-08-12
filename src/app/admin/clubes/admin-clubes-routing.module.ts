@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 import { AdminClubesPage } from "./admin-clubes.page";
+import { BuscarComponent } from "./buscar/buscar.component";
 
 const routes : Routes = [
   {
     path : '', 
-    component: AdminClubesPage
+    component : AdminClubesPage
   }
 ];
 

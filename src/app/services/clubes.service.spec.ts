@@ -8,7 +8,7 @@ import { environment } from './../../environments/environment';
 import { ClubesService } from './clubes.service';
 
 
-fdescribe( 'ClubesService', () => {
+describe( 'ClubesService', () => {
 
   let clubesService : ClubesService;
 

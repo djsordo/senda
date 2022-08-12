@@ -6,6 +6,9 @@ import { IonicModule } from "@ionic/angular";
 
 import { AdminClubesPageRoutingModule } from "./admin-clubes-routing.module";
 import { AdminClubesPage } from "./admin-clubes.page";
+import { BuscarComponent } from "./buscar/buscar.component";
+import { CambioComponent } from "./cambio/cambio.component";
+import { BorrarComponent } from "./borrar/borrar.component";
 
 
 @NgModule({
@@ -15,7 +18,10 @@ import { AdminClubesPage } from "./admin-clubes.page";
     IonicModule,
     AdminClubesPageRoutingModule],
   declarations : [
-    AdminClubesPage
+    AdminClubesPage, 
+    BorrarComponent,
+    BuscarComponent,
+    CambioComponent
   ]
 })
 export class AdminClubesPageModule{}

@@ -1,0 +1,32 @@
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-input name="clubName" 
+                placeholder="Nombre del club"
+                autofocus="true"
+                inputmode="text"
+                type="text"
+                [(ngModel)]="nombre"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        Deporte: 
+        <ion-select>
+          <ion-select-option>Balonmano</ion-select-option>
+          <ion-select-option>Laguna</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button color="medium" (click)="onClickCancel()">Cancelar</ion-button>
+      <ion-button color="primary" (click)="onClickCrear()">Crear</ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-grid>
