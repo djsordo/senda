@@ -17,7 +17,6 @@ import { Club } from '../modelo/club';
 export class ClubesService {
 
   private clubesRef : CollectionReference<DocumentData>;
-  private deportesRef : CollectionReference<DocumentData>;
 
   constructor( private firestore : Firestore ) {
     this.clubesRef = collection( this.firestore, 'clubs' );

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DeportesService } from 'src/app/services/deportes.service';
 import { AdminClubesPage } from '../admin-clubes.page';
 
 @Component({
@@ -9,10 +10,20 @@ import { AdminClubesPage } from '../admin-clubes.page';
 export class CambioComponent implements OnInit {
 
   nombre : string; 
+  deportes : string[];
 
-  constructor( private mainPage : AdminClubesPage ) { }
+  constructor( private mainPage : AdminClubesPage,
+               private deportesService : DeportesService ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.deportesService.getDeportes()
+      .then( (docList) => {
+          this.deportes = [];
+          for( let docSnap of docList.docs ){
+            this.deportes.push( docSnap.data()['nombre'] );
+          }
+      })
+  }
 
   onClickCrear() {
     console.log("añadimos ", this.nombre, " a la base de datos" );
@@ -20,6 +31,10 @@ export class CambioComponent implements OnInit {
 
   onClickCancel() {
     this.mainPage.setCurrentButton( '' );
+  }
+
+  getDeportes() {
+    return this.deportes;
   }
 
 }

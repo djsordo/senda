@@ -16,8 +16,7 @@
       <ion-item>
         Deporte: 
         <ion-select>
-          <ion-select-option>Balonmano</ion-select-option>
-          <ion-select-option>Laguna</ion-select-option>
+          <ion-select-option *ngFor="let deporte of getDeportes()">{{deporte}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-col>
