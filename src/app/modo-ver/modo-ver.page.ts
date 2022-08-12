@@ -11,14 +11,20 @@ import { Evento } from '../modelo/evento';
 })
 export class ModoVerPage implements OnInit {
   eventos: Array<Evento>;
-  estadPartido: EstadPartido;
+  estadPartido: Array<EstadPartido>;
 
   constructor(private eventosService: EventosService,
               private estadPartidoService: EstadPartidoService) { }
 
   ngOnInit() {
     this.eventos = [];
-    this.estadPartido = this.estadPartidoService.estadPartido;
+    this.estadPartido = [];
+
+    this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))
+    .subscribe(estadP => {
+      console.log(estadP);
+      this.estadPartido = estadP;
+    });
 
     this.eventosService.getEventos(localStorage.getItem('partidoId'))
     .subscribe(evento => {

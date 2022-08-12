@@ -90,6 +90,10 @@ export class ModoJugadorPage implements OnInit {
     this.estadPartidoService.actualiza('nombreRival', this.nombres.fuera);
     this.estadPartidoService.actualiza('partidoId', localStorage.getItem('partidoId'));
 
+    // Guardo las estadísticas del partido en la base de datos
+    this.estadPartidoService.addEstadPartido().then(estad => {this.estadPartidoService.estadPartido.id = estad.id;});
+    this.estadPartidoService.actualiza('id', this.estadPartidoService.estadPartido.id);
+
     this.miSuscripcionAEventoJugador =
     this.pasoDatos.suscribirmeAEventoJugador( (evento: Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );

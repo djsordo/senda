@@ -52,17 +52,18 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   btnOk(){
+    const eventoJugador = this.eventosService.newEvento();
+
     if (this.accion === 'accion.gol'){
-      this.estadPartidoService.suma('goles');
+      this.estadPartidoService.suma('goles', eventoJugador.crono.segundos);
     } else if (this.accion === 'accion.golRival'){
-      this.estadPartidoService.suma('golesRival');
+      this.estadPartidoService.suma('golesRival', eventoJugador.crono.segundos);
     }if (this.accion === 'accion.lanzamiento'){
-      this.estadPartidoService.suma('lanzFallados');
+      this.estadPartidoService.suma('lanzFallados', eventoJugador.crono.segundos);
     }if (this.accion === 'accion.parada'){
-      this.estadPartidoService.suma('paradas');
+      this.estadPartidoService.suma('paradas', eventoJugador.crono.segundos);
     }
 
-    const eventoJugador = this.eventosService.newEvento();
     eventoJugador.crono = this.marcaTiempo;
     eventoJugador.accionPrincipal = this.accion;
     eventoJugador.jugadorId = this.jugador.datos.id;

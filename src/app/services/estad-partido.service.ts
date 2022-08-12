@@ -1,5 +1,7 @@
 import { EstadPartido } from './../modelo/estadPartido';
+import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,20 +24,37 @@ export class EstadPartidoService {
     dosMinutos: 0,
     dosMinutosRival: 0,
     tm: 0,
-    tmRival: 0
+    tmRival: 0,
+    segundos: 0
   };
 
-  constructor() {}
+  constructor(private firestore: Firestore) {}
 
   actualiza(campo: string, valor: any){
     this.estadPartido[campo] = valor;
   }
 
-  suma(campo: string){
+  suma(campo: string, segundos: number){
     this.estadPartido[campo]++;
-    console.log(this.estadPartido);
+    this.estadPartido.segundos = segundos;
+    // Actualizamos el registro en la base de datos
+    this.updateEstadPartido();
   }
 
   //Funciones de Base de Datos
+  async addEstadPartido(){
+    const estadPartidoRef = collection(this.firestore, 'estadPartidos');
+    return await addDoc(estadPartidoRef, this.estadPartido);
+  }
 
+  async updateEstadPartido(){
+    const path = 'estadPartidos/' + this.estadPartido.id;
+    const estadPartidoRef = doc(this.firestore, path);
+    return await setDoc(estadPartidoRef, this.estadPartido);
+  }
+
+  getEstadPartido(partidoId: string): Observable<EstadPartido[]>{
+    const estadPartidoRef = query(collection(this.firestore, 'estadPartidos'), where('partidoId', '==', partidoId));
+    return collectionData(estadPartidoRef) as Observable<EstadPartido[]>;
+  }
 }
