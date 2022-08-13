@@ -3,10 +3,8 @@ import { Firestore,
         CollectionReference,
         collection,
         DocumentData, 
-        addDoc,
         query,
         where,
-        deleteDoc,
         getDocs} from '@angular/fire/firestore';
 
 @Injectable({
