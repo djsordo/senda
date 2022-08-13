@@ -1,8 +1,10 @@
+import { Acciones } from './../services/eventos.service';
 import { EstadPartidoService } from './../services/estad-partido.service';
 import { EstadPartido } from './../modelo/estadPartido';
 import { EventosService } from 'src/app/services/eventos.service';
 import { Component, OnInit } from '@angular/core';
 import { Evento } from '../modelo/evento';
+
 
 @Component({
   selector: 'app-modo-ver',
