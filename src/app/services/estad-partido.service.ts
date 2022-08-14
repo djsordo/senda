@@ -10,7 +10,6 @@ export class EstadPartidoService {
   estadPartido: EstadPartido = {
     amarillas: 0,
     azules: 0,
-    exclusiones: 0,
     goles: 0,
     golesRival: 0,
     lanzFallados: 0,

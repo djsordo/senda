@@ -62,9 +62,21 @@
           </ion-col>
         </ion-row>
         <ion-row>
+          <ion-col size="2"><div class="ion-text-center" color="verde">T</div></ion-col>
+          <ion-col size="10">
+            <div class="ion-text-left">Tiempos Muertos: {{ep.tm}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="2"><div class="ion-text-center" color="verde">T</div></ion-col>
+          <ion-col size="10">
+            <div class="ion-text-left">Tiempos Muertos del rival: {{ep.tmRival}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col size="1"><div class="ion-text-center"><ion-icon name="stopwatch"></ion-icon></div></ion-col>
           <ion-col size="2">
-            <div class="ion-text-left">{{ep.exclusiones}}</div>
+            <div class="ion-text-left">{{ep.dosMinutos}}/{{ep.dosMinutosRival}}</div>
           </ion-col>
           <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="amarillo"></ion-icon></div></ion-col>
           <ion-col size="2">
@@ -82,9 +94,24 @@
       </ion-grid>
     </ion-card>
   </div>
-  <ion-list>
-    <ion-item *ngFor="let evento of eventos">
-      {{evento.creadorEvento + ' ' + evento.accionPrincipal + ' ' + evento.accionSecundaria}}
-    </ion-item>
+  <ion-list *ngFor="let evento of eventos">
+    <div *ngIf="evento.accionPrincipal === 'accion.gol'">
+      <div class="ion-text-left">
+        <ion-icon name="football"></ion-icon>
+        {{evento.creadorEvento}}
+      </div>
+      <div class="ion-text-center">
+        {{evento.crono.segundos*1000 | date: 'mm:ss'}}
+      </div>
+    </div>
+    <div *ngIf="evento.accionPrincipal === 'accion.golRival'">
+      <div class="ion-text-right">
+        {{evento.creadorEvento}}
+        <ion-icon name="football"></ion-icon>
+      </div>
+      <div class="ion-text-center">
+        {{evento.crono.segundos*1000 | date: 'mm:ss'}}
+      </div>
+    </div>
   </ion-list>
 </ion-content>

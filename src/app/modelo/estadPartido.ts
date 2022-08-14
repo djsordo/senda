@@ -7,7 +7,6 @@ export interface EstadPartido{
   lanzFallados: number;
   robos: number;
   perdidas: number;
-  exclusiones: number;
   amarillas: number;
   rojas: number;
   azules: number;
