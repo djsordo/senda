@@ -5,7 +5,9 @@ import { Firestore,
         DocumentData, 
         query,
         where,
-        getDocs} from '@angular/fire/firestore';
+        getDocs,
+        getDoc,
+        DocumentReference } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn : 'root'
@@ -26,4 +28,9 @@ export class DeportesService {
     }
   }
 
+  async getDoc( docRef : DocumentReference<DocumentData> ) {
+    return getDoc( docRef );
+  }
+
 }
+

@@ -7,7 +7,8 @@ import { Firestore,
         query,
         where,
         deleteDoc,
-        getDocs} from '@angular/fire/firestore';
+        getDocs,
+        DocumentSnapshot} from '@angular/fire/firestore';
 import { Club } from '../modelo/club';
 
 
@@ -34,17 +35,26 @@ export class ClubesService {
     }
   }
 
-  async addClub( nombre : string, deporte : string ){
-    return addDoc( this.clubesRef, 
-          { nombre : nombre });
+  async addClub( nombre : string, deporte : DocumentSnapshot<DocumentData> ){
+    return addDoc( this.clubesRef, {
+      nombre : nombre, 
+      deporte : deporte
+    })
   }
 
   async deleteClubByRef( document : any ){
     return deleteDoc( document );
   } 
 
-  async deleteClubByName( nombre : string ){
-    const q = query( this.clubesRef, where( "nombre", "==", nombre ));
+  /**
+   * Make a deletion of a document based on the condition given. 
+   * 
+   * Example: 
+   * <code>deleteClubWhere( "nombre", "==", "los fantasiosos" )</code>
+   * @param args 
+   */
+  async deleteClubWhere( ...args : any ){
+    const q = query( this.clubesRef, where.apply( this, args ));
     let docList = getDocs( q )
       .then( (docList) => {
         docList.forEach( (docRef) => {
@@ -52,6 +62,17 @@ export class ClubesService {
         })
       })
   }
+
+  async deleteClubById( id : string ){
+    const q = query( this.clubesRef, id );
+    let docList = getDocs( q )
+      .then( (docList) => {
+        docList.forEach( (docRef) => {
+          deleteDoc( docRef.ref );
+        })
+      })
+  }
+
 
 }
 

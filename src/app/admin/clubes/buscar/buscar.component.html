@@ -23,7 +23,7 @@
           <ion-card-title>{{p.nombre}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <p class="list-elem">Deporte: balonmano</p>
+          <p class="list-elem">Deporte: {{ p.deporte_name }}</p>
         </ion-card-content>
       </ion-card>
     </ion-col>
@@ -31,11 +31,11 @@
   <ion-row>
     <ion-col >
       <ion-button color="primary"
-            (click)="onClickButton( 'new' )">Nuevo</ion-button>
+            (click)="onClickNuevo( )">Nuevo</ion-button>
       <ion-button color="secondary" [disabled]="!selectedId"
-            (click)="onClickButton( 'update' )">Cambiar</ion-button>
+            (click)="onClickCambiar( )">Cambiar</ion-button>
       <ion-button color="danger" [disabled]="!selectedId"
-            id="delete-club">Borrar</ion-button>
+            (click)="onClickBorrar()">Borrar</ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>
