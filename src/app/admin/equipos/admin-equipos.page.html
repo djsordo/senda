@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Equipos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <equipos-buscar *ngIf="getCurrentButton() === ''"
+      (onButton)="setCurrentButton( $event )"
+      (onSelectedId)="setSelectedId( $event )"></equipos-buscar>
+  <equipos-crear *ngIf="getCurrentButton() === 'new'"></equipos-crear>
+  <equipos-cambio *ngIf="getCurrentButton() === 'update'"></equipos-cambio>
+</ion-content>
+

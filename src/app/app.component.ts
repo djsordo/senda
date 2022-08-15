@@ -22,6 +22,9 @@ export class AppComponent implements OnInit {
       submenu : [
         { title : 'Clubes', 
           url: '/admin/clubes', 
+          icon: 'folder-open'},
+        { title : 'Equipos', 
+          url : '/admin/equipos', 
           icon: 'people'}
       ]}
   ];
