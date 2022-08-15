@@ -1,5 +1,3 @@
-
-
 @media (prefers-color-scheme: dark) {
   .cancha {
     position: relative;
@@ -9,8 +7,8 @@
     border-style: solid;
     height: 400px;
     width: 100%;
-    background: url("../../assets/campo2_dark.png") center / 125% no-repeat ;
-  }  
+    /* background: url("../../assets/campo2_dark.png") center / 125% no-repeat ; */
+  }
 }
 
 @media (prefers-color-scheme: light ) {
@@ -22,60 +20,65 @@
     border-style: solid;
     height: 400px;
     width: 100%;
-    background: url("../../assets/campo2.png") center / 125% no-repeat ;
-  }  
+    /* background: url("../../assets/campo2.png") center / 125% no-repeat ; */
+  }
 }
 
 .drop-inicial{
-  position:relative;
-  width: 96px;
-  height: 126px;
-  justify-content: center;
-  border: 2px dashed #ff00ff;
-  background: #fff;
+  /* position:relative; */
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 0px;
+  /* width: 96px; */
+  width:100%;
+  /* height: 126px; */
+  height: 50px;
+  /* justify-content: center; */
+  border: 2px dashed #4400ff;
+  /* background: #fff; */
 }
 
-#PO{
+/* #PO{
   position: absolute;
   left: calc(50% - 50px);
   top: 0px;
-}
+} */
 
-#EI{
+/* #EI{
   position: absolute;
   left: 5px;
   top: 10px;
   z-index: 5;
-}
+} */
 
-#ED{
+/* #ED{
   position: absolute;
   left: calc(100% - 100px);
   top: 10px;
-}
+} */
 
-#PI{
+/* #PI{
   position: absolute;
   left: calc(50% - 50px);
   top: calc(50% - 60px);
-}
-#LI{
+} */
+/* #LI{
   position: absolute;
   left: 35px;
   top: calc(75% - 60px);
-}
+} */
 
-#LD{
+/* #LD{
   position: absolute;
   left: calc(100% - 115px);
   top: calc(75% - 60px);
-}
+} */
 
-#CE{
+/* #CE{
   position: absolute;
   left: calc(50% - 50px);
   top: calc(85% - 60px);
-}
+} */
 
 .drop-area {
   position: relative;
@@ -84,7 +87,7 @@
   height: 130px;
   justify-content: center;
   user-select: none;
-  background: #fff;
+  /* background: #fff; */
 }
 
 .contenedorTarjetas {
@@ -95,6 +98,28 @@
   margin-top: 5px;
   justify-content: center;
   align-items: center;
+}
+
+.posicion{
+  position: absolute;
+  z-index: 0 !important;
+}
+
+.eleLista{
+  margin: 0px !important;
+  height: 48px;
+
+}
+
+.eleLista ion-img{
+  height: 40px;
+  padding-bottom: 5px !important;
+  margin: 0px !important;
+}
+
+.eleLista h2{
+  position: relative;
+  top: -13px;
 }
 
 .tarjeta {
@@ -128,6 +153,7 @@
 
 .tarjeta h2 {
   background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%);
+  color: #000;
   position:absolute;
   padding:3px;
   border-radius: 50%;
@@ -137,6 +163,7 @@
 
 .tarjeta p {
   background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  color: #000;
   position:absolute;
   text-align: center;
   width: 90%;
