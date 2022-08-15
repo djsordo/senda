@@ -9,6 +9,7 @@
 
 <ion-content>
   <clubes-buscar *ngIf="getCurrentButton() === ''"
-      (onButton)="setCurrentButton( $event )"></clubes-buscar>
+      (onButton)="setCurrentButton( $event )"
+      (onSelectedId)="setSelectedId( $event )"></clubes-buscar>
   <clubes-cambio *ngIf="getCurrentButton() === 'update' || getCurrentButton() === 'new'"></clubes-cambio>
 </ion-content>

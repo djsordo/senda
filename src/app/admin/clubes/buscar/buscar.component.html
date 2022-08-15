@@ -32,9 +32,9 @@
     <ion-col >
       <ion-button color="primary"
             (click)="onClickNuevo( )">Nuevo</ion-button>
-      <ion-button color="secondary" [disabled]="!selectedId"
+      <ion-button color="secondary" [disabled]="!getSelectedId()"
             (click)="onClickCambiar( )">Cambiar</ion-button>
-      <ion-button color="danger" [disabled]="!selectedId"
+      <ion-button color="danger" [disabled]="!getSelectedId()"
             (click)="onClickBorrar()">Borrar</ion-button>
     </ion-col>
   </ion-row>

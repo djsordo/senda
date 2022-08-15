@@ -47,4 +47,14 @@ fdescribe( 'DeportesService', () => {
           callMeOnFinish();
         });
     });
+
+    it( 'get document by id', (callMeOnFinish) => {
+      deportesService.getDocById( 'oUiMQvAbz7PSimSqpScF' )
+        .then( (docSnap) =>{
+          console.log( docSnap.data() );
+          expect( docSnap ).toBeTruthy();
+          callMeOnFinish();
+        });
+    });
+
 })

@@ -14,6 +14,7 @@ import { Club } from "src/app/modelo/club";
 import { ClubesService } from "src/app/services/clubes.service";
 import { DeportesService } from "src/app/services/deportes.service";
 import { StringUtil } from "src/app/services/string-util";
+import { AdminClubesPage } from "../admin-clubes.page";
 
 @Component({
   selector: 'clubes-buscar',
@@ -26,11 +27,12 @@ export class BuscarComponent implements OnInit {
   @ViewChildren('resultCard') resultCards: QueryList<any>;
   @Input() clubes : any = [];
   @Output() onButton = new EventEmitter<string>();
+  @Output() onSelectedId = new EventEmitter<string>();
 
   searchText : string = '';
-  selectedId : string = null; 
 
-  constructor( private clubesService : ClubesService,
+  constructor( private mainPage : AdminClubesPage, 
+              private clubesService : ClubesService,
               private deportesService : DeportesService,
               private renderer : Renderer2, 
               private alertController : AlertController,
@@ -38,24 +40,18 @@ export class BuscarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.clubes = [];
-    this.clubesService.getClubes( )
-    .then( (clubList) => {
-      for( let docSnap of clubList.docs ){
-        let club = docSnap.data(); 
-        club['id'] = docSnap.id;
-        if( club?.deporte ){
-          this.deportesService.getDoc( club.deporte )
-          .then( (doc : DocumentData ) => {
-            club['deporte_name'] = doc.data().nombre;
-          });
-        }
-        this.clubes.push( club );
-      }
-    });
+    this.refereshClubList();
   }
 
   public onClickSearch() {
+    this.refereshClubList();
+  }
+
+  getSelectedId(){
+    return this.mainPage.getSelectedId();
+  }
+
+  private refereshClubList() {
     this.clubes = [];
     this.clubesService.getClubes( )
     .then( (clubList) => {
@@ -68,7 +64,11 @@ export class BuscarComponent implements OnInit {
             club['deporte_name'] = doc.data().nombre;
           });
         }
-        if( this.stringUtil.like( club.nombre, this.searchText ) )
+        if( this.searchText !== '' ){
+          if( this.stringUtil.like( club.nombre, this.searchText ) )
+            this.clubes.push( club );
+        }
+        else
           this.clubes.push( club );
       }
     });
@@ -90,15 +90,17 @@ export class BuscarComponent implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            // do nothing by now
+            // no hay necesidad de hacer nada
+            // en caso de que el usuario cancele
           },
         },
         {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            console.log( this.selectedId );
-            this.clubesService.deleteClubWhere( "nombre", "==", "los fantasiosos" );
+            this.clubesService.deleteClubById( this.mainPage.getSelectedId() );
+            this.mainPage.setSelectedId( null );
+            this.refereshClubList();
           },
         },
       ],
@@ -110,11 +112,10 @@ export class BuscarComponent implements OnInit {
   }
 
   public onCardSelected( elementId : string ) {
-    this.selectedId = null;
     this.resultCards.forEach( (card) => {
       if( card.el.id === elementId ){
         this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-        this.selectedId = elementId; 
+        this.onSelectedId.emit( elementId );
       }
       else
         this.renderer.setStyle( card.el, "background", "" );

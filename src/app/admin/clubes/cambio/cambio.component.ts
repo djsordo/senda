@@ -6,6 +6,7 @@ import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { ClubesService } from 'src/app/services/clubes.service';
 import { DeportesService } from 'src/app/services/deportes.service';
 import { AdminClubesPage } from '../admin-clubes.page';
+import { BuscarComponent } from '../buscar/buscar.component';
 
 @Component({
   selector: 'clubes-cambio',
@@ -32,6 +33,7 @@ export class CambioComponent implements OnInit {
             this.deportes.push( docSnap );
           }
       })
+    console.log( 'usuario desea cambiar el club ', this.mainPage.getSelectedId() );
   }
 
   onClickCrear() {

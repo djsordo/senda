@@ -8,7 +8,8 @@ import { Firestore,
         where,
         deleteDoc,
         getDocs,
-        DocumentSnapshot} from '@angular/fire/firestore';
+        DocumentSnapshot,
+        doc} from '@angular/fire/firestore';
 import { Club } from '../modelo/club';
 
 
@@ -35,10 +36,10 @@ export class ClubesService {
     }
   }
 
-  async addClub( nombre : string, deporte : DocumentSnapshot<DocumentData> ){
+  async addClub( nombre : string, deporteId : string ){
     return addDoc( this.clubesRef, {
       nombre : nombre, 
-      deporte : deporte
+      deporteId : deporteId
     })
   }
 
@@ -64,13 +65,8 @@ export class ClubesService {
   }
 
   async deleteClubById( id : string ){
-    const q = query( this.clubesRef, id );
-    let docList = getDocs( q )
-      .then( (docList) => {
-        docList.forEach( (docRef) => {
-          deleteDoc( docRef.ref );
-        })
-      })
+    let docRef = doc( this.clubesRef, id );
+    return deleteDoc( docRef );
   }
 
 
