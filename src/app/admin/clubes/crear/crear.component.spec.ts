@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { BorrarComponent } from './borrar.component';
+import { CambioComponent } from './cambio.component';
 
-describe('BorrarComponent', () => {
-  let component: BorrarComponent;
-  let fixture: ComponentFixture<BorrarComponent>;
+describe('CambioComponent', () => {
+  let component: CambioComponent;
+  let fixture: ComponentFixture<CambioComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BorrarComponent ],
+      declarations: [ CambioComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BorrarComponent);
+    fixture = TestBed.createComponent(CambioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

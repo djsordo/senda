@@ -7,15 +7,13 @@ import { ClubesService } from 'src/app/services/clubes.service';
 import { DeportesService } from 'src/app/services/deportes.service';
 import { AdminClubesPage } from '../admin-clubes.page';
 
-
 @Component({
-  selector: 'clubes-cambio',
-  templateUrl: './cambio.component.html',
-  styleUrls: ['./cambio.component.scss'],
+  selector: 'clubes-crear',
+  templateUrl: './crear.component.html',
+  styleUrls: ['./crear.component.scss'],
 })
-export class CambioComponent implements OnInit {
+export class CrearComponent implements OnInit {
 
-  club : DocumentSnapshot<DocumentData>;
   nombre : string; 
   selectedDeporte : any;
   private deportes : QueryDocumentSnapshot<DocumentData>[];
@@ -33,30 +31,21 @@ export class CambioComponent implements OnInit {
             this.deportes.push( docSnap );
           }
       })
-    if( this.mainPage.getSelectedId() ){
-      this.clubesService.getClubById( this.mainPage.getSelectedId() )
-        .then( ( docSnap : DocumentSnapshot<DocumentData> ) => {
-          this.club = docSnap;
-          this.nombre = docSnap.data().nombre;
-          if( docSnap.data().deporte )
-            this.selectedDeporte = this.deportesService.getDoc( docSnap.data().deporte );
-        });
-    }
   }
 
-
-  onClickCambiar() {
-    this.clubesService.updateClub( this.club,
-                                    this.nombre )
+  onClickCrear() {
+    if( this.deportes.length === 1 )
+      this.selectedDeporte = this.deportes[0];
+    this.clubesService.addClub( this.nombre, this.selectedDeporte.ref )
       .then( (docRef) => {
-        this.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
+        this.sendToast( `Club ${this.nombre} creado con éxito`);
       })
       .catch( (reason) => {
-        this.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
+        this.sendToast(`Se ha producido un error al crear el club ${this.nombre}: ${reason}`);
       })
+    
     // return to the search screen
     this.mainPage.setCurrentButton( '' );
-    this.mainPage.setSelectedId('');
   }
 
   async sendToast( message : string ){

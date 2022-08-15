@@ -1,16 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { provideFirestore, 
-        getFirestore } from "@angular/fire/firestore";
+        getFirestore} from "@angular/fire/firestore";
+import { DocumentData, 
+        QueryDocumentSnapshot } from 'firebase/firestore';
 import { initializeApp, 
         provideFirebaseApp } from '@angular/fire/app';
 
 import { environment } from './../../environments/environment';
 import { ClubesService } from './clubes.service';
+import { DeportesService } from './deportes.service';
 
 
 describe( 'ClubesService', () => {
 
+  let deportesService : DeportesService;
   let clubesService : ClubesService;
+  let deportes :  QueryDocumentSnapshot<DocumentData>[];
 
   /**
    * function to be executed before all the tests (only once per all the tests)
@@ -27,17 +32,24 @@ describe( 'ClubesService', () => {
      *     cacheSizeBytes : 40000000
      *   } as FirestoreSettings ) );
      */
-
     TestBed.configureTestingModule({
       imports: [ provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
         provideFirestore(() => getFirestore()) ]
     });
     clubesService = TestBed.inject( ClubesService );
-    Promise.all([
-      clubesService.addClub('rlunaro.club2', 'Balonmano'),
-      clubesService.addClub('rlunaro.club3', 'Balonmano'),
-      clubesService.addClub('rlunaro.club4', 'Balonmano')
-    ]).then( () => { callMeOnFinish(); } );
+    deportesService = TestBed.inject( DeportesService );
+    deportesService.getDeportes()
+      .then( (docList) => {
+        deportes = [];
+        for( let docSnap of docList.docs ){
+          deportes.push( docSnap );
+        }
+        Promise.all([
+          clubesService.addClub('rlunaro.club2', 'oUiMQvAbz7PSimSqpScF'),
+          clubesService.addClub('rlunaro.club3', 'oUiMQvAbz7PSimSqpScF'),
+          clubesService.addClub('rlunaro.club4', 'oUiMQvAbz7PSimSqpScF')
+        ]).then( () => { callMeOnFinish(); } );    
+      })
   });
 
   /**
@@ -45,9 +57,9 @@ describe( 'ClubesService', () => {
    */
   afterAll( ( callMeOnFinish ) => {
     Promise.all([
-      clubesService.deleteClubByName('rlunaro.club2'),
-      clubesService.deleteClubByName('rlunaro.club3'),
-      clubesService.deleteClubByName('rlunaro.club4')
+      clubesService.deleteClubWhere('nombre', '==', 'rlunaro.club2'),
+      clubesService.deleteClubWhere('nombre', '==', 'rlunaro.club3'),
+      clubesService.deleteClubWhere('nombre', '==', 'rlunaro.club4')
     ]).then( () => { callMeOnFinish(); } );
   });
 

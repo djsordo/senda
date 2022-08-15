@@ -3,11 +3,12 @@ import { Firestore,
         CollectionReference,
         collection,
         DocumentData, 
-        addDoc,
         query,
         where,
-        deleteDoc,
-        getDocs} from '@angular/fire/firestore';
+        getDocs,
+        getDoc,
+        DocumentReference } from '@angular/fire/firestore';
+import { doc } from 'firebase/firestore';
 
 @Injectable({
   providedIn : 'root'
@@ -28,4 +29,15 @@ export class DeportesService {
     }
   }
 
+  async getDoc( docRef : DocumentReference<DocumentData> ) {
+    return getDoc( docRef );
+  }
+
+  async getDocById( idDeporte : string ){
+    console.log( this.deportesRef.id );
+    let docRef = doc( this.firestore, `/deportes/${idDeporte}` );
+    return getDoc( docRef );      
+  }
+
 }
+

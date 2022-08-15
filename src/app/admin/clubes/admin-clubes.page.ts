@@ -10,6 +10,7 @@ import { Component,
 export class AdminClubesPage implements OnInit {
 
   private currentButton : string; 
+  private selectedId : string; 
 
   ngOnInit() {
     this.currentButton = '';
@@ -23,6 +24,13 @@ export class AdminClubesPage implements OnInit {
     return this.currentButton;
   }
 
+  setSelectedId( selectedId : string ){
+    this.selectedId = selectedId;
+  }
+
+  getSelectedId( ) {
+    return this.selectedId;
+  }
 
 }
 

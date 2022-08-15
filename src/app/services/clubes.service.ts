@@ -7,7 +7,11 @@ import { Firestore,
         query,
         where,
         deleteDoc,
-        getDocs} from '@angular/fire/firestore';
+        getDocs,
+        DocumentSnapshot,
+        doc,
+        getDoc,
+        updateDoc} from '@angular/fire/firestore';
 import { Club } from '../modelo/club';
 
 
@@ -17,7 +21,6 @@ import { Club } from '../modelo/club';
 export class ClubesService {
 
   private clubesRef : CollectionReference<DocumentData>;
-  private deportesRef : CollectionReference<DocumentData>;
 
   constructor( private firestore : Firestore ) {
     this.clubesRef = collection( this.firestore, 'clubs' );
@@ -35,17 +38,39 @@ export class ClubesService {
     }
   }
 
-  async addClub( nombre : string, deporte : string ){
-    return addDoc( this.clubesRef, 
-          { nombre : nombre });
+  async getClubById( id : string ){
+    let docRef = doc( this.clubesRef, id );
+    return getDoc( docRef );
   }
 
-  async deleteClubByRef( document : any ){
+  async addClub( nombre : string, deporteId : string ){
+    return addDoc( this.clubesRef, {
+      nombre : nombre, 
+      deporteId : deporteId
+    })
+  }
+
+  async updateClub( docSnap : DocumentSnapshot<DocumentData>, 
+                    nombre : string ) {
+    let docRef = doc( this.clubesRef, docSnap.id );
+    return updateDoc( docSnap.ref, {
+        nombre : nombre
+    });
+  }
+
+  async deleteClubByRef( document ){
     return deleteDoc( document );
   } 
 
-  async deleteClubByName( nombre : string ){
-    const q = query( this.clubesRef, where( "nombre", "==", nombre ));
+  /**
+   * Make a deletion of a document based on the condition given. 
+   * 
+   * Example: 
+   * <code>deleteClubWhere( "nombre", "==", "los fantasiosos" )</code>
+   * @param args 
+   */
+  async deleteClubWhere( ...args : any ){
+    const q = query( this.clubesRef, where.apply( this, args ));
     let docList = getDocs( q )
       .then( (docList) => {
         docList.forEach( (docRef) => {
@@ -53,6 +78,12 @@ export class ClubesService {
         })
       })
   }
+
+  async deleteClubById( id : string ){
+    let docRef = doc( this.clubesRef, id );
+    return deleteDoc( docRef );
+  }
+
 
 }
 
