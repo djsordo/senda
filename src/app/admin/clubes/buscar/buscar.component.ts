@@ -6,10 +6,8 @@ import { Component,
   QueryList, 
   Renderer2,
   ViewChildren} from "@angular/core";
-import { DocumentData, DocumentReference, getDoc } from "@angular/fire/firestore";
+import { DocumentData } from "@angular/fire/firestore";
 import { AlertController } from "@ionic/angular";
-import { Club } from "src/app/modelo/club";
-
 
 import { ClubesService } from "src/app/services/clubes.service";
 import { DeportesService } from "src/app/services/deportes.service";

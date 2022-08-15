@@ -8,6 +8,7 @@ import { AdminClubesPageRoutingModule } from "./admin-clubes-routing.module";
 import { AdminClubesPage } from "./admin-clubes.page";
 import { BuscarComponent } from "./buscar/buscar.component";
 import { CambioComponent } from "./cambio/cambio.component";
+import { CrearComponent } from "./crear/crear.component";
 
 
 @NgModule({
@@ -19,10 +20,11 @@ import { CambioComponent } from "./cambio/cambio.component";
   declarations : [
     AdminClubesPage, 
     BuscarComponent,
+    CrearComponent,
     CambioComponent
   ]
 })
-export class AdminClubesPageModule{}
+export class AdminClubesPageModule { }
 
 
 

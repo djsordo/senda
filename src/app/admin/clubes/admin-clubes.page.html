@@ -11,5 +11,7 @@
   <clubes-buscar *ngIf="getCurrentButton() === ''"
       (onButton)="setCurrentButton( $event )"
       (onSelectedId)="setSelectedId( $event )"></clubes-buscar>
-  <clubes-cambio *ngIf="getCurrentButton() === 'update' || getCurrentButton() === 'new'"></clubes-cambio>
+  <clubes-crear *ngIf="getCurrentButton() === 'new'"></clubes-crear>
+  <clubes-cambio *ngIf="getCurrentButton() === 'update'"></clubes-cambio>
 </ion-content>
+

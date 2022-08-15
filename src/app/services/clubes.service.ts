@@ -9,7 +9,9 @@ import { Firestore,
         deleteDoc,
         getDocs,
         DocumentSnapshot,
-        doc} from '@angular/fire/firestore';
+        doc,
+        getDoc,
+        updateDoc} from '@angular/fire/firestore';
 import { Club } from '../modelo/club';
 
 
@@ -36,6 +38,11 @@ export class ClubesService {
     }
   }
 
+  async getClubById( id : string ){
+    let docRef = doc( this.clubesRef, id );
+    return getDoc( docRef );
+  }
+
   async addClub( nombre : string, deporteId : string ){
     return addDoc( this.clubesRef, {
       nombre : nombre, 
@@ -43,7 +50,15 @@ export class ClubesService {
     })
   }
 
-  async deleteClubByRef( document : any ){
+  async updateClub( docSnap : DocumentSnapshot<DocumentData>, 
+                    nombre : string ) {
+    let docRef = doc( this.clubesRef, docSnap.id );
+    return updateDoc( docSnap.ref, {
+        nombre : nombre
+    });
+  }
+
+  async deleteClubByRef( document ){
     return deleteDoc( document );
   } 
 

@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideFirestore, 
         getFirestore} from "@angular/fire/firestore";
-import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import { DocumentData, 
+        QueryDocumentSnapshot } from 'firebase/firestore';
 import { initializeApp, 
         provideFirebaseApp } from '@angular/fire/app';
 
@@ -31,7 +32,6 @@ describe( 'ClubesService', () => {
      *     cacheSizeBytes : 40000000
      *   } as FirestoreSettings ) );
      */
-
     TestBed.configureTestingModule({
       imports: [ provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
         provideFirestore(() => getFirestore()) ]
@@ -45,9 +45,9 @@ describe( 'ClubesService', () => {
           deportes.push( docSnap );
         }
         Promise.all([
-          clubesService.addClub('rlunaro.club2', 'Balonmano'),
-          clubesService.addClub('rlunaro.club3', 'Balonmano'),
-          clubesService.addClub('rlunaro.club4', 'Balonmano')
+          clubesService.addClub('rlunaro.club2', 'oUiMQvAbz7PSimSqpScF'),
+          clubesService.addClub('rlunaro.club3', 'oUiMQvAbz7PSimSqpScF'),
+          clubesService.addClub('rlunaro.club4', 'oUiMQvAbz7PSimSqpScF')
         ]).then( () => { callMeOnFinish(); } );    
       })
   });
