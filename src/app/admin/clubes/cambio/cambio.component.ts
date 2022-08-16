@@ -57,8 +57,8 @@ export class CambioComponent implements OnInit {
       .catch( (reason) => {
         this.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
       });
-    this.router.navigate( ['..'], { relativeTo : this.route } );
-    this.mainPage.onSelectedId.emit(null);
+      this.mainPage.onSelectedId.emit(null);
+      this.router.navigate( ['..'], { relativeTo : this.route } );
   }
 
   async sendToast( message : string ){

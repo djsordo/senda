@@ -1,8 +1,6 @@
 import { Component, 
-  EventEmitter, 
   Input, 
   OnInit, 
-  Output, 
   QueryList, 
   Renderer2,
   ViewChildren} from "@angular/core";

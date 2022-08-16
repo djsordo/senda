@@ -8,10 +8,6 @@
 </ion-header>
 
 <ion-content>
-  <equipos-buscar *ngIf="getCurrentButton() === ''"
-      (onButton)="setCurrentButton( $event )"
-      (onSelectedId)="setSelectedId( $event )"></equipos-buscar>
-  <equipos-crear *ngIf="getCurrentButton() === 'new'"></equipos-crear>
-  <equipos-cambio *ngIf="getCurrentButton() === 'update'"></equipos-cambio>
+  <router-outlet></router-outlet>
 </ion-content>
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, 
-        RouterModule, 
-        Routes } from '@angular/router';
+          RouterModule, 
+          Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -48,11 +48,11 @@ const routes: Routes = [
   }, 
   {
     path: 'admin/clubes', 
-    loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule )
+    loadChildren: () => import('./admin/clubes/admin-clubes-routing.module').then( m => m.AdminClubesPageRoutingModule )
   },
   {
     path: 'admin/equipos', 
-    loadChildren: () => import('./admin/equipos/admin-equipos.module').then( m => m.AdminEquiposPageModule )
+    loadChildren: () => import('./admin/equipos/admin-equipos-routing.module').then( m => m.AdminEquiposPageRoutingModule )
   },
   {
     path: 'modo-ver',

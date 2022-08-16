@@ -1,5 +1,7 @@
 import { Component, 
-          OnInit} from "@angular/core";
+          EventEmitter, 
+          OnInit,
+          Output} from "@angular/core";
 
 
 @Component({
@@ -9,23 +11,16 @@ import { Component,
 })
 export class AdminEquiposPage implements OnInit {
 
-  private currentButton : string; 
   private selectedId : string; 
+  @Output() onSelectedId = new EventEmitter<string>();
+
+  constructor( ){
+    this.onSelectedId.subscribe( (clubId : string) => {
+      this.selectedId = clubId;
+    });
+  }
 
   ngOnInit() {
-    this.currentButton = '';
-  }
-
-  setCurrentButton( currentButton : string ){
-    this.currentButton = currentButton; 
-  }
-
-  getCurrentButton() {
-    return this.currentButton;
-  }
-
-  setSelectedId( selectedId : string ){
-    this.selectedId = selectedId;
   }
 
   getSelectedId( ) {

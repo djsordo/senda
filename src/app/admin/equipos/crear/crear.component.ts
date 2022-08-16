@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
+import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
 
 import { ClubesService } from 'src/app/services/clubes.service';
@@ -21,7 +22,9 @@ export class CrearComponent implements OnInit {
   constructor( private mainPage : AdminEquiposPage,
                private clubesService : ClubesService,
                private deportesService : DeportesService, 
-               private toastController : ToastController ) { }
+               private toastController : ToastController, 
+               private router : Router, 
+               private route : ActivatedRoute ) { }
 
   ngOnInit() {
     this.deportesService.getDeportes()
@@ -42,10 +45,8 @@ export class CrearComponent implements OnInit {
       })
       .catch( (reason) => {
         this.sendToast(`Se ha producido un error al crear el club ${this.nombre}: ${reason}`);
-      })
-    
-    // return to the search screen
-    this.mainPage.setCurrentButton( '' );
+      });
+    this.router.navigate( ['..'], { relativeTo : this.route } );
   }
 
   async sendToast( message : string ){
@@ -56,10 +57,6 @@ export class CrearComponent implements OnInit {
     }).then( (val : HTMLIonToastElement) => {
       val.present();
     })
-  }
-
-  onClickCancel() {
-    this.mainPage.setCurrentButton( '' );
   }
 
   getDeportes() {
