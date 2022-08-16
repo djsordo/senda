@@ -1,3 +1,9 @@
+* {
+  /* Cálculo para texto responsive */
+  --diff: calc(var(--max-size) - var(--min-size));
+  --responsive: calc((var(--min-size) * 1px) + var(--diff) * ((100vw - 300px) / (1600 - 300))); /* Ranges from 301px to 1599px */
+}
+
 @media (prefers-color-scheme: dark) {
   .cancha {
     position: relative;
@@ -25,90 +31,40 @@
 }
 
 .drop-inicial{
-  /* position:relative; */
   margin-top: 2px;
   margin-bottom: 2px;
   padding: 0px;
-  /* width: 96px; */
   width:100%;
-  /* height: 126px; */
   height: 50px;
-  /* justify-content: center; */
   border: 2px dashed #4400ff;
-  /* background: #fff; */
 }
-
-/* #PO{
-  position: absolute;
-  left: calc(50% - 50px);
-  top: 0px;
-} */
-
-/* #EI{
-  position: absolute;
-  left: 5px;
-  top: 10px;
-  z-index: 5;
-} */
-
-/* #ED{
-  position: absolute;
-  left: calc(100% - 100px);
-  top: 10px;
-} */
-
-/* #PI{
-  position: absolute;
-  left: calc(50% - 50px);
-  top: calc(50% - 60px);
-} */
-/* #LI{
-  position: absolute;
-  left: 35px;
-  top: calc(75% - 60px);
-} */
-
-/* #LD{
-  position: absolute;
-  left: calc(100% - 115px);
-  top: calc(75% - 60px);
-} */
-
-/* #CE{
-  position: absolute;
-  left: calc(50% - 50px);
-  top: calc(85% - 60px);
-} */
 
 .drop-area {
   position: relative;
   border: 2px dashed #ff00ff;
   width: 100%;
-  height: 130px;
-  justify-content: center;
+  height: 100px;
   user-select: none;
-  /* background: #fff; */
 }
 
 .contenedorTarjetas {
   position:relative;
   width: 100%;
-  height: 130px;
+  height: 100px;
   padding: 5px;
   margin-top: 5px;
   justify-content: center;
   align-items: center;
 }
 
-.posicion{
+.fondo{
   position: absolute;
   z-index: 0 !important;
 }
 
 .eleLista{
   margin: 0px !important;
-  height: 48px;
-
+  height: 46px;
 }
 
 .eleLista ion-img{
@@ -117,15 +73,16 @@
   margin: 0px !important;
 }
 
-.eleLista h2{
-  position: relative;
-  top: -13px;
+.eleLista p{
+  --max-size: 40;
+  --min-size: 15;
+  font-size: var(--responsive);
 }
 
 .tarjeta {
   position: absolute;
   width: 90px;
-  height: 120px;
+  height: 90px;
   display: inline-block;
   border-style: outset;
   border-radius: 5%;
@@ -144,7 +101,7 @@
   position:absolute;
   width: 20%;
   height: 20%;
-  top: 10%;
+  top: 5%;
   right: 10%;
   border-radius: 50%;
   padding: 3px;
@@ -157,7 +114,7 @@
   position:absolute;
   padding:3px;
   border-radius: 50%;
-  top: -10%;
+  top: -15%;
   left: 5%;
 }
 
@@ -170,7 +127,7 @@
   height: 30%;
   padding:2px;
   font-size: 80%;
-  top: 65%;
+  top: 60%;
   left: 5%;
 }
 
