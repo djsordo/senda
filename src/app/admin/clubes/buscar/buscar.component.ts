@@ -24,9 +24,6 @@ export class BuscarComponent implements OnInit {
 
   @ViewChildren('resultCard') resultCards: QueryList<any>;
   @Input() clubes : any = [];
-  @Output() onButton = new EventEmitter<string>();
-  @Output() onSelectedId = new EventEmitter<string>();
-
   searchText : string = '';
 
   constructor( private mainPage : AdminClubesPage, 
@@ -72,14 +69,6 @@ export class BuscarComponent implements OnInit {
     });
   }
 
-  public onClickNuevo( ) {
-    this.onButton.emit( 'new' );
-  }
-
-  public onClickCambiar( ) {
-    this.onButton.emit( 'update' );
-  }
-
   async onClickBorrar() {
     const alert = await this.alertController.create({
       header: '¿Seguro?',
@@ -97,7 +86,7 @@ export class BuscarComponent implements OnInit {
           role: 'confirm',
           handler: () => {
             this.clubesService.deleteClubById( this.mainPage.getSelectedId() );
-            this.mainPage.setSelectedId( null );
+            this.mainPage.onSelectedId.emit( null );
             this.refereshClubList();
           },
         },
@@ -113,7 +102,7 @@ export class BuscarComponent implements OnInit {
     this.resultCards.forEach( (card) => {
       if( card.el.id === elementId ){
         this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-        this.onSelectedId.emit( elementId );
+        this.mainPage.onSelectedId.emit( elementId );
       }
       else
         this.renderer.setStyle( card.el, "background", "" );

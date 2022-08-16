@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 
@@ -23,7 +24,9 @@ export class CambioComponent implements OnInit {
   constructor( private mainPage : AdminClubesPage,
                private clubesService : ClubesService,
                private deportesService : DeportesService, 
-               private toastController : ToastController ) { }
+               private toastController : ToastController, 
+               private router : Router, 
+               private route : ActivatedRoute ) { }
 
   ngOnInit() {
     this.deportesService.getDeportes()
@@ -53,10 +56,9 @@ export class CambioComponent implements OnInit {
       })
       .catch( (reason) => {
         this.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
-      })
-    // return to the search screen
-    this.mainPage.setCurrentButton( '' );
-    this.mainPage.setSelectedId('');
+      });
+    this.router.navigate( ['..'], { relativeTo : this.route } );
+    this.mainPage.onSelectedId.emit(null);
   }
 
   async sendToast( message : string ){
@@ -67,10 +69,6 @@ export class CambioComponent implements OnInit {
     }).then( (val : HTMLIonToastElement) => {
       val.present();
     })
-  }
-
-  onClickCancel() {
-    this.mainPage.setCurrentButton( '' );
   }
 
   getDeportes() {

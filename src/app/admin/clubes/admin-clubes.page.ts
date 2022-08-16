@@ -1,5 +1,9 @@
 import { Component, 
-          OnInit} from "@angular/core";
+          EventEmitter, 
+          OnInit,
+          Output} from "@angular/core";
+
+import { PasoDatosService } from "src/app/services/paso-datos.service";
 
 
 @Component({
@@ -9,21 +13,23 @@ import { Component,
 })
 export class AdminClubesPage implements OnInit {
 
-  private currentButton : string; 
   private selectedId : string; 
+  @Output() onSelectedId = new EventEmitter<string>();
+
+  constructor( private pasoDatos : PasoDatosService ) {
+    this.onSelectedId.subscribe( (clubId : string) => {
+      this.selectedId = clubId;
+    });
+
+  }
 
   ngOnInit() {
-    this.currentButton = '';
   }
 
-  setCurrentButton( currentButton : string ){
-    this.currentButton = currentButton; 
-  }
-
-  getCurrentButton() {
-    return this.currentButton;
-  }
-
+  /**
+   * @deprecated use "onSelectedId.emit( newVvalue )"
+   * @param selectedId 
+   */
   setSelectedId( selectedId : string ){
     this.selectedId = selectedId;
   }
