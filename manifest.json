@@ -18,38 +18,31 @@
       "sizes": "64x64"
     }
   ],
-  "start_url": "/?source=pwa",
-  "background_color": "#3367D6",
+  "start_url": "/",
+  "background_color": "#bfbfbf",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#3367D6",
+  "theme_color": "#222428",
   "shortcuts": [
     {
-      "name": "How's weather today?",
-      "short_name": "Today",
-      "description": "View weather information for today",
-      "url": "/today?source=pwa",
-      "icons": [{ "src": "/images/today.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "How's weather tomorrow?",
-      "short_name": "Tomorrow",
-      "description": "View weather information for tomorrow",
-      "url": "/tomorrow?source=pwa",
-      "icons": [{ "src": "/images/tomorrow.png", "sizes": "192x192" }]
+      "name": "Ver un partido",
+      "short_name": "Ver un partido",
+      "description": "Ver el partido que se está jugando",
+      "url": "/modo-ver",
+      "icons": [{ "src": "/assets/icon/logo1_64.png", "sizes": "64x64" }]
     }
   ],
-  "description": "Weather forecast information",
+  "description": "La aplicación de estadísticas deportivas definitiva",
   "screenshots": [
     {
-      "src": "/images/screenshot1.png",
+      "src": "/assets/screenshots/screenshot1_es.png",
       "type": "image/png",
-      "sizes": "540x720"
+      "sizes": "1000x1165"
     },
     {
-      "src": "/images/screenshot2.jpg",
-      "type": "image/jpg",
-      "sizes": "540x720"
+      "src": "/assets/screenshots/screenshot2_es.png",
+      "type": "image/png",
+      "sizes": "1000x1165"
     }
   ]
 }
