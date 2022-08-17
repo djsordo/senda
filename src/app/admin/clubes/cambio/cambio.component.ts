@@ -42,7 +42,7 @@ export class CambioComponent implements OnInit {
           this.club = docSnap;
           this.nombre = docSnap.data().nombre;
           if( docSnap.data().deporte )
-            this.selectedDeporte = this.deportesService.getDoc( docSnap.data().deporte );
+            this.selectedDeporte = this.deportesService.getDocByRef( docSnap.data().deporte );
         });
     }
   }

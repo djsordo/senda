@@ -52,12 +52,12 @@ export class BuscarComponent implements OnInit {
         let club = docSnap.data(); 
         club['id'] = docSnap.id;
         if( club?.deporte ){
-          this.deportesService.getDoc( club.deporte )
+          this.deportesService.getDocByRef( club.deporte )
           .then( (doc : DocumentData ) => {
             club['deporte_name'] = doc.data().nombre;
           });
         }
-        if( this.searchText !== '' ){
+        if( this.searchText ){
           if( this.stringUtil.like( club.nombre, this.searchText ) )
             this.clubes.push( club );
         }

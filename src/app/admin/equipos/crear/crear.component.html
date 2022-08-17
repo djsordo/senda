@@ -2,8 +2,8 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        <ion-input name="clubName" 
-                placeholder="Nombre del club"
+        <ion-input name="equipoName" 
+                placeholder="Nombre del equipo"
                 autofocus="true"
                 inputmode="text"
                 type="text"
@@ -14,13 +14,33 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        <ion-label>Deporte:</ion-label> 
-        <ion-select *ngIf="getDeportes()?.length > 1" 
-              [(ngModel)]="selectedDeporte">
-          <ion-select-option *ngFor="let deporte of getDeportes(); let deporteIndex=index;" [value]="deporte">{{deporte?.data()['nombre']}}</ion-select-option>
+        <ion-label>Categoría:</ion-label>
+        <!-- valorar si aquí debería ir un componente llamado "combo categorias" que recogiese una categoría por defecto -->
+        <ion-select>
+          <ion-select-option *ngFor="let cat of categorias">{{cat}}</ion-select-option>
+          <ion-select-option>Otros (especificar)</ion-select-option>
         </ion-select>
-        <p *ngIf="getDeportes()?.length === 1">{{getDeportes()[0]?.data()['nombre']}}</p>
-        <p *ngIf="getDeportes()?.length === 0">No hay deporte definido</p>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Género:</ion-label>
+        <ion-select>
+          <ion-select-option *ngFor="let gen of generos">{{gen}}</ion-select-option>
+          <ion-select-option>Otro (especificar)</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Temporada:</ion-label>
+        <ion-select>
+          <ion-select-option>2022-23</ion-select-option>
+        </ion-select>  
       </ion-item>
     </ion-col>
   </ion-row>

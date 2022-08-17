@@ -9,7 +9,8 @@ import { Firestore,
           query,
           where,
           deleteDoc,
-          DocumentReference} from '@angular/fire/firestore';
+          DocumentReference,
+          doc } from '@angular/fire/firestore';
 
 import { Equipo } from "../modelo/equipo";
 
@@ -27,6 +28,14 @@ export class EquipoService {
 
   newEquipo() : Equipo {
     return {} as Equipo;
+  }
+
+  async getEquipos( nombre? : string ){
+    if( nombre && nombre.trim().length > 0 ){
+      return getDocs( query( this.equipoRef, where( 'nombre', '==', nombre.trim() ) ) );
+    }else{
+      return getDocs( query( this.equipoRef ) );
+    }
   }
 
   async addEquipo( equipo : Equipo ){
@@ -52,12 +61,9 @@ export class EquipoService {
       })
   }
 
-  async deleteEquipoByRef( document : any ){
-    return deleteDoc( document );
-  }
-
-  async getAllEQuipo(){
-    return getDocs( this.equipoRef );
+  async deleteEquipoById( id : string ){
+    let docRef = doc( this.equipoRef, id );
+    return deleteDoc( docRef );
   }
 
 }

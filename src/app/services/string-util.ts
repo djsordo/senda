@@ -55,5 +55,21 @@ export class StringUtil{
     }
     return str; 
   }
+
 }
+
+
+
+/**
+ * Given an imput string, return it in "Proper Case", i.e. 
+ * the first letter in uppercase and the rest in lowercase.
+ * 
+ * @param s input string
+ */
+export function properCase( s : string ){
+  return s[0].toUpperCase() + s.slice( 1 ).toLowerCase();
+}
+
+
+
 

@@ -11,7 +11,8 @@ import { Firestore,
         DocumentSnapshot,
         doc,
         getDoc,
-        updateDoc} from '@angular/fire/firestore';
+        updateDoc,
+        DocumentReference} from '@angular/fire/firestore';
 import { Club } from '../modelo/club';
 
 
@@ -40,6 +41,10 @@ export class ClubesService {
 
   async getClubById( id : string ){
     let docRef = doc( this.clubesRef, id );
+    return getDoc( docRef );
+  }
+
+  async getDocByRef( docRef : DocumentReference<DocumentData> ) {
     return getDoc( docRef );
   }
 

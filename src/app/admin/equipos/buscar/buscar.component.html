@@ -17,13 +17,14 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of clubes" (click)="onCardSelected( p.id )">
+      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of equipos" (click)="onCardSelected( p.id )">
         <ion-card-header>
-          <ion-icon name="football" size="large"></ion-icon>
+          <ion-icon name="people" size="large"></ion-icon>
           <ion-card-title>{{p.nombre}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <p class="list-elem">Deporte: {{ p.deporte_name }}</p>
+          <ion-text>{{p.categoria}} {{p.genero}}</ion-text> <br/>
+          <ion-text>Temporada {{p?.temporada.nombre}}</ion-text>
         </ion-card-content>
       </ion-card>
     </ion-col>

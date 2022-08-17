@@ -29,7 +29,7 @@ export class DeportesService {
     }
   }
 
-  async getDoc( docRef : DocumentReference<DocumentData> ) {
+  async getDocByRef( docRef : DocumentReference<DocumentData> ) {
     return getDoc( docRef );
   }
 
