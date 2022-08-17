@@ -1,4 +1,8 @@
-
+* {
+  /* Cálculo para texto responsive */
+  --diff: calc(var(--max-size) - var(--min-size));
+  --responsive: calc((var(--min-size) * 1px) + var(--diff) * ((100vw - 300px) / (1600 - 300))); /* Ranges from 301px to 1599px */
+}
 
 @media (prefers-color-scheme: dark) {
   .cancha {
@@ -9,8 +13,8 @@
     border-style: solid;
     height: 400px;
     width: 100%;
-    background: url("../../assets/campo2_dark.png") center / 125% no-repeat ;
-  }  
+    /* background: url("../../assets/campo2_dark.png") center / 125% no-repeat ; */
+  }
 }
 
 @media (prefers-color-scheme: light ) {
@@ -22,85 +26,63 @@
     border-style: solid;
     height: 400px;
     width: 100%;
-    background: url("../../assets/campo2.png") center / 125% no-repeat ;
-  }  
+    /* background: url("../../assets/campo2.png") center / 125% no-repeat ; */
+  }
 }
 
 .drop-inicial{
-  position:relative;
-  width: 96px;
-  height: 126px;
-  justify-content: center;
-  border: 2px dashed #ff00ff;
-  background: #fff;
-}
-
-#PO{
-  position: absolute;
-  left: calc(50% - 50px);
-  top: 0px;
-}
-
-#EI{
-  position: absolute;
-  left: 5px;
-  top: 10px;
-  z-index: 5;
-}
-
-#ED{
-  position: absolute;
-  left: calc(100% - 100px);
-  top: 10px;
-}
-
-#PI{
-  position: absolute;
-  left: calc(50% - 50px);
-  top: calc(50% - 60px);
-}
-#LI{
-  position: absolute;
-  left: 35px;
-  top: calc(75% - 60px);
-}
-
-#LD{
-  position: absolute;
-  left: calc(100% - 115px);
-  top: calc(75% - 60px);
-}
-
-#CE{
-  position: absolute;
-  left: calc(50% - 50px);
-  top: calc(85% - 60px);
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 0px;
+  width:100%;
+  height: 50px;
+  border: 2px dashed #4400ff;
 }
 
 .drop-area {
   position: relative;
   border: 2px dashed #ff00ff;
   width: 100%;
-  height: 130px;
-  justify-content: center;
+  height: 100px;
   user-select: none;
-  background: #fff;
 }
 
 .contenedorTarjetas {
   position:relative;
   width: 100%;
-  height: 130px;
+  height: 100px;
   padding: 5px;
   margin-top: 5px;
   justify-content: center;
   align-items: center;
 }
 
+.fondo{
+  position: absolute;
+  z-index: 0 !important;
+}
+
+.eleLista{
+  margin: 0px !important;
+  height: 46px;
+}
+
+.eleLista ion-img{
+  height: 40px;
+  padding-bottom: 5px !important;
+  margin: 0px !important;
+}
+
+.eleLista p{
+  --max-size: 40;
+  --min-size: 15;
+  font-size: var(--responsive);
+}
+
 .tarjeta {
   position: absolute;
   width: 90px;
-  height: 120px;
+  height: 90px;
   display: inline-block;
   border-style: outset;
   border-radius: 5%;
@@ -119,7 +101,7 @@
   position:absolute;
   width: 20%;
   height: 20%;
-  top: 10%;
+  top: 5%;
   right: 10%;
   border-radius: 50%;
   padding: 3px;
@@ -128,22 +110,24 @@
 
 .tarjeta h2 {
   background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%);
+  color: #000;
   position:absolute;
   padding:3px;
   border-radius: 50%;
-  top: -10%;
+  top: -15%;
   left: 5%;
 }
 
 .tarjeta p {
   background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  color: #000;
   position:absolute;
   text-align: center;
   width: 90%;
   height: 30%;
   padding:2px;
   font-size: 80%;
-  top: 65%;
+  top: 60%;
   left: 5%;
 }
 
