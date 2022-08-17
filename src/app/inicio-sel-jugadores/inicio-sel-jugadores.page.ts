@@ -1,15 +1,6 @@
-import { EstadJugador } from './../modelo/estadJugador';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { Gesture, GestureController } from '@ionic/angular';
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 /* import { UseExistingWebDriver } from 'protractor/built/driverProviders'; */
 
@@ -49,6 +40,8 @@ export class InicioSelJugadoresPage implements OnInit {
 
   contentScrollActive = true;
   gestureArray: Gesture[] = [];
+  partes: number;
+  segsParte: number;
 
   constructor(private router: Router,
     private gestureCtrl: GestureController,
@@ -65,6 +58,9 @@ export class InicioSelJugadoresPage implements OnInit {
 
   ngOnInit() {
     this.equipoId = this.pasoDatos.getEquipoId();
+    // Operador unario + sirve para convertir strings a numbers
+    this.partes = +localStorage.getItem('partes');
+    this.segsParte = +localStorage.getItem('segsParte');
 
     this.jugadoresService.getJugadoresEquipo(this.equipoId)
     .subscribe(jugadores => {

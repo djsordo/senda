@@ -10,19 +10,34 @@ import { Component, OnInit } from '@angular/core';
 export class CronoComponent implements OnInit {
   tiempo: Crono = {
     encendido: false,
+    finParte: false,
+    finPartido: false,
     parte: 1,
     segundos: 0
   };
 
-  constructor(private cronoService: CronoService) {
+  partes: number;
+  segsParte: number;
 
-   }
+  constructor(private cronoService: CronoService) {}
 
   ngOnInit() {
     this.tiempo = this.cronoService.tiempo;
+    this.partes = +localStorage.getItem('partes');
+    this.segsParte = +localStorage.getItem('segsParte');
   }
 
   pulsaCrono(){
     this.tiempo.encendido = !this.cronoService.pasoTiempo();
+  }
+
+  finParte(){
+    this.tiempo.parte++;
+    this.tiempo.segundos = 0;
+    this.tiempo.finParte = false;
+  }
+
+  finPartido(){
+    this.tiempo.finPartido = true;
   }
 }

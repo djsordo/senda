@@ -4,17 +4,17 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Convocados y equipo inicial</ion-title>
-    <ion-button (click)="irAModo()" color="primary" slot="end">Empezar</ion-button>
+    <ion-title>Pre-partido</ion-title>
+    <ion-button (click)="irAModo()" color="primary" slot="end" size="small">Empezar</ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [scrollY]="contentScrollActive">
+    <div class="ion-text-center"><h5>{{partes}} partes de {{segsParte*1000 | date: 'mm:ss'}} minutos</h5></div>
     <div class="cancha">
     <div *ngFor="let posicion of posiciones" class="drop-inicial" id="{{posicion}}" #drops (click)="borraPos(posicion.clave)">
       <div class="fondo"><h3>{{posicion.desc}}</h3></div>
       <div *ngFor="let jugador of listaInicial">
-        <!-- <div *ngIf="jugador.posicion === posicion" class="tarjeta"> -->
         <ion-item *ngIf="jugador.posicion === posicion.clave" class="eleLista">
           <ion-grid>
             <ion-row>
@@ -24,13 +24,6 @@
               <ion-col size="2"><p>{{posicion.clave}}</p></ion-col>
             </ion-row>
           </ion-grid>
-          <!-- <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img> -->
-          <!-- <ion-img src="../../assets/fotos/{{jugador.foto}}"></ion-img> -->
-          <!-- <div *ngIf="jugador.portero">
-            <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
-          </div> -->
-          <!-- <h2>{{jugador.numero}}</h2>
-          <p>{{jugador.nombre}}</p> -->
         </ion-item>
       </div>
     </div>

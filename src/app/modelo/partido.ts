@@ -8,4 +8,8 @@ export interface Partido{
   tipo: string;
   ubicacion: string;
   jugado: boolean;
+  config: {
+    partes: number;
+    segsParte: number;
+  };
 }
