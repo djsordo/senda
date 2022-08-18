@@ -41,7 +41,7 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="2"><div class="ion-text-center"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon></div></ion-col>
+          <ion-col size="2"><div class="ion-text-center"><ion-icon name="accessibility"></ion-icon></div></ion-col>
           <ion-col size="6">
             <div class="ion-text-left">Paradas/Tiros: {{ep.paradas}}/{{ep.golesRival + ep.paradas}}</div>
           </ion-col>
@@ -94,24 +94,60 @@
       </ion-grid>
     </ion-card>
   </div>
-  <ion-list *ngFor="let evento of eventos">
-    <div *ngIf="evento.accionPrincipal === 'accion.gol'">
-      <div class="ion-text-left">
-        <ion-icon name="football"></ion-icon>
-        {{evento.creadorEvento}}
+
+  <ion-card>
+    <ion-grid>
+      <div *ngFor="let evento of eventos">
+        <div *ngIf="evento.accionPrincipal === 'accion.gol'">
+              <ion-row>
+                <ion-col size="1"><div class="ion-text-center"><ion-icon name="football"></ion-icon></div></ion-col>
+                <ion-col size="4"><div class="ion-text-left">{{evento.creadorEvento}}</div></ion-col>
+                <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+                <ion-col size="5"></ion-col>
+              </ion-row>
+        </div>
+        <div *ngIf="evento.accionPrincipal === 'accion.golRival'">
+            <ion-row>
+              <ion-col size="5"></ion-col>
+              <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+              <ion-col size="4"><div class="ion-text-right">{{evento.creadorEvento}}</div></ion-col>
+              <ion-col size="1"><div class="ion-text-center"><ion-icon name="football"></ion-icon></div></ion-col>
+            </ion-row>
+        </div>
+        <div *ngIf="evento.accionPrincipal === 'accion.parada'">
+          <ion-row>
+            <ion-col size="1"><div class="ion-text-center"><ion-icon name="accessibility"></ion-icon></div></ion-col>
+            <ion-col size="4"><div class="ion-text-left">{{evento.creadorEvento}}</div></ion-col>
+            <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+            <ion-col size="5"></ion-col>
+          </ion-row>
+        </div>
+        <div *ngIf="evento.accionPrincipal === 'accion.tiro'">
+          <ion-row>
+            <ion-col size="5"></ion-col>
+            <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+            <ion-col size="4"><div class="ion-text-right">{{evento.creadorEvento}}</div></ion-col>
+            <ion-col size="1"><div class="ion-text-center"><ion-icon name="close"></ion-icon></div></ion-col>
+          </ion-row>
+        </div>
+        <div *ngIf="evento.accionPrincipal === 'accion.perdida'">
+          <ion-row>
+            <ion-col size="5"></ion-col>
+            <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+            <ion-col size="4"><div class="ion-text-right">{{evento.creadorEvento}}</div></ion-col>
+            <ion-col size="1"><div class="ion-text-center"><ion-icon name="thumbs-down"></ion-icon></div></ion-col>
+          </ion-row>
       </div>
-      <div class="ion-text-center">
-        {{evento.crono.segundos*1000 | date: 'mm:ss'}}
+      <div *ngIf="evento.accionPrincipal === 'accion.robo'">
+        <ion-row>
+          <ion-col size="1"><div class="ion-text-center"><ion-icon name="thumbs-up"></ion-icon></div></ion-col>
+          <ion-col size="4"><div class="ion-text-left">{{evento.creadorEvento}}</div></ion-col>
+          <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+          <ion-col size="5"></ion-col>
+        </ion-row>
       </div>
     </div>
-    <div *ngIf="evento.accionPrincipal === 'accion.golRival'">
-      <div class="ion-text-right">
-        {{evento.creadorEvento}}
-        <ion-icon name="football"></ion-icon>
-      </div>
-      <div class="ion-text-center">
-        {{evento.crono.segundos*1000 | date: 'mm:ss'}}
-      </div>
-    </div>
-  </ion-list>
+    </ion-grid>
+  </ion-card>
+
 </ion-content>

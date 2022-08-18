@@ -28,7 +28,7 @@
       <ion-item slot="content">
         <ion-grid>
           <ion-row>
-            <ion-col size="2"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{portero[0].paradas}}</ion-col>
+            <ion-col size="2"><ion-icon name="accessibility"></ion-icon>{{portero[0].paradas}}</ion-col>
             <ion-col size="2"><ion-icon name="football"></ion-icon>{{portero[0].golesRival}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{portero[0].robos}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{portero[0].perdidas}}</ion-col>
@@ -42,8 +42,7 @@
           <ion-row class="ion-text-center">
             <ion-col size="6">
               <ion-item button color="success" (click)="btnParada(portero[0])">
-                <ion-icon name="hand-left"></ion-icon>
-                <ion-icon name="hand-right"></ion-icon>
+                <ion-icon name="accessibility"></ion-icon>
                 <ion-label slot="end">Parada</ion-label>
               </ion-item>
             </ion-col>
@@ -286,7 +285,7 @@
           <ion-row>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="football"></ion-icon>{{jugador.goles}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="close"></ion-icon>{{jugador.lanzFallados}}</ion-col>
-            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{jugador.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="accessibility"></ion-icon>{{jugador.paradas}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="football"></ion-icon>{{jugador.golesRival}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{jugador.robos}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{jugador.perdidas}}</ion-col>
@@ -330,7 +329,7 @@
           <ion-row>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="football"></ion-icon>{{jugador.goles}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="close"></ion-icon>{{jugador.lanzFallados}}</ion-col>
-            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{jugador.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="accessibility"></ion-icon>{{jugador.paradas}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="football"></ion-icon>{{jugador.golesRival}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{jugador.robos}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{jugador.perdidas}}</ion-col>
