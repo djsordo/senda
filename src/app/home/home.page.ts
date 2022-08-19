@@ -28,11 +28,14 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.partidos = [];
 
-    this.usuarioService.getUsuario(localStorage.getItem('emailUsuario'))
+    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
       console.log('usuario: ', usuarios);
     });
+
+    //this.usuarioService.setUsuario(this.usuario);
+
   }
 
   irAModo(equipo: Equipo, partido: Partido, modo){
@@ -54,6 +57,10 @@ export class HomePage implements OnInit {
     this.pasoDatosService.setNombresEquipos(nombresEquipos);
 
     if (modo === 'generar'){
+        // A ver si puedo desde aquí cambiar el estado del partido.
+        partido.config.estado = 'en curso';
+        this.usuarioService.updateUsuario(this.usuario);
+
         this.router.navigate(['/inicio-sel-jugadores']);
       } else if (modo === 'ver'){
         this.router.navigate(['/modo-ver']);

@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Firestore, 
-          addDoc, 
+import { Firestore,
+          addDoc,
           getDoc,
           getDocs,
           CollectionReference,
           collection,
-          DocumentData, 
+          DocumentData,
           query,
           where,
           deleteDoc,
@@ -19,7 +19,7 @@ import { Equipo } from "../modelo/equipo";
 })
 export class EquipoService {
 
-  private equipoRef : CollectionReference<DocumentData>;
+  private equipoRef: CollectionReference<DocumentData>;
 
   constructor( private firestore : Firestore ){
     this.equipoRef = collection( this.firestore, 'equipos' );
@@ -61,8 +61,3 @@ export class EquipoService {
   }
 
 }
-
-
-
-
-

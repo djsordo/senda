@@ -7,9 +7,9 @@ export interface Partido{
   temporadaId: string;
   tipo: string;
   ubicacion: string;
-  jugado: boolean;
   config: {
     partes: number;
     segsParte: number;
+    estado: string; // Puede ser 'programado', 'en curso', 'finalizado'
   };
 }
