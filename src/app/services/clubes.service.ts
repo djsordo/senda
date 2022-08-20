@@ -57,7 +57,6 @@ export class ClubesService {
 
   async updateClub( docSnap : DocumentSnapshot<DocumentData>, 
                     nombre : string ) {
-    let docRef = doc( this.clubesRef, docSnap.id );
     return updateDoc( docSnap.ref, {
         nombre : nombre
     });

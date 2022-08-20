@@ -8,7 +8,6 @@ import { DocumentData } from "@angular/fire/firestore";
 import { AlertController } from "@ionic/angular";
 import { ClubesService } from "src/app/services/clubes.service";
 
-import { DeportesService } from "src/app/services/deportes.service";
 import { EquipoService } from "src/app/services/equipo.service";
 import { StringUtil } from "src/app/services/string-util";
 import { TemporadaService } from "src/app/services/temporada.service";
@@ -25,6 +24,7 @@ export class BuscarComponent implements OnInit {
   @ViewChildren('resultCard') resultCards: QueryList<any>;
   @Input() equipos : any = [];
   searchText : string = '';
+  currentId : string;
 
   constructor( private mainPage : AdminEquiposPage, 
               private equipoService : EquipoService,
@@ -37,6 +37,7 @@ export class BuscarComponent implements OnInit {
 
   ngOnInit(): void {
     this.refereshEquipoList();
+    this.currentId = null;
   }
 
   public onClickSearch() {
@@ -54,25 +55,25 @@ export class BuscarComponent implements OnInit {
       for( let docSnap of equipoList.docs ){
         let equipo = docSnap.data(); 
         equipo['id'] = docSnap.id;
-        if( equipo?.club ){
-          this.clubService.getDocByRef( equipo.club )
-            .then( (doc:DocumentData) => {
-              equipo.club = {
-                'ref' : equipo.club, 
-                'nombre' : doc.data().nombre
-              };
-            });
-        }
-        if( equipo?.temporada ){
-          this.temporadaService.getTemporadaByRef( equipo.temporada )
-            .then( (doc : DocumentData) => {
-              equipo.temporada = {
-                'ref' : equipo.temporada, 
-                'alias' : doc.data().alias,
-                'nombre' : doc.data().nombre
-              }
-            });
-        }
+        // if( equipo?.club ){
+        //   this.clubService.getDocByRef( equipo.club )
+        //     .then( (doc:DocumentData) => {
+        //       equipo.club = {
+        //         'ref' : equipo.club, 
+        //         'nombre' : doc.data().nombre
+        //       };
+        //     });
+        // }
+        // if( equipo?.temporada ){
+        //   this.temporadaService.getTemporadaByRef( equipo.temporada )
+        //     .then( (doc : DocumentData) => {
+        //       equipo.temporada = {
+        //         'ref' : equipo.temporada, 
+        //         'alias' : doc.data().alias,
+        //         'nombre' : doc.data().nombre
+        //       }
+        //     });
+        // }
         if( this.matchesSearch( equipo, this.searchText ) ){
           this.equipos.push( equipo );
         }
@@ -84,8 +85,7 @@ export class BuscarComponent implements OnInit {
   private matchesSearch( equipo: any, searchText : string ){
     const composedInfo = equipo.nombre + ' ' 
                   + equipo?.genero + ' ' 
-                  + equipo?.temporada.nombre + ' ' 
-                  + equipo?.club.nombre;
+                  + equipo?.temporada.nombre;
     if( searchText )
       return this.stringUtil.like( composedInfo, searchText );
     else
@@ -124,8 +124,17 @@ export class BuscarComponent implements OnInit {
   public onCardSelected( elementId : string ) {
     this.resultCards.forEach( (card) => {
       if( card.el.id === elementId ){
-        this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-        this.mainPage.onSelectedId.emit( elementId );
+        if( card.el.id !== this.currentId ){
+          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
+          this.mainPage.onSelectedId.emit( elementId );
+          this.currentId = card.el.id;
+        }else{
+          // simulamos el efecto de que un click en un elemento 
+          // seleccionado, deja la selección sin efecto
+          this.renderer.setStyle( card.el, "background", "" );
+          this.mainPage.onSelectedId.emit( null ); 
+          this.currentId = null;
+        }
       }
       else
         this.renderer.setStyle( card.el, "background", "" );

@@ -95,7 +95,7 @@ describe( 'EquipoService', () => {
 
   it('recuperamos todos los equipos', ( callMeOnFinish ) => {
     let equipo = equipoService.newEquipo();
-    equipoService.getAllEQuipo()
+    equipoService.getEquipos()
       .then((allElements) => {
         let numEquipos = 0;
         allElements.forEach( elem => {

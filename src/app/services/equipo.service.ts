@@ -9,7 +9,9 @@ import { Firestore,
           query,
           where,
           deleteDoc,
+          updateDoc,
           DocumentReference,
+          DocumentSnapshot, 
           doc } from '@angular/fire/firestore';
 
 import { Equipo } from "../modelo/equipo";
@@ -42,8 +44,23 @@ export class EquipoService {
     return addDoc( this.equipoRef, equipo );
   }
 
+  async updateEquipo( docSnap : DocumentSnapshot<DocumentData>, 
+                      equipo : any ){
+    return updateDoc( docSnap.ref, equipo );
+  }
+
+  /**
+   * @deprecated - use getEquipoById instead
+   * @param equipoRef 
+   * @returns 
+   */
   async getEquipoByRef( equipoRef : DocumentReference<DocumentData> ){
     return getDoc( equipoRef );
+  }
+
+  async getEquipoById( equipoId : string ){
+    let docRef = doc( this.equipoRef, equipoId );
+    return getDoc( docRef );
   }
 
   async getEquipoByName( nombre : string ){

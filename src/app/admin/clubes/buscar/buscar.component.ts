@@ -23,6 +23,7 @@ export class BuscarComponent implements OnInit {
   @ViewChildren('resultCard') resultCards: QueryList<any>;
   @Input() clubes : any = [];
   searchText : string = '';
+  currentId : string;
 
   constructor( private mainPage : AdminClubesPage, 
               private clubesService : ClubesService,
@@ -33,6 +34,7 @@ export class BuscarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentId = null;
     this.refereshClubList();
   }
 
@@ -99,8 +101,17 @@ export class BuscarComponent implements OnInit {
   public onCardSelected( elementId : string ) {
     this.resultCards.forEach( (card) => {
       if( card.el.id === elementId ){
-        this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-        this.mainPage.onSelectedId.emit( elementId );
+        if( card.el.id !== this.currentId ){
+          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
+          this.mainPage.onSelectedId.emit( elementId );
+          this.currentId = card.el.id;
+        }else{
+          // simulamos el efecto de que un click en un elemento 
+          // seleccionado, deja la selección sin efecto
+          this.renderer.setStyle( card.el, "background", "" );
+          this.mainPage.onSelectedId.emit( null ); 
+          this.currentId = null;
+        }
       }
       else
         this.renderer.setStyle( card.el, "background", "" );

@@ -43,21 +43,7 @@ export class MicrofonoPage implements OnInit {
                           this.startRecognition();
                        } )
       .catch( value => { this.isAvailable = false; } );
-      // this.stylesService.suscribirmeACambioColorScheme( 
-      //   ( colorScheme ) => {
-      //       this.onCambioColorScheme( this, colorScheme );
-      //   } );
   }
-
-  // private onCambioColorScheme( currentComponent : MicrofonoPage, mode : ColorScheme ){
-  //   if( mode === ColorScheme.darkMode ){
-  //     currentComponent.microfonoOn = "./assets/mic-animation_dark.gif";
-  //     currentComponent.microfonoOff = "./assets/mic-animation-disabled_dark.gif";
-  //   }else{
-  //     currentComponent.microfonoOn = "./assets/mic-animation.gif";
-  //     currentComponent.microfonoOff = "./assets/mic-animation-disabled.gif";
-  //   }
-  // }
 
   async startRecognition() {
     this.microfonoImgSrc = this.microfonoOn;
