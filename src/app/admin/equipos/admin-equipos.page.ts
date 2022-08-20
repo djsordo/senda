@@ -5,16 +5,16 @@ import { Component,
 
 
 @Component({
-  selector: 'app-admin-clubes', 
-  templateUrl: './admin-clubes.page.html', 
-  styleUrls : ['./admin-clubes.page.scss']
+  selector: 'app-admin-equipos', 
+  templateUrl: './admin-equipos.page.html', 
+  styleUrls : ['./admin-equipos.page.scss']
 })
-export class AdminClubesPage implements OnInit {
+export class AdminEquiposPage implements OnInit {
 
   private selectedId : string; 
   @Output() onSelectedId = new EventEmitter<string>();
 
-  constructor( ) {
+  constructor( ){
     this.onSelectedId.subscribe( (clubId : string) => {
       this.selectedId = clubId;
     });

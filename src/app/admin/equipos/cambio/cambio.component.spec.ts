@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { CambioComponent } from '../cambio/cambio.component';
+import { CambioComponent } from './cambio.component';
 
 describe('CambioComponent', () => {
   let component: CambioComponent;

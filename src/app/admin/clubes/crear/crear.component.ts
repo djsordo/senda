@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
+import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
 
 import { ClubesService } from 'src/app/services/clubes.service';
@@ -45,8 +45,8 @@ export class CrearComponent implements OnInit {
       })
       .catch( (reason) => {
         this.sendToast(`Se ha producido un error al crear el club ${this.nombre}: ${reason}`);
-      })
-    this.router.navigate( ['/admin/clubes'], { relativeTo : this.route } );
+      });
+    this.router.navigate( ['..'], { relativeTo : this.route } );
   }
 
   async sendToast( message : string ){

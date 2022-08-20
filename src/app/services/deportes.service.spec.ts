@@ -11,7 +11,7 @@ import { environment } from "src/environments/environment";
 
 
 
-fdescribe( 'DeportesService', () => {
+describe( 'DeportesService', () => {
 
   let deportesService : DeportesService;
 
