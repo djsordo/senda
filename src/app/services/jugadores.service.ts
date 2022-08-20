@@ -12,7 +12,7 @@ export class JugadoresService {
   jugadores: Array<Jugador> = [];
 
   constructor(private firestore: Firestore) {
-    this.jugadores = [
+/*     this.jugadores = [
       {id:  '0', numero: '70', nombre: 'Daniel Vaquero',  portero: true, posicion:'', foto: 'SinImagen.jpg'},
       {id:  '1', numero: '10', nombre: 'Mario Palomo',    portero: true, posicion:'', foto: 'SinImagen.jpg'},
       {id:  '2', numero: '25', nombre: 'Adrián González', portero: false, posicion:'', foto: 'Adrian_Gonzalez_Garcia.jpeg'},
@@ -30,7 +30,7 @@ export class JugadoresService {
       {id: '14', numero: '29', nombre: 'Santiago Luna',   portero: false, posicion:'', foto: 'SinImagen.jpg'},
       {id: '15', numero: '56', nombre: 'Jesús Hernández', portero: false, posicion:'', foto: 'SinImagen.jpg'},
       {id: '16', numero: '28', nombre: 'César Vitores',   portero: false, posicion:'', foto: 'Cesar_Vitores_Cosmes.jpeg'},
-    ];
+    ];*/
   }
 
   public getJugadores(){

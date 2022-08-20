@@ -12,14 +12,22 @@ export interface Tick {
 export class CronoService {
   tiempo: Crono = {
     encendido: false,
+    finParte: false,
+    finPartido: false,
     parte: 1,
     segundos: 0
   };
 
+  partes: number;
+  segsParte: number;
+
   // Observable que de un tick cada segundo cuando el crono está encendido
   private tickObservablePrivate: BehaviorSubject<Tick> = new BehaviorSubject<Tick>({segundos: 0});
 
-  constructor() {}
+  constructor() {
+    this.partes = +localStorage.getItem('partes');
+    this.segsParte = +localStorage.getItem('segsParte');
+  }
 
   get tickObservable(){
     return this.tickObservablePrivate.asObservable();
@@ -34,6 +42,11 @@ export class CronoService {
     // Valorar setInterval
     setTimeout(() => {
       if (this.tiempo.encendido){
+        if (this.tiempo.segundos >= this.segsParte){
+          this.tiempo.finParte = true;
+          this.tiempo.encendido = false;
+          return this.tiempo.encendido;
+        }
         this.pasoTiempo();
         this.tiempo.segundos = this.tiempo.segundos + 1;
         this.tickObservableData = {segundos: this.tiempo.segundos};
@@ -46,13 +59,6 @@ export class CronoService {
   marcaTiempo(){
     // Función que devuelve el instante actual
     console.log(this.tiempo);
-
-    /* const ahora: Crono = {
-      parte: this.tiempo.parte,
-      segundos: this.tiempo.segundos,
-      encendido: this.tiempo.encendido
-    }; */
-
     return JSON.parse(JSON.stringify(this.tiempo));
   }
 

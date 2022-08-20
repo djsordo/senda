@@ -23,28 +23,31 @@
 
     <ion-list *ngFor="let rol of usuario?.roles">
       <ion-list-header><h3>Partidos como {{rol.nombre}} del equipo {{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</h3></ion-list-header>
-        <ion-card *ngFor="let partido of rol.equipo.partidos">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="6">{{partido.fecha}}</ion-col>
-              <ion-col size="6">{{partido.tipo}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">{{rol.equipo.nombre + ' vs. ' + partido.rival}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">{{partido.ubicacion}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'generar')">Generar</ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'ver')">Ver</ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
+        <div *ngFor="let partido of rol.equipo.partidos">
+          <ion-card>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="4">{{partido.fecha}}</ion-col>
+                <ion-col size="4">{{partido.tipo}}</ion-col>
+                <ion-col size="4">{{partido.config.estado}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">{{rol.equipo.nombre + ' vs. ' + partido.rival}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">{{partido.ubicacion}}</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado'">Generar</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">Ver</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+        </div>
     </ion-list>
   </div>
 </ion-content>
