@@ -64,7 +64,7 @@ export class CambioComponent implements OnInit {
   }
 
   private async initCurrentUser(){
-    this.usuarioService.getUsuario(localStorage.getItem('emailUsuario'))
+    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
       console.log('usuario: ', usuarios);
