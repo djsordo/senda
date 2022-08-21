@@ -199,8 +199,39 @@
           <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="azul"></ion-icon></div></ion-col>
         </ion-row>
       </div>
+      <div *ngIf="evento.accionPrincipal === 'accion.2Minutos'">
+        <ion-row>
+          <ion-col size="5"></ion-col>
+          <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+          <ion-col size="4"><div class="ion-text-right">{{evento.creadorEvento}}</div></ion-col>
+          <ion-col size="1"><div class="ion-text-center"><ion-icon name="stopwatch" color="rojo"></ion-icon></div></ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="evento.accionPrincipal === 'accion.2MinutosRival'">
+        <ion-row>
+          <ion-col size="1"><div class="ion-text-center"><ion-icon name="stopWatch" color="success"></ion-icon></div></ion-col>
+          <ion-col size="4"><div class="ion-text-left">2 minutos {{evento.creadorEvento}}</div></ion-col>
+          <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+          <ion-col size="5"></ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="evento.accionPrincipal === 'accion.tiempoMuertoRival'">
+        <ion-row>
+          <ion-col size="5"></ion-col>
+          <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+          <ion-col size="4"><div class="ion-text-right">{{evento.creadorEvento}}</div></ion-col>
+          <ion-col size="1"><div class="ion-text-center">TM</div></ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="evento.accionPrincipal === 'accion.tiempoMuerto'">
+        <ion-row>
+          <ion-col size="1"><div class="ion-text-center">TM</div></ion-col>
+          <ion-col size="4"><div class="ion-text-left">{{evento.creadorEvento}}</div></ion-col>
+          <ion-col size="2"><div class="ion-text-center">{{evento.crono.segundos*1000 | date: 'mm:ss'}}</div></ion-col>
+          <ion-col size="5"></ion-col>
+        </ion-row>
+      </div>
     </div>
     </ion-grid>
   </ion-card>
-
 </ion-content>
