@@ -15,6 +15,7 @@ import { EstadJugador } from 'src/app/modelo/estadJugador';
 export class MarcadorComponent implements OnInit, DoCheck {
   @Input() nombreEquipo: string;
   @Input() nosotros: boolean;
+  @Input() portero: Array<EstadJugador>;
 
   marcador: number;
   encendido: boolean;
@@ -69,7 +70,15 @@ export class MarcadorComponent implements OnInit, DoCheck {
   }
 
   btnGolRival(){
-    const detalle = {accion: Acciones.golRival, jugador: null, marcaTiempo: this.cronoService.marcaTiempo()};
+    console.log('Portero: ', this.portero);
+    let jugador: EstadJugador;
+    if (this.portero.length === 0) {
+      jugador = null;
+    } else {
+      jugador = this.portero[0];
+    }
+
+    const detalle = {accion: Acciones.golRival, jugador: jugador, marcaTiempo: this.cronoService.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
   }

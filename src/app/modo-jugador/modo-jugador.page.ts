@@ -19,6 +19,7 @@ import { EstadPartidoService } from '../services/estad-partido.service';
 export class ModoJugadorPage implements OnInit {
   listaInicial: Array<EstadJugador> = [];
   listaBanquillo: Array<EstadJugador> = [];
+  portero: Array<EstadJugador> = [];
 
   miSuscripcionAEventoJugador: any = null;
 

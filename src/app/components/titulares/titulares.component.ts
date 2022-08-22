@@ -18,13 +18,14 @@ import { Acciones, EventosService } from 'src/app/services/eventos.service';
 export class TitularesComponent implements OnInit {
   @Input() jugCampo: Array<EstadJugador>;
   @Input() listaBanquillo: Array<EstadJugador>;
+  @Input() portero: Array<EstadJugador>;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
 
   listaExcluidos: Array<EstadJugador> = [];
   listaEliminados: Array<EstadJugador> = [];
-  portero: Array<EstadJugador> = [];
+  /* portero: Array<EstadJugador> = []; */
 
   listaRobos= [{nombre: 'Pase'},
               {nombre: 'Falta en ataque'},
