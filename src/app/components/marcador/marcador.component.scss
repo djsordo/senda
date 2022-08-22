@@ -1,3 +1,9 @@
+* {
+  /* Cálculo para texto responsive */
+  --diff: calc(var(--max-size) - var(--min-size));
+  --responsive: calc((var(--min-size) * 1px) + var(--diff) * ((100vw - 300px) / (1600 - 300))); /* Ranges from 301px to 1599px */
+}
+
 ion-grid{
   height: 100%;
 }
@@ -12,3 +18,13 @@ ion-text{
   font-size: 200%
 }
 
+ion-card{
+  margin: 2px;
+  padding: 0px;
+}
+
+.textoNombres{
+  --max-size: 40;
+  --min-size: 15;
+  font-size: var(--responsive);
+}

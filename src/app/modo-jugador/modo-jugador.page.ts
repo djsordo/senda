@@ -9,7 +9,6 @@ import { Evento } from '../modelo/evento';
 import { MarcadorService } from '../components/marcador/marcador.service';
 import { Acciones } from '../services/eventos.service';
 import { EstadJugador } from '../modelo/estadJugador';
-import { EstadPartido } from '../modelo/estadPartido';
 import { EstadPartidoService } from '../services/estad-partido.service';
 
 @Component({

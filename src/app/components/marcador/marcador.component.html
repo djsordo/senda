@@ -1,25 +1,52 @@
+<!--  <ion-grid>
+  <ion-row>
+    <ion-col size="8">
+      <ion-card class="background">
+        <ion-card-header class="ion-text-center">{{nombreEquipo}}</ion-card-header>
+        <ion-card-content>
+          <ion-text>{{marcador}}</ion-text>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button *ngIf="!nosotros" color="danger" size="small" (click)="dosMinRival()">
+        <b>2 m</b>
+      </ion-button>
+      <ion-button *ngIf="!nosotros" color="danger" size="small" (click)="dosMinRival()">
+        <b>Gol</b>
+      </ion-button>
+      <ion-icon *ngIf="nosotros" name="chevron-forward-outline" size="large"></ion-icon>
+      <ion-button color="success" size="small" (click)="tiempoMuerto()" *ngIf="encendido">
+        <b>T</b>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+ </ion-grid> -->
 
-  <ion-card class="background">
+ <ion-card class="background">
     <ion-grid>
       <ion-row>
-        <ion-col class="ion-text-center">
+        <ion-col class="ion-text-center textoNombres">
           <b>{{nombreEquipo}}</b>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col class="ion-text-start">
-          <ion-button color="success" size="small" (click)="tiempoMuerto()" *ngIf="encendido">
-            <b>T</b>
-          </ion-button>
-        </ion-col>
         <ion-col class="ion-text-center">
           <ion-text>{{marcador}}</ion-text>
         </ion-col>
-        <ion-col class="ion-text-end">
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button color="success" size="small" (click)="tiempoMuerto()" *ngIf="encendido">
+            <b>T</b>
+          </ion-button>
           <ion-button *ngIf="!nosotros" color="danger" size="small" (click)="dosMinRival()">
             <b>2 m</b>
           </ion-button>
-          <ion-icon *ngIf="nosotros" name="chevron-forward-outline" size="large"></ion-icon>
+          <ion-button *ngIf="!nosotros" color="danger" size="small" (click)="btnGolRival()">
+            <b>Gol</b>
+          </ion-button>
+          <ion-button *ngIf="nosotros" color="success" size="small"><ion-icon name="chevron-forward-outline"></ion-icon></ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

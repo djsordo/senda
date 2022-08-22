@@ -37,7 +37,7 @@ export class DetalleJugadorPage implements OnInit {
 
   ngOnInit() {
     this.accion = this.pasoDatos.getPantalla('detalle-jugador').accion;
-    this.jugador = this.pasoDatos.getPantalla('detalle-jugador').jugador;
+    this.jugador = this.pasoDatos.getPantalla('detalle-jugador')?.jugador;
     this.marcaTiempo = this.pasoDatos.getPantalla('detalle-jugador').marcaTiempo;
   }
 
@@ -69,7 +69,7 @@ export class DetalleJugadorPage implements OnInit {
     eventoJugador.jugadorId = this.jugador.datos.id;
     eventoJugador.partidoId = localStorage.getItem('partidoId');
     eventoJugador.equipoId = localStorage.getItem('equipoId');
-    eventoJugador.creadorEvento = this.jugador.datos.nombre;
+    eventoJugador.creadorEvento = this.jugador?.datos.nombre;
     eventoJugador.posicionCampo = this.areaCampo;
     eventoJugador.posicionPorteria = this.areaPorteria;
     this.pasoDatos.onEventoJugador( eventoJugador );
@@ -81,7 +81,7 @@ export class DetalleJugadorPage implements OnInit {
 
   public getTituloPagina() {
     try{
-      return `${this.trad.t(this.accion)} de ${this.jugador.datos.nombre}`;
+      return `${this.trad.t(this.accion)} de ${this.jugador?.datos.nombre}`;
     }catch( error ) {
       return 'Registra la acción del jugador';
     }
@@ -108,7 +108,7 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   public getJugador(){
-    return this.jugador.datos.nombre;
+    return this.jugador?.datos.nombre;
   }
 
 }

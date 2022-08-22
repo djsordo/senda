@@ -1,9 +1,11 @@
+import { Router } from '@angular/router';
 import { EstadPartidoService } from './../../services/estad-partido.service';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { MarcadorService } from './../marcador/marcador.service';
 import { CronoService } from './../crono/crono.service';
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { EstadJugador } from 'src/app/modelo/estadJugador';
 
 @Component({
   selector: 'app-marcador',
@@ -21,7 +23,8 @@ export class MarcadorComponent implements OnInit, DoCheck {
               private marcadorService: MarcadorService,
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
-              private estadPartidoService: EstadPartidoService) {
+              private estadPartidoService: EstadPartidoService,
+              private router: Router) {
    }
 
   ngOnInit() {
@@ -63,5 +66,11 @@ export class MarcadorComponent implements OnInit, DoCheck {
     evento.partidoId = localStorage.getItem('partidoId');
     evento.equipoId = localStorage.getItem('equipoId');
     this.pasoDatos.onEventoJugador( evento );
+  }
+
+  btnGolRival(){
+    const detalle = {accion: Acciones.golRival, jugador: null, marcaTiempo: this.cronoService.marcaTiempo()};
+    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
+    this.router.navigate(['/detalle-jugador']);
   }
 }
