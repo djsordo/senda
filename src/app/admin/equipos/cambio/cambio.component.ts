@@ -124,8 +124,6 @@ export class CambioComponent implements OnInit {
     else 
       equipo.genero = this.typedGenero; 
     if( this.selectedTemporada !== '#otro#' ){
-      console.log('entro por otro');
-      console.log( this.selectedTemporada );
       for( let temporada of this.temporadas ){
         console.log( temporada.alias );
         if( temporada.alias === this.selectedTemporada ){

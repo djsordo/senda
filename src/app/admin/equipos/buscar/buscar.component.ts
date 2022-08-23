@@ -28,8 +28,6 @@ export class BuscarComponent implements OnInit {
 
   constructor( private mainPage : AdminEquiposPage, 
               private equipoService : EquipoService,
-              private clubService : ClubesService,
-              private temporadaService : TemporadaService, 
               private renderer : Renderer2, 
               private alertController : AlertController,
               private stringUtil : StringUtil ){
@@ -55,25 +53,6 @@ export class BuscarComponent implements OnInit {
       for( let docSnap of equipoList.docs ){
         let equipo = docSnap.data(); 
         equipo['id'] = docSnap.id;
-        // if( equipo?.club ){
-        //   this.clubService.getDocByRef( equipo.club )
-        //     .then( (doc:DocumentData) => {
-        //       equipo.club = {
-        //         'ref' : equipo.club, 
-        //         'nombre' : doc.data().nombre
-        //       };
-        //     });
-        // }
-        // if( equipo?.temporada ){
-        //   this.temporadaService.getTemporadaByRef( equipo.temporada )
-        //     .then( (doc : DocumentData) => {
-        //       equipo.temporada = {
-        //         'ref' : equipo.temporada, 
-        //         'alias' : doc.data().alias,
-        //         'nombre' : doc.data().nombre
-        //       }
-        //     });
-        // }
         if( this.matchesSearch( equipo, this.searchText ) ){
           this.equipos.push( equipo );
         }
@@ -93,6 +72,7 @@ export class BuscarComponent implements OnInit {
   }
 
   async onClickBorrar() {
+    console.log( this.getSelectedId() );
     const alert = await this.alertController.create({
       header: '¿Seguro?',
       buttons: [
