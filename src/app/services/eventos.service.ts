@@ -27,7 +27,9 @@ export enum Acciones {
   tm = 'accion.tiempoMuerto',
   tmRival = 'accion.tiempoMuertoRival',
   finPeriodo = 'accion.finPeriodo',
-  finPartido = 'accion.finPartido'
+  finPartido = 'accion.finPartido',
+  sinPortero = 'accion.sinPortero',
+  porteriaVacia = 'accion.porteriaVacia'
 }
 
 @Injectable({
@@ -60,7 +62,9 @@ export class EventosService {
       Acciones.tm,
       Acciones.tmRival,
       Acciones.finPeriodo,
-      Acciones.finPartido ];
+      Acciones.finPartido,
+      Acciones.sinPortero,
+      Acciones.porteriaVacia ];
   }
 
   public getAcciones( ): Acciones[] {

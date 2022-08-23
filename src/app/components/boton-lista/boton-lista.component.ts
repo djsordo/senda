@@ -39,12 +39,12 @@ export class BotonListaComponent implements OnInit {
 
     localStorage.setItem('jugadorId', this.jugador.datos.id);
     if (accion1 === 'Robo'){
-      this.estadPartidoService.suma('robos', eventoJugador.crono.segundos);
+      this.estadPartidoService.suma('robos', eventoJugador.crono);
       localStorage.setItem('accion', Acciones.robo);
       eventoJugador.accionPrincipal = Acciones.robo;
       eventoJugador.accionSecundaria = accion2;
     } else if (accion1 === 'Pérdida'){
-      this.estadPartidoService.suma('perdidas', eventoJugador.crono.segundos);
+      this.estadPartidoService.suma('perdidas', eventoJugador.crono);
       localStorage.setItem('accion', Acciones.perdida);
       eventoJugador.accionPrincipal = Acciones.perdida;
       eventoJugador.accionSecundaria = accion2;

@@ -19,7 +19,7 @@ import { EstadPartidoService } from '../services/estad-partido.service';
 export class ModoJugadorPage implements OnInit {
   listaInicial: Array<EstadJugador> = [];
   listaBanquillo: Array<EstadJugador> = [];
-  portero: Array<EstadJugador> = [];
+  portero: EstadJugador;
 
   miSuscripcionAEventoJugador: any = null;
 
@@ -111,6 +111,10 @@ export class ModoJugadorPage implements OnInit {
     } );
   }
 
+  cambioPortero(portero: EstadJugador){
+    this.portero = portero;
+  }
+
   cambiarModo(){
     this.router.navigate(['/modo-accion']);
   }
@@ -139,4 +143,5 @@ export class ModoJugadorPage implements OnInit {
       desde ${this.tradService.t(evento.posicionCampo)} hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }
   }
+
 }

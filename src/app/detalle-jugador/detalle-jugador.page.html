@@ -36,6 +36,15 @@
 
     <ion-row>
       <ion-col size="12" size-md>
+        <ion-item>
+          <ion-label>Portería Vacía</ion-label>
+          <ion-checkbox [(ngModel)]="porteriaVacia" disabled="{{!((accion === 'accion.gol')  || (accion === 'accion.lanzamiento'))}}"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" size-md>
         <p *ngIf="this.areaCampo"
         style="text-align:center;">desde {{this.getCampoName()}}</p>
       </ion-col>

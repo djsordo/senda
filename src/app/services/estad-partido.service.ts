@@ -1,3 +1,4 @@
+import { Crono } from 'src/app/modelo/crono';
 import { EstadPartido } from './../modelo/estadPartido';
 import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
@@ -24,7 +25,13 @@ export class EstadPartidoService {
     dosMinutosRival: 0,
     tm: 0,
     tmRival: 0,
-    segundos: 0
+    crono: {
+      segundos: 0,
+      parte: 1,
+      encendido: false,
+      finParte: false,
+      finPartido: false
+    }
   };
 
   constructor(private firestore: Firestore) {}
@@ -33,9 +40,9 @@ export class EstadPartidoService {
     this.estadPartido[campo] = valor;
   }
 
-  suma(campo: string, segundos: number){
+  suma(campo: string, crono: Crono){
     this.estadPartido[campo]++;
-    this.estadPartido.segundos = segundos;
+    this.estadPartido.crono = crono;
     // Actualizamos el registro en la base de datos
     this.updateEstadPartido();
   }

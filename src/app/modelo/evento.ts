@@ -3,7 +3,6 @@
 /* import { Equipo } from './equipo';*/
 import { Acciones } from '../services/eventos.service';
 import { Crono } from './crono';
-import { EstadJugador } from './estadJugador';
 
 export interface Evento {
   id: string;
@@ -11,7 +10,6 @@ export interface Evento {
   equipoId: string;
   partidoId: string;
   timestamp?: Date;
-  /* jugador: EstadJugador; */
   creadorEvento: string;
   accionPrincipal: Acciones;
   accionSecundaria?: string;

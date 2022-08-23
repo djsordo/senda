@@ -1,3 +1,4 @@
+import { Crono } from 'src/app/modelo/crono';
 export interface EstadPartido{
   id?: string;
   partidoId: string;
@@ -16,5 +17,5 @@ export interface EstadPartido{
   dosMinutosRival: number;
   tm: number;
   tmRival: number;
-  segundos: number;
+  crono: Crono;
 };

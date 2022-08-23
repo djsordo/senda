@@ -2,7 +2,7 @@ import { EstadPartidoService } from './../../services/estad-partido.service';
 import { Crono } from './../../modelo/crono';
 import { Observable } from 'rxjs';
 import { EstadJugador } from './../../modelo/estadJugador';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
@@ -19,6 +19,7 @@ export class TitularesComponent implements OnInit {
   @Input() jugCampo: Array<EstadJugador>;
   @Input() listaBanquillo: Array<EstadJugador>;
   @Input() portero: Array<EstadJugador>;
+  @Output() porteroEmisor = new EventEmitter<EstadJugador>();
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
@@ -58,6 +59,9 @@ export class TitularesComponent implements OnInit {
       this.portero = this.jugCampo.splice(indicePortero, 1);
       this.portero[0].exclusion = false;
     }
+
+    // Emitimos el portero
+    this.porteroEmisor.emit(this.portero[0]);
 
     this.jugCampo = this.jugCampo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
     for (let i = 0; i < this.jugCampo?.length; i++){
@@ -107,8 +111,17 @@ export class TitularesComponent implements OnInit {
       }
     }
 
+    // Emitimos el portero
+    this.porteroEmisor.emit(this.portero[0]);
+
     if (localStorage.getItem('accion') !== ''){
-      this.sumaEstad(localStorage.getItem('accion'), localStorage.getItem('jugadorId'));
+      const jugId = localStorage.getItem('jugadorId');
+      console.log('jugid: ',jugId);
+      if (!jugId){
+        console.log('entra el puñetero');
+        this.sumaEstad(localStorage.getItem('accion'), jugId);
+      }
+
       localStorage.setItem('accion', '');
       localStorage.setItem('jugadorId', '');
 
@@ -116,7 +129,10 @@ export class TitularesComponent implements OnInit {
   }
 
   btnGol(jugador: EstadJugador): void{
-    const detalle = {accion: Acciones.gol, jugador, marcaTiempo: this.crono.marcaTiempo()};
+    const detalle = { accion: Acciones.gol,
+                      accionS: (this.portero.length === 0)? Acciones.sinPortero : '',
+                      jugador,
+                      marcaTiempo: this.crono.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
@@ -134,7 +150,11 @@ export class TitularesComponent implements OnInit {
   }
 
   btnLanzamiento(jugador: EstadJugador): void{
-    const detalle = {accion: Acciones.lanzamiento, jugador, marcaTiempo: this.crono.marcaTiempo()};
+    const detalle = { accion: Acciones.lanzamiento,
+      accionS: (this.portero.length === 0)? Acciones.sinPortero : '',
+      jugador,
+      marcaTiempo: this.crono.marcaTiempo()};
+
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
 
@@ -158,7 +178,7 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    this.estadPartidoService.suma('amarillas', eventoJugador.crono.segundos);
+    this.estadPartidoService.suma('amarillas', eventoJugador.crono);
 
     eventoJugador.accionPrincipal = Acciones.tarjetaAmarilla;
     eventoJugador.creadorEvento = jugador.datos.nombre;
@@ -180,7 +200,7 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    this.estadPartidoService.suma('rojas', eventoJugador.crono.segundos);
+    this.estadPartidoService.suma('rojas', eventoJugador.crono);
 
     eventoJugador.accionPrincipal = Acciones.tarjetaRoja;
     eventoJugador.jugadorId = jugador.datos.id;
@@ -202,7 +222,7 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    this.estadPartidoService.suma('azules', eventoJugador.crono.segundos);
+    this.estadPartidoService.suma('azules', eventoJugador.crono);
 
     eventoJugador.accionPrincipal = Acciones.tarjetaAzul;
     eventoJugador.jugadorId = jugador.datos.id;
@@ -225,7 +245,7 @@ export class TitularesComponent implements OnInit {
 
     // Se crea el evento para la base de datos
     const eventoJugador = this.eventosService.newEvento();
-    this.estadPartidoService.suma('dosMinutos', eventoJugador.crono.segundos);
+    this.estadPartidoService.suma('dosMinutos', eventoJugador.crono);
 
     eventoJugador.accionPrincipal = Acciones.dosMinutos;
     eventoJugador.jugadorId = jugador.datos.id;
@@ -277,6 +297,9 @@ export class TitularesComponent implements OnInit {
          }
         }
       }
+
+    // Emitimos el portero
+    this.porteroEmisor.emit(this.portero[0]);
   }
 
   btnCambioMarca(){
@@ -306,6 +329,9 @@ export class TitularesComponent implements OnInit {
     }
 
     this.listaBanquillo.push(jugSale[0]);
+
+    // Emitimos el portero
+    this.porteroEmisor.emit(this.portero[0]);
 
     // Se crean los eventos para la base de datos
     // Jugador que sale del campo
@@ -346,6 +372,9 @@ export class TitularesComponent implements OnInit {
     const entra = this.listaBanquillo.findIndex(res => res.datos.id === jugador.datos.id);
     this.listaBanquillo.splice(entra, 1);
 
+    // Emitimos el portero
+    this.porteroEmisor.emit(this.portero[0]);
+
     // Jugador que entra al campo
     const eventoEntra = this.eventosService.newEvento();
     eventoEntra.accionPrincipal = Acciones.cambio;
@@ -373,6 +402,9 @@ export class TitularesComponent implements OnInit {
       this.jugCampo.splice(sale, 1);
     }
 
+    // Emitimos el portero
+    this.porteroEmisor.emit(this.portero[0]);
+
     // Jugador que sale del campo
     const eventoSale = this.eventosService.newEvento();
     eventoSale.accionPrincipal = Acciones.cambio;
@@ -395,7 +427,7 @@ export class TitularesComponent implements OnInit {
       } else {
         this.jugCampo[indice].lanzFallados++;
       }
-    } else if (accion === 'accion.parada' || accion === 'accion.gol_rival'){
+    } else if (accion === 'accion.parada' || accion === 'accion.golRival'){
       if (accion === Acciones.parada){
         this.portero[0].paradas++;
       } else {

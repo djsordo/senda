@@ -15,7 +15,7 @@ import { EstadJugador } from 'src/app/modelo/estadJugador';
 export class MarcadorComponent implements OnInit, DoCheck {
   @Input() nombreEquipo: string;
   @Input() nosotros: boolean;
-  @Input() portero: Array<EstadJugador>;
+  @Input() portero: EstadJugador;
 
   marcador: number;
   encendido: boolean;
@@ -42,7 +42,7 @@ export class MarcadorComponent implements OnInit, DoCheck {
   dosMinRival(){
     // Se crea el evento para la base de datos
     const evento = this.eventosService.newEvento();
-    this.estadPartidoService.suma('dosMinutosRival', evento.crono.segundos);
+    this.estadPartidoService.suma('dosMinutosRival', evento.crono);
 
     evento.accionPrincipal = Acciones.dosMinutosRival;
     evento.creadorEvento = this.nombreEquipo;
@@ -57,10 +57,10 @@ export class MarcadorComponent implements OnInit, DoCheck {
     // Se crea el evento para la base de datos
     const evento = this.eventosService.newEvento();
     if (this.nosotros){
-      this.estadPartidoService.suma('tm', evento.crono.segundos);
+      this.estadPartidoService.suma('tm', evento.crono);
       evento.accionPrincipal = Acciones.tm;
     } else {
-      this.estadPartidoService.suma('tmRival', evento.crono.segundos);
+      this.estadPartidoService.suma('tmRival', evento.crono);
       evento.accionPrincipal = Acciones.tmRival;
     }
     evento.creadorEvento = this.nombreEquipo;
@@ -70,15 +70,14 @@ export class MarcadorComponent implements OnInit, DoCheck {
   }
 
   btnGolRival(){
-    console.log('Portero: ', this.portero);
     let jugador: EstadJugador;
-    if (this.portero.length === 0) {
+    if (this.portero === undefined) {
       jugador = null;
     } else {
-      jugador = this.portero[0];
+      jugador = this.portero;
     }
 
-    const detalle = {accion: Acciones.golRival, jugador: jugador, marcaTiempo: this.cronoService.marcaTiempo()};
+    const detalle = {accion: Acciones.golRival, jugador, marcaTiempo: this.cronoService.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
     this.router.navigate(['/detalle-jugador']);
   }
