@@ -28,17 +28,26 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.partidos = [];
 
-    this.usuarioService.getUsuario(localStorage.getItem('emailUsuario'))
+    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
       console.log('usuario: ', usuarios);
     });
+
+    //this.usuarioService.setUsuario(this.usuario);
+
   }
 
-  irAModo(equipo: Equipo, partido: Partido){
-    /* this.router.navigate(['/modo-jugador']); */
+  irAModo(equipo: Equipo, partido: Partido, modo){
     console.log('Equipo: ', equipo);
     console.log('Partido: ', partido);
+    // Meto el partidoId y el equipoId en el localStorage, porque los usaré más tarde.
+    localStorage.setItem('partidoId', partido.id);
+    localStorage.setItem('partes', partido.config.partes.toString());
+    localStorage.setItem('segsParte', partido.config.segsParte.toString());
+    localStorage.setItem('equipoId', equipo.id);
+
+    // Probablemente pueda quitar esto, ya que el dato está ya en localStorage
     this.pasoDatosService.setEquipoId(equipo.id);
 
     const nombresEquipos = {casa: '', fuera: ''};
@@ -47,7 +56,15 @@ export class HomePage implements OnInit {
     nombresEquipos.fuera = partido.rival;
     this.pasoDatosService.setNombresEquipos(nombresEquipos);
 
-    this.router.navigate(['/inicio-sel-jugadores']);
+    if (modo === 'generar'){
+        // A ver si puedo desde aquí cambiar el estado del partido.
+        partido.config.estado = 'en curso';
+        this.usuarioService.updateUsuario(this.usuario);
+
+        this.router.navigate(['/inicio-sel-jugadores']);
+      } else if (modo === 'ver'){
+        this.router.navigate(['/modo-ver']);
+      }
   }
 
 }

@@ -1,13 +1,6 @@
+import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { Gesture, GestureController } from '@ionic/angular';
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 /* import { UseExistingWebDriver } from 'protractor/built/driverProviders'; */
 
@@ -34,19 +27,28 @@ export class InicioSelJugadoresPage implements OnInit {
   listaBanquillo: Array<Jugador> = [];
   listaNoConvocados: Array<Jugador> = [];
 
-  posiciones = ['EI', 'ED', 'PI', 'LI', 'LD', 'CE', 'PO'];
+  posiciones = [
+    {clave: 'PO', desc: 'Portero'},
+    {clave: 'EI', desc: 'Extremo Izquierdo'},
+    {clave: 'ED', desc: 'Extremo Derecho'},
+    {clave: 'LI', desc: 'Lateral Izquierdo'},
+    {clave: 'LD', desc: 'Lateral Derecho'},
+    {clave: 'CE', desc: 'Central'},
+    {clave: 'PI', desc: 'Pivote'}];
+
   numJugadores = this.posiciones.length;
 
   contentScrollActive = true;
   gestureArray: Gesture[] = [];
+  partes: number;
+  segsParte: number;
 
   constructor(private router: Router,
     private gestureCtrl: GestureController,
     private changeDetectorRef: ChangeDetectorRef,
     private pasoDatos: PasoDatosService,
-    private jugadoresService: JugadoresService) {
-
-    /* this.jugadores = this.jugadoresService.getJugadores(); */
+    private jugadoresService: JugadoresService,
+    private eventosService: EventosService) {
     }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -55,13 +57,15 @@ export class InicioSelJugadoresPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.equipoId = this.pasoDatos.getEquipoId();
-console.log(this.equipoId);
+    // Operador unario + sirve para convertir strings a numbers
+    this.partes = +localStorage.getItem('partes');
+    this.segsParte = +localStorage.getItem('segsParte');
+
     this.jugadoresService.getJugadoresEquipo(this.equipoId)
     .subscribe(jugadores => {
       this.jugadores = jugadores;
-      console.log('jugadores: ', jugadores);
+      //console.log('jugadores: ', jugadores);
     });
   }
 
@@ -122,20 +126,20 @@ console.log(this.equipoId);
     if (this.isInZone(x,y, dropNoConvocado)) {
       this.dropNoConvocado.nativeElement.style.backgroundColor = 'red';
     } else {
-      this.dropNoConvocado.nativeElement.style.backgroundColor = 'white';
+      this.dropNoConvocado.nativeElement.style.backgroundColor = 'transparent';
     }
 
     if (this.isInZone(x,y, dropBanquillo)) {
       this.dropBanquillo.nativeElement.style.backgroundColor = 'yellow';
     } else {
-      this.dropBanquillo.nativeElement.style.backgroundColor = 'white';
+      this.dropBanquillo.nativeElement.style.backgroundColor = 'transparent';
     }
 
     for (let i = 0; i < this.numJugadores; i++){
       if (this.isInZone(x,y, dropPos[i].nativeElement.getBoundingClientRect())) {
         dropPos[i].nativeElement.style.backgroundColor = 'blue';
       } else {
-        dropPos[i].nativeElement.style.backgroundColor = 'white';
+        dropPos[i].nativeElement.style.backgroundColor = 'transparent';
       }
     }
   }
@@ -178,10 +182,10 @@ console.log(this.equipoId);
       // Cae en cualquier posición de jugador
       for (let i = 0; i < this.numJugadores; i++){
         if (this.isInZone(endX, endY, dropPos[i].nativeElement.getBoundingClientRect()) &&
-        !this.listaInicial.find(jugPos => jugPos.posicion === this.posiciones[i])) {
+        !this.listaInicial.find(jugPos => jugPos.posicion === this.posiciones[i].clave)) {
           const removedItem = this.jugadores.splice(index, 1);
           //console.log('item: ', removedItem[0]);
-          removedItem[0].posicion = this.posiciones[i];
+          removedItem[0].posicion = this.posiciones[i].clave;
           this.listaInicial.push(removedItem[0]);
           //console.log('item: ', this.jugadores);
           item.nativeElement.remove();
@@ -200,11 +204,11 @@ console.log(this.equipoId);
       item.nativeElement.style.fontweight = 'normal';
     }
 
-    this.dropNoConvocado.nativeElement.style.backgroundColor = 'white';
-    this.dropBanquillo.nativeElement.style.backgroundColor = 'white';
+    this.dropNoConvocado.nativeElement.style.backgroundColor = 'transparent';
+    this.dropBanquillo.nativeElement.style.backgroundColor = 'transparent';
 
     for (let i = 0; i < this.numJugadores; i++){
-      dropPos[i].nativeElement.style.backgroundColor = 'white';
+      dropPos[i].nativeElement.style.backgroundColor = 'transparent';
     }
     this.changeDetectorRef.detectChanges();
   }
@@ -248,7 +252,49 @@ console.log(this.equipoId);
   }
 
   irAModo() {
-console.log('li: ',this.listaBanquillo);
+    // Se crean eventos de titulares, banquillo y no convocado.
+    this.listaInicial.forEach(jug => {
+      // Se crea el evento para la base de datos
+      const eventoJugador = this.eventosService.newEvento();
+      eventoJugador.accionPrincipal = Acciones.titular;
+      eventoJugador.creadorEvento = jug.nombre;
+      eventoJugador.jugadorId = jug.id;
+      eventoJugador.partidoId = localStorage.getItem('partidoId');
+      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( eventoJugador );
+
+      console.log('Evento que se guardará: ', eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
+    });
+
+    this.listaBanquillo.forEach(jug => {
+      // Se crea el evento para la base de datos
+      const eventoJugador = this.eventosService.newEvento();
+      eventoJugador.accionPrincipal = Acciones.banquillo;
+      eventoJugador.creadorEvento = jug.nombre;
+      eventoJugador.jugadorId = jug.id;
+      eventoJugador.partidoId = localStorage.getItem('partidoId');
+      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( eventoJugador );
+
+      console.log('Evento que se guardará: ', eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
+    });
+
+    this.listaNoConvocados.forEach(jug => {
+      // Se crea el evento para la base de datos
+      const eventoJugador = this.eventosService.newEvento();
+      eventoJugador.accionPrincipal = Acciones.noConvocado;
+      eventoJugador.creadorEvento = jug.nombre;
+      eventoJugador.jugadorId = jug.id;
+      eventoJugador.partidoId = localStorage.getItem('partidoId');
+      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( eventoJugador );
+
+      console.log('Evento que se guardará: ', eventoJugador);
+      this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
+    });
+
     this.pasoDatos.setListaInicial(this.listaInicial);
     this.pasoDatos.setListaBanquillo(this.listaBanquillo);
 

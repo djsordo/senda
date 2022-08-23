@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, 
+          RouterModule, 
+          Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -34,9 +36,26 @@ const routes: Routes = [
   {
     path: 'microfono',
     loadChildren: () => import('./microfono/microfono.module').then( m => m.MicrofonoPageModule)
+  },
+  {
+    path: 'admin', redirectTo: 'admin/home', pathMatch: 'full'
+  },
+  {
+    path: 'admin/home',
+    loadChildren: () => import('./admin/home/admin-home.module').then( m => m.AdminHomePageModule)
+  }, 
+  {
+    path: 'admin/clubes', 
+    loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule )
+  },
+  {
+    path: 'admin/equipos', 
+    loadChildren: () => import('./admin/equipos/admin-equipos.module').then( m => m.AdminEquiposPageModule )
+  },
+  {
+    path: 'modo-ver',
+    loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
   }
-
-
 ];
 
 @NgModule({

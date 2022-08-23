@@ -1,3 +1,4 @@
+import { EventosService } from 'src/app/services/eventos.service';
 import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -8,6 +9,7 @@ import { Evento } from '../modelo/evento';
 import { MarcadorService } from '../components/marcador/marcador.service';
 import { Acciones } from '../services/eventos.service';
 import { EstadJugador } from '../modelo/estadJugador';
+import { EstadPartidoService } from '../services/estad-partido.service';
 
 @Component({
   selector: 'app-modo-jugador',
@@ -17,6 +19,7 @@ import { EstadJugador } from '../modelo/estadJugador';
 export class ModoJugadorPage implements OnInit {
   listaInicial: Array<EstadJugador> = [];
   listaBanquillo: Array<EstadJugador> = [];
+  portero: EstadJugador;
 
   miSuscripcionAEventoJugador: any = null;
 
@@ -34,7 +37,9 @@ export class ModoJugadorPage implements OnInit {
               private toastController: ToastController,
               private pasoDatos: PasoDatosService,
               private marcadorService: MarcadorService,
-              private tradService: TradService) {
+              private tradService: TradService,
+              private eventosService: EventosService,
+              private estadPartidoService: EstadPartidoService) {
     }
 
   ngOnInit() {
@@ -58,6 +63,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.exclusiones = 0;
       jugador.paradas = 0;
       jugador.golesRival = 0;
+      jugador.segJugados = 0;
       this.listaInicial.push(jugador);
     });
     listaBanquilloPrevia.forEach(jugadorPrevia => {
@@ -76,22 +82,37 @@ export class ModoJugadorPage implements OnInit {
       jugador.exclusiones = 0;
       jugador.paradas = 0;
       jugador.golesRival = 0;
+      jugador.segJugados = 0;
       this.listaBanquillo.push(jugador);
     });
-    console.log('lista titulares: ',this.listaInicial);
-    console.log('listaBanquillo. ', this.listaBanquillo);
+
+    this.estadPartidoService.actualiza('nombreEquipo', this.nombres.casa);
+    this.estadPartidoService.actualiza('nombreRival', this.nombres.fuera);
+    this.estadPartidoService.actualiza('partidoId', localStorage.getItem('partidoId'));
+
+    // Guardo las estadísticas del partido en la base de datos
+    this.estadPartidoService.addEstadPartido().then(estad => {this.estadPartidoService.estadPartido.id = estad.id;});
+    this.estadPartidoService.actualiza('id', this.estadPartidoService.estadPartido.id);
+
     this.miSuscripcionAEventoJugador =
     this.pasoDatos.suscribirmeAEventoJugador( (evento: Evento) => {
       this.toastOk( this.construyeMensajeEvento(evento) );
-      if( evento.accion === Acciones.gol ){
+
+      if( evento.accionPrincipal === Acciones.gol ){
         this.marcadorService.gol();
       }
-      if( evento.accion === Acciones.gol_rival ){
+      if( evento.accionPrincipal === Acciones.golRival ){
         this.marcadorService.golRival();
       }
-      console.log('Entra en subs');
-    } );
 
+      // Aquí llamo a la función que inserta el evento en la base de datos.
+      console.log('Evento que se guardará: ', evento);
+      this.eventosService.addEventoBD(evento).then(even => {evento.id = even.id;});
+    } );
+  }
+
+  cambioPortero(portero: EstadJugador){
+    this.portero = portero;
   }
 
   cambiarModo(){
@@ -102,7 +123,7 @@ export class ModoJugadorPage implements OnInit {
     const toast = await this.toastController.create({
       message: mensaje,
       duration: 2000,
-      position: 'middle'
+      position: 'bottom'
     });
 
     toast.present();
@@ -110,16 +131,17 @@ export class ModoJugadorPage implements OnInit {
 
   private construyeMensajeEvento( evento: Evento ){
     if( !evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}`;
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}`;
     }else if( evento.posicionCampo && !evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}\
           desde ${this.tradService.t(evento.posicionCampo)}`;
     }else if( !evento.posicionCampo && evento.posicionPorteria ){
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}\
       hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }else{
-      return `${this.tradService.t(evento.accion)} de ${evento.jugador.datos.nombre}\
+      return `${this.tradService.t(evento.accionPrincipal)} de ${evento.creadorEvento}\
       desde ${this.tradService.t(evento.posicionCampo)} hacia ${this.tradService.t(evento.posicionPorteria)}`;
     }
   }
+
 }

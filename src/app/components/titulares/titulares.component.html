@@ -1,23 +1,26 @@
 <ion-list inset="true">
   <ion-list-header>
-    <h2>Jugadores en la pista</h2>  <microfono></microfono>
+    <h2>Jugadores en la pista</h2> <microfono></microfono>
   </ion-list-header>
   <ion-accordion-group #acordeonJugadores>
     <ion-accordion *ngIf="portero[0]" value="{{portero[0].datos.numero}}">
       <ion-item slot="header">
-        <ion-grid>
+        <ion-grid class="cabecera">
           <ion-row>
             <ion-col size="1">
               <ion-icon name="arrow-down" (click)="btnSale(portero[0], true)"></ion-icon>
             </ion-col>
             <ion-col size="2">
-              <b>{{ portero[0].datos.numero }}</b>
+              <b class="portero">{{ portero[0].datos.numero }}</b>
             </ion-col>
-            <ion-col size="1">
+<!--             <ion-col size="1">
               <ion-img src="../../../assets/portero.png"></ion-img>
-            </ion-col>
-            <ion-col size="8">
+            </ion-col> -->
+            <ion-col size="7">
               <ion-label>{{ portero[0].datos.nombre }}</ion-label>
+            </ion-col>
+            <ion-col size="2" class="tJugado">
+              <ion-label>{{portero[0].segJugados*1000 | date: 'mm:ss'}}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -25,7 +28,7 @@
       <ion-item slot="content">
         <ion-grid>
           <ion-row>
-            <ion-col size="2"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{portero[0].paradas}}</ion-col>
+            <ion-col size="2"><ion-icon name="accessibility"></ion-icon>{{portero[0].paradas}}</ion-col>
             <ion-col size="2"><ion-icon name="football"></ion-icon>{{portero[0].golesRival}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{portero[0].robos}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{portero[0].perdidas}}</ion-col>
@@ -39,8 +42,7 @@
           <ion-row class="ion-text-center">
             <ion-col size="6">
               <ion-item button color="success" (click)="btnParada(portero[0])">
-                <ion-icon name="hand-left"></ion-icon>
-                <ion-icon name="hand-right"></ion-icon>
+                <ion-icon name="accessibility"></ion-icon>
                 <ion-label slot="end">Parada</ion-label>
               </ion-item>
             </ion-col>
@@ -61,7 +63,7 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" id="cambioPortero">
+              <ion-item button color="success" id="cambioPortero" (click)="btnCambioMarca()">
                 <ion-icon name="repeat"></ion-icon>
                 <ion-label slot="end">Cambio</ion-label>
               </ion-item>
@@ -99,7 +101,7 @@
 
     <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.datos.numero}}">
       <ion-item slot="header">
-        <ion-grid>
+        <ion-grid class="cabecera">
           <ion-row>
             <ion-col size="1">
               <ion-icon name="arrow-down" (click)="btnSale(titular, false)"></ion-icon>
@@ -107,9 +109,12 @@
             <ion-col size="2">
               <b>{{ titular.datos.numero }}</b>
             </ion-col>
-            <ion-col size="1"></ion-col>
-            <ion-col size="8">
+            <!-- <ion-col size="1"></ion-col> -->
+            <ion-col size="7">
               <ion-label>{{ titular.datos.nombre }}</ion-label>
+            </ion-col>
+            <ion-col size="2" class="tJugado">
+              <ion-label>{{titular.segJugados*1000 | date: 'mm:ss'}}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -152,7 +157,7 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col size="6">
-              <ion-item button color="success" id="{{'cambio' + titular.datos.id}}">
+              <ion-item button color="success" id="{{'cambio' + titular.datos.id}}" (click)="btnCambioMarca()">
                 <ion-icon name="repeat"></ion-icon>
                 <ion-label slot="end">Cambio</ion-label>
               </ion-item>
@@ -266,8 +271,11 @@
             <ion-col size="1">
               <ion-img *ngIf="jugador.datos.portero === true" src="../../../assets/portero.png"></ion-img>
             </ion-col>
-            <ion-col size="8">
+            <ion-col size="6">
               <ion-label>{{ jugador.datos.nombre }}</ion-label>
+            </ion-col>
+            <ion-col size="2" class="tJugado">
+              <ion-label>{{jugador.segJugados*1000 | date: 'mm:ss'}}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -277,7 +285,7 @@
           <ion-row>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="football"></ion-icon>{{jugador.goles}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="close"></ion-icon>{{jugador.lanzFallados}}</ion-col>
-            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{jugador.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="accessibility"></ion-icon>{{jugador.paradas}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="football"></ion-icon>{{jugador.golesRival}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{jugador.robos}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{jugador.perdidas}}</ion-col>
@@ -307,8 +315,11 @@
             <ion-col size="1">
               <ion-img *ngIf="jugador.datos.portero === true" src="../../../assets/portero.png"></ion-img>
             </ion-col>
-            <ion-col size="9">
+            <ion-col size="7">
               <ion-label>{{ jugador.datos.nombre }}</ion-label>
+            </ion-col>
+            <ion-col size="2" class="tJugado">
+              <ion-label>{{jugador.segJugados*1000 | date: 'mm:ss'}}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -318,7 +329,7 @@
           <ion-row>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="football"></ion-icon>{{jugador.goles}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === false"><ion-icon name="close"></ion-icon>{{jugador.lanzFallados}}</ion-col>
-            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="hand-left"></ion-icon><ion-icon name="hand-right"></ion-icon>{{jugador.paradas}}</ion-col>
+            <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="accessibility"></ion-icon>{{jugador.paradas}}</ion-col>
             <ion-col size="2" *ngIf="jugador.datos.portero === true"><ion-icon name="football"></ion-icon>{{jugador.golesRival}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-up"></ion-icon>{{jugador.robos}}</ion-col>
             <ion-col size="2"><ion-icon name="thumbs-down"></ion-icon>{{jugador.perdidas}}</ion-col>

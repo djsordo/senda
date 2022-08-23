@@ -5,13 +5,17 @@
         <ion-chip color="primary">{{tiempo.parte}}ª Parte</ion-chip>
       </ion-col>
       <ion-col class="ion-text-center">
-        <ion-text color="tertiary">{{tiempo.segundo*1000 | date: 'mm:ss'}}</ion-text>
-        <!-- <ion-text color="tertiary">{{tiempo.minuto}}:{{tiempo.segundo | number: '2.0-0'}}</ion-text> -->
+        <ion-text color="tertiary">{{tiempo.segundos*1000 | date: 'mm:ss'}}</ion-text>
       </ion-col>
       <ion-col class="ion-text-end">
-        <ion-icon name="play" size="large" (click)="pulsaCrono()" *ngIf="!tiempo.encendido"></ion-icon>
+        <ion-icon name="play" size="large" (click)="pulsaCrono()" *ngIf="!tiempo.encendido && !tiempo.finParte"></ion-icon>
+        <ion-icon name="play-skip-forward" size="large" (click)="finParte()" *ngIf="!tiempo.encendido && tiempo.finParte && (tiempo.parte < partes)"></ion-icon>
+        <ion-icon name="stop" size="large" (click)="finPartido()" *ngIf="!tiempo.encendido && tiempo.finParte && (tiempo.parte === partes)"></ion-icon>
         <ion-icon name="pause" size="large" (click)="pulsaCrono()" *ngIf="tiempo.encendido"></ion-icon>
       </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col><ion-progress-bar value="{{tiempo.segundos/segsParte}}"></ion-progress-bar></ion-col>
     </ion-row>
   </ion-grid>
 </ion-card>

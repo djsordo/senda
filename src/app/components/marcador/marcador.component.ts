@@ -1,6 +1,11 @@
+import { Router } from '@angular/router';
+import { EstadPartidoService } from './../../services/estad-partido.service';
+import { PasoDatosService } from './../../services/paso-datos.service';
+import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { MarcadorService } from './../marcador/marcador.service';
 import { CronoService } from './../crono/crono.service';
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { EstadJugador } from 'src/app/modelo/estadJugador';
 
 @Component({
   selector: 'app-marcador',
@@ -10,12 +15,17 @@ import { Component, DoCheck, Input, OnInit } from '@angular/core';
 export class MarcadorComponent implements OnInit, DoCheck {
   @Input() nombreEquipo: string;
   @Input() nosotros: boolean;
+  @Input() portero: EstadJugador;
 
   marcador: number;
   encendido: boolean;
 
   constructor(private cronoService: CronoService,
-              private marcadorService: MarcadorService) {
+              private marcadorService: MarcadorService,
+              private eventosService: EventosService,
+              private pasoDatos: PasoDatosService,
+              private estadPartidoService: EstadPartidoService,
+              private router: Router) {
    }
 
   ngOnInit() {
@@ -29,8 +39,46 @@ export class MarcadorComponent implements OnInit, DoCheck {
     this.marcador = this.marcadorService.getMarcador(this.nosotros);
   }
 
+  dosMinRival(){
+    // Se crea el evento para la base de datos
+    const evento = this.eventosService.newEvento();
+    this.estadPartidoService.suma('dosMinutosRival', evento.crono);
+
+    evento.accionPrincipal = Acciones.dosMinutosRival;
+    evento.creadorEvento = this.nombreEquipo;
+    evento.partidoId = localStorage.getItem('partidoId');
+    evento.equipoId = localStorage.getItem('equipoId');
+    this.pasoDatos.onEventoJugador( evento );
+  }
+
   tiempoMuerto(){
     this.cronoService.apagar();
-    console.log(this.cronoService.marcaTiempo());
+
+    // Se crea el evento para la base de datos
+    const evento = this.eventosService.newEvento();
+    if (this.nosotros){
+      this.estadPartidoService.suma('tm', evento.crono);
+      evento.accionPrincipal = Acciones.tm;
+    } else {
+      this.estadPartidoService.suma('tmRival', evento.crono);
+      evento.accionPrincipal = Acciones.tmRival;
+    }
+    evento.creadorEvento = this.nombreEquipo;
+    evento.partidoId = localStorage.getItem('partidoId');
+    evento.equipoId = localStorage.getItem('equipoId');
+    this.pasoDatos.onEventoJugador( evento );
+  }
+
+  btnGolRival(){
+    let jugador: EstadJugador;
+    if (this.portero === undefined) {
+      jugador = null;
+    } else {
+      jugador = this.portero;
+    }
+
+    const detalle = {accion: Acciones.golRival, jugador, marcaTiempo: this.cronoService.marcaTiempo()};
+    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
+    this.router.navigate(['/detalle-jugador']);
   }
 }

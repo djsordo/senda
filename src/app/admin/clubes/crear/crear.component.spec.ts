@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { MicrofonoPage } from './microfono.page';
+import { CambioComponent } from '../cambio/cambio.component';
 
-describe('MicrofonoPage', () => {
-  let component: MicrofonoPage;
-  let fixture: ComponentFixture<MicrofonoPage>;
+describe('CambioComponent', () => {
+  let component: CambioComponent;
+  let fixture: ComponentFixture<CambioComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MicrofonoPage ],
+      declarations: [ CambioComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MicrofonoPage);
+    fixture = TestBed.createComponent(CambioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -1,15 +1,18 @@
 import { Injectable } from "@angular/core";
-import { Firestore, 
-          addDoc, 
+import { Firestore,
+          addDoc,
           getDoc,
           getDocs,
           CollectionReference,
           collection,
-          DocumentData, 
+          DocumentData,
           query,
           where,
           deleteDoc,
-          DocumentReference} from '@angular/fire/firestore';
+          updateDoc,
+          DocumentReference,
+          DocumentSnapshot, 
+          doc } from '@angular/fire/firestore';
 
 import { Equipo } from "../modelo/equipo";
 
@@ -19,7 +22,7 @@ import { Equipo } from "../modelo/equipo";
 })
 export class EquipoService {
 
-  private equipoRef : CollectionReference<DocumentData>;
+  private equipoRef: CollectionReference<DocumentData>;
 
   constructor( private firestore : Firestore ){
     this.equipoRef = collection( this.firestore, 'equipos' );
@@ -29,12 +32,35 @@ export class EquipoService {
     return {} as Equipo;
   }
 
+  async getEquipos( nombre? : string ){
+    if( nombre && nombre.trim().length > 0 ){
+      return getDocs( query( this.equipoRef, where( 'nombre', '==', nombre.trim() ) ) );
+    }else{
+      return getDocs( query( this.equipoRef ) );
+    }
+  }
+
   async addEquipo( equipo : Equipo ){
     return addDoc( this.equipoRef, equipo );
   }
 
+  async updateEquipo( docSnap : DocumentSnapshot<DocumentData>, 
+                      equipo : any ){
+    return updateDoc( docSnap.ref, equipo );
+  }
+
+  /**
+   * @deprecated - use getEquipoById instead
+   * @param equipoRef 
+   * @returns 
+   */
   async getEquipoByRef( equipoRef : DocumentReference<DocumentData> ){
     return getDoc( equipoRef );
+  }
+
+  async getEquipoById( equipoId : string ){
+    let docRef = doc( this.equipoRef, equipoId );
+    return getDoc( docRef );
   }
 
   async getEquipoByName( nombre : string ){
@@ -52,17 +78,9 @@ export class EquipoService {
       })
   }
 
-  async deleteEquipoByRef( document : any ){
-    return deleteDoc( document );
-  }
-
-  async getAllEQuipo(){
-    return getDocs( this.equipoRef );
+  async deleteEquipoById( id : string ){
+    let docRef = doc( this.equipoRef, id );
+    return deleteDoc( docRef );
   }
 
 }
-
-
-
-
-

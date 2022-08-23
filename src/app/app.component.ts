@@ -9,10 +9,24 @@ import { NavegacionService } from './services/navegacion.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
+
+
   public appPages = [
-    { title: 'Home', 
-      url: '/home', 
+    { title: 'Home',
+      url: '/home',
       icon: 'home'},
+    { title: 'Admin',
+      url: '/admin/home',
+      icon: 'cog',
+      showDetails: false,
+      submenu : [
+        { title : 'Clubes',
+          url: '/admin/clubes',
+          icon: 'folder-open'},
+        { title : 'Equipos', 
+          url : '/admin/equipos', 
+          icon: 'people'}
+      ]}
   ];
 
   usuarioActivo = {
@@ -20,15 +34,33 @@ export class AppComponent implements OnInit {
     email: '',
   };
 
-  constructor(private menu: MenuController, 
-              private navegacion : NavegacionService ) {
+  constructor(private menu: MenuController,
+              private navegacion: NavegacionService ) {
   }
 
   public ngOnInit(): void {
     this.navegacion.init();
   }
 
-  escribeUsuario() {
+  public collapseMenu(): void {
+    this.menu.toggle();
+  }
+
+  public onClickElement( menuEntry: any, ionItem: any ): void {
+    if( menuEntry.submenu ){
+      menuEntry.showDetails = !menuEntry.showDetails;
+    }else{
+      this.menu.toggle();
+    }
+    if( menuEntry.showDetails ){
+      ionItem.detailIcon = 'chevron-down';
+    }
+    else{
+      ionItem.detailIcon = 'chevron-forward';
+    }
+  }
+
+  public escribeUsuario() {
     console.log('entra');
     this.usuarioActivo = {
       nombre: localStorage.getItem('nombreUsuario'),
