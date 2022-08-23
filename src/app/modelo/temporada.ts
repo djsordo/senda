@@ -1,7 +1,7 @@
 
 
 export interface Temporada {
-  temporadaId : string; 
+  id? : string; 
   alias : string; 
   nombre : string;
 }

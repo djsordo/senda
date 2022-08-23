@@ -9,6 +9,7 @@ import { EquipoService } from 'src/app/services/equipo.service';
 import { properCase } from 'src/app/services/string-util';
 import { Usuario } from 'src/app/modelo/usuario';
 import { Temporada } from 'src/app/modelo/temporada';
+import { TemporadaService } from 'src/app/services/temporada.service';
 
 @Component({
   selector: 'equipos-crear',
@@ -34,6 +35,7 @@ export class CrearComponent implements OnInit {
   temporadas : Set<Temporada>;
 
   constructor( private usuarioService : UsuarioService,
+               private temporadaService : TemporadaService,
                private equipoService : EquipoService,
                private toastController : ToastController, 
                private router : Router, 
@@ -105,10 +107,19 @@ export class CrearComponent implements OnInit {
     else
       newEquipo.genero = this.typedGenero;
     if( this.selectedTemporada !== '#otro#' ){
-      newEquipo.temporada = this.selectedTemporada;
+      for( let temporada of this.temporadas ){
+        if( temporada.alias === this.selectedTemporada ){
+          newEquipo.temporada = temporada;
+          break;
+        }
+      }
     }
-    else
-      newEquipo.temporada = this.typedTemporada;
+    else{
+      let temporada = { alias : this.typedTemporada, 
+                        nombre : this.typedTemporada };
+      this.temporadaService.addTemporada( temporada );
+      newEquipo.temporada = temporada;
+    }
     this.equipoService.addEquipo( newEquipo )
       .then( (docRef) => {
         this.sendToast( `Equipo ${this.nombre} creado con éxito` );

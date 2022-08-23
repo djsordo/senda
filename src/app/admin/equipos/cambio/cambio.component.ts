@@ -12,6 +12,7 @@ import { EquipoService } from 'src/app/services/equipo.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AdminEquiposPage } from '../admin-equipos.page';
 import { Equipo } from 'src/app/modelo/equipo';
+import { TemporadaService } from 'src/app/services/temporada.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { Equipo } from 'src/app/modelo/equipo';
 })
 export class CambioComponent implements OnInit {
 
-  equipo : DocumentSnapshot<DocumentData>;
+  docSnapshot : DocumentSnapshot<DocumentData>; 
 
   usuario : Usuario;
   nombre : string;
@@ -37,10 +38,12 @@ export class CambioComponent implements OnInit {
 
   categorias : Set<string>;
   generos : Set<string>;
+  generosKeys : string[];
   temporadas : Set<Temporada>;
 
   constructor( private mainPage : AdminEquiposPage, 
                private usuarioService : UsuarioService,
+               private temporadaService : TemporadaService,
                private equipoService : EquipoService,
                private toastController : ToastController, 
                private router : Router, 
@@ -58,8 +61,15 @@ export class CambioComponent implements OnInit {
     if( this.mainPage.getSelectedId() ){
       this.equipoService.getEquipoById( this.mainPage.getSelectedId() )
         .then( ( val : DocumentSnapshot<DocumentData>) => {
-          this.equipo = val;
-        });
+          this.docSnapshot = val;
+          this.nombre = val.data().nombre; 
+          this.selectedCategoria = val.data().categoria;
+          this.selectedGenero = val.data().genero;
+          this.selectedTemporada = val.data().temporada.alias;
+        })
+        .catch( (reason) => {
+          console.error( reason );
+        })
     }
   }
 
@@ -67,7 +77,6 @@ export class CambioComponent implements OnInit {
     this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
-      console.log('usuario: ', usuarios);
     });
   }
 
@@ -79,9 +88,10 @@ export class CambioComponent implements OnInit {
 
   private thingsToDoPerEquipo( equipo : DocumentData ){
     if( equipo.data().categoria )
-      this.categorias.add( properCase( equipo.data().categoria ) );
-    if( equipo.data().genero )
-      this.generos.add( properCase( equipo.data().genero ) );
+      this.categorias.add( equipo.data().categoria );
+    if( equipo.data().genero ){
+      this.generos.add( equipo.data().genero );
+    }
     if( equipo.data().temporada ){
       this.addIfNotPresent( this.temporadas, 
                           equipo.data().temporada, 
@@ -102,10 +112,34 @@ export class CambioComponent implements OnInit {
 
 
   onClickCambiar() {
-    let equipoData = this.equipoService.newEquipo();
-    equipoData.nombre = this.nombre; 
-    this.equipoService.updateEquipo( this.equipo, 
-                          equipoData )
+    let equipo = this.equipoService.newEquipo();
+    equipo.nombre = this.nombre; 
+    equipo.club = this.usuario.club; 
+    if( this.selectedCategoria !== '#otro#' )
+      equipo.categoria = this.selectedCategoria;
+    else
+      equipo.categoria = this.typedCategoria; 
+    if( this.selectedGenero !== '#otro#' )
+      equipo.genero = this.selectedGenero; 
+    else 
+      equipo.genero = this.typedGenero; 
+    if( this.selectedTemporada !== '#otro#' ){
+      for( let temporada of this.temporadas ){
+        console.log( temporada.alias );
+        if( temporada.alias === this.selectedTemporada ){
+          equipo.temporada = temporada;
+          break;
+        }
+      }
+    }else{
+      let temporada = { alias : this.typedTemporada, 
+        nombre : this.typedTemporada };
+      this.temporadaService.addTemporada( temporada );
+      equipo.temporada = temporada;
+    }
+    console.log( equipo );
+    this.equipoService.updateEquipo( this.docSnapshot, 
+                          equipo )
       .then( (docRef) => {
         this.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
       })
