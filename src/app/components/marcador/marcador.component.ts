@@ -3,9 +3,10 @@ import { EstadPartidoService } from './../../services/estad-partido.service';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { MarcadorService } from './../marcador/marcador.service';
-import { CronoService } from './../crono/crono.service';
+import { CronoService, Tick } from './../crono/crono.service';
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
 import { EstadJugador } from 'src/app/modelo/estadJugador';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-marcador',
@@ -17,21 +18,43 @@ export class MarcadorComponent implements OnInit, DoCheck {
   @Input() nosotros: boolean;
   @Input() portero: EstadJugador;
 
+  tickDosMin$: Observable<Tick>;
+
   marcador: number;
   encendido: boolean;
+  dosMinLista: Array<number>;
 
   constructor(private cronoService: CronoService,
               private marcadorService: MarcadorService,
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
               private estadPartidoService: EstadPartidoService,
-              private router: Router) {
+              private router: Router,
+              private crono: CronoService) {
    }
 
   ngOnInit() {
     this.encendido = this.cronoService.getEncendido();
     this.marcador = this.marcadorService.getMarcador(this.nosotros);
-  }
+    this.dosMinLista = this.marcadorService.getDosMinLista();
+
+    // Observable ticks
+    if (!this.nosotros){
+      this.tickDosMin$ = this.crono.tickObservable;
+      this.tickDosMin$.subscribe(res => {
+        if (res.segundos !== 0){
+          for (let i = 0; i < this.dosMinLista.length; i++){
+            if (this.dosMinLista[i] !== 0){
+              this.dosMinLista[i]--;
+            }
+          }
+          // Borramos los que han llegado a 0
+          this.dosMinLista = this.dosMinLista.filter(res => res !== 0);
+          }
+        });
+      }
+
+    }
 
   ngDoCheck(){
     // Esta es una parte del ciclo de vida de Angular, que se ejecuta 'de vez en cuando' y lo uso para actualizar ciertas variables.
@@ -40,6 +63,8 @@ export class MarcadorComponent implements OnInit, DoCheck {
   }
 
   dosMinRival(){
+    this.dosMinLista.push(120);
+
     // Se crea el evento para la base de datos
     const evento = this.eventosService.newEvento();
     this.estadPartidoService.suma('dosMinutosRival', evento.crono);

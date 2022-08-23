@@ -3,6 +3,9 @@
     <h2>Jugadores en la pista</h2> <microfono></microfono>
   </ion-list-header>
   <ion-accordion-group #acordeonJugadores>
+    <ion-item *ngIf="!portero[0]" color="danger">
+      <div>PORTERÍA VACÍA</div>
+    </ion-item>
     <ion-accordion *ngIf="portero[0]" value="{{portero[0].datos.numero}}">
       <ion-item slot="header">
         <ion-grid class="cabecera">
@@ -192,6 +195,10 @@
         </ion-grid>
       </ion-card>
     </ion-accordion>
+
+    <ion-item *ngIf="(jugCampo.length + listaExcluidos.length) < 6" color="danger">
+      <div>FALTA JUGADOR DE CAMPO</div>
+    </ion-item>
 
     <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.datos.numero}}">
       <ion-item slot="header" color="danger">
