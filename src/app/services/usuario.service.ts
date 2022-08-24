@@ -1,15 +1,30 @@
-import { Observable } from 'rxjs';
-import { Usuario } from './../modelo/usuario';
-import { Firestore, collection, addDoc, collectionData, query, where, doc, setDoc } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
+import { Firestore, 
+        collection, 
+        addDoc, 
+        collectionData, 
+        query, 
+        where, 
+        doc, 
+        setDoc, 
+        CollectionReference, 
+        DocumentData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
+
+import { Usuario } from './../modelo/usuario';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
+
+  usuarioRef : CollectionReference<DocumentData>;
   usuario: Usuario;
 
   constructor(private firestore: Firestore) {
+    this.usuarioRef = collection(this.firestore, 'usuarios');
 /*     this.getUsuario(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
@@ -18,8 +33,7 @@ export class UsuarioService {
   }
 
   addUsuario(usuario: Usuario){
-    const usuarioRef = collection(this.firestore, 'usuarios');
-    return addDoc(usuarioRef, usuario);
+    return addDoc(this.usuarioRef, usuario);
   }
 
   async updateUsuario(usuario: Usuario){
@@ -29,8 +43,7 @@ export class UsuarioService {
   }
 
   getUsuarioBD(email: string): Observable<Usuario[]>{
-    /* const usuarioRef = collection(this.firestore, 'usuarios'); */
-    const usuarioRef = query(collection(this.firestore, 'usuarios'), where('email', '==', email));
+    const usuarioRef = query(this.usuarioRef, where('email', '==', email));
     return collectionData(usuarioRef, {idField: 'id'}) as Observable<Usuario[]>;
   }
 
