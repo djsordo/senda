@@ -2,8 +2,6 @@ import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { Gesture, GestureController } from '@ionic/angular';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
-/* import { UseExistingWebDriver } from 'protractor/built/driverProviders'; */
-
 import { PasoDatosService } from './../services/paso-datos.service';
 import { Jugador } from '../modelo/jugador';
 import { JugadoresService } from '../services/jugadores.service';
@@ -65,7 +63,6 @@ export class InicioSelJugadoresPage implements OnInit {
     this.jugadoresService.getJugadoresEquipo(this.equipoId)
     .subscribe(jugadores => {
       this.jugadores = jugadores;
-      //console.log('jugadores: ', jugadores);
     });
   }
 
@@ -73,9 +70,7 @@ export class InicioSelJugadoresPage implements OnInit {
     this.gestureArray.map(gesture => gesture.destroy());
     this.gestureArray = [];
 
-    /* console.log('objetos: ', this.items); */
     const arr = this.items.toArray();
-    //console.log('arr: ', arr);
 
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < arr.length; i++){
@@ -111,7 +106,6 @@ export class InicioSelJugadoresPage implements OnInit {
 
     this.items.changes.subscribe(res => {
       if (this.gestureArray.length !== this.items.length) {
-        //console.log('item cambiado: ', res);
         this.updateGestures();
       }
     });
@@ -167,9 +161,7 @@ export class InicioSelJugadoresPage implements OnInit {
     if (this.isInZone(endX, endY, dropNoConvocado)) {
       // Cae en la zona de no convocado
       const removedItem = this.jugadores.splice(index, 1);
-      //console.log('item: ', removedItem[0]);
       this.listaNoConvocados.push(removedItem[0]);
-      //console.log('item: ', this.jugadores);
       item.nativeElement.remove();
       haCaido = true;
     } else if (this.isInZone(endX, endY, dropBanquillo)) {
@@ -184,10 +176,8 @@ export class InicioSelJugadoresPage implements OnInit {
         if (this.isInZone(endX, endY, dropPos[i].nativeElement.getBoundingClientRect()) &&
         !this.listaInicial.find(jugPos => jugPos.posicion === this.posiciones[i].clave)) {
           const removedItem = this.jugadores.splice(index, 1);
-          //console.log('item: ', removedItem[0]);
           removedItem[0].posicion = this.posiciones[i].clave;
           this.listaInicial.push(removedItem[0]);
-          //console.log('item: ', this.jugadores);
           item.nativeElement.remove();
           haCaido = true;
         }
@@ -263,7 +253,6 @@ export class InicioSelJugadoresPage implements OnInit {
       eventoJugador.equipoId = localStorage.getItem('equipoId');
       this.pasoDatos.onEventoJugador( eventoJugador );
 
-      console.log('Evento que se guardará: ', eventoJugador);
       this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
 
@@ -277,7 +266,6 @@ export class InicioSelJugadoresPage implements OnInit {
       eventoJugador.equipoId = localStorage.getItem('equipoId');
       this.pasoDatos.onEventoJugador( eventoJugador );
 
-      console.log('Evento que se guardará: ', eventoJugador);
       this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
 
@@ -291,7 +279,6 @@ export class InicioSelJugadoresPage implements OnInit {
       eventoJugador.equipoId = localStorage.getItem('equipoId');
       this.pasoDatos.onEventoJugador( eventoJugador );
 
-      console.log('Evento que se guardará: ', eventoJugador);
       this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
 

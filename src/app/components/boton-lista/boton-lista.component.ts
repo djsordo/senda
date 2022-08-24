@@ -29,7 +29,6 @@ export class BotonListaComponent implements OnInit {
 
   btnLista(){
     // establecemos la marca de tiempo
-    console.log('entra botonLista');
     this.marcaTiempo = this.crono.marcaTiempo();
   }
 
@@ -55,9 +54,6 @@ export class BotonListaComponent implements OnInit {
     eventoJugador.equipoId = localStorage.getItem('equipoId');
     eventoJugador.creadorEvento = this.jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
-
-    console.log(accion1);
-    console.log(accion2);
   }
 
 }

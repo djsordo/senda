@@ -82,7 +82,6 @@ export class TitularesComponent implements OnInit {
         this.portero.forEach(jug => jug.segJugados++);
         this.jugCampo.forEach(jug => jug.segJugados++);
         this.listaExcluidos.forEach(jug => {
-          //console.log(this.listaExcluidos);
           jug.segJugados++;
           jug.segExclusion--;
         });
@@ -116,9 +115,7 @@ export class TitularesComponent implements OnInit {
 
     if (localStorage.getItem('accion') !== ''){
       const jugId = localStorage.getItem('jugadorId');
-      console.log('jugid: ',jugId);
-      if (!jugId){
-        console.log('entra el puñetero');
+      if (jugId){
         this.sumaEstad(localStorage.getItem('accion'), jugId);
       }
 
@@ -266,7 +263,6 @@ export class TitularesComponent implements OnInit {
     this.listaExcluidos.forEach(jugExc => {
       if (jugExc.datos.id === jugador.datos.id){
         jugExc.segExclusion += 120;
-        //this.crono.sumaCrono2min(jugador.datos.id, 120);
         salir = true;
       }
     });
@@ -280,7 +276,6 @@ export class TitularesComponent implements OnInit {
         // Mandamos al portero a la lista de excluidos
         excluido = this.portero.splice(0,1);
         this.listaExcluidos.push(excluido[0]);
-        //this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
       } else {
         // Jugadores de campo
         for (let i = 0; i < this.jugCampo?.length; i++){
@@ -291,7 +286,6 @@ export class TitularesComponent implements OnInit {
             // Mandamos al jugador a la lista de excluidos
             excluido = this.jugCampo.splice(i,1);
             this.listaExcluidos.push(excluido[0]);
-            //this.crono.setCrono2min(jugador.datos.id, excluido[0].segExclusion);
             break;
           }
          }

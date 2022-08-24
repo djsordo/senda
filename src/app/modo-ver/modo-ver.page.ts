@@ -24,7 +24,6 @@ export class ModoVerPage implements OnInit {
 
     this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))
     .subscribe(estadP => {
-      console.log(estadP);
       this.estadPartido = estadP;
     });
 

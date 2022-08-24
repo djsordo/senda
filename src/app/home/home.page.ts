@@ -31,7 +31,6 @@ export class HomePage implements OnInit {
     this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
-      console.log('usuario: ', usuarios);
     });
 
     //this.usuarioService.setUsuario(this.usuario);
@@ -39,8 +38,6 @@ export class HomePage implements OnInit {
   }
 
   irAModo(equipo: Equipo, partido: Partido, modo){
-    console.log('Equipo: ', equipo);
-    console.log('Partido: ', partido);
     // Meto el partidoId y el equipoId en el localStorage, porque los usaré más tarde.
     localStorage.setItem('partidoId', partido.id);
     localStorage.setItem('partes', partido.config.partes.toString());

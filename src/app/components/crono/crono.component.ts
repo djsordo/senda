@@ -37,7 +37,6 @@ export class CronoComponent implements OnInit {
     this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
-      console.log('usuario: ', usuarios);
     });
   }
 
@@ -69,12 +68,11 @@ export class CronoComponent implements OnInit {
     this.pasoDatos.onEventoJugador( evento );
 
     // Dejamos el estado del partido como 'finalizado'
-    console.log(this.usuario);
     const indiceRol = this.usuario.roles.findIndex(rol => rol.equipo.id === localStorage.getItem('equipoId'));
-    console.log('Índice Rol: ', indiceRol);
+
     const indicePartido = this.usuario.roles[indiceRol].equipo.partidos.
       findIndex(partido => partido.id === localStorage.getItem('partidoId'));
-    console.log('Índice Partido: ', indicePartido);
+
     this.usuario.roles[indiceRol].equipo.partidos[indicePartido].config.estado = 'finalizado';
     this.usuarioService.updateUsuario(this.usuario);
   }

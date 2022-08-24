@@ -58,7 +58,6 @@ export class CronoService {
 
   marcaTiempo(){
     // Función que devuelve el instante actual
-    console.log(this.tiempo);
     return JSON.parse(JSON.stringify(this.tiempo));
   }
 
