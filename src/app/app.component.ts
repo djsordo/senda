@@ -25,7 +25,10 @@ export class AppComponent implements OnInit {
           icon: 'folder-open'},
         { title : 'Equipos', 
           url : '/admin/equipos', 
-          icon: 'people'}
+          icon: 'people'}, 
+        { title : 'Usuarios',
+          url : '/admin/usuarios', 
+          icon : 'person' }
       ]}
   ];
 
