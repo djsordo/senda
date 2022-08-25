@@ -5,16 +5,12 @@ import { DocumentData,
           QuerySnapshot } from '@angular/fire/firestore';
 
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { EquipoService } from 'src/app/services/equipo.service';
-import { properCase } from 'src/app/services/string-util';
 import { Usuario } from 'src/app/modelo/usuario';
-import { Temporada } from 'src/app/modelo/temporada';
-import { TemporadaService } from 'src/app/services/temporada.service';
 import { Club } from 'src/app/modelo/club';
 import { ClubesService } from 'src/app/services/clubes.service';
 
 @Component({
-  selector: 'equipos-crear',
+  selector: 'usuarioss-crear',
   templateUrl: './crear.component.html',
   styleUrls: ['./crear.component.scss'],
 })
@@ -26,9 +22,8 @@ export class CrearComponent implements OnInit {
   email : string;
 
   selectedClub : string;
-  typedClub : string;
 
-  clubes : Set<Club>;
+  clubes : Club[];
 
   constructor( private usuarioService : UsuarioService,
                private clubService : ClubesService,
@@ -38,19 +33,29 @@ export class CrearComponent implements OnInit {
 
   ngOnInit() { 
     this.initCurrentUser();
-    this.clubes = new Set<Club>();
+    this.clubes = [];
     this.clubService.getClubes()
       .then( ( clubesList : QuerySnapshot<DocumentData>) => {
         for( let docData of clubesList.docs ){
           let club = docData.data(); 
           club.id = docData.id;
-          this.clubes.add( club as Club );
+          console.log( club );
+          this.clubes.push( club as Club );
         }
       });
   }
 
+  /**
+   * NOT TESTABLE: when using localStorage under a karma 
+   * unit testing, there is no localStorage with a saved 
+   * email because the browser is clean. Therefore, the 
+   * access to the localstorage should be provided through 
+   * a proxy service to allow the simulation of that service 
+   * when the class is under test. 
+   * 
+   */
   private async initCurrentUser(){
-    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
+    this.usuarioService.getUsuarioBD( localStorage.getItem('emailUsuario') )
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
       console.log('usuario: ', usuarios);
@@ -58,16 +63,22 @@ export class CrearComponent implements OnInit {
   }
   
   onClickCrear() {
-    console.log( "creando equipo...", this.nombre );
+    console.log( "creando usuario...", this.nombre, this.apellidos );
     let newUsuario = this.usuarioService.newUsuario();
     newUsuario.nombre = this.nombre;
     newUsuario.apellidos = this.apellidos;
-    for( let club of this.clubes ){
-      console.log('el club actual es', club ); 
-      if( club.id === this.selectedClub ){
-        newUsuario.club = club;
-        break;
-      }
+    newUsuario.email = this.email;
+    if( this.selectedClub ){
+      // hay varios clubes, y el usuario ha seleccionado de una lista
+      for( let club of this.clubes ){
+        if( club.id === this.selectedClub ){
+          newUsuario.club = club;
+          break;
+        }
+      }  
+    }else {
+      // sólo hay un club, y el usuario no ha efectuado ninguna selección
+      newUsuario.club = this.clubes[0];
     }
     this.usuarioService.addUsuario( newUsuario )
       .then( docRef =>

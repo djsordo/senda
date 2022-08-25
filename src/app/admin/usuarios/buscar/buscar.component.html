@@ -17,7 +17,7 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of equipos" (click)="onCardSelected( p.id )">
+      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of usuarios" (click)="onCardSelected( p.id )">
         <ion-card-header>
           <ion-icon name="person" size="large"></ion-icon>
           <ion-card-title>{{p.nombre}} {{p.apellidos}}</ion-card-title>

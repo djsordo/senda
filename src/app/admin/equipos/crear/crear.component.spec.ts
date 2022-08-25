@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp } from 'firebase/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
-import { initializeApp } from 'firebase/app';
 
 
 import { environment } from 'src/environments/environment';
 import { CrearComponent } from './crear.component';
 
 
-fdescribe('CrearComponent', () => {
+describe('CrearComponent', () => {
   let component: CrearComponent;
   let fixture: ComponentFixture<CrearComponent>;
 
@@ -34,7 +34,7 @@ fdescribe('CrearComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('should create crear equipos component', () => {
     expect(component).toBeTruthy();
   });
 });

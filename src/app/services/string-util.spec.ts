@@ -3,7 +3,7 @@ import { IonGrid } from '@ionic/angular';
 import { StringUtil } from './string-util';
 
 
-describe( 'string-util.spec', () => {
+fdescribe( 'string-util.spec', () => {
 
   let stringUtil : StringUtil; 
 

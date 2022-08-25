@@ -1,24 +1,23 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
+import { CrearComponent } from './crear.component';
 
-import { CambioComponent } from '../cambio/cambio.component';
-
-describe('CambioComponent', () => {
-  let component: CambioComponent;
-  let fixture: ComponentFixture<CambioComponent>;
+describe('CrearComponent', () => {
+  let component: CrearComponent;
+  let fixture: ComponentFixture<CrearComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CambioComponent ],
+      declarations: [ CrearComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CambioComponent);
+    fixture = TestBed.createComponent(CrearComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('should create crear clubes component', () => {
     expect(component).toBeTruthy();
   });
 });

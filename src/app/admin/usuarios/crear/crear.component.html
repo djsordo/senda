@@ -18,7 +18,6 @@
       <ion-item>
         <ion-input name="usuarioSurname" 
                 placeholder="Apellidos"
-                autofocus="true"
                 inputmode="text"
                 autocapitalize="on"
                 autocorrect="off"
@@ -32,7 +31,6 @@
       <ion-item>
         <ion-input name="usuarioEmail" 
                 placeholder="Correo Electrónico"
-                autofocus="true"
                 inputmode="email"
                 autocapitalize="off"
                 autocorrect="off"
@@ -48,9 +46,10 @@
       <ion-item>
         <ion-label>Club:</ion-label>
         <!-- valorar si aquí debería ir un componente llamado "combo categorias" que recogiese una categoría por defecto -->
-        <ion-select [(ngModel)]="selectedClub">
+        <ion-select *ngIf="clubes.length > 1" [(ngModel)]="selectedClub">
           <ion-select-option *ngFor="let club of clubes" value="{{club.id}}">{{club.nombre}}</ion-select-option>
         </ion-select>
+        <ion-text *ngIf="clubes.length === 1">{{clubes[0]?.nombre}}</ion-text>
       </ion-item>
     </ion-col>
   </ion-row>

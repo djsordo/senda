@@ -12,7 +12,8 @@ import { Firestore,
         doc,
         getDoc,
         updateDoc,
-        DocumentReference} from '@angular/fire/firestore';
+        DocumentReference,
+        QuerySnapshot} from '@angular/fire/firestore';
 import { Club } from '../modelo/club';
 
 
@@ -38,6 +39,28 @@ export class ClubesService {
       return getDocs( query( this.clubesRef ) );
     }
   }
+
+  /**
+   * Realiza una consulta de los clubes, se trae los documentos 
+   * y resuelve la promesa, cargando una lista de clubes. 
+   * 
+   * @returns Club[]
+   */
+  async getClubesAsList( ){
+    return new Promise( (resolve) => {
+      getDocs( query( this.clubesRef ) )
+        .then( ( clubList : QuerySnapshot<DocumentData> ) => {
+          let clubesData : Club[] = [];
+          for( let clubDoc of clubList.docs ){
+            let club = clubDoc.data(); 
+            club.id = clubDoc.id; 
+            clubesData.push( club as Club );
+          }
+          resolve( clubesData );
+        } )
+    } );
+  }
+
 
   async getClubById( id : string ){
     let docRef = doc( this.clubesRef, id );

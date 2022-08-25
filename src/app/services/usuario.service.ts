@@ -9,7 +9,7 @@ import { Firestore,
         setDoc, 
         CollectionReference, 
         DocumentData } from '@angular/fire/firestore';
-import { deleteDoc, getDocs } from 'firebase/firestore';
+import { deleteDoc, getDoc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 
@@ -53,6 +53,11 @@ export class UsuarioService {
   getUsuarioBD(email: string): Observable<Usuario[]>{
     const usuarioRef = query(this.usuarioRef, where('email', '==', email));
     return collectionData(usuarioRef, {idField: 'id'}) as Observable<Usuario[]>;
+  }
+
+  async getUsuarioById( id : string ) {
+    let docRef = doc( this.usuarioRef, id );
+    return getDoc( docRef );
   }
 
   async getUsuarios( nombre? : string ){

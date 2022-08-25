@@ -34,7 +34,7 @@ fdescribe('CrearComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('should create crear usuarios component', () => {
     expect(component).toBeTruthy();
   });
 });

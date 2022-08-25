@@ -11,6 +11,8 @@ import { EquipoService } from 'src/app/services/equipo.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AdminUsuariosPage } from '../admin-usuarios.page';
 import { TemporadaService } from 'src/app/services/temporada.service';
+import { ClubesService } from 'src/app/services/clubes.service';
+import { Club } from 'src/app/modelo/club';
 
 
 @Component({
@@ -24,50 +26,42 @@ export class CambioComponent implements OnInit {
 
   usuario : Usuario;
   nombre : string;
+  apellidos : string; 
+  email : string; 
   
-  selectedCategoria : string;
-  typedCategoria : string;
-  
-  selectedGenero : string;
-  typedGenero : string;
-  
-  selectedTemporada : string; 
-  typedTemporada : string; 
+  selectedClub : string; 
 
-  categorias : Set<string>;
-  generos : Set<string>;
-  generosKeys : string[];
-  temporadas : Set<Temporada>;
+  clubes : Club[];
 
   constructor( private mainPage : AdminUsuariosPage, 
                private usuarioService : UsuarioService,
-               private temporadaService : TemporadaService,
-               private equipoService : EquipoService,
+               private clubService : ClubesService,
                private toastController : ToastController, 
                private router : Router, 
                private route : ActivatedRoute ) { }
 
   ngOnInit() { 
     this.initCurrentUser();
-    this.initThingsToDo();
-    this.equipoService.getEquipos()
-      .then( ( equipoList : QuerySnapshot<DocumentData>) => {
-        for( let equipo of equipoList.docs ){
-          this.thingsToDoPerEquipo( equipo );
+    this.clubes = [];
+    this.clubService.getClubes()
+      .then( (clubList : QuerySnapshot<DocumentData>) => {
+        this.clubes = [];
+        for( let clubDoc of clubList.docs ){
+          let club = clubDoc.data();
+          club.id = clubDoc.id; 
+          this.clubes.push( club as Club );
         }
       });
     if( this.mainPage.getSelectedId() ){
-      this.equipoService.getEquipoById( this.mainPage.getSelectedId() )
+      this.usuarioService.getUsuarioById( this.mainPage.getSelectedId() )
         .then( ( val : DocumentSnapshot<DocumentData>) => {
           this.docSnapshot = val;
           this.nombre = val.data().nombre; 
-          this.selectedCategoria = val.data().categoria;
-          this.selectedGenero = val.data().genero;
-          this.selectedTemporada = val.data().temporada.alias;
+          this.apellidos = val.data().apellidos;
+          this.email = val.data().email; 
+          this.selectedClub = val.data().club?.id;
         })
-        .catch( (reason) => {
-          console.error( reason );
-        })
+        .catch( reason => console.error( reason ) );
     }
   }
 
@@ -78,71 +72,23 @@ export class CambioComponent implements OnInit {
     });
   }
 
-  private initThingsToDo(){
-    this.categorias = new Set<string>();
-    this.generos = new Set<string>();
-    this.temporadas = new Set<Temporada>();
-  }
-
-  private thingsToDoPerEquipo( equipo : DocumentData ){
-    if( equipo.data().categoria )
-      this.categorias.add( equipo.data().categoria );
-    if( equipo.data().genero ){
-      this.generos.add( equipo.data().genero );
-    }
-    if( equipo.data().temporada ){
-      this.addIfNotPresent( this.temporadas, 
-                          equipo.data().temporada, 
-                          ( v1, v2 ) => {return v1.alias === v2.alias; } );
-    }
-  }
-
-  private addIfNotPresent( s1 : Set<any>, 
-                            newVal : any, 
-                            comparison : ( v1 : any, v2 : any ) => boolean ) {
-    let present = false; 
-    for( let val of s1 ){
-      present = present || comparison( val, newVal );
-    }
-    if( !present ) 
-      s1.add( newVal ); 
-  }
-
-
   onClickCambiar() {
-    let equipo = this.equipoService.newEquipo();
-    equipo.nombre = this.nombre; 
-    equipo.club = this.usuario.club; 
-    if( this.selectedCategoria !== '#otro#' )
-      equipo.categoria = this.selectedCategoria;
-    else
-      equipo.categoria = this.typedCategoria; 
-    if( this.selectedGenero !== '#otro#' )
-      equipo.genero = this.selectedGenero; 
-    else 
-      equipo.genero = this.typedGenero; 
-    if( this.selectedTemporada !== '#otro#' ){
-      for( let temporada of this.temporadas ){
-        console.log( temporada.alias );
-        if( temporada.alias === this.selectedTemporada ){
-          equipo.temporada = temporada;
-          break;
-        }
-      }
+    let usuario = this.usuarioService.newUsuario();
+    usuario.nombre = this.nombre; 
+    usuario.apellidos = this.apellidos;
+    usuario.email = this.email; 
+    if( this.selectedClub ){
+      // hay más de un club, y el usuario ha seleccionado uno
     }else{
-      let temporada = { alias : this.typedTemporada, 
-        nombre : this.typedTemporada };
-      this.temporadaService.addTemporada( temporada );
-      equipo.temporada = temporada;
+      // no hay más que un club
+      usuario.club = this.clubes[0];
     }
-    console.log( equipo );
-    this.equipoService.updateEquipo( this.docSnapshot, 
-                          equipo )
+    this.usuarioService.addUsuario( usuario )
       .then( (docRef) => {
-        this.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
+        this.sendToast( `${this.nombre} ${this.apellidos} se ha cambiado con éxito`);
       })
       .catch( (reason) => {
-        this.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
+        this.sendToast(`Se ha producido un error al cambiar los datos de ${this.nombre} ${this.apellidos}: ${reason}`);
       });
     this.mainPage.onSelectedId.emit( null );
     this.router.navigate( ['..'], { relativeTo : this.route } );

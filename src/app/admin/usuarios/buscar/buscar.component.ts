@@ -20,7 +20,7 @@ export class BuscarComponent implements OnInit {
 
 
   @ViewChildren('resultCard') resultCards: QueryList<any>;
-  @Input() equipos : any = [];
+  @Input() usuarios : any = [];
   searchText : string = '';
   currentId : string;
 
@@ -32,27 +32,27 @@ export class BuscarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.refereshEquipoList();
+    this.refreshUsuarioList();
     this.currentId = null;
   }
 
   public onClickSearch() {
-    this.refereshEquipoList();
+    this.refreshUsuarioList();
   }
 
   getSelectedId(){
     return this.mainPage.getSelectedId();
   }
 
-  private refereshEquipoList() {
-    this.equipos = [];
+  private refreshUsuarioList() {
+    this.usuarios = [];
     this.usuarioService.getUsuarios( )
     .then( (usuariosList) => {
       for( let docSnap of usuariosList.docs ){
         let usuario = docSnap.data(); 
         usuario['id'] = docSnap.id;
         if( this.matchesSearch( usuario, this.searchText ) ){
-          this.equipos.push( usuario );
+          this.usuarios.push( usuario );
         }
       }
     });
@@ -89,7 +89,7 @@ export class BuscarComponent implements OnInit {
           handler: () => {
             this.usuarioService.deleteUsuarioById( this.mainPage.getSelectedId() );
             this.mainPage.onSelectedId.emit( null );
-            this.refereshEquipoList();
+            this.refreshUsuarioList();
           },
         },
       ],
