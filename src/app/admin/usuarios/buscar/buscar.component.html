@@ -19,12 +19,12 @@
     <ion-col>
       <ion-card #resultCard id="{{p.id}}" *ngFor="let p of equipos" (click)="onCardSelected( p.id )">
         <ion-card-header>
-          <ion-icon name="people" size="large"></ion-icon>
-          <ion-card-title>{{p.nombre}}</ion-card-title>
+          <ion-icon name="person" size="large"></ion-icon>
+          <ion-card-title>{{p.nombre}} {{p.apellidos}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-text>{{p.categoria}} {{p.genero}}</ion-text> <br/>
-          <ion-text>Temporada {{p?.temporada.nombre}}</ion-text>
+          <ion-text>xjx texto número uno</ion-text> <br/>
+          <ion-text>xjx texto número dos</ion-text>
         </ion-card-content>
       </ion-card>
     </ion-col>

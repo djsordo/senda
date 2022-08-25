@@ -5,13 +5,14 @@ import { Component,
   Renderer2,
   ViewChildren} from "@angular/core";
 import { AlertController } from "@ionic/angular";
+import { DocumentData } from '@angular/fire/firestore';
 
-import { EquipoService } from "src/app/services/equipo.service";
 import { StringUtil } from "src/app/services/string-util";
+import { UsuarioService } from "src/app/services/usuario.service";
 import { AdminUsuariosPage } from "../admin-usuarios.page";
 
 @Component({
-  selector: 'equipos-buscar',
+  selector: 'usuarios-buscar',
   templateUrl: './buscar.component.html',
   styleUrls: ['./buscar.component.scss'],
 })
@@ -24,7 +25,7 @@ export class BuscarComponent implements OnInit {
   currentId : string;
 
   constructor( private mainPage : AdminUsuariosPage, 
-              private equipoService : EquipoService,
+              private usuarioService : UsuarioService,
               private renderer : Renderer2, 
               private alertController : AlertController,
               private stringUtil : StringUtil ){
@@ -45,23 +46,24 @@ export class BuscarComponent implements OnInit {
 
   private refereshEquipoList() {
     this.equipos = [];
-    this.equipoService.getEquipos( )
-    .then( (equipoList) => {
-      for( let docSnap of equipoList.docs ){
-        let equipo = docSnap.data(); 
-        equipo['id'] = docSnap.id;
-        if( this.matchesSearch( equipo, this.searchText ) ){
-          this.equipos.push( equipo );
+    this.usuarioService.getUsuarios( )
+    .then( (usuariosList) => {
+      for( let docSnap of usuariosList.docs ){
+        let usuario = docSnap.data(); 
+        usuario['id'] = docSnap.id;
+        if( this.matchesSearch( usuario, this.searchText ) ){
+          this.equipos.push( usuario );
         }
       }
     });
   }
 
 
-  private matchesSearch( equipo: any, searchText : string ){
-    const composedInfo = equipo.nombre + ' ' 
-                  + equipo?.genero + ' ' 
-                  + equipo?.temporada.nombre;
+  private matchesSearch( usuario: DocumentData, searchText : string ){
+    const composedInfo = usuario?.nombre + ' ' 
+                  + usuario?.apellidos + ' ' 
+                  + usuario?.email + ' ' 
+                  + usuario?.club.nombre + ' ';
     if( searchText )
       return this.stringUtil.like( composedInfo, searchText );
     else
@@ -85,7 +87,7 @@ export class BuscarComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.equipoService.deleteEquipoById( this.mainPage.getSelectedId() );
+            this.usuarioService.deleteUsuarioById( this.mainPage.getSelectedId() );
             this.mainPage.onSelectedId.emit( null );
             this.refereshEquipoList();
           },

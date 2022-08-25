@@ -2,10 +2,12 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        <ion-input name="equipoName" 
-                placeholder="Nombre del equipo"
+        <ion-input name="usuarioName" 
+                placeholder="Nombre"
                 autofocus="true"
                 inputmode="text"
+                autocapitalize="on"
+                autocorrect="off"
                 type="text"
                 [(ngModel)]="nombre"></ion-input>
       </ion-item>
@@ -14,65 +16,41 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        <ion-label>Categoría:</ion-label>
+        <ion-input name="usuarioSurname" 
+                placeholder="Apellidos"
+                autofocus="true"
+                inputmode="text"
+                autocapitalize="on"
+                autocorrect="off"
+                type="text"
+                [(ngModel)]="apellidos"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-input name="usuarioEmail" 
+                placeholder="Correo Electrónico"
+                autofocus="true"
+                inputmode="email"
+                autocapitalize="off"
+                autocorrect="off"
+                pattern="\w+@[\w.]+"
+                type="text"
+                [(ngModel)]="email"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Club:</ion-label>
         <!-- valorar si aquí debería ir un componente llamado "combo categorias" que recogiese una categoría por defecto -->
-        <ion-select [(ngModel)]="selectedCategoria">
-          <ion-select-option *ngFor="let cat of categorias">{{cat}}</ion-select-option>
-          <ion-select-option value="#otro#">Otros (especificar)</ion-select-option>
+        <ion-select [(ngModel)]="selectedClub">
+          <ion-select-option *ngFor="let club of clubes" value="{{club.id}}">{{club.nombre}}</ion-select-option>
         </ion-select>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-row *ngIf="selectedCategoria === '#otro#'">
-    <ion-col>
-      <ion-input type="text"
-            autocapitalize="on"
-            autocomplete="on"
-            inputmode="text"
-            [(ngModel)]="typedCategoria"></ion-input>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-label>Género:</ion-label>
-        <ion-select [(ngModel)]="selectedGenero">
-          <ion-select-option *ngFor="let gen of generos">{{gen}}</ion-select-option>
-          <ion-select-option value="#otro#">Otro (especificar)</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-row *ngIf="selectedGenero ==='#otro#'">
-    <ion-col>
-      <ion-item >
-        <ion-input type="text" 
-              autocapitalize="on" 
-              autocomplete="on" 
-              inputmode="text"
-              [(ngModel)]="typedGenero"></ion-input>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-label>Temporada:</ion-label>
-        <ion-select [(ngModel)]="selectedTemporada">
-          <ion-select-option *ngFor="let t of temporadas">{{t.alias}}</ion-select-option>
-          <ion-select-option value="#otro#">Otra (especificar)</ion-select-option>
-        </ion-select>  
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-row *ngIf="selectedTemporada === '#otro#'">
-    <ion-col>
-      <ion-item>
-        <ion-input type="text"
-              autocapitalize="on"
-              autocomplete="on"
-              inputmode="text"
-              [(ngModel)]="typedTemporada"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>

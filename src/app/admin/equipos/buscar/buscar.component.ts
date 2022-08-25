@@ -34,19 +34,19 @@ export class BuscarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.refereshEquipoList();
+    this.refreshEquipoList();
     this.currentId = null;
   }
 
   public onClickSearch() {
-    this.refereshEquipoList();
+    this.refreshEquipoList();
   }
 
   getSelectedId(){
     return this.mainPage.getSelectedId();
   }
 
-  private refereshEquipoList() {
+  private refreshEquipoList() {
     this.equipos = [];
     this.equipoService.getEquipos( )
     .then( (equipoList) => {
@@ -90,7 +90,7 @@ export class BuscarComponent implements OnInit {
           handler: () => {
             this.equipoService.deleteEquipoById( this.mainPage.getSelectedId() );
             this.mainPage.onSelectedId.emit( null );
-            this.refereshEquipoList();
+            this.refreshEquipoList();
           },
         },
       ],

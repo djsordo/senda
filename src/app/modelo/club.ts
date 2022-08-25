@@ -1,7 +1,7 @@
 
 
 export interface Club {
-  clubId : string; 
+  id? : string; 
   deporte?: string;
   nombre: string;
 }

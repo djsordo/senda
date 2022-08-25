@@ -1,3 +1,4 @@
+import { Club } from './club';
 import { Equipo } from './equipo';
 
 export interface Usuario{
@@ -5,10 +6,7 @@ export interface Usuario{
   nombre: string;
   apellidos: string;
   email: string;
-  club: {
-    clubId: string;
-    nombre: string;
-  };
+  club: Club;
   roles: [
     {
       equipo: Equipo;
