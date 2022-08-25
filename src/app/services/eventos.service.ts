@@ -1,5 +1,5 @@
 import { Injectable  } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, query, where, deleteDoc, doc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 import { CronoService } from '../components/crono/crono.service';
@@ -40,7 +40,8 @@ export class EventosService {
   acciones: Acciones[];
   eventos: Evento[];
 
-  constructor( private cronoService: CronoService, private firestore: Firestore ) {
+  constructor( private cronoService: CronoService,
+    private firestore: Firestore) {
     this.acciones =
     [ Acciones.parada,
       Acciones.golRival,
@@ -103,6 +104,11 @@ export class EventosService {
   getEventos(partidoId: string): Observable<Evento[]>{
     const eventosRef = query(collection(this.firestore, 'eventos'), where('partidoId', '==', partidoId));
     return collectionData(eventosRef, {idField: 'id'}) as Observable<Evento[]>;
+  }
+
+  async deleteEvento(id: string){
+    const eventoRef = doc(this.firestore, 'eventos/' + id);
+    return await deleteDoc(eventoRef);
   }
 }
 

@@ -1,12 +1,15 @@
+import { EstadPartidoService } from './../services/estad-partido.service';
+import { EventosService } from 'src/app/services/eventos.service';
 import { Equipo } from './../modelo/equipo';
 import { PasoDatosService } from './../services/paso-datos.service';
 /* eslint-disable @typescript-eslint/member-ordering */
 import { UsuarioService } from './../services/usuario.service';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,13 +17,16 @@ import { Partido } from '../modelo/partido';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   usuario: Usuario;
   partidos: Partido[];
+  subs: Subscription[] = [];
 
   constructor(private router: Router,
               private usuarioService: UsuarioService,
-              private pasoDatosService: PasoDatosService
+              private pasoDatosService: PasoDatosService,
+              private eventosService: EventosService,
+              private estadPartidoService: EstadPartidoService
               ) {
   }
 
@@ -54,14 +60,36 @@ export class HomePage implements OnInit {
     this.pasoDatosService.setNombresEquipos(nombresEquipos);
 
     if (modo === 'generar'){
+        this.subs.forEach(sub => sub.unsubscribe());
         // A ver si puedo desde aquí cambiar el estado del partido.
         partido.config.estado = 'en curso';
         this.usuarioService.updateUsuario(this.usuario);
 
         this.router.navigate(['/inicio-sel-jugadores']);
       } else if (modo === 'ver'){
+        this.subs.forEach(sub => sub.unsubscribe());
         this.router.navigate(['/modo-ver']);
+
+      } else if (modo === 'reset'){
+        // A ver si puedo desde aquí cambiar el estado del partido.
+        partido.config.estado = 'programado';
+        this.usuarioService.updateUsuario(this.usuario);
+
+        // Borrar eventos relacionados con el partido
+        this.subs.push(this.eventosService.getEventos(partido.id).subscribe(evento => {
+          evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
+        }));
+
+        // Borrar EstadPartidos relacionados con el partido
+        this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)
+        .subscribe(estadP => {
+          estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
+        }));
       }
   }
 
+  ngOnDestroy(){
+    console.log('ngOndestroy');
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
 }
