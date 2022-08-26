@@ -1,5 +1,5 @@
 
-import { Firestore } from 'firebase/firestore';
+import { doc, Firestore, setDoc } from 'firebase/firestore';
 
 import { Interfaz,
         doNothing } from './interfaz.js';
@@ -23,12 +23,12 @@ class Deportes {
   }
 
   async addDeporte(){
-    return new Promise( (resolve) => { 
+    return new Promise( (resolve, reject) => { 
       this.interfaz.pickupString("Nombre del deporte")
       .then( (typedValue : string ) => {
-        this.interfaz.writeLine("el usuario ha escrito "); 
-        this.interfaz.writeLine( typedValue );
-        resolve( typedValue ); 
+        setDoc( doc( this.firestore, "deportes", typedValue ), { nombre : typedValue } )
+          .then( ( val ) => resolve( val ) )
+          .catch( (reason) => reject( reason ) );
       });
     });
   }

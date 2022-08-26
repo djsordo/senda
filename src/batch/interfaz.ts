@@ -86,7 +86,7 @@ export class Interfaz {
                 answer.action()
                   .then( (val) => { resolve( val ) } );
               }
-          })
+          });
         } )
         .catch( (answer) => { 
           console.log( `Opción incorrecta (${answer})` );
