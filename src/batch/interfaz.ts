@@ -5,6 +5,7 @@ import * as readline from 'readline';
 export class Option{
   value : number;
   name : string;
+  obj? : object;
   action : ( arg? : any ) => Promise<any>;
   arg? : any
 };
@@ -20,13 +21,21 @@ export async function doNothing(){
 
 export class Interfaz {
 
+  private static instance : Interfaz;
+
   private rl : readline.Interface;
 
-  constructor(){
+  private constructor(){
     this.rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
+  }
+
+  public static getInstance(): Interfaz {
+    if( !Interfaz.instance )
+      Interfaz.instance = new Interfaz();
+    return Interfaz.instance;
   }
 
   public writeLine( line? : string ){
@@ -37,7 +46,7 @@ export class Interfaz {
 
   async pickupInt( prompt : string ){
     return new Promise( (resolve) => {
-      this.rl.question( `${prompt}> `, (answer : string) => {
+      this.rl.question( `${prompt}: `, (answer : string) => {
         let intVal = parseInt( answer ); 
         if( isNaN( intVal ) ){
           this.writeLine( 'Opción incorrecta, debe ser un valor numérico' );
@@ -48,18 +57,35 @@ export class Interfaz {
     });
   }
 
+  async pickupString( prompt : string ) {
+    return new Promise( (resolve) => {
+      this.rl.question( `${prompt}: `, (answer : string) => {
+        resolve( answer );
+      });
+    } );
+  }
+
   public async menu( title : string, options : Option[] ){
     let selectedOption = null;
     while( selectedOption === null ){
       await this.showMenuWaitForAnswer( title, options )
         .then( (answer) => {
           selectedOption = new Promise( (resolve) => {
-              if( answer?.arg )
+              if( answer?.obj ){
+                if( answer?.arg )
+                  answer.action.apply( answer.obj )
+                    .then( (val) => { resolve( val ) } );
+                else
+                  answer.action.apply( answer.obj )
+                    .then( (val) => { resolve( val ) } );
+              }else{
+                if( answer?.arg )
                 answer.action( answer.arg )
                   .then( (val) => { resolve( val ) } );
               else
                 answer.action()
                   .then( (val) => { resolve( val ) } );
+              }
           })
         } )
         .catch( (answer) => { 

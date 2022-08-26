@@ -31,7 +31,7 @@ const firestore = getFirestore( app );
 
 //main();
 
-let iface = new Interfaz();
+let iface = Interfaz.getInstance();
 
 
 iface.menu( 'Menu Principal', 
