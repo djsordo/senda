@@ -4,9 +4,7 @@ import { getFirestore,
         collection } from 'firebase/firestore';
 
 import { environment } from '../environments/environment.js';
-import { rl, 
-        doNothing, 
-        Menu} from './menu.js';
+import { Interfaz, doNothing } from './interfaz.js';
 import { menuDeportes } from './deportes.js';
 import { menuEquipos } from './equipos.js';
 
@@ -20,17 +18,28 @@ const firestore = getFirestore( app );
 //console.log( partidoRef );
 
 
-const main = async () => {
-  let menuPrincipal = new Menu( 'Menu Principal', 
-      [{value: 1, name: 'Deportes', action: menuDeportes },
-      {value: 2, name: 'Equipos', action: menuEquipos },
-      {value: 3, name: 'Partidos', action: doNothing },
-      {value: 4, name: 'Usuarios', action: doNothing },
-      {value: 0, name: 'Salir', action: doNothing }] );
-  await menuPrincipal.show();
-  rl.close();
-}
+// const main = async () => {
+//   let menuPrincipal = new Menu( 'Menu Principal', 
+//       [{value: 1, name: 'Deportes', action: menuDeportes, arg : firestore },
+//       {value: 2, name: 'Equipos', action: menuEquipos },
+//       {value: 3, name: 'Partidos', action: doNothing },
+//       {value: 4, name: 'Usuarios', action: doNothing },
+//       {value: 0, name: 'Salir', action: doNothing }] );
+//   await menuPrincipal.show();
+//   rl.close();
+// }
 
-main();
+//main();
 
+let iface = new Interfaz();
+
+
+iface.menu( 'Menu Principal', 
+                [{value: 1, name: 'Deportes', action: menuDeportes, arg : firestore },
+                {value: 2, name: 'Equipos', action: menuEquipos },
+                {value: 3, name: 'Partidos', action: doNothing },
+                {value: 4, name: 'Usuarios', action: doNothing },
+                {value: 0, name: 'Salir', action: doNothing }] )
+        .then( (value) => { console.log( 'valor recibido: ', value );})
+        .finally( () => iface.close() );
 

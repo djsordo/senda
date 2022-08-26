@@ -1,5 +1,5 @@
 
 # rm -rf dist/*
 tsc
-npm run ejecutar
+npm run ejecutar 
 
