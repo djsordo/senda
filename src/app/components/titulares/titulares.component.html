@@ -3,19 +3,19 @@
     <h2>Jugadores en la pista</h2> <microfono></microfono>
   </ion-list-header>
   <ion-accordion-group #acordeonJugadores>
+    <ion-item *ngIf="!portero[0]" color="danger">
+      <div>PORTERÍA VACÍA</div>
+    </ion-item>
     <ion-accordion *ngIf="portero[0]" value="{{portero[0].datos.numero}}">
       <ion-item slot="header">
         <ion-grid class="cabecera">
-          <ion-row>
+          <ion-row class="portero">
             <ion-col size="1">
               <ion-icon name="arrow-down" (click)="btnSale(portero[0], true)"></ion-icon>
             </ion-col>
             <ion-col size="2">
-              <b class="portero">{{ portero[0].datos.numero }}</b>
+              <b>{{ portero[0].datos.numero }}</b>
             </ion-col>
-<!--             <ion-col size="1">
-              <ion-img src="../../../assets/portero.png"></ion-img>
-            </ion-col> -->
             <ion-col size="7">
               <ion-label>{{ portero[0].datos.nombre }}</ion-label>
             </ion-col>
@@ -193,10 +193,14 @@
       </ion-card>
     </ion-accordion>
 
+    <ion-item *ngIf="(jugCampo.length + listaExcluidos.length) < 6" color="danger">
+      <div>FALTA JUGADOR DE CAMPO</div>
+    </ion-item>
+
     <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.datos.numero}}">
       <ion-item slot="header" color="danger">
         <ion-grid>
-          <ion-row>
+          <ion-row class="{{titular.datos.portero?'portero':''}}">
             <ion-col size="2">
               <b>{{ titular.datos.numero }}</b>
             </ion-col>
@@ -261,17 +265,14 @@
     <ion-accordion *ngFor="let jugador of listaBanquillo" value="{{jugador.datos.id}}">
       <ion-item slot="header">
         <ion-grid>
-          <ion-row>
+          <ion-row class="{{jugador.datos.portero?'portero':''}}">
             <ion-col size="1">
               <ion-icon *ngIf="portero.length + jugCampo.length + listaExcluidos.length !== 7" name="arrow-up" (click)="btnEntra(jugador)"></ion-icon>
             </ion-col>
             <ion-col size="2">
               <b>{{ jugador.datos.numero }}</b>
             </ion-col>
-            <ion-col size="1">
-              <ion-img *ngIf="jugador.datos.portero === true" src="../../../assets/portero.png"></ion-img>
-            </ion-col>
-            <ion-col size="6">
+            <ion-col size="7">
               <ion-label>{{ jugador.datos.nombre }}</ion-label>
             </ion-col>
             <ion-col size="2" class="tJugado">
@@ -308,14 +309,14 @@
     <ion-accordion *ngFor="let jugador of listaEliminados" value="{{jugador.datos.id}}">
       <ion-item slot="header" color="danger">
         <ion-grid>
-          <ion-row>
+          <ion-row class="{{jugador.datos.portero?'portero':''}}">
             <ion-col size="2">
               <b>{{ jugador.datos.numero }}</b>
             </ion-col>
-            <ion-col size="1">
+<!--             <ion-col size="1">
               <ion-img *ngIf="jugador.datos.portero === true" src="../../../assets/portero.png"></ion-img>
-            </ion-col>
-            <ion-col size="7">
+            </ion-col> -->
+            <ion-col size="8">
               <ion-label>{{ jugador.datos.nombre }}</ion-label>
             </ion-col>
             <ion-col size="2" class="tJugado">
@@ -342,7 +343,7 @@
   </ion-accordion-group>
 </ion-list>
 
-<ion-item>
+<!-- <ion-item>
   <ion-button color="success">Cambio Ataque/Defensa</ion-button>
-</ion-item>
+</ion-item> -->
 

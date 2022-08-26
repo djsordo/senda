@@ -1,6 +1,6 @@
 import { Crono } from 'src/app/modelo/crono';
 import { EstadPartido } from './../modelo/estadPartido';
-import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where, deleteDoc } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -62,5 +62,11 @@ export class EstadPartidoService {
   getEstadPartido(partidoId: string): Observable<EstadPartido[]>{
     const estadPartidoRef = query(collection(this.firestore, 'estadPartidos'), where('partidoId', '==', partidoId));
     return collectionData(estadPartidoRef) as Observable<EstadPartido[]>;
+  }
+
+  async deleteEstadPartido(id: string){
+    console.log(id);
+    const estadPartidoRef = doc(this.firestore, 'estadPartidos/' + id);
+    return await deleteDoc(estadPartidoRef);
   }
 }

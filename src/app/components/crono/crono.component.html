@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-start">
-        <ion-chip color="primary">{{tiempo.parte}}ª Parte</ion-chip>
+        <ion-chip color="primary" (click)="pulsaParte()">{{tiempo.parte}}ª Parte</ion-chip>
       </ion-col>
       <ion-col class="ion-text-center">
         <ion-text color="tertiary">{{tiempo.segundos*1000 | date: 'mm:ss'}}</ion-text>

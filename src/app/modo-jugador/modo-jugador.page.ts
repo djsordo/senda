@@ -66,6 +66,7 @@ export class ModoJugadorPage implements OnInit {
       jugador.segJugados = 0;
       this.listaInicial.push(jugador);
     });
+
     listaBanquilloPrevia.forEach(jugadorPrevia => {
       const jugador = {} as EstadJugador;
       jugador.datos = jugadorPrevia;
@@ -106,7 +107,6 @@ export class ModoJugadorPage implements OnInit {
       }
 
       // Aquí llamo a la función que inserta el evento en la base de datos.
-      console.log('Evento que se guardará: ', evento);
       this.eventosService.addEventoBD(evento).then(even => {evento.id = even.id;});
     } );
   }

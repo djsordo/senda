@@ -9,8 +9,6 @@ import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../services/b
 import { Acciones, EventosService } from '../services/eventos.service';
 import { TradService } from '../services/trad.service';
 import { EstadJugador } from '../modelo/estadJugador';
-import { validateContextObject } from '@firebase/util';
-
 
 @Component({
   selector: 'app-detalle-jugador',
@@ -44,12 +42,10 @@ export class DetalleJugadorPage implements OnInit {
   }
 
   public onCampoClicked( event: string ){
-    console.log( 'campo: ', event );
     this.areaCampo = event;
   }
 
   public onPorteriaClicked( event: string ){
-    console.log( 'porteria: ', event );
     this.areaPorteria = event;
   }
 
@@ -121,7 +117,7 @@ export class DetalleJugadorPage implements OnInit {
 
   public getCampoName(): string {
     const polygon = this.balonmanoService.campo.polygons.filter(
-        polygon => polygon.id === <PosicionCampo> this.areaCampo );
+        poly => poly.id === this.areaCampo as PosicionCampo);
     if( polygon.length ){
       return polygon[0].name.es[0];
     } else {
@@ -131,7 +127,7 @@ export class DetalleJugadorPage implements OnInit {
 
   public getPorteriaName( ): string{
     const polygon = this.balonmanoService.porteria.polygons.filter(
-      polygon => polygon.id === <PosicionPorteria> this.areaPorteria );
+      poly => poly.id === this.areaPorteria as PosicionPorteria);
     if( polygon.length ){
       return polygon[0].name.es[0];
     } else {

@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  perfiles = [
+/*   perfiles = [
     {id: '1', nombre: 'entrenador'},
     {id: '2', nombre: 'delegado'},
     {id: '3', nombre: 'director deportivo'},
@@ -21,50 +19,16 @@ export class LoginService {
     {id: '3', email: 'ddep@gmail.com', nombre:'Luis Villanueva', perfilId: '3', password: '12345'},
     {id: '4', email: 'juanjo@gmail.com', nombre:'Juan José Marijuan', perfilId: '4', password: '12345'},
     {id: '5', email: 'invitado@gmail.com', nombre:'Invitado', perfilId: '5', password: '12345'},
-  ];
+  ]; */
 
-  constructor(private router: Router,
-              private menu: MenuController,
-              private toastController: ToastController) { }
+  constructor(private auth: Auth) { }
 
-  comprobarLogin(usuario: any){
-    console.log('Usuario:', usuario.email);
-    console.log('Contraseña:', usuario.password);
-
-    const usuarioEncontrado = this.usuarios.find(res => res.email === usuario.email && res.password === usuario.password);
-    console.log('objeto usuario: ', usuarioEncontrado);
-
-    if (usuarioEncontrado) {
-      //alert(usuarioEncontrado.nombre + ' ha entrado correctamente.');
-      this.toastCorrecto();
-
-      localStorage.setItem('nombreUsuario', usuarioEncontrado.nombre);
-      localStorage.setItem('emailUsuario', usuarioEncontrado.email);
-
-      this.activarMenu();
-      this.router.navigate(['/home']);
-      }
-    else {
-      alert('No existe el usuario o clave erronea.');
-    }
-
+  // esta función registra en firebase auth un usuario con email y password
+  registro({ email, password}: any){
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  activarMenu(){
-    this.menu.enable(true);
-  }
-
-  desactivarMenu(){
-    this.menu.enable(false);
-  }
-
-  async toastCorrecto(){
-    const toast = await this.toastController.create({
-      message: 'Usuario correcto',
-      duration: 1000,
-      position: 'middle'
-    });
-
-    toast.present();
+  login({ email, password}: any){
+    return signInWithEmailAndPassword(this.auth, email, password);
   }
 }

@@ -10,6 +10,8 @@ export class MarcadorService {
     rival: 0,
   };
 
+  dosMinLista: Array<number> = [];
+
   constructor( ) {
   }
 
@@ -28,6 +30,10 @@ export class MarcadorService {
     else{
       return this.marcador.rival;
     }
+  }
+
+  getDosMinLista(){
+    return this.dosMinLista;
   }
 
 }
