@@ -44,6 +44,11 @@ export class CronoComponent implements OnInit {
     this.tiempo.encendido = !this.cronoService.pasoTiempo();
   }
 
+  pulsaParte(){
+    this.tiempo.finParte = true;
+    this.tiempo.encendido = false;
+  }
+
   finParte(){
     this.tiempo.parte++;
     this.tiempo.segundos = 0;
