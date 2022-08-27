@@ -4,13 +4,11 @@ import { ToastController } from '@ionic/angular';
 import { DocumentData, 
         DocumentSnapshot, 
         QuerySnapshot } from '@angular/fire/firestore';
-import { Temporada } from 'src/app/modelo/temporada';
-import { Usuario } from 'src/app/modelo/usuario';
 
-import { EquipoService } from 'src/app/services/equipo.service';
+
+import { Usuario } from 'src/app/modelo/usuario';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AdminUsuariosPage } from '../admin-usuarios.page';
-import { TemporadaService } from 'src/app/services/temporada.service';
 import { ClubesService } from 'src/app/services/clubes.service';
 import { Club } from 'src/app/modelo/club';
 
@@ -79,11 +77,12 @@ export class CambioComponent implements OnInit {
     usuario.email = this.email; 
     if( this.selectedClub ){
       // hay más de un club, y el usuario ha seleccionado uno
+      usuario.club = this.clubes.find( (club : Club) => club.id === this.selectedClub );
     }else{
       // no hay más que un club
       usuario.club = this.clubes[0];
     }
-    this.usuarioService.addUsuario( usuario )
+    this.usuarioService.updateUsuario( usuario )
       .then( (docRef) => {
         this.sendToast( `${this.nombre} ${this.apellidos} se ha cambiado con éxito`);
       })

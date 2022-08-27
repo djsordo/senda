@@ -49,10 +49,15 @@ export class BuscarComponent implements OnInit {
     this.usuarioService.getUsuarios( )
     .then( (usuariosList) => {
       for( let docSnap of usuariosList.docs ){
-        let usuario = docSnap.data(); 
-        usuario['id'] = docSnap.id;
-        if( this.matchesSearch( usuario, this.searchText ) ){
-          this.usuarios.push( usuario );
+        try{
+          let usuario = docSnap.data(); 
+          usuario['id'] = docSnap.id;
+          if( this.matchesSearch( usuario, this.searchText ) ){
+            this.usuarios.push( usuario );
+          }
+        }catch( err ){
+          console.error( 'Error in refreshUsuarioList' );
+          console.error( err );
         }
       }
     });
@@ -63,7 +68,7 @@ export class BuscarComponent implements OnInit {
     const composedInfo = usuario?.nombre + ' ' 
                   + usuario?.apellidos + ' ' 
                   + usuario?.email + ' ' 
-                  + usuario?.club.nombre + ' ';
+                  + usuario.club?.nombre + ' ';
     if( searchText )
       return this.stringUtil.like( composedInfo, searchText );
     else
@@ -105,12 +110,14 @@ export class BuscarComponent implements OnInit {
       if( card.el.id === elementId ){
         if( card.el.id !== this.currentId ){
           this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
+          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
           this.mainPage.onSelectedId.emit( elementId );
           this.currentId = card.el.id;
         }else{
           // simulamos el efecto de que un click en un elemento 
           // seleccionado, deja la selección sin efecto
           this.renderer.setStyle( card.el, "background", "" );
+          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
           this.mainPage.onSelectedId.emit( null ); 
           this.currentId = null;
         }
