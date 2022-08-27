@@ -3,7 +3,7 @@ import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TradService } from '../services/trad.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, Platform } from '@ionic/angular';
 
 import { Evento } from '../modelo/evento';
 import { MarcadorService } from '../components/marcador/marcador.service';
@@ -39,13 +39,19 @@ export class ModoJugadorPage implements OnInit {
               private marcadorService: MarcadorService,
               private tradService: TradService,
               private eventosService: EventosService,
-              private estadPartidoService: EstadPartidoService) {
+              private estadPartidoService: EstadPartidoService,
+              private platform: Platform) {
     }
 
   ngOnInit() {
     const listaInicialPrevia = this.pasoDatos.getListaInicial();
     const listaBanquilloPrevia = this.pasoDatos.getListaBanquillo();
     this.nombres = this.pasoDatos.getNombresEquipos();
+
+    // Para manejar el botón de atrás
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      alert('hemos dado el botón de atrás');
+    });
 
     listaInicialPrevia.forEach(jugadorPrevia => {
       const jugador = {} as EstadJugador;

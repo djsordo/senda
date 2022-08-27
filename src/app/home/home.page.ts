@@ -83,7 +83,9 @@ export class HomePage implements OnInit, OnDestroy {
         // Borrar EstadPartidos relacionados con el partido
         this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)
         .subscribe(estadP => {
+          console.log(estadP);
           estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
+
         }));
       }
   }
