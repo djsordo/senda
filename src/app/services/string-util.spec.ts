@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { IonGrid } from '@ionic/angular';
-import { StringUtil } from './string-util';
 
 
-fdescribe( 'string-util.spec', () => {
+import { StringUtil, make_id } from './string-util';
+
+
+describe( 'string-util.spec', () => {
 
   let stringUtil : StringUtil; 
 
@@ -38,6 +39,27 @@ fdescribe( 'string-util.spec', () => {
   it( 'test of not equality', () => {
     expect( stringUtil.like( 'años más\ttarde,       frente al pelotón', 'años más o menos mas tarde') ).toBeFalse();
   });
+
+  it( 'make_id1', () => {
+    expect( make_id( '1234_hola' ) === '1234_hola' ).toBeTrue();
+  });
+
+  it( 'make_id2', () => {
+    console.log( make_id( '  raúl luña       ' ) );
+    expect( make_id( '  raúl luña       ' ) === 'raul_luna' ).toBeTrue();
+  });
+
+  it( 'make_id3', () => {
+    console.log( make_id( ' el ibex ha ganado un 20%' ) );
+    expect( make_id( ' el ibex ha ganado un 20%' ) === 'el_ibex_ha_ganado_20' ).toBeTrue();
+  });
+
+  it( 'make_id4', () => {
+    console.log( make_id( 'No huyais, cobardes y viles criaturas!!!!' ) );
+    expect( make_id( 'No huyais, cobardes y viles criaturas!!!!' ) === 'no_huyais_cobardes_y_viles_criaturas' ).toBeTrue();
+  });
+
+
 
 
 });

@@ -14,7 +14,7 @@ import { Club } from 'src/app/modelo/club';
 
 
 @Component({
-  selector: 'equipos-cambio',
+  selector: 'usuarios-cambio',
   templateUrl: './cambio.component.html',
   styleUrls: ['./cambio.component.scss'],
 })

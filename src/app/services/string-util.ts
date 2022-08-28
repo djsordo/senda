@@ -58,7 +58,37 @@ export class StringUtil{
 
 }
 
+export function make_id( s : string ){
 
+  let replacements = [{regexp : /[áàäâ]/g, replacement : 'a'},
+                      {regexp : /[éèëê]/g, replacement : 'e'},
+                      {regexp : /[íìïî]/g, replacement : 'i'},
+                      {regexp : /[óòöô]/g, replacement : 'o'},
+                      {regexp : /[úùüû]/g, replacement : 'u'},
+                      {regexp : /ñ/g     , replacement : 'n'},
+                      {regexp : /_el_/g,     replacement : '_'},
+                      {regexp : /_la_/g,     replacement : '_'},
+                      {regexp : /_los_/g,    replacement : '_'},
+                      {regexp : /_las_/g,    replacement : '_'},
+                      {regexp : /_un_/g,     replacement : '_'},
+                      {regexp : /_una_/g,    replacement : '_'},
+                      {regexp : /_unos_/g,   replacement : '_'},
+                      {regexp : /_unas_/g,   replacement : '_'},
+                      {regexp : /_the_/g,    replacement : '_'},
+                      {regexp : /_and_/g,    replacement : '_'},
+                      {regexp : /[%&\/\\¿?¡!]/g, replacement : '_' }];
+
+  s = s.trim().toLowerCase();
+  s = s.replaceAll( /\s+/g, '_' );
+  for( let repl of replacements ){
+    s = s.replaceAll( repl.regexp, repl.replacement );
+  }
+  s = s.replaceAll( /[^\w]/g, '_' );
+  s = s.replaceAll( /_+/g, '_' );
+  s = s.replace( /^_/, '' );
+  s = s.replace( /_$/, '' );
+  return s;
+}
 
 /**
  * Given an imput string, return it in "Proper Case", i.e. 

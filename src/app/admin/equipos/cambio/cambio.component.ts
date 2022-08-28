@@ -13,6 +13,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { AdminEquiposPage } from '../admin-equipos.page';
 import { Equipo } from 'src/app/modelo/equipo';
 import { TemporadaService } from 'src/app/services/temporada.service';
+import { LocalStorage } from 'src/app/services/local.storage.mock';
 
 
 @Component({
@@ -47,7 +48,8 @@ export class CambioComponent implements OnInit {
                private equipoService : EquipoService,
                private toastController : ToastController, 
                private router : Router, 
-               private route : ActivatedRoute ) { }
+               private route : ActivatedRoute, 
+               private localStorage : LocalStorage ) { }
 
   ngOnInit() { 
     this.initCurrentUser();
@@ -74,7 +76,7 @@ export class CambioComponent implements OnInit {
   }
 
   private async initCurrentUser(){
-    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
+    this.usuarioService.getUsuarioBD(this.localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
     });
