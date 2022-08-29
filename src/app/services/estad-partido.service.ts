@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EstadPartidoService {
+  // estadísticas globales del partido
   estadPartido: EstadPartido = {
     amarillas: 0,
     azules: 0,
@@ -36,10 +37,12 @@ export class EstadPartidoService {
 
   constructor(private firestore: Firestore) {}
 
+  // Actualiza un campo dentro de las estadísticas globales
   actualiza(campo: string, valor: any){
     this.estadPartido[campo] = valor;
   }
 
+  // Suma en las estadísticas globales y en la base de datos
   suma(campo: string, crono: Crono){
     this.estadPartido[campo]++;
     this.estadPartido.crono = crono;

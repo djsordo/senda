@@ -38,6 +38,8 @@ export class ModoVerPage implements OnInit {
                       {tpEvento: Acciones.sale, tipo: 'evDerecha', icono: 'arrow-down'},
                       {tpEvento: Acciones.finPartido, tipo: 'evCentro', texto: 'FINAL DEL PARTIDO'},
                       {tpEvento: Acciones.finPeriodo, tipo: 'evCentro', texto: 'FIN DE PERIODO'},
+                      {tpEvento: Acciones.comienzoPartido, tipo: 'evCentro', texto: 'COMIENZO DEL PARTIDO'},
+                      {tpEvento: Acciones.comienzoPeriodo, tipo: 'evCentro', texto: 'COMIENZO DE PERIODO'},
                     ];
 
     this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))

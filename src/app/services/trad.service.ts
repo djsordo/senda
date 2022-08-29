@@ -28,6 +28,8 @@ export class TradService{
         'accion.tarjetaAzul' : 'tarjeta azul',
         'accion.tiempoMuerto': 'tiempo muerto',
         'accion.tiempoMuertoRival': 'tiempo muerto',
+        'accion.comienzoPeriodo' : 'comienzo de periodo',
+        'accion.comienzoPartido' : 'comienzo de partido',
         'accion.finPeriodo' : 'final de periodo',
         'accion.finPartido' : 'final de partido',
         'posicion.contras' : 'contras',

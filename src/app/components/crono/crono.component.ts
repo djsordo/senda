@@ -1,3 +1,4 @@
+import { PartidosService } from './../../services/partidos.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from './../../services/eventos.service';
@@ -45,8 +46,24 @@ export class CronoComponent implements OnInit {
     if (this.tiempo.segundos === 0 && this.tiempo.parte === 1){
       this.usuarioService.setEstadoPartido(localStorage.getItem('partidoId'), 'en curso');
       this.usuarioService.updateUsuario(this.usuarioService.getUsuario());
+
+    // Evento de comienzo de partido
+    const evento = this.eventosService.newEvento();
+    evento.accionPrincipal = Acciones.comienzoPartido;
+    evento.partidoId = localStorage.getItem('partidoId');
+    evento.equipoId = localStorage.getItem('equipoId');
+    this.pasoDatos.onEventoJugador( evento );
     }
-    console.log('estado del partido: ', this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId')));
+
+    if (this.tiempo.segundos === 0){
+      // Es el comienzo de un periodo
+      // Evento de comienzo de periodo
+      const evento = this.eventosService.newEvento();
+      evento.accionPrincipal = Acciones.comienzoPeriodo;
+      evento.partidoId = localStorage.getItem('partidoId');
+      evento.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( evento );
+    }
 
     this.tiempo.encendido = !this.cronoService.pasoTiempo();
   }
@@ -54,9 +71,27 @@ export class CronoComponent implements OnInit {
   pulsaParte(){
     this.tiempo.finParte = true;
     this.tiempo.encendido = false;
+
+    // Evento de fin de parte
+    const evento = this.eventosService.newEvento();
+    evento.accionPrincipal = Acciones.finPeriodo;
+    evento.partidoId = localStorage.getItem('partidoId');
+    evento.equipoId = localStorage.getItem('equipoId');
+    this.pasoDatos.onEventoJugador( evento );
+
+    if (this.tiempo.parte === this.partes) {
+      // Es el final del partido
+      this.finPartido()
+    } else {
+      this.tiempo.parte++;
+      this.tiempo.segundos = 0;
+      this.tiempo.finParte = false;
+    }
+
   }
 
   finParte(){
+
     this.tiempo.parte++;
     this.tiempo.segundos = 0;
     this.tiempo.finParte = false;
