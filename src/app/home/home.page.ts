@@ -37,9 +37,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
+      this.usuarioService.setUsuario(this.usuario);
     });
 
-    //this.usuarioService.setUsuario(this.usuario);
 
   }
 
@@ -62,32 +62,32 @@ export class HomePage implements OnInit, OnDestroy {
     if (modo === 'generar'){
         this.subs.forEach(sub => sub.unsubscribe());
         // A ver si puedo desde aquí cambiar el estado del partido.
-        partido.config.estado = 'en curso';
+        partido.config.estado = 'en preparacion';
         this.usuarioService.updateUsuario(this.usuario);
 
-        this.router.navigate(['/inicio-sel-jugadores']);
-      } else if (modo === 'ver'){
         this.subs.forEach(sub => sub.unsubscribe());
-        this.router.navigate(['/modo-ver']);
+        this.router.navigate(['/inicio-sel-jugadores']);
+    } else if (modo === 'ver'){
+      this.subs.forEach(sub => sub.unsubscribe());
+      this.router.navigate(['/modo-ver']);
 
-      } else if (modo === 'reset'){
-        // A ver si puedo desde aquí cambiar el estado del partido.
-        partido.config.estado = 'programado';
-        this.usuarioService.updateUsuario(this.usuario);
+    } else if (modo === 'reset'){
+      // A ver si puedo desde aquí cambiar el estado del partido.
+      partido.config.estado = 'programado';
+      this.usuarioService.updateUsuario(this.usuario);
 
-        // Borrar eventos relacionados con el partido
-        this.subs.push(this.eventosService.getEventos(partido.id).subscribe(evento => {
-          evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
-        }));
+      // Borrar eventos relacionados con el partido
+      this.subs.push(this.eventosService.getEventos(partido.id).subscribe(evento => {
+        evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
+      }));
 
-        // Borrar EstadPartidos relacionados con el partido
-        this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)
-        .subscribe(estadP => {
-          console.log(estadP);
-          estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
-
-        }));
-      }
+      // Borrar EstadPartidos relacionados con el partido
+      this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)
+      .subscribe(estadP => {
+        console.log(estadP);
+        estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
+      }));
+    }
   }
 
   ngOnDestroy(){

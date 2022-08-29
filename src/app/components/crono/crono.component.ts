@@ -41,6 +41,13 @@ export class CronoComponent implements OnInit {
   }
 
   pulsaCrono(){
+    // Si es la primera vez que se pulsa (comienzo de partido) cambiamos el estado
+    if (this.tiempo.segundos === 0 && this.tiempo.parte === 1){
+      this.usuarioService.setEstadoPartido(localStorage.getItem('partidoId'), 'en curso');
+      this.usuarioService.updateUsuario(this.usuarioService.getUsuario());
+    }
+    console.log('estado del partido: ', this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId')));
+
     this.tiempo.encendido = !this.cronoService.pasoTiempo();
   }
 

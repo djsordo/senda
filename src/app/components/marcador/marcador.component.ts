@@ -49,7 +49,7 @@ export class MarcadorComponent implements OnInit, DoCheck {
             }
           }
           // Borramos los que han llegado a 0
-          this.dosMinLista = this.dosMinLista.filter(res => res !== 0);
+          this.dosMinLista = this.dosMinLista.filter(re => re !== 0);
           }
         });
       }

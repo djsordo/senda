@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, 
-          RouterModule, 
+import { PreloadAllModules,
+          RouterModule,
           Routes } from '@angular/router';
 
 const routes: Routes = [
@@ -43,17 +43,17 @@ const routes: Routes = [
   {
     path: 'admin/home',
     loadChildren: () => import('./admin/home/admin-home.module').then( m => m.AdminHomePageModule)
-  }, 
+  },
   {
-    path: 'admin/clubes', 
+    path: 'admin/clubes',
     loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule )
   },
   {
-    path: 'admin/equipos', 
+    path: 'admin/equipos',
     loadChildren: () => import('./admin/equipos/admin-equipos.module').then( m => m.AdminEquiposPageModule )
   },
   {
-    path: 'admin/usuarios', 
+    path: 'admin/usuarios',
     loadChildren: () => import('./admin/usuarios/admin-usuarios.module').then( m => m.AdminEquiposPageModule )
   },
   {

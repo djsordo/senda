@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Firestore, 
-        collection, 
-        addDoc, 
-        collectionData, 
-        query, 
-        where, 
-        doc, 
-        setDoc, 
-        CollectionReference, 
+import { Firestore,
+        collection,
+        addDoc,
+        collectionData,
+        query,
+        where,
+        doc,
+        setDoc,
+        CollectionReference,
         DocumentData } from '@angular/fire/firestore';
 import { deleteDoc, getDoc, getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
@@ -21,7 +21,7 @@ import { Usuario } from './../modelo/usuario';
 })
 export class UsuarioService {
 
-  usuarioRef : CollectionReference<DocumentData>;
+  usuarioRef: CollectionReference<DocumentData>;
   usuario: Usuario;
 
   constructor(private firestore: Firestore) {
@@ -32,7 +32,7 @@ export class UsuarioService {
       console.log('usuario: ', usuarios);
     }); */
   }
-  
+
   /**
    * factory method para crear usuarios nuevos
    */
@@ -55,12 +55,12 @@ export class UsuarioService {
     return collectionData(usuarioRef, {idField: 'id'}) as Observable<Usuario[]>;
   }
 
-  async getUsuarioById( id : string ) {
-    let docRef = doc( this.usuarioRef, id );
+  async getUsuarioById( id: string ) {
+    const docRef = doc( this.usuarioRef, id );
     return getDoc( docRef );
   }
 
-  async getUsuarios( nombre? : string ){
+  async getUsuarios( nombre?: string ){
     if( nombre && nombre.trim().length > 0 ){
       return getDocs( query( this.usuarioRef, where( 'nombre', '==', nombre.trim() ) ));
     }else{
@@ -77,9 +77,31 @@ export class UsuarioService {
     this.usuario = usuario;
   }
 
-  async deleteUsuarioById( id : string ){
-    let docRef = doc( this.usuarioRef, id ); 
+  async deleteUsuarioById( id: string ){
+    const docRef = doc( this.usuarioRef, id );
     return deleteDoc( docRef );
   }
 
+  // esta función obtiene el estado de un partido del dodumento del usuario
+  getEstadoPartido(partidoId: string){
+    let estado = '';
+    this.usuario.roles.forEach(rol => {
+      const pEncontrado = rol.equipo.partidos?.find(partido => partido.id === partidoId);
+      if (pEncontrado){
+        estado = pEncontrado.config.estado;
+      }
+    });
+
+    return estado;
+  }
+
+  setEstadoPartido(partidoId: string, estado: string){
+    // Esta función establece el estado de un partido en el documento de usuario.
+    this.usuario.roles.forEach(rol => {
+      const pEncontrado = rol.equipo.partidos?.find(partido => partido.id === partidoId);
+      if (pEncontrado) {
+        pEncontrado.config.estado = estado;
+      }
+    });
+  }
 }

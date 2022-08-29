@@ -58,10 +58,10 @@ export class TitularesComponent implements OnInit {
     if (indicePortero >= 0 ){
       this.portero = this.jugCampo.splice(indicePortero, 1);
       this.portero[0].exclusion = false;
+      this.porteroEmisor.emit(this.portero[0]);
+    } else {
+      this.portero = [];
     }
-
-    // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
 
     this.jugCampo = this.jugCampo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
     for (let i = 0; i < this.jugCampo?.length; i++){
@@ -111,7 +111,9 @@ export class TitularesComponent implements OnInit {
     }
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
+    if (this.portero !== undefined){
+      this.porteroEmisor.emit(this.portero[0]);
+    }
 
     if (localStorage.getItem('accion') !== ''){
       const jugId = localStorage.getItem('jugadorId');
