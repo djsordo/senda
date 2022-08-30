@@ -1,7 +1,21 @@
+<!-- Default Segment -->
+<ion-segment (ionChange)="segmentChanged($event)" value="enPista">
+  <ion-segment-button value="enPista">
+    <ion-label>En Pista</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="banquillo">
+    <ion-label>Banquillo</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="eliminados">
+    <ion-label>Eliminados</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+<div *ngIf="segmentoMostrado === 'enPista'">
 <ion-list inset="true">
-  <ion-list-header>
+  <!-- <ion-list-header>
     <h2>Jugadores en la pista</h2> <microfono></microfono>
-  </ion-list-header>
+  </ion-list-header> -->
   <ion-accordion-group #acordeonJugadores>
     <ion-item *ngIf="!portero[0]" color="danger">
       <div>PORTERÍA VACÍA</div>
@@ -196,7 +210,6 @@
     <ion-item *ngIf="(jugCampo.length + listaExcluidos.length) < 6" color="danger">
       <div>FALTA JUGADOR DE CAMPO</div>
     </ion-item>
-
     <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.datos.numero}}">
       <ion-item slot="header" color="danger">
         <ion-grid>
@@ -255,12 +268,14 @@
 
   </ion-accordion-group>
 </ion-list>
+</div>
 
+<div *ngIf="segmentoMostrado === 'banquillo'">
 <!-- Banquillo -->
 <ion-list inset="true">
-  <ion-list-header>
+<!--   <ion-list-header>
     <h2>Banquillo</h2>
-  </ion-list-header>
+  </ion-list-header> -->
   <ion-accordion-group #acordeonBanquillo>
     <ion-accordion *ngFor="let jugador of listaBanquillo" value="{{jugador.datos.id}}">
       <ion-item slot="header">
@@ -299,12 +314,14 @@
     </ion-accordion>
   </ion-accordion-group>
 </ion-list>
+</div>
 
+<div *ngIf="segmentoMostrado === 'eliminados'">
 <!-- Eliminados -->
 <ion-list inset="true">
-  <ion-list-header>
+<!--   <ion-list-header>
     <h2>Eliminados</h2>
-  </ion-list-header>
+  </ion-list-header> -->
   <ion-accordion-group #acordeonEliminados>
     <ion-accordion *ngFor="let jugador of listaEliminados" value="{{jugador.datos.id}}">
       <ion-item slot="header" color="danger">
@@ -342,7 +359,7 @@
     </ion-accordion>
   </ion-accordion-group>
 </ion-list>
-
+</div>
 <!-- <ion-item>
   <ion-button color="success">Cambio Ataque/Defensa</ion-button>
 </ion-item> -->

@@ -22,7 +22,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   @Output() porteroEmisor = new EventEmitter<EstadJugador>();
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
+  @ViewChild('acordeonJugadores') acordeonJugadores: IonAccordionGroup;
 
   listaExcluidos: Array<EstadJugador> = [];
   listaEliminados: Array<EstadJugador> = [];
@@ -44,6 +44,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   // Ticks para los cronos
   tick$: Observable<Tick>;
   subTick: Subscription;
+
+  segmentoMostrado = 'enPista';
 
   constructor(private router: Router,
     private crono: CronoService,
@@ -141,6 +143,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
+
   }
 
   btnGolRival(jugador: EstadJugador): void{
@@ -386,7 +389,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     this.pasoDatos.onEventoJugador( eventoEntra );
 
     // Cerramos el acordeón de jugadores
-    this.acordeonJugadores.value = undefined;
+    //this.acordeonJugadores.value = undefined;
   }
 
   btnSale(jugador: EstadJugador, esPortero: boolean){
@@ -416,7 +419,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     this.pasoDatos.onEventoJugador( eventoSale );
 
     // Cerramos el acordeón de jugadores
-    this.acordeonJugadores.value = undefined;
+    //this.acordeonJugadores.value = undefined;
   }
 
    sumaEstad(accion: Acciones, jugadorId: string){
@@ -483,5 +486,10 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     });
 
     toast.present();
+  }
+
+  segmentChanged(ev: any){
+    this.segmentoMostrado = ev.detail.value;
+    console.log(this.segmentoMostrado);
   }
 }
