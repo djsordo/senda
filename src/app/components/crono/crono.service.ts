@@ -76,4 +76,16 @@ export class CronoService {
     this.tiempo.encendido = false;
   }
 
+  reset(){
+    this.tiempo = {
+      encendido: false,
+      finParte: false,
+      finPartido: false,
+      parte: 1,
+      segundos: 0
+    };
+
+    this.partes = +localStorage.getItem('partes');
+    this.segsParte = +localStorage.getItem('segsParte');
+  }
 }

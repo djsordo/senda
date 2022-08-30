@@ -67,6 +67,7 @@ export class HomePage implements OnInit, OnDestroy {
 
         this.subs.forEach(sub => sub.unsubscribe());
         this.router.navigate(['/inicio-sel-jugadores']);
+
     } else if (modo === 'ver'){
       this.subs.forEach(sub => sub.unsubscribe());
       this.router.navigate(['/modo-ver']);
@@ -80,6 +81,9 @@ export class HomePage implements OnInit, OnDestroy {
       this.subs.push(this.eventosService.getEventos(partido.id).subscribe(evento => {
         evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
       }));
+
+      // Reset del servicio estadPartido
+      this.estadPartidoService.reset();
 
       // Borrar EstadPartidos relacionados con el partido
       this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)

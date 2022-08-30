@@ -1,7 +1,7 @@
 import { UsuarioService } from './../services/usuario.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { PasoDatosService } from './../services/paso-datos.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { TradService } from '../services/trad.service';
 import { ToastController, Platform } from '@ionic/angular';
@@ -18,11 +18,12 @@ import { Usuario } from '../modelo/usuario';
   templateUrl: './modo-jugador.page.html',
   styleUrls: ['./modo-jugador.page.scss'],
 })
-export class ModoJugadorPage implements OnInit {
+export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   usuario: Usuario;
   listaInicial: Array<EstadJugador> = [];
   listaBanquillo: Array<EstadJugador> = [];
   portero: EstadJugador;
+  estadoPartido: string;
 
   miSuscripcionAEventoJugador: any = null;
 
@@ -50,6 +51,7 @@ export class ModoJugadorPage implements OnInit {
   ngOnInit() {
     const listaInicialPrevia = this.pasoDatos.getListaInicial();
     const listaBanquilloPrevia = this.pasoDatos.getListaBanquillo();
+    const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId'));
 
     this.nombres = this.pasoDatos.getNombresEquipos();
     this.usuario = this.usuarioService.getUsuario();
@@ -129,6 +131,10 @@ export class ModoJugadorPage implements OnInit {
     } );
   }
 
+  ngDoCheck(){
+    this.estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId'));
+  }
+
   cambioPortero(portero: EstadJugador){
     this.portero = portero;
   }
@@ -147,6 +153,11 @@ export class ModoJugadorPage implements OnInit {
     toast.present();
   }
 
+  ngOnDestroy(){
+    console.log('Compònente modo-jugador destruido');
+    this.miSuscripcionAEventoJugador.unsubscribe();
+  }
+
   navAtras(){
     // Esta función se encarga de navegar hacia atrás según convenga
     const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId'));
@@ -155,6 +166,13 @@ export class ModoJugadorPage implements OnInit {
     } else if (estadoPartido === 'en preparacion'){
       this.router.navigate(['/inicio-sel-jugadores']);
     }
+  }
+
+  finalPartido(){
+    // Grabamos estadísticas de cada jugador
+    // Nos desuscribimos a las cosas.
+    // Navegar a la pantalla principal.
+    this.router.navigate(['/home']);
   }
 
   private construyeMensajeEvento( evento: Evento ){

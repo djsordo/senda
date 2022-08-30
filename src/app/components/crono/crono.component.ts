@@ -1,10 +1,11 @@
+import { Subscription } from 'rxjs';
 import { PartidosService } from './../../services/partidos.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from './../../services/eventos.service';
 import { Crono } from './../../modelo/crono';
 import { CronoService } from './crono.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Usuario } from 'src/app/modelo/usuario';
 
 @Component({
@@ -12,7 +13,7 @@ import { Usuario } from 'src/app/modelo/usuario';
   templateUrl: './crono.component.html',
   styleUrls: ['./crono.component.scss'],
 })
-export class CronoComponent implements OnInit {
+export class CronoComponent implements OnInit, OnDestroy {
   tiempo: Crono = {
     encendido: false,
     finParte: false,
@@ -24,6 +25,7 @@ export class CronoComponent implements OnInit {
   partes: number;
   segsParte: number;
   usuario: Usuario;
+  subUsuario: Subscription;
 
   constructor(private cronoService: CronoService,
               private eventosService: EventosService,
@@ -35,10 +37,15 @@ export class CronoComponent implements OnInit {
     this.partes = +localStorage.getItem('partes');
     this.segsParte = +localStorage.getItem('segsParte');
 
-    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
+    this.subUsuario = this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
     });
+  }
+
+  ngOnDestroy(){
+    this.subUsuario?.unsubscribe();
+    this.cronoService.reset();
   }
 
   pulsaCrono(){
@@ -81,7 +88,7 @@ export class CronoComponent implements OnInit {
 
     if (this.tiempo.parte === this.partes) {
       // Es el final del partido
-      this.finPartido()
+      this.finPartido();
     } else {
       this.tiempo.parte++;
       this.tiempo.segundos = 0;

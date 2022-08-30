@@ -1,8 +1,8 @@
 import { EstadPartidoService } from './../../services/estad-partido.service';
 import { Crono } from './../../modelo/crono';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { EstadJugador } from './../../modelo/estadJugador';
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter, OnDestroy, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
@@ -15,7 +15,7 @@ import { Acciones, EventosService } from 'src/app/services/eventos.service';
   templateUrl: './titulares.component.html',
   styleUrls: ['./titulares.component.scss'],
 })
-export class TitularesComponent implements OnInit {
+export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   @Input() jugCampo: Array<EstadJugador>;
   @Input() listaBanquillo: Array<EstadJugador>;
   @Input() portero: Array<EstadJugador>;
@@ -43,6 +43,7 @@ export class TitularesComponent implements OnInit {
 
   // Ticks para los cronos
   tick$: Observable<Tick>;
+  subTick: Subscription;
 
   constructor(private router: Router,
     private crono: CronoService,
@@ -77,7 +78,7 @@ export class TitularesComponent implements OnInit {
     this.tick$ = this.crono.tickObservable;
 
 
-    this.tick$.subscribe(res => {
+    this.subTick = this.tick$.subscribe(res => {
       if (res.segundos !== 0){
         this.portero.forEach(jug => jug.segJugados++);
         this.jugCampo.forEach(jug => jug.segJugados++);
@@ -89,7 +90,6 @@ export class TitularesComponent implements OnInit {
     });
   }
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngDoCheck(){
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
@@ -125,6 +125,10 @@ export class TitularesComponent implements OnInit {
       localStorage.setItem('jugadorId', '');
 
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subTick.unsubscribe();
   }
 
   btnGol(jugador: EstadJugador): void{
