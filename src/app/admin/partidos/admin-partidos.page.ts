@@ -5,11 +5,11 @@ import { Component,
 
 
 @Component({
-  selector: 'app-admin-usuarios', 
-  templateUrl: './admin-usuarios.page.html', 
-  styleUrls : ['./admin-usuarios.page.scss']
+  selector: 'app-admin-partidos', 
+  templateUrl: './admin-partidos.page.html', 
+  styleUrls : ['./admin-partidos.page.scss']
 })
-export class AdminUsuariosPage implements OnInit {
+export class AdminPartidosPage implements OnInit {
 
   private selectedId : string; 
   @Output() onSelectedId = new EventEmitter<string>();

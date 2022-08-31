@@ -31,10 +31,12 @@
                     routerLinkActive="selected"
                     [routerLink]="subp.url"
                     (click)="onClickElement( subp, currentSubmenu )">
-                  <ion-icon slot="start" 
+                  <ion-icon slot="start" *ngIf="subp.icon"
                             name="subp.icon"
                             [ios]="subp.icon + '-outline'" 
                             [md]="subp.icon + '-sharp'"></ion-icon>
+                  <ion-icon slot="start" *ngIf="!subp.icon && subp.src"
+                            src="{{subp.src}}"></ion-icon>
                   <ion-label>{{ subp.title }}</ion-label>
                 </ion-item>
               </ion-list>

@@ -57,6 +57,10 @@ const routes: Routes = [
     loadChildren: () => import('./admin/usuarios/admin-usuarios.module').then( m => m.AdminEquiposPageModule )
   },
   {
+    path: 'admin/partidos',
+    loadChildren: () => import('./admin/partidos/admin-partidos.module').then( m => m.AdminPartidosPageModule )
+  },
+  {
     path: 'modo-ver',
     loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
   }
