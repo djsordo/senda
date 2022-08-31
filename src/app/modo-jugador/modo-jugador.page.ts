@@ -1,3 +1,4 @@
+import { EstadJugadorService } from './../services/estad-jugador.service';
 import { UsuarioService } from './../services/usuario.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { PasoDatosService } from './../services/paso-datos.service';
@@ -12,6 +13,8 @@ import { Acciones } from '../services/eventos.service';
 import { EstadJugador } from '../modelo/estadJugador';
 import { EstadPartidoService } from '../services/estad-partido.service';
 import { Usuario } from '../modelo/usuario';
+import { connectFirestoreEmulator } from 'firebase/firestore';
+import { idToken } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-modo-jugador',
@@ -22,6 +25,9 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   usuario: Usuario;
   listaInicial: Array<EstadJugador> = [];
   listaBanquillo: Array<EstadJugador> = [];
+  listaExcluidos: Array<EstadJugador> = [];
+  listaEliminados: Array<EstadJugador> = [];
+
   portero: EstadJugador;
   estadoPartido: string;
 
@@ -45,7 +51,8 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
               private eventosService: EventosService,
               private estadPartidoService: EstadPartidoService,
               private platform: Platform,
-              private usuarioService: UsuarioService) {
+              private usuarioService: UsuarioService,
+              private estadJugadorService: EstadJugadorService) {
     }
 
   ngOnInit() {
@@ -63,9 +70,13 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       alert('hemos dado el botón de atrás');
     });
 
+    this.listaEliminados = [];
+    this.listaExcluidos = [];
+
     listaInicialPrevia.forEach(jugadorPrevia => {
       const jugador = {} as EstadJugador;
       jugador.datos = jugadorPrevia;
+      jugador.partidoId = localStorage.getItem('partidoId');
       jugador.amarillas = 0;
       jugador.azules = 0;
       jugador.exclusiones = 0;
@@ -86,6 +97,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     listaBanquilloPrevia.forEach(jugadorPrevia => {
       const jugador = {} as EstadJugador;
       jugador.datos = jugadorPrevia;
+      jugador.partidoId = localStorage.getItem('partidoId');
       jugador.amarillas = 0;
       jugador.azules = 0;
       jugador.exclusiones = 0;
@@ -170,7 +182,46 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
   finalPartido(){
     // Grabamos estadísticas de cada jugador
-    // Nos desuscribimos a las cosas.
+    console.log('Portero: ', this.portero);
+    if (this.portero){
+      this.estadJugadorService.addEstadJugador(this.portero).then(estad => {
+        this.portero.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(this.portero);
+      });
+    }
+
+    this.listaInicial.forEach(jug => {
+      console.log('Pista: ', jug);
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
+
+    this.listaBanquillo.forEach(jug => {
+      console.log('Banquillo: ', jug);
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
+
+    this.listaExcluidos.forEach(jug => {
+      console.log('Excluidos: ', jug);
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
+
+    this.listaEliminados.forEach(jug => {
+      console.log('Eliminados: ', jug);
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
+
     // Navegar a la pantalla principal.
     this.router.navigate(['/home']);
   }

@@ -37,7 +37,11 @@
     <ion-grid>
       <ion-row>
         <ion-col class="ion-no-padding ion-text-center">
-          <app-titulares [jugCampo]="listaInicial" [listaBanquillo]="listaBanquillo" (porteroEmisor)="cambioPortero($event)"></app-titulares>
+          <app-titulares  [jugCampo]="listaInicial"
+                          [listaBanquillo]="listaBanquillo"
+                          [listaExcluidos]="listaExcluidos"
+                          [listaEliminados]="listaEliminados"
+                          (porteroEmisor)="cambioPortero($event)"></app-titulares>
         </ion-col>
       </ion-row>
     </ion-grid>

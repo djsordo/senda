@@ -18,14 +18,16 @@ import { Acciones, EventosService } from 'src/app/services/eventos.service';
 export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   @Input() jugCampo: Array<EstadJugador>;
   @Input() listaBanquillo: Array<EstadJugador>;
+  @Input() listaExcluidos: Array<EstadJugador>;
+  @Input() listaEliminados: Array<EstadJugador>;
   @Input() portero: Array<EstadJugador>;
   @Output() porteroEmisor = new EventEmitter<EstadJugador>();
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores') acordeonJugadores: IonAccordionGroup;
 
-  listaExcluidos: Array<EstadJugador> = [];
-  listaEliminados: Array<EstadJugador> = [];
+  /* listaExcluidos: Array<EstadJugador> = []; */
+  /* listaEliminados: Array<EstadJugador> = []; */
   /* portero: Array<EstadJugador> = []; */
 
   listaRobos= [{nombre: 'Pase'},

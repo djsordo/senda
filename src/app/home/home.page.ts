@@ -1,3 +1,4 @@
+import { EstadJugadorService } from './../services/estad-jugador.service';
 import { EstadPartidoService } from './../services/estad-partido.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { Equipo } from './../modelo/equipo';
@@ -26,7 +27,8 @@ export class HomePage implements OnInit, OnDestroy {
               private usuarioService: UsuarioService,
               private pasoDatosService: PasoDatosService,
               private eventosService: EventosService,
-              private estadPartidoService: EstadPartidoService
+              private estadPartidoService: EstadPartidoService,
+              private estadJugadorService: EstadJugadorService
               ) {
   }
 
@@ -90,6 +92,13 @@ export class HomePage implements OnInit, OnDestroy {
       .subscribe(estadP => {
         console.log(estadP);
         estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
+      }));
+
+      // Borrar EstadJugadores relacionados con el partido
+      this.subs.push(this.estadJugadorService.getEstadJugador(partido.id)
+      .subscribe(estadJ => {
+        console.log(estadJ);
+        estadJ.forEach(ejBorrar => this.estadJugadorService.deleteEstadJugador(ejBorrar.id));
       }));
     }
   }

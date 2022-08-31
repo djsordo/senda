@@ -1,6 +1,8 @@
 import { Jugador } from './jugador';
 export interface EstadJugador{
+  id?: string;
   datos: Jugador;
+  partidoId: string;
   segExclusion: number;
   goles: number;
   lanzFallados: number;
