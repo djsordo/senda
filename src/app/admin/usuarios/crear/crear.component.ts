@@ -13,7 +13,7 @@ import { LocalStorage } from 'src/app/services/local.storage.mock';
 @Component({
   selector: 'usuarios-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.scss'],
+  styleUrls: ['./crear.component.scss']
 })
 export class CrearComponent implements OnInit {
 

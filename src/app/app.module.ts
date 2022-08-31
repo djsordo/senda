@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { provideFirestore, getFirestore} from '@angular/fire/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { LocalStorage } from './services/local.storage.mock';
+import { LocalStorageService } from './services/local.storage.service';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
   ],
   providers: [{ provide: RouteReuseStrategy,
                 useClass: IonicRouteStrategy,
-              }],
+              },
+              { provide : LocalStorage, 
+                useClass : LocalStorageService }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
