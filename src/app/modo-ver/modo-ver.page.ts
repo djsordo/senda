@@ -18,6 +18,9 @@ export class ModoVerPage implements OnInit, OnDestroy {
   lineasEv: any;
   subs: Array<Subscription> = [];
 
+  segmentoMostradoP = 'hechos';
+  segmentoMostradoS = 'equipo';
+
   constructor(private eventosService: EventosService,
               private estadPartidoService: EstadPartidoService,
               private router: Router) { }
@@ -73,4 +76,14 @@ export class ModoVerPage implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
+  segmentChangedP(ev: any){
+    this.segmentoMostradoP = ev.detail.value;
+    this.segmentoMostradoS = 'equipo';
+    console.log(this.segmentoMostradoP);
+  }
+
+  segmentChangedS(ev: any){
+    this.segmentoMostradoS = ev.detail.value;
+    console.log(this.segmentoMostradoS);
+  }
 }
