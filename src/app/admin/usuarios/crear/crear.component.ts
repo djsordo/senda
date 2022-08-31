@@ -8,11 +8,12 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/modelo/usuario';
 import { Club } from 'src/app/modelo/club';
 import { ClubesService } from 'src/app/services/clubes.service';
+import { LocalStorage } from 'src/app/services/local.storage.mock';
 
 @Component({
-  selector: 'usuarioss-crear',
+  selector: 'usuarios-crear',
   templateUrl: './crear.component.html',
-  styleUrls: ['./crear.component.scss'],
+  styleUrls: ['./crear.component.scss']
 })
 export class CrearComponent implements OnInit {
 
@@ -29,13 +30,14 @@ export class CrearComponent implements OnInit {
                private clubService : ClubesService,
                private toastController : ToastController, 
                private router : Router, 
-               private route : ActivatedRoute ) { }
+               private route : ActivatedRoute,
+               private localStorage : LocalStorage ) { }
 
   ngOnInit() { 
     this.initCurrentUser();
     this.clubes = [];
     this.clubService.getClubes()
-      .then( ( clubesList : QuerySnapshot<DocumentData>) => {
+      .then( ( clubesList : QuerySnapshot<DocumentData> ) => {
         for( let docData of clubesList.docs ){
           let club = docData.data(); 
           club.id = docData.id;
@@ -45,17 +47,8 @@ export class CrearComponent implements OnInit {
       });
   }
 
-  /**
-   * NOT TESTABLE: when using localStorage under a karma 
-   * unit testing, there is no localStorage with a saved 
-   * email because the browser is clean. Therefore, the 
-   * access to the localstorage should be provided through 
-   * a proxy service to allow the simulation of that service 
-   * when the class is under test. 
-   * 
-   */
   private async initCurrentUser(){
-    this.usuarioService.getUsuarioBD( localStorage.getItem('emailUsuario') )
+    this.usuarioService.getUsuarioBD( this.localStorage.getItem('emailUsuario') )
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
       console.log('usuario: ', usuarios);

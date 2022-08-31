@@ -8,9 +8,11 @@ import { initializeApp } from 'firebase/app';
 
 import { environment } from 'src/environments/environment';
 import { CrearComponent } from './crear.component';
+import { LocalStorage } from 'src/app/services/local.storage.mock';
+import { FormsModule } from '@angular/forms';
 
 
-fdescribe('CrearComponent', () => {
+describe('CrearComponent', () => {
   let component: CrearComponent;
   let fixture: ComponentFixture<CrearComponent>;
 
@@ -18,21 +20,26 @@ fdescribe('CrearComponent', () => {
     TestBed.configureTestingModule({
       imports: [ provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
         provideFirestore(() => getFirestore()), 
-        RouterTestingModule ]
+        RouterTestingModule,
+        IonicModule.forRoot(), 
+        FormsModule],
+        providers: [{ provide : LocalStorage, useFactory: () => {
+          let localStorage = new LocalStorage(); 
+          localStorage.setValues( [{key : 'emailUsuario', value : 'ajvitores@gmail.com'}]);
+          return localStorage;
+          } } ]  
     });
-
+    callMeOnFinish();
   } );
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ CrearComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+      declarations: [ CrearComponent ]    }).compileComponents();
 
     fixture = TestBed.createComponent(CrearComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create crear usuarios component', () => {
     expect(component).toBeTruthy();

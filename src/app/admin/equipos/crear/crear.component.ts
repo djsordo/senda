@@ -10,6 +10,7 @@ import { properCase } from 'src/app/services/string-util';
 import { Usuario } from 'src/app/modelo/usuario';
 import { Temporada } from 'src/app/modelo/temporada';
 import { TemporadaService } from 'src/app/services/temporada.service';
+import { LocalStorage } from 'src/app/services/local.storage.mock';
 
 @Component({
   selector: 'equipos-crear',
@@ -39,7 +40,8 @@ export class CrearComponent implements OnInit {
                private equipoService : EquipoService,
                private toastController : ToastController, 
                private router : Router, 
-               private route : ActivatedRoute ) { }
+               private route : ActivatedRoute,
+               private localStorage : LocalStorage ) { }
 
   ngOnInit() { 
     this.initCurrentUser();
@@ -52,8 +54,8 @@ export class CrearComponent implements OnInit {
       });
   }
 
-  private async initCurrentUser(){
-    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
+  private initCurrentUser(){
+    this.usuarioService.getUsuarioBD(this.localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
       console.log('usuario: ', usuarios);
@@ -91,10 +93,6 @@ export class CrearComponent implements OnInit {
 
   
   onClickCrear() {
-    console.log( "creando equipo...", this.nombre );
-    console.log( "selected categoria vale: ", this.selectedCategoria );
-    console.log( "selected genero vale ", this.selectedGenero );
-    console.log( "typed genero vale: ", this.typedGenero );
     let newEquipo = this.equipoService.newEquipo();
     newEquipo.nombre = this.nombre;
     newEquipo.club = this.usuario.club;

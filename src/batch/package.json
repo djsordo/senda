@@ -1,0 +1,12 @@
+{
+  "name" : "senda-batch",
+  "version" : "0.0.1",
+  "description" : "Aplicación de mantenimiento de senda",
+  "private" : true,
+  "type" : "module",
+  "scripts" : {
+    "ejecutar" : "node ./dist/batch/app.js", 
+    "depurar"  : "node --inspect ./dist/batch/app.js"
+  }
+}
+

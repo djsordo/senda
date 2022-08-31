@@ -1,12 +1,13 @@
 import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { NavegacionService } from './services/navegacion.service';
+import { LocalStorage } from './services/local.storage.mock';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
 
@@ -38,7 +39,8 @@ export class AppComponent implements OnInit {
   };
 
   constructor(private menu: MenuController,
-              private navegacion: NavegacionService ) {
+              private navegacion: NavegacionService, 
+              private localStorage : LocalStorage ) {
   }
 
   public ngOnInit(): void {
@@ -66,8 +68,8 @@ export class AppComponent implements OnInit {
   public escribeUsuario() {
     console.log('entra');
     this.usuarioActivo = {
-      nombre: localStorage.getItem('nombreUsuario'),
-      email: localStorage.getItem('emailUsuario'),
+      nombre: this.localStorage.getItem('nombreUsuario'),
+      email: this.localStorage.getItem('emailUsuario'),
     };
 
   }
