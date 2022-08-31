@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EstadPartidoService {
+  // estadísticas globales del partido
   estadPartido: EstadPartido = {
     amarillas: 0,
     azules: 0,
@@ -36,10 +37,12 @@ export class EstadPartidoService {
 
   constructor(private firestore: Firestore) {}
 
+  // Actualiza un campo dentro de las estadísticas globales
   actualiza(campo: string, valor: any){
     this.estadPartido[campo] = valor;
   }
 
+  // Suma en las estadísticas globales y en la base de datos
   suma(campo: string, crono: Crono){
     this.estadPartido[campo]++;
     this.estadPartido.crono = crono;
@@ -68,5 +71,33 @@ export class EstadPartidoService {
     console.log(id);
     const estadPartidoRef = doc(this.firestore, 'estadPartidos/' + id);
     return await deleteDoc(estadPartidoRef);
+  }
+
+  reset(){
+    this.estadPartido = {
+      amarillas: 0,
+      azules: 0,
+      goles: 0,
+      golesRival: 0,
+      lanzFallados: 0,
+      nombreEquipo: null,
+      nombreRival: null,
+      paradas: 0,
+      partidoId: null,
+      perdidas: 0,
+      robos: 0,
+      rojas: 0,
+      dosMinutos: 0,
+      dosMinutosRival: 0,
+      tm: 0,
+      tmRival: 0,
+      crono: {
+        segundos: 0,
+        parte: 1,
+        encendido: false,
+        finParte: false,
+        finPartido: false
+      }
+    };
   }
 }

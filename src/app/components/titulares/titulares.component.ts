@@ -1,8 +1,8 @@
 import { EstadPartidoService } from './../../services/estad-partido.service';
 import { Crono } from './../../modelo/crono';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { EstadJugador } from './../../modelo/estadJugador';
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter, OnDestroy, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
@@ -15,17 +15,19 @@ import { Acciones, EventosService } from 'src/app/services/eventos.service';
   templateUrl: './titulares.component.html',
   styleUrls: ['./titulares.component.scss'],
 })
-export class TitularesComponent implements OnInit {
+export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   @Input() jugCampo: Array<EstadJugador>;
   @Input() listaBanquillo: Array<EstadJugador>;
+  @Input() listaExcluidos: Array<EstadJugador>;
+  @Input() listaEliminados: Array<EstadJugador>;
   @Input() portero: Array<EstadJugador>;
   @Output() porteroEmisor = new EventEmitter<EstadJugador>();
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  @ViewChild('acordeonJugadores', { static: true }) acordeonJugadores: IonAccordionGroup;
+  @ViewChild('acordeonJugadores') acordeonJugadores: IonAccordionGroup;
 
-  listaExcluidos: Array<EstadJugador> = [];
-  listaEliminados: Array<EstadJugador> = [];
+  /* listaExcluidos: Array<EstadJugador> = []; */
+  /* listaEliminados: Array<EstadJugador> = []; */
   /* portero: Array<EstadJugador> = []; */
 
   listaRobos= [{nombre: 'Pase'},
@@ -43,6 +45,9 @@ export class TitularesComponent implements OnInit {
 
   // Ticks para los cronos
   tick$: Observable<Tick>;
+  subTick: Subscription;
+
+  segmentoMostrado = 'enPista';
 
   constructor(private router: Router,
     private crono: CronoService,
@@ -58,10 +63,10 @@ export class TitularesComponent implements OnInit {
     if (indicePortero >= 0 ){
       this.portero = this.jugCampo.splice(indicePortero, 1);
       this.portero[0].exclusion = false;
+      this.porteroEmisor.emit(this.portero[0]);
+    } else {
+      this.portero = [];
     }
-
-    // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
 
     this.jugCampo = this.jugCampo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
     for (let i = 0; i < this.jugCampo?.length; i++){
@@ -77,7 +82,7 @@ export class TitularesComponent implements OnInit {
     this.tick$ = this.crono.tickObservable;
 
 
-    this.tick$.subscribe(res => {
+    this.subTick = this.tick$.subscribe(res => {
       if (res.segundos !== 0){
         this.portero.forEach(jug => jug.segJugados++);
         this.jugCampo.forEach(jug => jug.segJugados++);
@@ -89,7 +94,6 @@ export class TitularesComponent implements OnInit {
     });
   }
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngDoCheck(){
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
@@ -111,7 +115,9 @@ export class TitularesComponent implements OnInit {
     }
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
+    if (this.portero !== undefined){
+      this.porteroEmisor.emit(this.portero[0]);
+    }
 
     if (localStorage.getItem('accion') !== ''){
       const jugId = localStorage.getItem('jugadorId');
@@ -125,6 +131,10 @@ export class TitularesComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subTick.unsubscribe();
+  }
+
   btnGol(jugador: EstadJugador): void{
     const detalle = { accion: Acciones.gol,
                       accionS: (this.portero.length === 0)? Acciones.sinPortero : '',
@@ -135,6 +145,7 @@ export class TitularesComponent implements OnInit {
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
+
   }
 
   btnGolRival(jugador: EstadJugador): void{
@@ -380,7 +391,7 @@ export class TitularesComponent implements OnInit {
     this.pasoDatos.onEventoJugador( eventoEntra );
 
     // Cerramos el acordeón de jugadores
-    this.acordeonJugadores.value = undefined;
+    //this.acordeonJugadores.value = undefined;
   }
 
   btnSale(jugador: EstadJugador, esPortero: boolean){
@@ -410,7 +421,7 @@ export class TitularesComponent implements OnInit {
     this.pasoDatos.onEventoJugador( eventoSale );
 
     // Cerramos el acordeón de jugadores
-    this.acordeonJugadores.value = undefined;
+    //this.acordeonJugadores.value = undefined;
   }
 
    sumaEstad(accion: Acciones, jugadorId: string){
@@ -477,5 +488,10 @@ export class TitularesComponent implements OnInit {
     });
 
     toast.present();
+  }
+
+  segmentChanged(ev: any){
+    this.segmentoMostrado = ev.detail.value;
+    console.log(this.segmentoMostrado);
   }
 }

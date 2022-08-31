@@ -37,13 +37,13 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-button (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado'">Generar</ion-button>
+                  <ion-button (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">Generar</ion-button>
                 </ion-col>
                 <ion-col>
                   <ion-button (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">Ver</ion-button>
                 </ion-col>
                 <ion-col>
-                  <ion-button (click)="irAModo(rol.equipo, partido, 'reset')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">Reset</ion-button>
+                  <ion-button (click)="irAModo(rol.equipo, partido, 'reset')">Reset</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>

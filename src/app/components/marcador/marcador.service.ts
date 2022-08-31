@@ -36,4 +36,12 @@ export class MarcadorService {
     return this.dosMinLista;
   }
 
+  reset(){
+    this.marcador={
+      nuestro: 0,
+      rival: 0,
+    };
+
+    this.dosMinLista = [];
+  }
 }

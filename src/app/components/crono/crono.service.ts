@@ -38,7 +38,7 @@ export class CronoService {
   }
 
   pasoTiempo(){
-    // Función que se ejecuta cada decima de segundo si el crono está encendido
+    // Función que se ejecuta cada segundo si el crono está encendido
     // Valorar setInterval
     setTimeout(() => {
       if (this.tiempo.encendido){
@@ -76,4 +76,16 @@ export class CronoService {
     this.tiempo.encendido = false;
   }
 
+  reset(){
+    this.tiempo = {
+      encendido: false,
+      finParte: false,
+      finPartido: false,
+      parte: 1,
+      segundos: 0
+    };
+
+    this.partes = +localStorage.getItem('partes');
+    this.segsParte = +localStorage.getItem('segsParte');
+  }
 }

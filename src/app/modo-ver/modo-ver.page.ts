@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { EstadPartidoService } from './../services/estad-partido.service';
 import { EstadPartido } from './../modelo/estadPartido';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Evento } from '../modelo/evento';
 
 
@@ -10,13 +12,15 @@ import { Evento } from '../modelo/evento';
   templateUrl: './modo-ver.page.html',
   styleUrls: ['./modo-ver.page.scss'],
 })
-export class ModoVerPage implements OnInit {
+export class ModoVerPage implements OnInit, OnDestroy {
   eventos: Array<Evento>;
   estadPartido: Array<EstadPartido>;
   lineasEv: any;
+  subs: Array<Subscription> = [];
 
   constructor(private eventosService: EventosService,
-              private estadPartidoService: EstadPartidoService) { }
+              private estadPartidoService: EstadPartidoService,
+              private router: Router) { }
 
   ngOnInit() {
     this.eventos = [];
@@ -38,14 +42,16 @@ export class ModoVerPage implements OnInit {
                       {tpEvento: Acciones.sale, tipo: 'evDerecha', icono: 'arrow-down'},
                       {tpEvento: Acciones.finPartido, tipo: 'evCentro', texto: 'FINAL DEL PARTIDO'},
                       {tpEvento: Acciones.finPeriodo, tipo: 'evCentro', texto: 'FIN DE PERIODO'},
+                      {tpEvento: Acciones.comienzoPartido, tipo: 'evCentro', texto: 'COMIENZO DEL PARTIDO'},
+                      {tpEvento: Acciones.comienzoPeriodo, tipo: 'evCentro', texto: 'COMIENZO DE PERIODO'},
                     ];
 
-    this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))
+    this.subs.push(this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))
     .subscribe(estadP => {
       this.estadPartido = estadP;
-    });
+    }));
 
-    this.eventosService.getEventos(localStorage.getItem('partidoId'))
+    this.subs.push(this.eventosService.getEventos(localStorage.getItem('partidoId'))
     .subscribe(evento => {
       this.eventos = evento;
 
@@ -53,8 +59,18 @@ export class ModoVerPage implements OnInit {
       this.eventos.sort((a, b) =>
         (a.timestamp < b.timestamp) ? 1 : -1
       );
-    });
+    }));
     console.log(this.eventos);
+  }
+
+  volver(){
+    this.subs.forEach(sub => sub.unsubscribe());
+    this.router.navigate(['/home']);
+  }
+
+  ngOnDestroy(): void {
+    console.log('ngOndestroy modo ver');
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
 }

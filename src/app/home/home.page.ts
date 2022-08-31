@@ -1,3 +1,4 @@
+import { EstadJugadorService } from './../services/estad-jugador.service';
 import { EstadPartidoService } from './../services/estad-partido.service';
 import { EventosService } from 'src/app/services/eventos.service';
 import { Equipo } from './../modelo/equipo';
@@ -26,7 +27,8 @@ export class HomePage implements OnInit, OnDestroy {
               private usuarioService: UsuarioService,
               private pasoDatosService: PasoDatosService,
               private eventosService: EventosService,
-              private estadPartidoService: EstadPartidoService
+              private estadPartidoService: EstadPartidoService,
+              private estadJugadorService: EstadJugadorService
               ) {
   }
 
@@ -37,9 +39,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
+      this.usuarioService.setUsuario(this.usuario);
     });
 
-    //this.usuarioService.setUsuario(this.usuario);
 
   }
 
@@ -62,32 +64,43 @@ export class HomePage implements OnInit, OnDestroy {
     if (modo === 'generar'){
         this.subs.forEach(sub => sub.unsubscribe());
         // A ver si puedo desde aquí cambiar el estado del partido.
-        partido.config.estado = 'en curso';
+        partido.config.estado = 'en preparacion';
         this.usuarioService.updateUsuario(this.usuario);
 
-        this.router.navigate(['/inicio-sel-jugadores']);
-      } else if (modo === 'ver'){
         this.subs.forEach(sub => sub.unsubscribe());
-        this.router.navigate(['/modo-ver']);
+        this.router.navigate(['/inicio-sel-jugadores']);
 
-      } else if (modo === 'reset'){
-        // A ver si puedo desde aquí cambiar el estado del partido.
-        partido.config.estado = 'programado';
-        this.usuarioService.updateUsuario(this.usuario);
+    } else if (modo === 'ver'){
+      this.subs.forEach(sub => sub.unsubscribe());
+      this.router.navigate(['/modo-ver']);
 
-        // Borrar eventos relacionados con el partido
-        this.subs.push(this.eventosService.getEventos(partido.id).subscribe(evento => {
-          evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
-        }));
+    } else if (modo === 'reset'){
+      // A ver si puedo desde aquí cambiar el estado del partido.
+      partido.config.estado = 'programado';
+      this.usuarioService.updateUsuario(this.usuario);
 
-        // Borrar EstadPartidos relacionados con el partido
-        this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)
-        .subscribe(estadP => {
-          console.log(estadP);
-          estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
+      // Borrar eventos relacionados con el partido
+      this.subs.push(this.eventosService.getEventos(partido.id).subscribe(evento => {
+        evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
+      }));
 
-        }));
-      }
+      // Reset del servicio estadPartido
+      this.estadPartidoService.reset();
+
+      // Borrar EstadPartidos relacionados con el partido
+      this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)
+      .subscribe(estadP => {
+        console.log(estadP);
+        estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
+      }));
+
+      // Borrar EstadJugadores relacionados con el partido
+      this.subs.push(this.estadJugadorService.getEstadJugador(partido.id)
+      .subscribe(estadJ => {
+        console.log(estadJ);
+        estadJ.forEach(ejBorrar => this.estadJugadorService.deleteEstadJugador(ejBorrar.id));
+      }));
+    }
   }
 
   ngOnDestroy(){

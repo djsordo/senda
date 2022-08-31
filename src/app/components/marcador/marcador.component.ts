@@ -4,21 +4,22 @@ import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { MarcadorService } from './../marcador/marcador.service';
 import { CronoService, Tick } from './../crono/crono.service';
-import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnInit, OnDestroy } from '@angular/core';
 import { EstadJugador } from 'src/app/modelo/estadJugador';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-marcador',
   templateUrl: './marcador.component.html',
   styleUrls: ['./marcador.component.scss'],
 })
-export class MarcadorComponent implements OnInit, DoCheck {
+export class MarcadorComponent implements OnInit, DoCheck, OnDestroy {
   @Input() nombreEquipo: string;
   @Input() nosotros: boolean;
   @Input() portero: EstadJugador;
 
   tickDosMin$: Observable<Tick>;
+  subTickDosMin: Subscription;
 
   marcador: number;
   encendido: boolean;
@@ -41,7 +42,7 @@ export class MarcadorComponent implements OnInit, DoCheck {
     // Observable ticks
     if (!this.nosotros){
       this.tickDosMin$ = this.crono.tickObservable;
-      this.tickDosMin$.subscribe(res => {
+      this.subTickDosMin = this.tickDosMin$.subscribe(res => {
         if (res.segundos !== 0){
           for (let i = 0; i < this.dosMinLista.length; i++){
             if (this.dosMinLista[i] !== 0){
@@ -49,7 +50,7 @@ export class MarcadorComponent implements OnInit, DoCheck {
             }
           }
           // Borramos los que han llegado a 0
-          this.dosMinLista = this.dosMinLista.filter(res => res !== 0);
+          this.dosMinLista = this.dosMinLista.filter(re => re !== 0);
           }
         });
       }
@@ -60,6 +61,11 @@ export class MarcadorComponent implements OnInit, DoCheck {
     // Esta es una parte del ciclo de vida de Angular, que se ejecuta 'de vez en cuando' y lo uso para actualizar ciertas variables.
     this.encendido = this.cronoService.getEncendido();
     this.marcador = this.marcadorService.getMarcador(this.nosotros);
+  }
+
+  ngOnDestroy(): void {
+    this.subTickDosMin?.unsubscribe();
+    this.marcadorService.reset();
   }
 
   dosMinRival(){
