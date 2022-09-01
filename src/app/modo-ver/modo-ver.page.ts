@@ -1,3 +1,4 @@
+import { EstadJugadorService } from './../services/estad-jugador.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EstadPartidoService } from './../services/estad-partido.service';
@@ -5,6 +6,7 @@ import { EstadPartido } from './../modelo/estadPartido';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Evento } from '../modelo/evento';
+import { EstadJugador } from '../modelo/estadJugador';
 
 
 @Component({
@@ -15,6 +17,13 @@ import { Evento } from '../modelo/evento';
 export class ModoVerPage implements OnInit, OnDestroy {
   eventos: Array<Evento>;
   estadPartido: Array<EstadPartido>;
+  estadJugadores: Array<EstadJugador>;
+
+  /* goles: Array<EstadJugador>;
+  tiros: Array<EstadJugador>; */
+
+  listas: Array<{tipo: string; tipo2: string; cabecera: string; lista: Array<EstadJugador>}> = [];
+
   lineasEv: any;
   subs: Array<Subscription> = [];
 
@@ -23,6 +32,7 @@ export class ModoVerPage implements OnInit, OnDestroy {
 
   constructor(private eventosService: EventosService,
               private estadPartidoService: EstadPartidoService,
+              private estadJugadorService: EstadJugadorService,
               private router: Router) { }
 
   ngOnInit() {
@@ -52,6 +62,23 @@ export class ModoVerPage implements OnInit, OnDestroy {
     this.subs.push(this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))
     .subscribe(estadP => {
       this.estadPartido = estadP;
+    }));
+
+    this.subs.push(this.estadJugadorService.getEstadJugador(localStorage.getItem('partidoId'))
+    .subscribe(estadJ => {
+      this.estadJugadores = estadJ;
+      this.listas.push({tipo: 'goles', tipo2: '', cabecera: 'Goleadores', lista: [...this.estadJugadores]
+        .sort((a, b) => (b.goles - a.goles))});
+      this.listas.push({tipo: 'lanzFallados', tipo2: 'goles', cabecera: 'Lanzamientos totales', lista: [...this.estadJugadores]
+        .sort((a, b) => ((b.lanzFallados + b.goles) - (a.lanzFallados + a.goles)))});
+      this.listas.push({tipo: 'paradas', tipo2: '', cabecera: 'Paradas', lista: [...this.estadJugadores].filter(jug => jug.paradas >0)
+        .sort((a, b) => (b.paradas - a.paradas))});
+      this.listas.push({tipo: 'golesRival', tipo2: '', cabecera: 'Goles recibidos', lista: [...this.estadJugadores].filter(jug => jug.golesRival > 0)
+        .sort((a, b) => (b.golesRival - a.golesRival))});
+      this.listas.push({tipo: 'perdidas', tipo2: '', cabecera: 'Pérdidas', lista: [...this.estadJugadores]
+        .sort((a, b) => (b.perdidas - a.perdidas))});
+      this.listas.push({tipo: 'robos', tipo2: '', cabecera: 'recuperaciones', lista: [...this.estadJugadores]
+        .sort((a, b) => (b.robos - a.robos))});
     }));
 
     this.subs.push(this.eventosService.getEventos(localStorage.getItem('partidoId'))

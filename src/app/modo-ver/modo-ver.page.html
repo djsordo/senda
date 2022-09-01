@@ -54,11 +54,11 @@
           <ion-label>Equipo</ion-label>
         </ion-segment-button>
         <ion-segment-button value="jugador">
-          <ion-label>jugador</ion-label>
+          <ion-label>Jugador</ion-label>
         </ion-segment-button>
       </ion-segment>
 
-      <ion-card *ngIf="segmentoMostradoS === 'equipo'">
+      <div *ngIf="segmentoMostradoS === 'equipo'">
         <ion-grid>
           <ion-row>
             <ion-col size="2"><div class="ion-text-center"><ion-icon name="football"></ion-icon></div></ion-col>
@@ -121,7 +121,26 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-      </ion-card>
+      </div>
+
+      <div *ngIf="segmentoMostradoS === 'jugador'">
+        <ion-card *ngFor="let tipo of listas">
+          <ion-card-header>{{tipo.cabecera}}</ion-card-header>
+          <ion-list *ngFor="let jug of tipo.lista.slice(0,3)">
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="../../assets/fotos/SinImagen.jpg" />
+              </ion-avatar>
+              <ion-label>
+                <p>{{jug.datos.numero}} - {{jug.datos.nombre}}</p>
+              </ion-label>
+              <ion-label slot="end">
+                <p>{{jug[tipo.tipo] + (tipo.tipo2 === '' ? 0 : jug[tipo.tipo2]) }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </div>
     </ion-card>
   </div>
 
