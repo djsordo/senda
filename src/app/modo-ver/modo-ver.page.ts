@@ -1,26 +1,24 @@
-import { EstadJugadorService } from './../services/estad-jugador.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EstadPartidoService } from './../services/estad-partido.service';
-import { EstadPartido } from './../modelo/estadPartido';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Evento } from '../modelo/evento';
 import { EstadJugador } from '../modelo/estadJugador';
-
+import { Evento } from '../modelo/evento';
+import { EstadPartido } from './../modelo/estadPartido';
+import { EstadJugadorService } from './../services/estad-jugador.service';
+import { EstadPartidoService } from './../services/estad-partido.service';
 
 @Component({
   selector: 'app-modo-ver',
   templateUrl: './modo-ver.page.html',
   styleUrls: ['./modo-ver.page.scss'],
 })
+
 export class ModoVerPage implements OnInit, OnDestroy {
+
   eventos: Array<Evento>;
   estadPartido: Array<EstadPartido>;
   estadJugadores: Array<EstadJugador>;
-
-  /* goles: Array<EstadJugador>;
-  tiros: Array<EstadJugador>; */
 
   listas: Array<{tipo: string; tipo2: string; cabecera: string; lista: Array<EstadJugador>}> = [];
 
@@ -29,6 +27,9 @@ export class ModoVerPage implements OnInit, OnDestroy {
 
   segmentoMostradoP = 'hechos';
   segmentoMostradoS = 'equipo';
+
+  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
+  name: string;
 
   constructor(private eventosService: EventosService,
               private estadPartidoService: EstadPartidoService,
@@ -96,6 +97,10 @@ export class ModoVerPage implements OnInit, OnDestroy {
   volver(){
     this.subs.forEach(sub => sub.unsubscribe());
     this.router.navigate(['/home']);
+  }
+
+  irAListas(){
+
   }
 
   ngOnDestroy(): void {

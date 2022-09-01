@@ -125,7 +125,9 @@
 
       <div *ngIf="segmentoMostradoS === 'jugador'">
         <ion-card *ngFor="let tipo of listas">
-          <ion-card-header>{{tipo.cabecera}}</ion-card-header>
+          <ion-card-header>
+            <ion-item><ion-label>{{tipo.cabecera}}</ion-label><ion-icon slot="end" name="chevron-forward" (click)="irAListas()"></ion-icon></ion-item>
+          </ion-card-header>
           <ion-list *ngFor="let jug of tipo.lista.slice(0,3)">
             <ion-item>
               <ion-avatar slot="start">
