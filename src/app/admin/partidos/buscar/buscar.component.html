@@ -17,14 +17,14 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of usuarios" (click)="onCardSelected( p.id )">
+      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of partidos" (click)="onCardSelected( p.id )">
         <ion-card-header>
-          <ion-icon name="person" size="large"></ion-icon>
-          <ion-card-title>{{p.nombre}} {{p.apellidos}}</ion-card-title>
+          <ion-icon src="assets/handball.svg" size="large"></ion-icon>
+          <ion-card-title>{{p.equipoText}} vs. {{p.rival}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-text>{{p.email}}</ion-text> <br/>
-          <ion-text>{{p.club?.nombre}}</ion-text>
+          <ion-text>{{p.fecha}}</ion-text> <br/>
+          <ion-text>{{p.lugar}}</ion-text>
         </ion-card-content>
       </ion-card>
     </ion-col>

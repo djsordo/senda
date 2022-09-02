@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 
-import { StringUtil, make_id } from './string-util';
+import { StringUtil, make_id, formatDateUtil } from './string-util';
 
 
-describe( 'string-util.spec', () => {
+fdescribe( 'string-util.spec', () => {
 
   let stringUtil : StringUtil; 
 
@@ -59,7 +59,16 @@ describe( 'string-util.spec', () => {
     expect( make_id( 'No huyais, cobardes y viles criaturas!!!!' ) === 'no_huyais_cobardes_y_viles_criaturas' ).toBeTrue();
   });
 
+  it( 'make_id5', () => {
+    console.log( make_id( 'el', 'ibex', 'ha', 'ganado', 'un', '20%' ) );
+    expect( make_id( ' el ibex ha ganado un 20%' ) === 'el_ibex_ha_ganado_20' ).toBeTrue();
+  });
 
+  it( 'formatDateUtil', () =>  {
+    let d1 = new Date( Date.UTC( 2022, 8 /*september*/, 3 ) );
+    console.log( d1 );
+    formatDateUtil( d1 );
+  });
 
 
 });

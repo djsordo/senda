@@ -58,7 +58,7 @@ export class StringUtil{
 
 }
 
-export function make_id( s : string ){
+export function make_id( ...values : string[] ){
 
   let replacements = [{regexp : /[áàäâ]/g, replacement : 'a'},
                       {regexp : /[éèëê]/g, replacement : 'e'},
@@ -77,6 +77,11 @@ export function make_id( s : string ){
                       {regexp : /_the_/g,    replacement : '_'},
                       {regexp : /_and_/g,    replacement : '_'},
                       {regexp : /[%&\/\\¿?¡!]/g, replacement : '_' }];
+
+  let s = '';
+  for( let val of values ){
+    s += ' ' + val;
+  }
 
   s = s.trim().toLowerCase();
   s = s.replaceAll( /\s+/g, '_' );
@@ -99,6 +104,25 @@ export function make_id( s : string ){
 export function properCase( s : string ){
   return s[0].toUpperCase() + s.slice( 1 ).toLowerCase();
 }
+
+/**
+ * Given a Date object, returns a string representing 
+ * a "useful" translation of that date. 
+ * 
+ * A useful representation is "two days ago" instead of 
+ * "18/08/2022" or "In two hours" to represent that the 
+ * event represented by this date will begin on two hours.
+ * 
+ * @param d 
+ */
+export function formatDateUtil( d : Date ){
+  const now = new Date();
+
+  let dateDiff = now.getTime() - d.getTime();
+  console.log( dateDiff );
+}
+
+
 
 
 

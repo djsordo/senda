@@ -5,8 +5,11 @@ import { collection,
         DocumentData, 
         DocumentReference, 
         Firestore, 
-        getDoc} from "@angular/fire/firestore";
-import { setDoc } from "firebase/firestore";
+        getDoc,
+        setDoc} from "@angular/fire/firestore";
+
+
+
 import { Temporada } from "../modelo/temporada";
 
 
@@ -27,6 +30,11 @@ export class TemporadaService {
 
   async getTemporadaByRef( equipoRef : DocumentReference<DocumentData> ){
     return getDoc( equipoRef );
+  }
+
+  async getTemporadaById( temporadaId : string ){
+    let docRef = doc( this.temporadaRef, temporadaId );
+    return getDoc( docRef );
   }
 
 }
