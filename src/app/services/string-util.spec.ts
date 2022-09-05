@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
 
-import { StringUtil, make_id, formatDateUtil } from './string-util';
+import { StringUtil, make_id } from './string-util';
 
 
-fdescribe( 'string-util.spec', () => {
+describe( 'string-util.spec', () => {
 
   let stringUtil : StringUtil; 
 
   beforeAll( () =>  {
     stringUtil = new StringUtil();
-  })
+  });
 
   it( 'simple equal strings', () => {
     expect( stringUtil.like( 'hola', 'hola' ) ).toBeTrue();
@@ -62,12 +62,6 @@ fdescribe( 'string-util.spec', () => {
   it( 'make_id5', () => {
     console.log( make_id( 'el', 'ibex', 'ha', 'ganado', 'un', '20%' ) );
     expect( make_id( ' el ibex ha ganado un 20%' ) === 'el_ibex_ha_ganado_20' ).toBeTrue();
-  });
-
-  it( 'formatDateUtil', () =>  {
-    let d1 = new Date( Date.UTC( 2022, 8 /*september*/, 3 ) );
-    console.log( d1 );
-    formatDateUtil( d1 );
   });
 
 
