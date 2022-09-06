@@ -59,7 +59,11 @@ const routes: Routes = [
   {
     path: 'modo-ver',
     loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
+  },  {
+    path: 'listas-estad',
+    loadChildren: () => import('./listas-estad/listas-estad.module').then( m => m.ListasEstadPageModule)
   }
+
 ];
 
 @NgModule({
