@@ -1,3 +1,4 @@
+import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -34,7 +35,8 @@ export class ModoVerPage implements OnInit, OnDestroy {
   constructor(private eventosService: EventosService,
               private estadPartidoService: EstadPartidoService,
               private estadJugadorService: EstadJugadorService,
-              private router: Router) { }
+              private router: Router,
+              private pasoDatos: PasoDatosService) { }
 
   ngOnInit() {
     this.eventos = [];
@@ -74,6 +76,7 @@ export class ModoVerPage implements OnInit, OnDestroy {
         .sort((a, b) => ((b.lanzFallados + b.goles) - (a.lanzFallados + a.goles)))});
       this.listas.push({tipo: 'paradas', tipo2: '', cabecera: 'Paradas', lista: [...this.estadJugadores].filter(jug => jug.paradas >0)
         .sort((a, b) => (b.paradas - a.paradas))});
+      // eslint-disable-next-line max-len
       this.listas.push({tipo: 'golesRival', tipo2: '', cabecera: 'Goles recibidos', lista: [...this.estadJugadores].filter(jug => jug.golesRival > 0)
         .sort((a, b) => (b.golesRival - a.golesRival))});
       this.listas.push({tipo: 'perdidas', tipo2: '', cabecera: 'Pérdidas', lista: [...this.estadJugadores]
@@ -99,8 +102,11 @@ export class ModoVerPage implements OnInit, OnDestroy {
     this.router.navigate(['/home']);
   }
 
-  irAListas(){
-
+  irAListas(tipo: any){
+    this.pasoDatos.setPantalla('listas-estad', this.listas);
+    this.pasoDatos.setPantalla('tipoElegido', tipo.tipo);
+    console.log(this.listas);
+    this.router.navigate(['/listas-estad']);
   }
 
   ngOnDestroy(): void {
