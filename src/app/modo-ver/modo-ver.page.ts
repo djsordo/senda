@@ -1,26 +1,42 @@
+import { PasoDatosService } from './../services/paso-datos.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EstadPartidoService } from './../services/estad-partido.service';
-import { EstadPartido } from './../modelo/estadPartido';
 import { Acciones, EventosService } from 'src/app/services/eventos.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { EstadJugador } from '../modelo/estadJugador';
 import { Evento } from '../modelo/evento';
-
+import { EstadPartido } from './../modelo/estadPartido';
+import { EstadJugadorService } from './../services/estad-jugador.service';
+import { EstadPartidoService } from './../services/estad-partido.service';
 
 @Component({
   selector: 'app-modo-ver',
   templateUrl: './modo-ver.page.html',
   styleUrls: ['./modo-ver.page.scss'],
 })
+
 export class ModoVerPage implements OnInit, OnDestroy {
+
   eventos: Array<Evento>;
   estadPartido: Array<EstadPartido>;
+  estadJugadores: Array<EstadJugador>;
+
+  listas: Array<{tipo: string; tipo2: string; cabecera: string; lista: Array<EstadJugador>}> = [];
+
   lineasEv: any;
   subs: Array<Subscription> = [];
 
+  segmentoMostradoP = 'hechos';
+  segmentoMostradoS = 'equipo';
+
+  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
+  name: string;
+
   constructor(private eventosService: EventosService,
               private estadPartidoService: EstadPartidoService,
-              private router: Router) { }
+              private estadJugadorService: EstadJugadorService,
+              private router: Router,
+              private pasoDatos: PasoDatosService) { }
 
   ngOnInit() {
     this.eventos = [];
@@ -51,6 +67,24 @@ export class ModoVerPage implements OnInit, OnDestroy {
       this.estadPartido = estadP;
     }));
 
+    this.subs.push(this.estadJugadorService.getEstadJugador(localStorage.getItem('partidoId'))
+    .subscribe(estadJ => {
+      this.estadJugadores = estadJ;
+      this.listas.push({tipo: 'goles', tipo2: '', cabecera: 'Goleadores', lista: [...this.estadJugadores]
+        .sort((a, b) => (b.goles - a.goles))});
+      this.listas.push({tipo: 'lanzFallados', tipo2: 'goles', cabecera: 'Lanzamientos totales', lista: [...this.estadJugadores]
+        .sort((a, b) => ((b.lanzFallados + b.goles) - (a.lanzFallados + a.goles)))});
+      this.listas.push({tipo: 'paradas', tipo2: '', cabecera: 'Paradas', lista: [...this.estadJugadores].filter(jug => jug.paradas >0)
+        .sort((a, b) => (b.paradas - a.paradas))});
+      // eslint-disable-next-line max-len
+      this.listas.push({tipo: 'golesRival', tipo2: '', cabecera: 'Goles recibidos', lista: [...this.estadJugadores].filter(jug => jug.golesRival > 0)
+        .sort((a, b) => (b.golesRival - a.golesRival))});
+      this.listas.push({tipo: 'perdidas', tipo2: '', cabecera: 'Pérdidas', lista: [...this.estadJugadores]
+        .sort((a, b) => (b.perdidas - a.perdidas))});
+      this.listas.push({tipo: 'robos', tipo2: '', cabecera: 'recuperaciones', lista: [...this.estadJugadores]
+        .sort((a, b) => (b.robos - a.robos))});
+    }));
+
     this.subs.push(this.eventosService.getEventos(localStorage.getItem('partidoId'))
     .subscribe(evento => {
       this.eventos = evento;
@@ -68,9 +102,26 @@ export class ModoVerPage implements OnInit, OnDestroy {
     this.router.navigate(['/home']);
   }
 
+  irAListas(tipo: any){
+    this.pasoDatos.setPantalla('listas-estad', this.listas);
+    this.pasoDatos.setPantalla('tipoElegido', tipo.tipo);
+    console.log(this.listas);
+    this.router.navigate(['/listas-estad']);
+  }
+
   ngOnDestroy(): void {
     console.log('ngOndestroy modo ver');
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
+  segmentChangedP(ev: any){
+    this.segmentoMostradoP = ev.detail.value;
+    this.segmentoMostradoS = 'equipo';
+    console.log(this.segmentoMostradoP);
+  }
+
+  segmentChangedS(ev: any){
+    this.segmentoMostradoS = ev.detail.value;
+    console.log(this.segmentoMostradoS);
+  }
 }

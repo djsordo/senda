@@ -6,7 +6,7 @@
     <ion-item slot="start" (click)="volver()">
       <ion-icon name="chevron-back"></ion-icon>
     </ion-item>
-    <ion-title>Estadísticas en tiempo real</ion-title>
+    <ion-title>Estadísticas</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -38,73 +38,115 @@
         </ion-row>
       </ion-grid>
     </ion-card>
-    <ion-card>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="2"><div class="ion-text-center"><ion-icon name="football"></ion-icon></div></ion-col>
-          <ion-col size="6">
-            <div class="ion-text-left">Goles/Tiros: {{ep.goles}}/{{ep.goles + ep.lanzFallados}}</div>
-          </ion-col>
-          <ion-col size="4">
-            <div class="ion-text-center">{{ep.goles/(ep.goles+ep.lanzFallados) | percent: '2.1-2'}}</div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="2"><div class="ion-text-center"><ion-icon name="accessibility"></ion-icon></div></ion-col>
-          <ion-col size="6">
-            <div class="ion-text-left">Paradas/Tiros: {{ep.paradas}}/{{ep.golesRival + ep.paradas}}</div>
-          </ion-col>
-          <ion-col size="4">
-            <div class="ion-text-center">{{ep.paradas/(ep.paradas+ep.golesRival) | percent: '2.1-2'}}</div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="2"><div class="ion-text-center"><ion-icon name="thumbs-up"></ion-icon></div></ion-col>
-          <ion-col size="10">
-            <div class="ion-text-left">Recuperaciones: {{ep.robos}}</div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="2"><div class="ion-text-center"><ion-icon name="thumbs-down"></ion-icon></div></ion-col>
-          <ion-col size="10">
-            <div class="ion-text-left">Pérdidas: {{ep.perdidas}}</div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="2"><div class="ion-text-center" color="verde">T</div></ion-col>
-          <ion-col size="10">
-            <div class="ion-text-left">Tiempos Muertos: {{ep.tm}}</div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="2"><div class="ion-text-center" color="verde">T</div></ion-col>
-          <ion-col size="10">
-            <div class="ion-text-left">Tiempos Muertos del rival: {{ep.tmRival}}</div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="1"><div class="ion-text-center"><ion-icon name="stopwatch"></ion-icon></div></ion-col>
-          <ion-col size="2">
-            <div class="ion-text-left">{{ep.dosMinutos}}/{{ep.dosMinutosRival}}</div>
-          </ion-col>
-          <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="amarillo"></ion-icon></div></ion-col>
-          <ion-col size="2">
-            <div class="ion-text-left">{{ep.amarillas}}</div>
-          </ion-col>
-          <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="rojo"></ion-icon></div></ion-col>
-          <ion-col size="2">
-            <div class="ion-text-left">{{ep.rojas}}</div>
-          </ion-col>
-          <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="azul"></ion-icon></div></ion-col>
-          <ion-col size="2">
-            <div class="ion-text-left">{{ep.azules}}</div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+
+    <ion-segment (ionChange)="segmentChangedP($event)" value="hechos">
+      <ion-segment-button value="hechos">
+        <ion-label>Hechos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="estadisticas">
+        <ion-label>Estadísticas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-card *ngIf="segmentoMostradoP === 'estadisticas'">
+      <ion-segment (ionChange)="segmentChangedS($event)" value="equipo">
+        <ion-segment-button value="equipo">
+          <ion-label>Equipo</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="jugador">
+          <ion-label>Jugador</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <div *ngIf="segmentoMostradoS === 'equipo'">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2"><div class="ion-text-center"><ion-icon name="football"></ion-icon></div></ion-col>
+            <ion-col size="6">
+              <div class="ion-text-left">Goles/Tiros: {{ep.goles}}/{{ep.goles + ep.lanzFallados}}</div>
+            </ion-col>
+            <ion-col size="4">
+              <div class="ion-text-center">{{ep.goles/(ep.goles+ep.lanzFallados) | percent: '2.1-2'}}</div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2"><div class="ion-text-center"><ion-icon name="accessibility"></ion-icon></div></ion-col>
+            <ion-col size="6">
+              <div class="ion-text-left">Paradas/Tiros: {{ep.paradas}}/{{ep.golesRival + ep.paradas}}</div>
+            </ion-col>
+            <ion-col size="4">
+              <div class="ion-text-center">{{ep.paradas/(ep.paradas+ep.golesRival) | percent: '2.1-2'}}</div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2"><div class="ion-text-center"><ion-icon name="thumbs-up"></ion-icon></div></ion-col>
+            <ion-col size="10">
+              <div class="ion-text-left">Recuperaciones: {{ep.robos}}</div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2"><div class="ion-text-center"><ion-icon name="thumbs-down"></ion-icon></div></ion-col>
+            <ion-col size="10">
+              <div class="ion-text-left">Pérdidas: {{ep.perdidas}}</div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2"><div class="ion-text-center" color="verde">T</div></ion-col>
+            <ion-col size="10">
+              <div class="ion-text-left">Tiempos Muertos: {{ep.tm}}</div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2"><div class="ion-text-center" color="verde">T</div></ion-col>
+            <ion-col size="10">
+              <div class="ion-text-left">Tiempos Muertos del rival: {{ep.tmRival}}</div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="1"><div class="ion-text-center"><ion-icon name="stopwatch"></ion-icon></div></ion-col>
+            <ion-col size="2">
+              <div class="ion-text-left">{{ep.dosMinutos}}/{{ep.dosMinutosRival}}</div>
+            </ion-col>
+            <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="amarillo"></ion-icon></div></ion-col>
+            <ion-col size="2">
+              <div class="ion-text-left">{{ep.amarillas}}</div>
+            </ion-col>
+            <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="rojo"></ion-icon></div></ion-col>
+            <ion-col size="2">
+              <div class="ion-text-left">{{ep.rojas}}</div>
+            </ion-col>
+            <ion-col size="1"><div class="ion-text-center"><ion-icon name="square" color="azul"></ion-icon></div></ion-col>
+            <ion-col size="2">
+              <div class="ion-text-left">{{ep.azules}}</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <div *ngIf="segmentoMostradoS === 'jugador'">
+        <ion-card *ngFor="let tipo of listas">
+          <ion-card-header>
+            <ion-item><ion-label>{{tipo.cabecera}}</ion-label><ion-icon slot="end" name="chevron-forward" (click)="irAListas(tipo)"></ion-icon></ion-item>
+          </ion-card-header>
+          <ion-list *ngFor="let jug of tipo.lista.slice(0,3)">
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="../../assets/fotos/SinImagen.jpg" />
+              </ion-avatar>
+              <ion-label>
+                <p>{{jug.datos.numero}} - {{jug.datos.nombre}}</p>
+              </ion-label>
+              <ion-label slot="end">
+                <p>{{jug[tipo.tipo] + (tipo.tipo2 === '' ? 0 : jug[tipo.tipo2]) }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </div>
     </ion-card>
   </div>
 
-  <ion-card *ngIf="eventos.length !== 0">
+  <ion-card *ngIf="eventos.length !== 0 && segmentoMostradoP === 'hechos'">
     <ion-grid>
       <div *ngFor="let evento of eventos">
         <div *ngFor="let lineaEv of lineasEv">
