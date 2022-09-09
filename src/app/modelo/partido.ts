@@ -6,6 +6,7 @@ export interface Partido{
   rival: string;
   temporadaId: string;
   tipo: string;
+  jornada: string;
   ubicacion: string;
   config: {
     partes: number;

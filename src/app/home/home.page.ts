@@ -22,6 +22,7 @@ export class HomePage implements OnInit, OnDestroy {
   usuario: Usuario;
   partidos: Partido[];
   subs: Subscription[] = [];
+  cambioEq: string;
 
   constructor(private router: Router,
               private usuarioService: UsuarioService,
@@ -42,6 +43,7 @@ export class HomePage implements OnInit, OnDestroy {
       this.usuarioService.setUsuario(this.usuario);
     });
 
+    this.cambioEq = this.usuario?.roles[0].equipo.id;
 
   }
 
@@ -101,6 +103,10 @@ export class HomePage implements OnInit, OnDestroy {
         estadJ.forEach(ejBorrar => this.estadJugadorService.deleteEstadJugador(ejBorrar.id));
       }));
     }
+  }
+
+  cambioEquipo(ev: any){
+    this.cambioEq = ev.detail.value;
   }
 
   ngOnDestroy(){

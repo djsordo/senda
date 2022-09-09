@@ -2,6 +2,13 @@ ion-menu-button {
   color: var(--ion-color-primary);
 }
 
+ion-label {
+  font-size: xx-small;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding: 0px;
+}
+
 #container {
   text-align: center;
   position: absolute;
@@ -25,4 +32,61 @@ ion-menu-button {
 
 #container a {
   text-decoration: none;
+}
+
+.contenedor ion-card {
+  width: 85%;
+  height: auto;
+  float: right;
+  margin-bottom: 40px;
+}
+
+.contenedor::after {
+  position: absolute;
+  content: ' ';
+  width: 2px;
+  height: 100%;
+  margin-left: 5%;
+  background-image: linear-gradient(to bottom, rgb(106, 6, 236), rgb(220, 0, 240));
+}
+
+.contenedor .rival {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+.contenedor .jornada {
+  font-size: 12px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  float: right;
+}
+
+.contenedor .ubicacion {
+  font-size: 14px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  float: right;
+}
+
+.contenedor .fecha {
+  font-size: 12px;
+  margin: 5px;
+  padding: 3px;
+  color: blue;
+}
+
+.contenedor .circulo {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(220, 0, 240, 0.603);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: -20px;
 }
