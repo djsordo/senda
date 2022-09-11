@@ -23,76 +23,28 @@
     </div>
   </ion-segment>
 
-  <div  *ngFor="let rol of usuario?.roles">
-    <div *ngIf="cambioEq === rol.equipo.id">
-      <div class="contenedor" *ngFor="let partido of rol.equipo.partidos">
-        <ion-card>
-          <span class="fecha">{{partido.fecha}}</span>
-          <p class="jornada">{{partido.tipo}} {{partido.jornada}}</p>
-          <h3 class="rival">{{partido.rival}}</h3>
-          <p class="ubicacion">{{partido.ubicacion}}</p>
-          <ion-button (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">Generar</ion-button>
-          <ion-button (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">Ver</ion-button>
-          <ion-button (click)="irAModo(rol.equipo, partido, 'reset')">Reset</ion-button>
-          <span class="circulo"></span>
-<!--           <ion-grid>
-            <ion-row>
-              <ion-col size="4">{{partido.fecha}}</ion-col>
-              <ion-col size="4">{{partido.tipo}}</ion-col>
-              <ion-col size="4">{{partido.config.estado}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">{{rol.equipo.nombre + ' vs. ' + partido.rival}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">{{partido.ubicacion}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">Generar</ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">Ver</ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'reset')">Reset</ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid> -->
-        </ion-card>
+  <div  *ngFor="let rol of usuario?.roles" class="contenedor main">
+    <ul>
+      <div *ngIf="cambioEq === rol.equipo.id">
+        <div *ngFor="let partido of rol.equipo.partidos">
+          <li>
+            <p class="jornada">{{partido.tipo}} {{partido.jornada}}</p>
+            <h3 class="rival">{{partido.rival}}</h3>
+            <p class="ubicacion">{{partido.ubicacion}}</p>
+            <ion-button size="small" color="light" (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">
+              <ion-icon name="document-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" color="light" (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
+              <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" color="light" (click)="irAModo(rol.equipo, partido, 'reset')">
+              <ion-icon name="refresh-outline"></ion-icon>
+            </ion-button>
+            <span class="fecha">{{partido.fecha}}</span>
+            <span class="circulo"></span>
+          </li>
+        </div>
       </div>
-    </div>
+    </ul>
   </div>
-
-  <!-- <ion-list *ngFor="let rol of usuario?.roles">
-    <ion-list-header><h3>Partidos como {{rol.nombre}} del equipo {{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</h3></ion-list-header>
-      <div *ngFor="let partido of rol.equipo.partidos">
-        <ion-card>
-          <ion-grid>
-            <ion-row>
-              <ion-col size="4">{{partido.fecha}}</ion-col>
-              <ion-col size="4">{{partido.tipo}}</ion-col>
-              <ion-col size="4">{{partido.config.estado}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">{{rol.equipo.nombre + ' vs. ' + partido.rival}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">{{partido.ubicacion}}</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">Generar</ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">Ver</ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button (click)="irAModo(rol.equipo, partido, 'reset')">Reset</ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
-      </div>
-  </ion-list> -->
 </ion-content>
