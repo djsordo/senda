@@ -6,10 +6,22 @@ import { Component,
         HostListener,
         ElementRef,
         EventEmitter} from '@angular/core';
+import { PosicionCampo, PosicionPorteria } from 'src/app/services/balonmano.service';
 import { ColorScheme, StylesService } from 'src/app/services/styles.service';
 
 const X = 0; 
 const Y = 1;
+
+interface Polygon {
+  id : PosicionCampo | PosicionPorteria, 
+  name : object, 
+  points : number[][]  
+};
+
+interface ConvertedPolygon {
+  id : PosicionCampo | PosicionPorteria, 
+  points : string
+}
 
 @Component({
   selector: 'mapa',
@@ -30,10 +42,10 @@ export class MapaComponent implements OnInit {
             top : '0px' };
   @Input() image : string;
   @Input() image_dark : string;
-  @Input() polygons;
+  @Input() polygons : Polygon[];
   private cachedActualWidth : number;
   private cachedActualHeight : number;
-  private cachedPolygons : Array<object>;
+  private cachedPolygons : ConvertedPolygon[];
   @Input() pointerStyle : any;
   pointerDots : string;
   @Output() areaClickedEvent = new EventEmitter<string>();
@@ -69,14 +81,14 @@ export class MapaComponent implements OnInit {
     this.getPolygonsConverted();
   }
 
-  public getPolygonsConverted(){
+  public getPolygonsConverted() : ConvertedPolygon[] {
     if( this.cachedActualWidth !== this.mapaImg.nativeElement.width 
      || this.cachedActualHeight !== this.mapaImg.nativeElement.height )
        this.calculatePolygonsConverted();
     return this.cachedPolygons;
   }
 
-  public calculatePolygonsConverted(){
+  public calculatePolygonsConverted() : ConvertedPolygon[] {
     this.cachedActualWidth = this.mapaImg.nativeElement.width;
     this.cachedActualHeight = this.mapaImg.nativeElement.height; 
     this.cachedPolygons = [];

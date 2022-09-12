@@ -66,7 +66,6 @@ export class UsuarioService {
     }else{
       return getDocs( query( this.usuarioRef ) );
     }
-
   }
 
   getUsuario(){
