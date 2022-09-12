@@ -5,7 +5,7 @@ export interface Partido{
   fecha: string;
   rival: string;
   temporadaId: string;
-  tipo: string;
+  tipo: string; // 'amistoso' | 'liga'
   jornada: string;
   ubicacion: string;
   config: {

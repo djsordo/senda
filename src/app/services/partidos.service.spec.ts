@@ -1,26 +1,62 @@
 import { TestBed } from '@angular/core/testing';
+import { provideFirestore, 
+  getFirestore, 
+  QuerySnapshot,
+  DocumentData} from "@angular/fire/firestore";
+import { initializeApp, 
+  provideFirebaseApp } from '@angular/fire/app';
 
+import { environment } from './../../environments/environment';
 import { PartidosService } from './partidos.service';
+import { Partido } from '../modelo/partido';
 
 describe('PartidosService', () => {
-  let service: PartidosService;
+  let partidosService: PartidosService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PartidosService);
+  beforeAll( (callMeOnFinish) => {
+    TestBed.configureTestingModule({
+      imports: [ provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+        provideFirestore(() => getFirestore()) ]
+    });
+    partidosService = TestBed.inject( PartidosService );
+    callMeOnFinish();
   });
+
+  beforeEach(() => { /* do nothing */ });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(partidosService).toBeTruthy();
   });
 
-  // it('un partido se crea sin problemas', () => {
-  //   let p = service.newPartido();
-  //   p.equipo = "yaveremos";
-  //   p.fecha = new Date
-  //   service.addPartido
+  it('creacion de partidos funciona', ( callMeOnFinish ) => {
+    let p = {} as Partido;
+    p.equipoId = 'prueba-rlunaro';
+    p.fecha = (new Date()).toString();
+    p.rival = 'prueba2-rlunaro';
+    p.temporadaId = '2022-23';
+    p.tipo = 'liga';
+    p.ubicacion = 'Selecto descampado a 4 las afueras de Valladolid';
+    partidosService.addPartido( p )
+      .then( (docSnap) => {
+        console.log(docSnap);
+        // if reached this point the test is considered valid
+        expect( true ).toBeTrue();
+        callMeOnFinish();
+      });
+  });
 
-  // });
+  it('prueba de obtener partidos', ( callMeOnFinish ) => {
+    partidosService.getPartidosCallback( ( qSnapshot : QuerySnapshot<DocumentData> ) => {
+      console.log( qSnapshot );
+      console.log( 'examinando lista de componentes' );
+      for( let docSnap of qSnapshot.docs ){
+        console.log( docSnap.id );
+        console.log( docSnap.data() );
+        expect( docSnap.data() ).toBeTruthy();
+      }
+      callMeOnFinish();
+    });
+  });
 
 
 });

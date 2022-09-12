@@ -10,7 +10,7 @@ describe( 'string-util.spec', () => {
 
   beforeAll( () =>  {
     stringUtil = new StringUtil();
-  })
+  });
 
   it( 'simple equal strings', () => {
     expect( stringUtil.like( 'hola', 'hola' ) ).toBeTrue();
@@ -59,7 +59,10 @@ describe( 'string-util.spec', () => {
     expect( make_id( 'No huyais, cobardes y viles criaturas!!!!' ) === 'no_huyais_cobardes_y_viles_criaturas' ).toBeTrue();
   });
 
-
+  it( 'make_id5', () => {
+    console.log( make_id( 'el', 'ibex', 'ha', 'ganado', 'un', '20%' ) );
+    expect( make_id( ' el ibex ha ganado un 20%' ) === 'el_ibex_ha_ganado_20' ).toBeTrue();
+  });
 
 
 });

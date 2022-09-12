@@ -1,0 +1,63 @@
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-input name="usuarioName" 
+                placeholder="Nombre"
+                autofocus="true"
+                inputmode="text"
+                autocapitalize="on"
+                autocorrect="off"
+                type="text"
+                [(ngModel)]="nombre"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-input name="usuarioSurname" 
+                placeholder="Apellidos"
+                inputmode="text"
+                autocapitalize="on"
+                autocorrect="off"
+                type="text"
+                [(ngModel)]="apellidos"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-input name="usuarioEmail" 
+                placeholder="Correo Electrónico"
+                inputmode="email"
+                autocapitalize="off"
+                autocorrect="off"
+                pattern="\w+@[\w.]+"
+                type="text"
+                [(ngModel)]="email"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Club:</ion-label>
+        <!-- valorar si aquí debería ir un componente llamado "combo categorias" que recogiese una categoría por defecto -->
+        <ion-select *ngIf="clubes.length > 1" [(ngModel)]="selectedClub">
+          <ion-select-option *ngFor="let club of clubes" value="{{club.id}}">{{club.nombre}}</ion-select-option>
+        </ion-select>
+        <ion-text *ngIf="clubes.length === 1">{{clubes[0]?.nombre}}</ion-text>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button color="medium" [routerLink]="['..']">Cancelar</ion-button>
+      <ion-button color="primary" (click)="onClickCrear()">Crear</ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-grid>

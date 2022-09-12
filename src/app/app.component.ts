@@ -29,7 +29,10 @@ export class AppComponent implements OnInit {
           icon: 'people'}, 
         { title : 'Usuarios',
           url : '/admin/usuarios', 
-          icon : 'person' }
+          icon : 'person' },
+        { title : 'Partidos',
+          url : '/admin/partidos', 
+          src : 'assets/handball.svg' }
       ]}
   ];
 
