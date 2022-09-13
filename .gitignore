@@ -7,6 +7,12 @@ src/environments/environment.desa.ts
 src/environments/environment.ts
 SECRETS.md
 
+# Firebase cache
+.firebase/
+
+# Firebase config
+.firebaserc
+
 *~
 *.sw[mnpcod]
 .tmp
