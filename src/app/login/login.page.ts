@@ -57,3 +57,4 @@ export class LoginPage implements OnInit {
     this.menu.enable(false);
   }
 }
+
