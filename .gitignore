@@ -6,6 +6,7 @@ src/environments/environment.prod.ts
 src/environments/environment.desa.ts
 src/environments/environment.ts
 SECRETS.md
+PRIVATE/
 
 # Firebase cache
 .firebase/
