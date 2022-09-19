@@ -93,7 +93,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       jugador.segJugados = 0;
       this.listaInicial.push(jugador);
     });
-
+    console.log('listaInicial: ', this.listaInicial);
     listaBanquilloPrevia.forEach(jugadorPrevia => {
       const jugador = {} as EstadJugador;
       jugador.datos = jugadorPrevia;

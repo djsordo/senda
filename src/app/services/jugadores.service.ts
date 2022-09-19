@@ -42,7 +42,7 @@ export class JugadoresService {
   }
 
   getJugadoresEquipo(equipoId: string): Observable<Jugador[]>{
-    const jugadoresRef = query(collection(this.firestore, 'jugadores'), where('equipoId', '==', equipoId));
+    const jugadoresRef = query(collection(this.firestore, 'jugadores'), where('equipoId', 'array-contains', equipoId));
     return collectionData(jugadoresRef, {idField: 'id'}) as Observable<Jugador[]>;
   }
 }

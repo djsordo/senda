@@ -1,6 +1,6 @@
 export interface Jugador {
   id?: string;
-  equipoId?: string;
+  equipoId?: [string];
   numero: string;
   nombre: string;
   posicion: string;

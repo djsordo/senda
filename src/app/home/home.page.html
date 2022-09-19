@@ -39,7 +39,7 @@
           <ion-button size="small" color="light" class="reset" (click)="irAModo(rol.equipo, partido, 'reset')">
             <ion-icon name="refresh-outline"></ion-icon>
           </ion-button>
-          <span class="fecha">{{partido.fecha}}</span>
+          <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
           <!-- <span class="circulo"></span> -->
         </li>
       </div>
