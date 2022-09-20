@@ -14,19 +14,35 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-segment scrollable (ionChange)="cambioEquipo($event)" value="{{usuario?.roles[0].equipo.id}}">
+  <div slot="fixed" class="contenidoFijo">
+    <ion-list>
+      <ion-item>
+        <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{usuario?.roles[0].equipo.id}}">
+          <ion-select-option *ngFor="let rol of usuario?.roles" value="{{rol.equipo.id}}">{{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-segment (ionChange)="cambioFecha($event)" value="{{cambioFe}}">
+      <ion-segment-button value="anteriores">Anteriores</ion-segment-button>
+      <ion-segment-button value="proximos">Próximos</ion-segment-button>
+      <ion-segment-button value="programados">Programados</ion-segment-button>
+    </ion-segment>
+  </div>
+
+<!--   <ion-segment scrollable (ionChange)="cambioEquipo($event)" value="{{usuario?.roles[0].equipo.id}}">
     <div  *ngFor="let rol of usuario?.roles">
       <ion-segment-button value="{{rol.equipo.id}}">
         <p>{{rol.equipo.nombre}}</p>
         <p>{{rol.equipo.categoria + ' ' + rol.equipo.genero}}</p>
       </ion-segment-button>
     </div>
-  </ion-segment>
+  </ion-segment> -->
 
   <div  *ngFor="let rol of usuario?.roles" class="contenedor">
-    <ul *ngIf="cambioEq === rol.equipo.id">
+    <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'programados'">
       <div *ngFor="let partido of rol.equipo.partidos">
-        <li>
+        <li *ngIf="partido.fecha.toDate() > fechaSigSemana">
           <p class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</p>
           <h3 class="rival">{{partido.rival}}</h3>
           <p class="ubicacion">{{partido.ubicacion}}</p>
@@ -44,5 +60,48 @@
         </li>
       </div>
     </ul>
+
+    <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'anteriores'">
+      <div *ngFor="let partido of rol.equipo.partidos">
+        <li *ngIf="partido.fecha.toDate() < fechaActual">
+          <p class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</p>
+          <h3 class="rival">{{partido.rival}}</h3>
+          <p class="ubicacion">{{partido.ubicacion}}</p>
+          <ion-button size="small" color="light" class="generar" (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">
+            <ion-icon name="document-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small" color="light" class="ver" (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small" color="light" class="reset" (click)="irAModo(rol.equipo, partido, 'reset')">
+            <ion-icon name="refresh-outline"></ion-icon>
+          </ion-button>
+          <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
+          <!-- <span class="circulo"></span> -->
+        </li>
+      </div>
+    </ul>
+
+    <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'proximos'">
+      <div *ngFor="let partido of rol.equipo.partidos">
+        <li *ngIf="partido.fecha.toDate() > fechaActual && partido.fecha.toDate() < fechaSigSemana">
+          <p class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</p>
+          <h3 class="rival">{{partido.rival}}</h3>
+          <p class="ubicacion">{{partido.ubicacion}}</p>
+          <ion-button size="small" color="light" class="generar" (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">
+            <ion-icon name="document-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small" color="light" class="ver" (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small" color="light" class="reset" (click)="irAModo(rol.equipo, partido, 'reset')">
+            <ion-icon name="refresh-outline"></ion-icon>
+          </ion-button>
+          <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
+          <!-- <span class="circulo"></span> -->
+        </li>
+      </div>
+    </ul>
+
   </div>
 </ion-content>

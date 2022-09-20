@@ -2,8 +2,8 @@ ion-menu-button {
   color: var(--ion-color-primary);
 }
 
-ion-segment-button p {
-  font-size: 8px;
+ion-segment-button {
+  font-size: 12px;
   margin-top: 1px;
   margin-bottom: 1px;
   padding: 0px;
@@ -12,6 +12,7 @@ ion-segment-button p {
 .contenedor {
   width: 100%;
   margin: 5px 5px;
+  padding-top: 20px;
   height: auto;
   position: relative;
   display: grid;
@@ -118,4 +119,20 @@ ion-segment-button p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+ion-select {
+  width: 100%;
+  justify-content: center;
+}
+
+ion-select::part(placeholder),
+ion-select::part(text) {
+  flex: 0 0 auto;
+  font-size: 12px;
+}
+
+.contenidoFijo {
+  position: fixed;
+  display: grid;
 }
