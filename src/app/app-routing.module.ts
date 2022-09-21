@@ -38,6 +38,14 @@ const routes: Routes = [
     loadChildren: () => import('./microfono/microfono.module').then( m => m.MicrofonoPageModule)
   },
   {
+    path: 'modo-ver',
+    loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
+  },
+  {
+    path: 'listas-estad',
+    loadChildren: () => import('./listas-estad/listas-estad.module').then( m => m.ListasEstadPageModule)
+  },
+  {
     path: 'admin', redirectTo: 'admin/home', pathMatch: 'full'
   },
   {
@@ -60,13 +68,13 @@ const routes: Routes = [
     path: 'admin/partidos',
     loadChildren: () => import('./admin/partidos/admin-partidos.module').then( m => m.AdminPartidosPageModule )
   },
+  /*
+   * Requisitos legales y del regulador
+   * (agencia de protección de datos, fiscales, etc.)
+   */
   {
-    path: 'modo-ver',
-    loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
-  },
-  {
-    path: 'listas-estad',
-    loadChildren: () => import('./listas-estad/listas-estad.module').then( m => m.ListasEstadPageModule)
+    path : 'privacy',
+    loadChildren: () => import('./privacy/privacy.module').then( m => m.PrivacyModule )
   }
 
 ];
