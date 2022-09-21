@@ -23,6 +23,9 @@ export class HomePage implements OnInit, OnDestroy {
   partidos: Partido[];
   subs: Subscription[] = [];
   cambioEq: string;
+  cambioFe: string;
+  fechaActual: Date;
+  fechaSigSemana: Date;
 
   constructor(private router: Router,
               private usuarioService: UsuarioService,
@@ -44,6 +47,10 @@ export class HomePage implements OnInit, OnDestroy {
     });
 
     this.cambioEq = this.usuario?.roles[0].equipo.id;
+    this.cambioFe = 'proximos';
+    this.fechaActual = new Date();
+    this.fechaSigSemana = new Date();
+    this.fechaSigSemana.setDate(this.fechaActual.getDate() + 7);
 
   }
 
@@ -107,6 +114,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   cambioEquipo(ev: any){
     this.cambioEq = ev.detail.value;
+  }
+
+  cambioFecha(ev: any){
+    this.cambioFe = ev.detail.value;
   }
 
   ngOnDestroy(){
