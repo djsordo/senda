@@ -30,15 +30,6 @@
     </ion-segment>
   </div>
 
-<!--   <ion-segment scrollable (ionChange)="cambioEquipo($event)" value="{{usuario?.roles[0].equipo.id}}">
-    <div  *ngFor="let rol of usuario?.roles">
-      <ion-segment-button value="{{rol.equipo.id}}">
-        <p>{{rol.equipo.nombre}}</p>
-        <p>{{rol.equipo.categoria + ' ' + rol.equipo.genero}}</p>
-      </ion-segment-button>
-    </div>
-  </ion-segment> -->
-
   <div  *ngFor="let rol of usuario?.roles" class="contenedor">
     <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'programados'">
       <div *ngFor="let partido of rol.equipo.partidos">
