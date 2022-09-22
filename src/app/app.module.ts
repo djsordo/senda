@@ -14,7 +14,6 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { LocalStorage } from './services/local.storage.mock';
 import { LocalStorageService } from './services/local.storage.service';
 
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

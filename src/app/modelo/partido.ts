@@ -1,8 +1,8 @@
-
+import { Timestamp } from 'firebase/firestore';
 export interface Partido{
   id?: string;
   equipoId: string;
-  fecha: string;
+  fecha: Timestamp;
   rival: string;
   temporadaId: string;
   tipo: string; // 'amistoso' | 'liga'

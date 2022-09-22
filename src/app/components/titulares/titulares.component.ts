@@ -439,7 +439,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
       // Gol del rival. Sólo contará si existe un portero.
         this.portero[0].golesRival++;
     } else if (accion === Acciones.robo){
-      if (this.portero[0].datos.id === jugadorId){
+      if (this.portero[0]?.datos.id === jugadorId){
         // Es un robo del portero
         this.portero[0].robos++;
       } else {
@@ -448,7 +448,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
         this.jugCampo[indice].robos++;
       }
     } else if (accion === Acciones.perdida){
-      if (this.portero[0].datos.id === jugadorId){
+      if (this.portero[0]?.datos.id === jugadorId){
         // Es una pérdida del portero
         this.portero[0].perdidas++;
       } else {

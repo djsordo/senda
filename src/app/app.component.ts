@@ -24,14 +24,14 @@ export class AppComponent implements OnInit {
         { title : 'Clubes',
           url: '/admin/clubes',
           icon: 'folder-open'},
-        { title : 'Equipos', 
-          url : '/admin/equipos', 
-          icon: 'people'}, 
+        { title : 'Equipos',
+          url : '/admin/equipos',
+          icon: 'people'},
         { title : 'Usuarios',
-          url : '/admin/usuarios', 
+          url : '/admin/usuarios',
           icon : 'person' },
         { title : 'Partidos',
-          url : '/admin/partidos', 
+          url : '/admin/partidos',
           src : 'assets/handball.svg' }
       ]}
   ];
@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
   };
 
   constructor(private menu: MenuController,
-              private navegacion: NavegacionService, 
-              private localStorage : LocalStorage ) {
+              private navegacion: NavegacionService,
+              private localStorage: LocalStorage ) {
   }
 
   public ngOnInit(): void {
