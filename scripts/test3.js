@@ -98,12 +98,18 @@ function uploadFile(auth) {
   });
 }
 
+/**
+ * https://javascript.plainenglish.io/how-to-create-zip-files-with-node-js-505e720ceee1
+ * 
+ * @param { string[] } sourceFiles 
+ * @param { string } zipFile 
+ */
 function createZip( sourceFiles, zipFile ){
   const zip = new JsZip();
 
   try{
     for( let file of sourceFiles ){
-      zip.file( file );
+      zip.file( file, 'hey' );
     }
     zip.generateNodeStream( { type : 'nodebuffer', streamFiles : true } )
       .pipe( fs.createWriteStream( zipFile ) )
@@ -118,3 +124,4 @@ function createZip( sourceFiles, zipFile ){
 createZip( [`${__dirname}\\..\\PRIVATE`, 
             `${__dirname}\\..\\SECRETS.md`], 
             'rlunaro-secrets.zip' );
+
