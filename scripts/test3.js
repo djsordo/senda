@@ -5,6 +5,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const readline = require('readline');
 const { google } = require('googleapis');
 const JsZip = require('jszip');
@@ -14,11 +15,15 @@ const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 const CREDENTIALS_PATH = `${__dirname}\\..\\PRIVATE\\credentials.json`;
 const TOKEN_PATH = `${__dirname}\\..\\PRIVATE\\token.json`;
 
-function main(){
+function getAuthorizationAndPerformDriveOperation( callback, sourceFilename, destFilename, destContentType ){
   fs.readFile(CREDENTIALS_PATH, (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Drive API.
-    authorize(JSON.parse(content), uploadFile);
+    authorize(JSON.parse(content), 
+                  callback, 
+                  sourceFilename, 
+                  destFilename, 
+                  destContentType );
   });  
 }
 
@@ -29,7 +34,7 @@ function main(){
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
- function authorize(credentials, callback) {
+ function authorize(credentials, callback, sourceFilename, destFilename, destContentType) {
   const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
@@ -38,9 +43,7 @@ function main(){
   fs.readFile(TOKEN_PATH, (err, token) => {
       if (err) return getAccessToken(oAuth2Client, callback);
       oAuth2Client.setCredentials(JSON.parse(token));
-      callback(oAuth2Client);//list files and upload file
-      //callback(oAuth2Client, '0B79LZPgLDaqESF9HV2V3YzYySkE');//get file
-
+      callback(oAuth2Client, sourceFilename, destFilename, destContentType ); // uploadFile
   });
 }
 
@@ -75,14 +78,14 @@ function main(){
   });
 }
 
-function uploadFile(auth) {
+function uploadFile(auth, sourceFilename, destFilename, destContentType ) {
   const drive = google.drive({ version: 'v3', auth });
   var fileMetadata = {
-      'name': 'test-rlunaro.zip'
+      'name': destFilename
   };
   var media = {
-      mimeType: 'application/octet-stream',
-      body: fs.createReadStream('test-rlunaro.zip')
+      mimeType: destContentType,
+      body: fs.createReadStream( sourceFilename )
   };
   drive.files.create({
       resource: fileMetadata,
@@ -101,15 +104,15 @@ function uploadFile(auth) {
 /**
  * https://javascript.plainenglish.io/how-to-create-zip-files-with-node-js-505e720ceee1
  * 
- * @param { string[] } sourceFiles 
+ * @param { string[] } sourcePaths 
  * @param { string } zipFile 
  */
-function createZip( sourceFiles, zipFile ){
+function createZip( sourcePaths, zipFile ){
   const zip = new JsZip();
 
   try{
-    for( let file of sourceFiles ){
-      zip.file( file, 'hey' );
+    for( let sourcePath of sourcePaths ){
+      addPathRecursivelyToZip( zip, sourcePath );
     }
     zip.generateNodeStream( { type : 'nodebuffer', streamFiles : true } )
       .pipe( fs.createWriteStream( zipFile ) )
@@ -120,8 +123,30 @@ function createZip( sourceFiles, zipFile ){
   
 }
 
+function addPathRecursivelyToZip( zip, sourcePath ){
 
-createZip( [`${__dirname}\\..\\PRIVATE`, 
+  if( fs.statSync( sourcePath ).isFile() )
+    zip.file( path.basename( sourcePath ), fs.readFileSync( sourcePath ) );
+  else{
+    let zipDirectory = zip.folder( path.basename( sourcePath ) );
+    for( let file of  fs.readdirSync( sourcePath ) ){
+      console.log( file );
+      addPathRecursivelyToZip( zipDirectory, path.join( sourcePath, file ) );
+    }
+  }
+
+}
+
+
+
+createZip( [`${__dirname}\\..\\PRIVATE`,
             `${__dirname}\\..\\SECRETS.md`], 
             'rlunaro-secrets.zip' );
+getAuthorizationAndPerformDriveOperation( uploadFile, 
+        'rlunaro-secrets.zip', 
+        'otraprueba-mas.zip', 
+        'application/octet-stream' );
 
+
+  
+            
