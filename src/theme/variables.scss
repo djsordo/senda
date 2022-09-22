@@ -96,6 +96,9 @@
 	--ion-color-amarillo-contrast-rgb: 0,0,0;
 	--ion-color-amarillo-shade: #e0e000;
 	--ion-color-amarillo-tint: #ffff1a;
+
+  // Esto lo he creado yo, el Vitores
+  --ion-segment-background: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -103,6 +106,10 @@
    * Dark Colors
    * -------------------------------------------
    */
+  // Esto lo he creado yo, el Vitores
+  :root {
+    --ion-segment-background: #000000;
+  }
 
   body {
     --ion-color-primary: #428cff;

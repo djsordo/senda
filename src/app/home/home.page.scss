@@ -1,47 +1,40 @@
-ion-menu-button {
-  color: var(--ion-color-primary);
+ion-segment {
+  width: 100%;
+  --background: var(--ion-segment-background);
 }
 
 ion-segment-button {
   font-size: 12px;
-  margin-top: 1px;
-  margin-bottom: 1px;
   padding: 0px;
+  margin: 0px;
 }
 
 .contenedor {
   width: 100%;
-  margin: 5px 5px;
-  padding-top: 20px;
+  margin-top: 130px;
   height: auto;
   position: relative;
-  display: grid;
 	place-items: center;
 }
 
-.contenedor ul {
-  width: 85%;
+.contenidoFijo {
+  width: 100%;
+}
+
+ .contenedor ul {
   list-style: none;
 }
 
 .contenedor ul li {
-  width: 100%;
+  width: 95%;
   height: 100px;
   padding: 0px;
-  box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.384);
+  box-shadow: 1px 1px 25px rgba(127, 127, 127, 0.384);
   border-radius: 10px;
-  margin-top: 60px;
+  margin-top: 30px;
   position: relative;
 }
 
-/* .contenedor::after {
-  position: absolute;
-  left: -10%;
-  content: ' ';
-  width: 2px;
-  height: 100%;
-  background-image: linear-gradient(to bottom, rgb(106, 6, 236), rgb(220, 0, 240));
-} */
 
 .contenedor ul li .rival {
   position: absolute;
@@ -51,18 +44,11 @@ ion-segment-button {
   top: 22px;
 }
 
-.contenedor ul li .jornada {
-  position: absolute;
-  font-size: 12px;
-  left: 25%;
-  top: 7px;
-}
-
 .contenedor ul li .ubicacion {
   position: absolute;
   font-size: 12px;
   right: 5%;
-  top: 7px;
+  top: 0px;
 }
 
 .contenedor ul li .generar {
@@ -85,40 +71,36 @@ ion-segment-button {
 
 .contenedor ul li .fecha {
   position: absolute;
-  top: 7px;
+  top: 5px;
   left: -30px;
   width: 80px;
 	height: 25px;
 	border-radius: 20px;
-	color: #fff;
-	background-image: linear-gradient(to right, rgb(106, 6, 236), rgb(220, 0, 240));
+	//color: #fff;
+	//background-image: linear-gradient(to right, rgb(106, 6, 236), rgb(220, 0, 240));
+  background-color: var(--ion-segment-background);
 	display: grid;
 	place-items: center;
 	font-size: 12px;
-	box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.418);
+	box-shadow: 1px 2px 6px rgba(127, 127, 127, 0.418);
 
 }
 
-.contenedor ul li .circulo{
-	width: 30px;
-	height: 30px;
-	background-color: rgba(220, 0, 240, 0.403);
-	border-radius: 50%;
-	position: absolute;
-	top: 50%;
-  left: -50px;
-}
-
-.contenedor ul li .circulo::after{
-  content: ' ';
-  width: 15px;
-  height: 15px;
-  background-color: rgb(106, 6, 236);
-  border-radius: 50%;
+.contenedor ul li .jornada {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 5px;
+  left: -30px;
+  width: 80px;
+	height: 25px;
+	border-radius: 20px;
+	/* color: #fff;
+	background-image: linear-gradient(to right, rgb(106, 6, 236), rgb(220, 0, 240)); */
+  background-color: var(--ion-segment-background);
+	display: grid;
+	place-items: center;
+	font-size: 12px;
+	box-shadow: 1px 2px 6px rgba(127, 127, 127, 0.418);
+
 }
 
 ion-select {
@@ -132,7 +114,3 @@ ion-select::part(text) {
   font-size: 12px;
 }
 
-.contenidoFijo {
-  position: fixed;
-  display: grid;
-}
