@@ -7,16 +7,20 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
+const JsZip = require('jszip');
+
 
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 const CREDENTIALS_PATH = `${__dirname}\\..\\PRIVATE\\credentials.json`;
 const TOKEN_PATH = `${__dirname}\\..\\PRIVATE\\token.json`;
 
-fs.readFile(CREDENTIALS_PATH, (err, content) => {
-  if (err) return console.log('Error loading client secret file:', err);
-  // Authorize a client with credentials, then call the Google Drive API.
-  authorize(JSON.parse(content), uploadFile);
-});
+function main(){
+  fs.readFile(CREDENTIALS_PATH, (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Drive API.
+    authorize(JSON.parse(content), uploadFile);
+  });  
+}
 
 
 /**
@@ -94,4 +98,23 @@ function uploadFile(auth) {
   });
 }
 
+function createZip( sourceFiles, zipFile ){
+  const zip = new JsZip();
 
+  try{
+    for( let file of sourceFiles ){
+      zip.file( file );
+    }
+    zip.generateNodeStream( { type : 'nodebuffer', streamFiles : true } )
+      .pipe( fs.createWriteStream( zipFile ) )
+      .on('finish', () => { console.log('finished'); } );
+  }catch( err ) {
+    console.log( err );
+  }
+  
+}
+
+
+createZip( [`${__dirname}\\..\\PRIVATE`, 
+            `${__dirname}\\..\\SECRETS.md`], 
+            'rlunaro-secrets.zip' );
