@@ -12,8 +12,9 @@ const JsZip = require('jszip');
 
 
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
-const CREDENTIALS_PATH = `${__dirname}\\..\\PRIVATE\\credentials.json`;
-const TOKEN_PATH = `${__dirname}\\..\\PRIVATE\\token.json`;
+const CONFIG = path.join( __dirname, "..", "PRIVATE", "config.json" );
+const CREDENTIALS_PATH = path.join( __dirname, "..", "PRIVATE", "credentials.json" );
+const TOKEN_PATH = path.join( __dirname, "..", "PRIVATE", "token.json" );
 
 function getAuthorizationAndPerformDriveOperation( callback, args ){
   fs.readFile(CREDENTIALS_PATH, (err, content) => {
@@ -24,6 +25,15 @@ function getAuthorizationAndPerformDriveOperation( callback, args ){
   });  
 }
 
+
+function loadPathsToBackup( configPath ){
+  const config = JSON.parse( fs.readFileSync( configPath ) );
+  let result = [];
+  for( let singlePath of config.secrets ){
+    result.push( path.join( __dirname, "..", "PRIVATE", singlePath ) );
+  }
+  return result;
+}
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -161,8 +171,7 @@ if( process.argv.length !== 3 ){
   let iterativeDay = (new Date()).getDate() % 3;
   let zipFileName = `secrets_${process.argv[2]}.zip`;
   let uploadFileName = `secrets_${process.argv[2]}_${iterativeDay}.zip`;
-  createZip( [ path.join( __dirname, '..', 'PRIVATE' ),
-               path.join( __dirname, '..', 'SECRETS.md' ) ], 
+  createZip( loadPathsToBackup( CONFIG ), 
               zipFileName );
   getAuthorizationAndPerformDriveOperation( uploadFilename, 
   {
