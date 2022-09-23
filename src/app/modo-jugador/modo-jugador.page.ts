@@ -1,3 +1,6 @@
+import { AlertController } from '@ionic/angular';
+import { BDGeneralService } from './../services/bdgeneral.service';
+import { Subscription } from 'rxjs';
 import { EstadJugadorService } from './../services/estad-jugador.service';
 import { UsuarioService } from './../services/usuario.service';
 import { EventosService } from 'src/app/services/eventos.service';
@@ -13,8 +16,6 @@ import { Acciones } from '../services/eventos.service';
 import { EstadJugador } from '../modelo/estadJugador';
 import { EstadPartidoService } from '../services/estad-partido.service';
 import { Usuario } from '../modelo/usuario';
-import { connectFirestoreEmulator } from 'firebase/firestore';
-import { idToken } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-modo-jugador',
@@ -43,6 +44,9 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     rival: 0,
   };
 
+  subs: Subscription[] = [];
+  respuesta = 'no';
+
   constructor(private router: Router,
               private toastController: ToastController,
               private pasoDatos: PasoDatosService,
@@ -52,7 +56,9 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
               private estadPartidoService: EstadPartidoService,
               private platform: Platform,
               private usuarioService: UsuarioService,
-              private estadJugadorService: EstadJugadorService) {
+              private estadJugadorService: EstadJugadorService,
+              private bdGeneralService: BDGeneralService,
+              private alertController: AlertController) {
     }
 
   ngOnInit() {
@@ -66,9 +72,9 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     console.log('Usuario: ', this.usuario);
 
     // Para manejar el botón de atrás
-    this.platform.backButton.subscribeWithPriority(10, () => {
-      alert('hemos dado el botón de atrás');
-    });
+    this.subs.push(this.platform.backButton.subscribeWithPriority(10, () => {
+      this.navAtras();
+    }));
 
     this.listaEliminados = [];
     this.listaExcluidos = [];
@@ -168,16 +174,47 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   ngOnDestroy(){
     console.log('Compònente modo-jugador destruido');
     this.miSuscripcionAEventoJugador.unsubscribe();
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   navAtras(){
     // Esta función se encarga de navegar hacia atrás según convenga
     const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId'));
     if (estadoPartido === 'en curso'){
-      this.router.navigate(['/home']);
+      // Hay que avisar de que si se sale se borrarán todas las estadísticas.
+      this.mostrarAlerta().then( resp => {
+        console.log(resp);
+        if (resp === 'confirm'){
+          this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
+          this.router.navigate(['/home']);
+        };
+      });
+
     } else if (estadoPartido === 'en preparacion'){
+      // Hacemos reset de estadísticas
+      this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
       this.router.navigate(['/inicio-sel-jugadores']);
     }
+  }
+  async mostrarAlerta(){
+    let respuesta: string;
+    const alert = await this.alertController.create({
+      header: '¡¡¡ Atención !!! ',
+      subHeader: 'Si sales de esta pantalla se perderán todas las estadísticas recabadas hasta ahora. ¿Realmente desea salir?',
+      buttons: [{
+        text: 'No',
+        role: 'cancel'
+      },
+      {
+        text: 'Sí',
+        role: 'confirm',
+      },
+    ],
+    });
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    return role;
   }
 
   finalPartido(){

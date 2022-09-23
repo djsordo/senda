@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Firestore, 
-        collection, 
-        collectionData, 
-        query, 
-        where, 
+import { Firestore,
+        collection,
+        collectionData,
+        query,
+        where,
         CollectionReference,
-        DocumentData, 
+        DocumentData,
         doc,
         setDoc,
         onSnapshot,
@@ -20,9 +20,9 @@ import { Partido } from '../modelo/partido';
 })
 export class PartidosService {
 
-  partidoRef : CollectionReference<DocumentData>;
+  partidoRef: CollectionReference<DocumentData>;
 
-  constructor(private firestore: Firestore) { 
+  constructor(private firestore: Firestore) {
     this.partidoRef = collection( this.firestore, 'partidos' );
   }
 
@@ -30,12 +30,12 @@ export class PartidosService {
     return {} as Partido;
   }
 
-  addPartido( partido : Partido ){
+  addPartido( partido: Partido ){
     return setDoc( doc( this.partidoRef, this.make_id( partido ) ), partido );
   }
 
-  make_id( partido : Partido ){
-    return make_id( partido.temporadaId 
+  make_id( partido: Partido ){
+    return make_id( partido.temporadaId
             + partido.equipoId
             + partido.rival );
   }
@@ -45,15 +45,18 @@ export class PartidosService {
     return collectionData(partidoRef, {idField: 'id'}) as Observable<Partido[]>;
   }
 
-  getPartidosCallback( callback, 
-              field? : string, 
-              operator? : WhereFilterOp, 
-              value? : string ){
+  getPartidosCallback( callback,
+              field?: string,
+              operator?: WhereFilterOp,
+              value?: string ){
     let q = null;
-    if( field ) 
+    if( field ){
       q = query( this.partidoRef, where( field, operator, value ) );
-    else 
+    }
+    else{
       q = query( this.partidoRef );
+    }
+
     return onSnapshot( q, callback );
   }
 
