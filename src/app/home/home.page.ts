@@ -20,10 +20,13 @@ export class HomePage implements OnInit, OnDestroy {
   usuario: Usuario;
   partidos: Partido[];
   subs: Subscription[] = [];
+
   cambioEq: string;
   cambioFe: string;
+
   fechaActual: Date;
-  fechaSigSemana: Date;
+  fIniSemana: Date;
+  fFinSemana: Date;
 
   constructor(private router: Router,
               private usuarioService: UsuarioService,
@@ -44,10 +47,23 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.cambioEq = this.usuario?.roles[0].equipo.id;
     this.cambioFe = 'proximos';
-    this.fechaActual = new Date();
-    this.fechaSigSemana = new Date();
-    this.fechaSigSemana.setDate(this.fechaActual.getDate() + 7);
 
+    this.fechaActual = new Date();
+    console.log('Fecha actual: ', this.fechaActual);
+
+    this.fIniSemana = new Date();
+    this.fIniSemana.setDate(this.fIniSemana.getDate() - (this.fechaActual.getDay() < 1 ? 6 : (this.fechaActual.getDay()-1)));
+    this.fIniSemana.setHours(0);
+    this.fIniSemana.setMinutes(0);
+    this.fIniSemana.setSeconds(0);
+    console.log('Fecha del primer día de la semana: ', this.fIniSemana);
+
+    this.fFinSemana = new Date();
+    this.fFinSemana.setDate(this.fFinSemana.getDate() + (this.fechaActual.getDay() < 1 ? 0 : (6 - (this.fechaActual.getDay()-1))));
+    this.fFinSemana.setHours(23);
+    this.fFinSemana.setMinutes(59);
+    this.fFinSemana.setSeconds(59);
+    console.log('Fecha del último día de la semana: ', this.fFinSemana);
   }
 
   irAModo(equipo: Equipo, partido: Partido, modo){

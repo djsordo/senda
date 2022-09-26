@@ -100,7 +100,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     if (this.listaExcluidos !== undefined){
       for (let i = 0; i < this.listaExcluidos?.length; i++){
 
-        if (this.listaExcluidos[i].segExclusion === 0) {
+        if (this.listaExcluidos[i].segExclusion <= 0) {
           this.listaExcluidos[i].exclusion = false;
 
           // devolvemos al jugador a la lista de banquillo, o si es la tercera exclusión, roja o azul a la de eliminados

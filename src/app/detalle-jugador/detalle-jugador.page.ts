@@ -3,6 +3,7 @@ import { Crono } from './../modelo/crono';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { PasoDatosService } from '../services/paso-datos.service';
 import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../services/balonmano.service';
@@ -31,7 +32,8 @@ export class DetalleJugadorPage implements OnInit {
     public balonmanoService: BalonmanoService,
     private eventosService: EventosService,
     private trad: TradService,
-    private estadPartidoService: EstadPartidoService
+    private estadPartidoService: EstadPartidoService,
+    private location: Location
     ) {}
 
   ngOnInit() {
@@ -47,6 +49,10 @@ export class DetalleJugadorPage implements OnInit {
 
   public onPorteriaClicked( event: string ){
     this.areaPorteria = event;
+  }
+
+  navAtras(){
+    this.location.back();
   }
 
   btnOk(){
