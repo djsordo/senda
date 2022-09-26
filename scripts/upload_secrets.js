@@ -30,7 +30,7 @@ function loadPathsToBackup( configPath ){
   const config = JSON.parse( fs.readFileSync( configPath ) );
   let result = [];
   for( let singlePath of config.secrets ){
-    result.push( path.join( __dirname, "..", "PRIVATE", singlePath ) );
+    result.push( path.join( __dirname, "..", singlePath ) );
   }
   return result;
 }
