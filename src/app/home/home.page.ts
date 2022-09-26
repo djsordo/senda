@@ -1,6 +1,5 @@
-import { EstadJugadorService } from './../services/estad-jugador.service';
-import { EstadPartidoService } from './../services/estad-partido.service';
-import { EventosService } from 'src/app/services/eventos.service';
+import { BDGeneralService } from './../services/bdgeneral.service';
+
 import { Equipo } from './../modelo/equipo';
 import { PasoDatosService } from './../services/paso-datos.service';
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -11,7 +10,6 @@ import { Router } from '@angular/router';
 import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'app-home',
@@ -30,9 +28,7 @@ export class HomePage implements OnInit, OnDestroy {
   constructor(private router: Router,
               private usuarioService: UsuarioService,
               private pasoDatosService: PasoDatosService,
-              private eventosService: EventosService,
-              private estadPartidoService: EstadPartidoService,
-              private estadJugadorService: EstadJugadorService
+              private bdGeneralService: BDGeneralService
               ) {
   }
 
@@ -87,28 +83,7 @@ export class HomePage implements OnInit, OnDestroy {
       // A ver si puedo desde aquí cambiar el estado del partido.
       partido.config.estado = 'programado';
       this.usuarioService.updateUsuario(this.usuario);
-
-      // Borrar eventos relacionados con el partido
-      this.subs.push(this.eventosService.getEventos(partido.id).subscribe(evento => {
-        evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
-      }));
-
-      // Reset del servicio estadPartido
-      this.estadPartidoService.reset();
-
-      // Borrar EstadPartidos relacionados con el partido
-      this.subs.push(this.estadPartidoService.getEstadPartido(partido.id)
-      .subscribe(estadP => {
-        console.log(estadP);
-        estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
-      }));
-
-      // Borrar EstadJugadores relacionados con el partido
-      this.subs.push(this.estadJugadorService.getEstadJugador(partido.id)
-      .subscribe(estadJ => {
-        console.log(estadJ);
-        estadJ.forEach(ejBorrar => this.estadJugadorService.deleteEstadJugador(ejBorrar.id));
-      }));
+      this.subs = this.bdGeneralService.resetPartido(partido.id);
     }
   }
 

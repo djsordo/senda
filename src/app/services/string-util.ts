@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 
 
 /**
- * Utilidades para cadenas de caracteres, por ejemplo un comparador 
- * por contenido que ignore mayúsculas y minúsculas. 
+ * Utilidades para cadenas de caracteres, por ejemplo un comparador
+ * por contenido que ignore mayúsculas y minúsculas.
  */
 @Injectable({
   providedIn : 'root'
@@ -11,26 +11,26 @@ import { Injectable } from "@angular/core";
 export class StringUtil{
 
   subtitutions = {
-    'a' : 'áàäã',
-    'e' : 'éèë',
-    'i' : 'íìï',
-    'o' : 'óòö',
-    'u' : 'úùü'
+    'a': 'áàäã',
+    'e': 'éèë',
+    'i': 'íìï',
+    'o': 'óòö',
+    'u': 'úùü'
   };
 
   /**
-   * Comparación flexible: 
-   * 
+   * Comparación flexible:
+   *
    * <code>like( 'hola    lucas', 'hola' ) -> true</code> (busca por contenido)
    * <code>like( 'hola    lucas', 'hola lucas' ) -> true</code> (ignora espacios repetidos)
    * <code>like( 'HOLA  LUCAS', 'hola lucas' ) -> true</code> (ignora mayusculas y minúsculas)
    * <code>like( 'hóla lúcas', 'hola lucas' ) -> true</code> (ignora marcas diacríticas)
-   * @param str 
-   * @param pattern 
+   * @param str
+   * @param pattern
    */
   public like( pajar : string, aguja : string ){
 
-    pajar = pajar.toLowerCase(); 
+    pajar = pajar.toLowerCase();
     aguja = aguja.toLowerCase();
 
     const anyWhiteSpace = /\s+/ig;
@@ -41,7 +41,7 @@ export class StringUtil{
 
 
     if( pajar.search( aguja ) >= 0 )
-      return true; 
+      return true;
     else
       return false;
   }
@@ -53,7 +53,7 @@ export class StringUtil{
         str = str.replaceAll( characterToLocate, character );
       }
     }
-    return str; 
+    return str;
   }
 
 }
@@ -96,9 +96,9 @@ export function make_id( ...values : string[] ){
 }
 
 /**
- * Given an imput string, return it in "Proper Case", i.e. 
+ * Given an imput string, return it in "Proper Case", i.e.
  * the first letter in uppercase and the rest in lowercase.
- * 
+ *
  * @param s input string
  */
 export function properCase( s : string ){
@@ -106,14 +106,14 @@ export function properCase( s : string ){
 }
 
 /**
- * Given a Date object, returns a string representing 
- * a "useful" translation of that date. 
- * 
- * A useful representation is "two days ago" instead of 
- * "18/08/2022" or "In two hours" to represent that the 
+ * Given a Date object, returns a string representing
+ * a "useful" translation of that date.
+ *
+ * A useful representation is "two days ago" instead of
+ * "18/08/2022" or "In two hours" to represent that the
  * event represented by this date will begin on two hours.
  *
- * valores que vamos a retornar: 
+ * valores que vamos a retornar:
  * miercoles de la próxima semana (24/08)
  * dentro de dos días (24/08)
  * mañana (24/08)
@@ -121,7 +121,7 @@ export function properCase( s : string ){
  * dentro de X horas (13:30)
  * dentro de una hora (13:30)
  * dentro de media hora (13:30)
- * ahora 
+ * ahora
  * hace media hora (13:30)
  * hace una hora (13:30)
  * hace X horas (13:30)
@@ -129,49 +129,49 @@ export function properCase( s : string ){
  * antes de ayer (24/08)
  * miercoles pasado (24/08)
  * (24/08)
- *  
- * @param d 
+ *
+ * @param d
  */
-export function formatDateUtil( d : Date, 
+export function formatDateUtil( d : Date,
                                 now : Date = null ) : string{
   const terms = {
     now : 'ahora (${H}:${M})',
     nextHour : 'dentro de una hora (${H}:${M})',
     anHourAgo : 'hace una hora (${H}:${M})',
-    twoHours : 'dentro de dos horas (${H}:${M})', 
-    twoHoursAgo : 'hace dos horas (${H}:${M})', 
-    threeHours : 'dentro de tres horas (${H}:${M})', 
-    threeHoursAgo : 'hace tres horas (${H}:${M})', 
-    fourHours : 'dentro de cuatro horas (${H}:${M})', 
+    twoHours : 'dentro de dos horas (${H}:${M})',
+    twoHoursAgo : 'hace dos horas (${H}:${M})',
+    threeHours : 'dentro de tres horas (${H}:${M})',
+    threeHoursAgo : 'hace tres horas (${H}:${M})',
+    fourHours : 'dentro de cuatro horas (${H}:${M})',
     fourHoursAgo : 'hace cuatro horas (${H}:${M})',
     catchAllLessOneDay : '${H}:${M}',
     tomorrow : 'mañana (${d}/${m})',
     yesterday : 'ayer (${d}/${m})',
     inTwoDays : 'pasado mañana (${d}/${m})',
-    twoDaysAgo : 'antes de ayer (${d}/${m})', 
-    nextWeek: '${a} de la próxima semana (${d}/${m})', 
+    twoDaysAgo : 'antes de ayer (${d}/${m})',
+    nextWeek: '${a} de la próxima semana (${d}/${m})',
     prevWeek: '${a} de la semana pasada (${d}/${m})',
     inTwoWeeks: '${a} dentro de dos semanas (${d}/${m})',
     twoWeeksAgo : '${a} de hace dos semanas (${d}/${m})',
-    catchAll : '${d}/${m}', 
+    catchAll : '${d}/${m}',
     catchAllWithYear : '${d}/${m}/${Y}'
   };
   let dateInfo = {
-    d : d, 
+    d : d,
     now : now?now:new Date(),
-    dTrunc : truncateDate( d ), 
-    nowTrunc : truncateDate( now ), 
+    dTrunc : truncateDate( d ),
+    nowTrunc : truncateDate( now ),
     hoursDiff : null,
-    daysDiff : null, 
-    hoursDiffTrunc : null, 
-    daysDiffTrunc : null, 
+    daysDiff : null,
+    hoursDiffTrunc : null,
+    daysDiffTrunc : null,
     weeksDiffTrunc: null
   };
   dateInfo.hoursDiff = (d.getTime() - now.getTime())  / (1000 * 3600);
   dateInfo.daysDiff = (d.getTime() - now.getTime()) / (1000 * 3600 * 24);
-  dateInfo.hoursDiffTrunc = (dateInfo.dTrunc.getTime() - dateInfo.nowTrunc.getTime()) 
+  dateInfo.hoursDiffTrunc = (dateInfo.dTrunc.getTime() - dateInfo.nowTrunc.getTime())
                           / (1000 * 3600);
-  dateInfo.daysDiffTrunc = (dateInfo.dTrunc.getTime() - dateInfo.nowTrunc.getTime()) 
+  dateInfo.daysDiffTrunc = (dateInfo.dTrunc.getTime() - dateInfo.nowTrunc.getTime())
                           / (1000 * 3600 * 24);
   dateInfo.weeksDiffTrunc = weeksDiff( dateInfo.d, dateInfo.nowTrunc );
 
@@ -236,7 +236,7 @@ function isHoursAgo( dateInfo : any, hours : number ){
 }
 
 function isDaysAgo( dateInfo : any, days : number ){
-  return dateInfo.daysDiffTrunc === days; 
+  return dateInfo.daysDiffTrunc === days;
 }
 
 function isWeeksAgo( dateInfo: any, weeks : number ){
@@ -244,52 +244,52 @@ function isWeeksAgo( dateInfo: any, weeks : number ){
 }
 
 /**
- * Replacements: 
- * 
+ * Replacements:
+ *
  * ${H} - hour as 24 hour format
  * ${M} - minutes, zero padded (00-59)
  * ${a} - day of the week. sunday = 0, monday = 1...
  * ${d} - actual day, zero padded (01-31)
  * ${m} - actual month, zero padded (01-12)
  * ${Y} - full year (2022)
- * @param term 
- * @param dateInfo 
+ * @param term
+ * @param dateInfo
  */
 function resolveString( term : string, dateInfo : any ) : string {
   const weekDays = ['domingo',
-  'lunes', 
-  'martes', 
-  'miércoles', 
-  'jueves', 
-  'viernes', 
+  'lunes',
+  'martes',
+  'miércoles',
+  'jueves',
+  'viernes',
   'sábado'];
 
-  let result = term; 
-  result = result.replaceAll( '${Y}', 
+  let result = term;
+  result = result.replaceAll( '${Y}',
                           (dateInfo.d.getFullYear()).toString() );
-  result = result.replaceAll( '${m}', 
+  result = result.replaceAll( '${m}',
                           (dateInfo.d.getMonth()+1).toString().padStart( 2, "0" ) );
-  result = result.replaceAll( '${d}', 
+  result = result.replaceAll( '${d}',
                           (dateInfo.d.getDate()).toString().padStart( 2, "0" ) );
   // day of the week
-  result = result.replaceAll( '${a}', 
+  result = result.replaceAll( '${a}',
                           weekDays[ dateInfo.d.getDay() ] );
-  result = result.replaceAll( '${H}', 
+  result = result.replaceAll( '${H}',
                           dateInfo.d.getHours().toString().padStart( 2, "0") );
-  result = result.replaceAll( '${M}', 
+  result = result.replaceAll( '${M}',
                           dateInfo.d.getMinutes().toString().padStart( 2, "0") );
   return result;
 }
 
 /**
- * Given two dates, return the difference in weeks between them. 
- * 
- * @param weekInfo1 
- * @param weekInfo2 
- * @returns 
+ * Given two dates, return the difference in weeks between them.
+ *
+ * @param weekInfo1
+ * @param weekInfo2
+ * @returns
  */
 function weeksDiff( d1 : Date, d2 : Date ){
-  let weekInfo1 = getWeekNumber( d1 ); 
+  let weekInfo1 = getWeekNumber( d1 );
   let weekInfo2 = getWeekNumber( d2 );
   if( weekInfo1[0] === weekInfo2[0] ){
     return weekInfo1[1] - weekInfo2[1];
@@ -300,12 +300,12 @@ function weeksDiff( d1 : Date, d2 : Date ){
 }
 
 function truncateDate( d : Date ){
-  return new Date( d.getFullYear(), 
-                   d.getMonth(), 
+  return new Date( d.getFullYear(),
+                   d.getMonth(),
                    d.getDate() );
 }
 
-/** 
+/**
  * For a given date, get the ISO week number
  *
  * https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php

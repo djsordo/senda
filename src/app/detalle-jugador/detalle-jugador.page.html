@@ -44,6 +44,15 @@
     </ion-row>
 
     <ion-row>
+      <ion-col col-12>
+        <ion-item button color="success" (click)="btnOk()">
+          <ion-label>OK</ion-label>
+          <ion-icon name="football"></ion-icon>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col size="12" size-md>
         <p *ngIf="this.areaCampo"
         style="text-align:center;">desde {{this.getCampoName()}}</p>
@@ -54,14 +63,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col col-12>
-        <ion-item button color="success" (click)="btnOk()">
-          <ion-label>OK</ion-label>
-          <ion-icon name="football"></ion-icon>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+
 
   </ion-grid>
 
