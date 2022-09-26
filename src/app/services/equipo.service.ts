@@ -13,8 +13,11 @@ import { Firestore,
           DocumentReference,
           DocumentSnapshot, 
           doc } from '@angular/fire/firestore';
+import { setDoc } from "firebase/firestore";
 
 import { Equipo } from "../modelo/equipo";
+import { ClubesService } from "./clubes.service";
+import { make_id } from "./string-util";
 
 
 @Injectable({
@@ -41,8 +44,16 @@ export class EquipoService {
   }
 
   async addEquipo( equipo : Equipo ){
-    return addDoc( this.equipoRef, equipo );
+    return setDoc( doc( this.equipoRef, this.make_id( equipo ) ), equipo );
+    addDoc( this.equipoRef, equipo );
   }
+
+  make_id( equipo: Equipo ){
+    return make_id( equipo.nombre,
+              equipo.categoria,
+              equipo.genero,
+              equipo.club.nombre );
+  }  
 
   async updateEquipo( docSnap : DocumentSnapshot<DocumentData>, 
                       equipo : any ){
