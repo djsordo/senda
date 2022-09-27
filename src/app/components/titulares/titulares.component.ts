@@ -30,15 +30,19 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   /* listaEliminados: Array<EstadJugador> = []; */
   /* portero: Array<EstadJugador> = []; */
 
-  listaRobos= [{nombre: 'Pase'},
-              {nombre: 'Falta en ataque'},
-              {nombre: 'Intercepción'},
-              {nombre: 'Otros'}];
+  listaRobos= [{nombre: 'Provocado'},
+               {nombre: 'Falta en ataque'},
+               {nombre: 'Intercepción'},
+               {nombre: 'De las manos'},
+               {nombre: 'Otros'}];
   listaPerdidas= [{nombre: 'Pase'},
-              {nombre: 'Falta en ataque'},
-              {nombre: 'Pasos'},
-              {nombre: 'Dobles'},
-              {nombre: 'Otros'}];
+                  {nombre: 'Falta en ataque'},
+                  {nombre: 'Invasión'},
+                  {nombre: 'Pasos'},
+                  {nombre: 'Dobles'},
+                  {nombre: 'De las manos'},
+                  {nombre: 'Pie'},
+                  {nombre: 'Otros'}];
 
   ev: Event;
   marcaTiempo: Crono;

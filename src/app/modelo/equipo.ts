@@ -5,7 +5,8 @@ import { Temporada } from './temporada';
 export interface Equipo {
   id?: string;
   nombre: string;
-  club : Club;
+  nombreCorto?: string;
+  club: Club;
   categoria: string;
   genero: string;
   temporada: Temporada;

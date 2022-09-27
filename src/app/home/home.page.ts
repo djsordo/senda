@@ -49,21 +49,21 @@ export class HomePage implements OnInit, OnDestroy {
     this.cambioFe = 'proximos';
 
     this.fechaActual = new Date();
-    console.log('Fecha actual: ', this.fechaActual);
+    //console.log('Fecha actual: ', this.fechaActual);
 
     this.fIniSemana = new Date();
     this.fIniSemana.setDate(this.fIniSemana.getDate() - (this.fechaActual.getDay() < 1 ? 6 : (this.fechaActual.getDay()-1)));
     this.fIniSemana.setHours(0);
     this.fIniSemana.setMinutes(0);
     this.fIniSemana.setSeconds(0);
-    console.log('Fecha del primer día de la semana: ', this.fIniSemana);
+    //console.log('Fecha del primer día de la semana: ', this.fIniSemana);
 
     this.fFinSemana = new Date();
     this.fFinSemana.setDate(this.fFinSemana.getDate() + (this.fechaActual.getDay() < 1 ? 0 : (6 - (this.fechaActual.getDay()-1))));
     this.fFinSemana.setHours(23);
     this.fFinSemana.setMinutes(59);
     this.fFinSemana.setSeconds(59);
-    console.log('Fecha del último día de la semana: ', this.fFinSemana);
+    //console.log('Fecha del último día de la semana: ', this.fFinSemana);
   }
 
   irAModo(equipo: Equipo, partido: Partido, modo){
@@ -78,7 +78,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     const nombresEquipos = {casa: '', fuera: ''};
 
-    nombresEquipos.casa = equipo.nombre;
+    nombresEquipos.casa = equipo.nombreCorto !== undefined ? equipo.nombreCorto : equipo.nombre;
     nombresEquipos.fuera = partido.rival;
     this.pasoDatosService.setNombresEquipos(nombresEquipos);
 

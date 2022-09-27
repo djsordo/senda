@@ -1,8 +1,8 @@
-* {
   /* Cálculo para texto responsive */
+/* * {
   --diff: calc(var(--max-size) - var(--min-size));
-  --responsive: calc((var(--min-size) * 1px) + var(--diff) * ((100vw - 300px) / (1600 - 300))); /* Ranges from 301px to 1599px */
-}
+  --responsive: calc((var(--min-size) * 1px) + var(--diff) * ((100vw - 300px) / (1600 - 300)));
+} */
 
 ion-grid{
   height: 100%;
@@ -24,7 +24,16 @@ ion-card{
 }
 
 .textoNombres{
-  --max-size: 40;
+  font-size: 5vw;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  /* --max-size: 40;
   --min-size: 15;
-  font-size: var(--responsive);
+  font-size: var(--responsive); */
+}
+
+.textoMarcador {
+  font-size: 8vw;
 }

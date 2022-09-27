@@ -1,13 +1,15 @@
  <ion-card class="background">
     <ion-grid>
       <ion-row>
-        <ion-col class="ion-text-center textoNombres">
-          <b>{{nombreEquipo}}</b>
+        <ion-col class="ion-text-center">
+          <div class="textoNombres">
+            <b>{{nombreEquipo}}</b>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-center">
-          <ion-text>{{marcador}}</ion-text>
+          <div class="textoMarcador">{{marcador}}</div>
         </ion-col>
         <ion-col *ngIf="dosMinLista.length !== 0 && !nosotros">
           <span *ngFor="let dosMin of dosMinLista">
