@@ -1,3 +1,4 @@
+import { AlertController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { PartidosService } from './../../services/partidos.service';
 import { UsuarioService } from './../../services/usuario.service';
@@ -30,7 +31,8 @@ export class CronoComponent implements OnInit, OnDestroy {
   constructor(private cronoService: CronoService,
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
-              private usuarioService: UsuarioService) {}
+              private usuarioService: UsuarioService,
+              private alertController: AlertController) {}
 
   ngOnInit() {
     this.tiempo = this.cronoService.tiempo;
@@ -54,12 +56,12 @@ export class CronoComponent implements OnInit, OnDestroy {
       this.usuarioService.setEstadoPartido(localStorage.getItem('partidoId'), 'en curso');
       this.usuarioService.updateUsuario(this.usuarioService.getUsuario());
 
-    // Evento de comienzo de partido
-    const evento = this.eventosService.newEvento();
-    evento.accionPrincipal = Acciones.comienzoPartido;
-    evento.partidoId = localStorage.getItem('partidoId');
-    evento.equipoId = localStorage.getItem('equipoId');
-    this.pasoDatos.onEventoJugador( evento );
+      // Evento de comienzo de partido
+      const evento = this.eventosService.newEvento();
+      evento.accionPrincipal = Acciones.comienzoPartido;
+      evento.partidoId = localStorage.getItem('partidoId');
+      evento.equipoId = localStorage.getItem('equipoId');
+      this.pasoDatos.onEventoJugador( evento );
     }
 
     if (this.tiempo.segundos === 0){
@@ -76,25 +78,29 @@ export class CronoComponent implements OnInit, OnDestroy {
   }
 
   pulsaParte(){
-    this.tiempo.finParte = true;
-    this.tiempo.encendido = false;
+    this.mostrarAlerta().then( resp => {
+      console.log(resp);
+      if (resp === 'confirm'){
+        this.tiempo.finParte = true;
+        this.tiempo.encendido = false;
 
-    // Evento de fin de parte
-    const evento = this.eventosService.newEvento();
-    evento.accionPrincipal = Acciones.finPeriodo;
-    evento.partidoId = localStorage.getItem('partidoId');
-    evento.equipoId = localStorage.getItem('equipoId');
-    this.pasoDatos.onEventoJugador( evento );
+        // Evento de fin de parte
+        const evento = this.eventosService.newEvento();
+        evento.accionPrincipal = Acciones.finPeriodo;
+        evento.partidoId = localStorage.getItem('partidoId');
+        evento.equipoId = localStorage.getItem('equipoId');
+        this.pasoDatos.onEventoJugador( evento );
 
-    if (this.tiempo.parte === this.partes) {
-      // Es el final del partido
-      this.finPartido();
-    } else {
-      this.tiempo.parte++;
-      this.tiempo.segundos = 0;
-      this.tiempo.finParte = false;
-    }
-
+        if (this.tiempo.parte === this.partes) {
+          // Es el final del partido
+          this.finPartido();
+        } else {
+          this.tiempo.parte++;
+          this.tiempo.segundos = 0;
+          this.tiempo.finParte = false;
+        }
+      };
+    });
   }
 
   finParte(){
@@ -129,5 +135,25 @@ export class CronoComponent implements OnInit, OnDestroy {
 
     this.usuario.roles[indiceRol].equipo.partidos[indicePartido].config.estado = 'finalizado';
     this.usuarioService.updateUsuario(this.usuario);
+  }
+
+  async mostrarAlerta(){
+    const alert = await this.alertController.create({
+      header: '¡¡¡ Atención !!! ',
+      subHeader: '¿Realmente deseas finalizar el periodo en curso?',
+      buttons: [{
+        text: 'No',
+        role: 'cancel'
+      },
+      {
+        text: 'Sí',
+        role: 'confirm',
+      },
+    ],
+    });
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    return role;
   }
 }

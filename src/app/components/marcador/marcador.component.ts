@@ -7,6 +7,7 @@ import { CronoService, Tick } from './../crono/crono.service';
 import { Component, DoCheck, Input, OnInit, OnDestroy } from '@angular/core';
 import { EstadJugador } from 'src/app/modelo/estadJugador';
 import { Observable, Subscription } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-marcador',
