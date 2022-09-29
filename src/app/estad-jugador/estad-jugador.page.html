@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-item slot="start" (click)="volver()" color="danger">
+      <ion-icon name="chevron-back"></ion-icon>
+    </ion-item>
+    <ion-title>{{jugador.datos.nombre}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <img src="../../assets/fotos/{{jugador.datos.foto}}" />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <div class="titulo">{{jugador.datos.nombre}} vs. {{estadPartido.nombreRival}}</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" class="ion-text-left">
+          <div class="epigrafe">Minutos jugados</div>
+        </ion-col>
+        <ion-col size="2" class="ion-text-center">
+          <div class="valor">{{jugador.segJugados*1000 | date: 'mm:ss'}}</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" class="ion-text-left">
+          <div class="epigrafe">Goles</div>
+        </ion-col>
+        <ion-col size="2" class="ion-text-center">
+          <div class="valor">{{jugador.goles}}</div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" class="ion-text-left">
+          <div class="epigrafe">Lanzamientos</div>
+        </ion-col>
+        <ion-col size="2" class="ion-text-center">
+          <div class="valor">{{jugador.goles + jugador.lanzFallados}}</div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    {{jugador | json}}
+  </ion-card>
+</ion-content>

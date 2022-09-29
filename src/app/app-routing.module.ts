@@ -75,7 +75,11 @@ const routes: Routes = [
   {
     path : 'privacy',
     loadChildren: () => import('./privacy/privacy.module').then( m => m.PrivacyModule )
+  },  {
+    path: 'estad-jugador',
+    loadChildren: () => import('./estad-jugador/estad-jugador.module').then( m => m.EstadJugadorPageModule)
   }
+
 
 ];
 

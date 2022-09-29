@@ -8,6 +8,7 @@ import { Evento } from '../modelo/evento';
 import { EstadPartido } from './../modelo/estadPartido';
 import { EstadJugadorService } from './../services/estad-jugador.service';
 import { EstadPartidoService } from './../services/estad-partido.service';
+import { Jugador } from '../modelo/jugador';
 
 @Component({
   selector: 'app-modo-ver',
@@ -107,6 +108,13 @@ export class ModoVerPage implements OnInit, OnDestroy {
     this.pasoDatos.setPantalla('tipoElegido', tipo.tipo);
     console.log(this.listas);
     this.router.navigate(['/listas-estad']);
+  }
+
+  irAJugador(jugador: EstadJugador){
+    this.pasoDatos.setPantalla('estad-jugador', jugador);
+    this.pasoDatos.setPantalla('estad-partido', this.estadPartido[0]);
+    console.log('Jugador: ', jugador);
+    this.router.navigate(['/estad-jugador']);
   }
 
   ngOnDestroy(): void {

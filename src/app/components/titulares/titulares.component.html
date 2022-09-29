@@ -20,7 +20,7 @@
     <ion-item *ngIf="!portero[0]" color="danger">
       <div>PORTERÍA VACÍA</div>
     </ion-item>
-    <ion-accordion *ngIf="portero[0]" value="{{portero[0].datos.numero}}">
+    <ion-accordion *ngIf="portero[0]" value="{{portero[0].datos.id}}">
       <ion-item slot="header">
         <ion-grid class="cabecera">
           <ion-row class="portero">
@@ -113,7 +113,7 @@
       </ion-card>
     </ion-accordion>
 
-    <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.datos.numero}}">
+    <ion-accordion *ngFor="let titular of jugCampo" value="{{titular.datos.id}}">
       <ion-item slot="header">
         <ion-grid class="cabecera">
           <ion-row>
@@ -210,7 +210,7 @@
     <ion-item *ngIf="(jugCampo.length + listaExcluidos.length) < 6" color="danger">
       <div>FALTA JUGADOR DE CAMPO</div>
     </ion-item>
-    <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.datos.numero}}">
+    <ion-accordion *ngFor="let titular of listaExcluidos" value="{{titular.datos.id}}">
       <ion-item slot="header" color="danger">
         <ion-grid>
           <ion-row class="{{titular.datos.portero?'portero':''}}">

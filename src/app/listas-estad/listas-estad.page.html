@@ -1,9 +1,9 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="danger">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-item slot="start" (click)="volver()">
+    <ion-item slot="start" (click)="volver()" color="danger">
       <ion-icon name="chevron-back"></ion-icon>
     </ion-item>
     <ion-title>Jugadores</ion-title>
@@ -24,7 +24,7 @@
   <ion-card *ngFor="let tipo of listas">
     <div *ngIf="tipo.tipo === tipoElegido">
       <ion-list *ngFor="let jug of tipo.lista">
-        <ion-item>
+        <ion-item (click)="irAJugador(jug)">
           <ion-avatar slot="start">
             <img src="../../assets/fotos/SinImagen.jpg" />
           </ion-avatar>
