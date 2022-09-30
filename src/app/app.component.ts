@@ -2,6 +2,7 @@ import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { NavegacionService } from './services/navegacion.service';
 import { LocalStorage } from './services/local.storage.mock';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -41,9 +42,14 @@ export class AppComponent implements OnInit {
     email: '',
   };
 
+  public isProduction : boolean; 
+  public version : string; 
+
   constructor(private menu: MenuController,
               private navegacion: NavegacionService,
               private localStorage: LocalStorage ) {
+    this.isProduction = environment.production;
+    this.version = environment.version;
   }
 
   public ngOnInit(): void {

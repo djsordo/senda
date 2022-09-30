@@ -45,10 +45,15 @@
 
 
         </ion-list>
-
-
       </ion-content>
-    </ion-menu>
+      <ion-footer>
+        <ion-item>
+          <ion-icon slot="start" src="assets/rocket.svg" *ngIf="isProduction"></ion-icon>
+          <ion-icon slot="start" src="assets/development.svg" *ngIf="!isProduction"></ion-icon>
+          <ion-label>{{isProduction?"Prod":"Dev"}} {{version}}</ion-label>
+        </ion-item>
+      </ion-footer>
+  </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
