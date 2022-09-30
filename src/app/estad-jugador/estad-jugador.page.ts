@@ -26,4 +26,11 @@ export class EstadJugadorPage implements OnInit {
     this.location.back();
   }
 
+  cadTiempo(segs: number){
+    const minutos = Math.floor(segs/60);
+    const segundos = segs - minutos*60;
+
+    return (minutos.toString().padStart(2, '0') + ':' + segundos.toString().padStart(2, '0'));
+  }
+
 }

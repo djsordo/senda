@@ -106,6 +106,7 @@ export class ModoVerPage implements OnInit, OnDestroy {
   irAListas(tipo: any){
     this.pasoDatos.setPantalla('listas-estad', this.listas);
     this.pasoDatos.setPantalla('tipoElegido', tipo.tipo);
+    this.pasoDatos.setPantalla('estad-partido', this.estadPartido[0]);
     console.log(this.listas);
     this.router.navigate(['/listas-estad']);
   }

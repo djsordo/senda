@@ -1,3 +1,4 @@
+import { EstadPartido } from './../modelo/estadPartido';
 import { PasoDatosService } from './../services/paso-datos.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -12,6 +13,7 @@ import { Location } from '@angular/common';
 export class ListasEstadPage implements OnInit {
   listas: Array<{tipo: string; tipo2: string; cabecera: string; lista: Array<EstadJugador>}> = [];
   tipoElegido: string;
+  estadPartido: EstadPartido;
 
   constructor(private router: Router,
               private location: Location,
@@ -20,6 +22,8 @@ export class ListasEstadPage implements OnInit {
   ngOnInit() {
     this.listas = this.pasoDatos.getPantalla('listas-estad');
     this.tipoElegido = this.pasoDatos.getPantalla('tipoElegido');
+    this.estadPartido = this.pasoDatos.getPantalla('estad-partido');
+
     console.log('Listas: ', this.listas);
     console.log(this.tipoElegido);
   }
@@ -36,7 +40,8 @@ export class ListasEstadPage implements OnInit {
 
   irAJugador(jugador: EstadJugador){
     this.pasoDatos.setPantalla('estad-jugador', jugador);
-    console.log('Jugador: ', jugador);
+    this.pasoDatos.setPantalla('estad-partido', this.estadPartido);
+
     this.router.navigate(['/estad-jugador']);
   }
 }
