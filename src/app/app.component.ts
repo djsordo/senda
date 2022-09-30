@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
               private navegacion: NavegacionService,
               private localStorage: LocalStorage ) {
     this.isProduction = environment.production;
-    this.version = environment.versionName;
+    this.version = environment.version;
   }
 
   public ngOnInit(): void {
