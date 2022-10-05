@@ -10,121 +10,59 @@
 </ion-header>
 
 <ion-content [scrollY]="contentScrollActive">
-    <div class="ion-text-center"><h5>{{partes}} partes de {{segsParte*1000 | date: 'mm:ss'}} minutos</h5></div>
-    <ion-slides pager="true">
-      <ion-slide>
-        <div class="cancha">
-          <div *ngFor="let posicion of posiciones" class="drop-inicial" id="{{posicion}}" #drops (click)="borraPos(posicion.clave)">
-            <div class="fondo"><h3>{{posicion.desc}}</h3></div>
-            <div *ngFor="let jugador of listaInicial">
-              <ion-item *ngIf="jugador.posicion === posicion.clave" class="eleLista">
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size="2"><ion-img src="../../assets/fotos/{{jugador.foto}}"></ion-img></ion-col>
-                    <ion-col size="2"><p>{{jugador.numero}}</p></ion-col>
-                    <ion-col size="6"><p>{{jugador.nombre}}</p></ion-col>
-                    <ion-col size="2"><p>{{posicion.clave}}</p></ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
+  <div class="ion-text-center"><h5>{{partes}} partes de {{segsParte*1000 | date: 'mm:ss'}} minutos</h5></div>
+  <ion-slides pager="true">
+    <ion-slide>
+      <div class="cancha">
+        <div *ngFor="let posicion of posiciones" class="drop-inicial" id="{{posicion}}" #drops (click)="borraPos(posicion.clave)">
+          <div class="fondo">{{posicion.desc}}</div>
+          <div *ngFor="let jugador of listaInicial">
+            <div *ngIf="jugador.posicion === posicion.clave" class="tarjeta">
+              <ion-img src="../../assets/fotos/{{jugador.foto}}" class="imagen"></ion-img>
+              <!-- <ion-img src="../../assets/portero.png" *ngIf="jugador.portero" class="portero"></ion-img> -->
+              <span *ngIf="jugador.portero" class="portero">P</span>
+              <span class="numero">{{jugador.numero}}</span>
+              <span class="nombre">{{jugador.nombre}}</span>
             </div>
           </div>
         </div>
-      </ion-slide>
-      <ion-slide>
-        <div class="drop-area" #dropBanquillo>
-          <div class="fondo"><h2>Banquillo</h2></div>
-          <div *ngFor="let jugador of listaBanquillo" class="tarjeta cardEscalera" (click)="borraNum(listaBanquillo, jugador.numero)">
-            <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img>
-            <div *ngIf="jugador.portero">
-              <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
-            </div>
-            <h2>{{jugador.numero}}</h2>
-            <p>{{jugador.nombre}}</p>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="drop-area" #dropBanquillo>
+        <div class="fondo"><h2>Banquillo</h2></div>
+        <div *ngFor="let jugador of listaBanquillo" class="tarjeta cardEscalera" (click)="borraNum(listaBanquillo, jugador.numero)">
+          <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img>
+          <div *ngIf="jugador.portero">
+            <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
           </div>
+          <h2>{{jugador.numero}}</h2>
+          <p>{{jugador.nombre}}</p>
         </div>
-      </ion-slide>
-      <ion-slide>
-        <div class="drop-area" #dropNoConvocado>
-          <div class="fondo"><h2>No Convocados</h2></div>
-          <div *ngFor="let jugador of listaNoConvocados" class="tarjeta cardEscalera" (click)="borraNum(listaNoConvocados, jugador.numero)">
-            <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img>
-            <div *ngIf="jugador.portero">
-              <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
-            </div>
-            <h2>{{jugador.numero}}</h2>
-            <p>{{jugador.nombre}}</p>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="drop-area" #dropNoConvocado>
+        <div class="fondo"><h2>No Convocados</h2></div>
+        <div *ngFor="let jugador of listaNoConvocados" class="tarjeta cardEscalera" (click)="borraNum(listaNoConvocados, jugador.numero)">
+          <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img>
+          <div *ngIf="jugador.portero">
+            <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
           </div>
+          <h2>{{jugador.numero}}</h2>
+          <p>{{jugador.nombre}}</p>
         </div>
-      </ion-slide>
-    </ion-slides>
-    <!-- <div class="cancha">
-    <div *ngFor="let posicion of posiciones" class="drop-inicial" id="{{posicion}}" #drops (click)="borraPos(posicion.clave)">
-      <div class="fondo"><h3>{{posicion.desc}}</h3></div>
-      <div *ngFor="let jugador of listaInicial">
-        <ion-item *ngIf="jugador.posicion === posicion.clave" class="eleLista">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="2"><ion-img src="../../assets/fotos/{{jugador.foto}}"></ion-img></ion-col>
-              <ion-col size="2"><p>{{jugador.numero}}</p></ion-col>
-              <ion-col size="6"><p>{{jugador.nombre}}</p></ion-col>
-              <ion-col size="2"><p>{{posicion.clave}}</p></ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
       </div>
-    </div>
-  </div> -->
-
-  <!-- <div class="drop-area" #dropBanquillo>
-    <div class="fondo"><h2>Banquillo</h2></div>
-    <div *ngFor="let jugador of listaBanquillo" class="tarjeta cardEscalera" (click)="borraNum(listaBanquillo, jugador.numero)">
-      <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img>
-      <div *ngIf="jugador.portero">
-        <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
-      </div>
-      <h2>{{jugador.numero}}</h2>
-      <p>{{jugador.nombre}}</p>
-    </div>
-  </div> -->
-
-  <!-- <div class="contenedorTarjetas">
-    <div *ngFor="let jugador of jugadores" class="tarjeta" #cards>
-      <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img>
-      <div *ngIf="jugador.portero">
-        <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
-      </div>
-      <h2>{{jugador.numero}}</h2>
-      <p>{{jugador.nombre}}</p>
-    </div>
-  </div> -->
+    </ion-slide>
+  </ion-slides>
 
   <div class="contenedorTarjetas">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="3" *ngFor="let jugador of jugadores">
-          <div class="tarjeta" #cards>
-            <ion-img src="../../assets/fotos/{{jugador.foto}}"></ion-img>
-            <div *ngIf="jugador.portero" class="tarjetaPortero">
-              <ion-img src="../../assets/portero.png"></ion-img>
-            </div>
-            <h2>{{jugador.numero}}</h2>
-            <p>{{jugador.nombre}}</p>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
-<!--   <div class="drop-area" #dropNoConvocado>
-    <div class="fondo"><h2>No Convocados</h2></div>
-    <div *ngFor="let jugador of listaNoConvocados" class="tarjeta cardEscalera" (click)="borraNum(listaNoConvocados, jugador.numero)">
-      <ion-img src="../../assets/fotos/{{jugador.foto}}" class="tarjetaImagen"></ion-img>
-      <div *ngIf="jugador.portero">
-        <ion-img src="../../assets/portero.png" class="tarjetaPortero"></ion-img>
-      </div>
-      <h2>{{jugador.numero}}</h2>
-      <p>{{jugador.nombre}}</p>
+    <div class="tarjeta" #cards *ngFor="let jugador of jugadores">
+      <ion-img src="../../assets/fotos/{{jugador.foto}}" class="imagen"></ion-img>
+      <!-- <ion-img src="../../assets/portero.png" *ngIf="jugador.portero" class="portero"></ion-img> -->
+      <span *ngIf="jugador.portero" class="portero">P</span>
+      <span class="numero">{{jugador.numero}}</span>
+      <span class="nombre">{{jugador.nombre}}</span>
     </div>
-  </div> -->
+  </div>
 </ion-content>
