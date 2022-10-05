@@ -4,39 +4,64 @@
   --responsive: calc((var(--min-size) * 1px) + var(--diff) * ((100vw - 300px) / (1600 - 300))); /* Ranges from 301px to 1599px */
 }
 
-@media (prefers-color-scheme: dark) {
-  .cancha {
-    position: relative;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-style: solid;
-    height: 400px;
-    width: 100%;
-    /* background: url("../../assets/campo2_dark.png") center / 125% no-repeat ; */
-  }
-}
-
-@media (prefers-color-scheme: light ) {
-  .cancha {
-    position: relative;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-style: solid;
-    height: 400px;
-    width: 100%;
-    /* background: url("../../assets/campo2.png") center / 125% no-repeat ; */
-  }
+.cancha {
+  position: relative;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-style: solid;
+  height: 320px;
+  width: 100%;
 }
 
 .drop-inicial{
-  margin-top: 2px;
-  margin-bottom: 2px;
+  position:absolute;
   padding: 0px;
-  width:100%;
-  height: 50px;
-  border: 2px dashed #4400ff;
+  margin: 0px;
+  width: 88px;
+  height: 88px;
+  border: 2px solid;
+  border-radius: 5%;
+}
+
+.drop-inicial:nth-child(1){
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.drop-inicial:nth-child(2){
+  top: 100px;
+  left: 10px;
+}
+
+.drop-inicial:nth-child(3){
+  top: 100px;
+  right: 10px;
+}
+
+.drop-inicial:nth-child(7){
+  top: 100px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.drop-inicial:nth-child(4){
+  top: 190px;
+  left: 10px;
+}
+
+.drop-inicial:nth-child(5){
+  top: 190px;
+  right: 10px;
+}
+
+.drop-inicial:nth-child(6){
+  top: 190px;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .drop-area {
@@ -47,88 +72,72 @@
   user-select: none;
 }
 
-.contenedorTarjetas {
-  position:relative;
-  width: 100%;
-  height: 100px;
-  padding: 5px;
-  margin-top: 5px;
-  justify-content: center;
-  align-items: center;
-}
-
 .fondo{
   position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 16px;
   z-index: 0 !important;
 }
 
-.eleLista{
-  margin: 0px !important;
-  height: 46px;
-}
-
-.eleLista ion-img{
-  height: 40px;
-  padding-bottom: 5px !important;
-  margin: 0px !important;
-}
-
-.eleLista p{
-  --max-size: 40;
-  --min-size: 15;
-  font-size: var(--responsive);
+.contenedorTarjetas {
+  width: 100%;
+  padding: 5px;
+  margin: 5px;
 }
 
 .tarjeta {
-  position: absolute;
-  width: 90px;
-  height: 90px;
+  position: relative;
   display: inline-block;
+  margin: 2px;
+  width: 80px;
+  height: 80px;
   border-style: outset;
   border-radius: 5%;
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+  box-shadow: 0px 10px 13px -7px #888888, 5px 5px 15px 5px rgba(0,0,0,0);
+  background-color: var(--ion-segment-background);
 }
 
-.tarjetaImagen {
+.tarjeta .imagen {
+  position: absolute;
   background-color: #fff;
-  width: 100%;
-  height: 100%;
-  border-radius: 5% !important;
+  right: 5px;
+  top: 5px;
+  width: 50%;
+  height: 50%;
+  border-radius: 50% !important;
   overflow: hidden;
 }
 
-.tarjetaPortero{
-  position:absolute;
-  width: 20%;
-  height: 20%;
-  top: 5%;
-  right: 10%;
-  border-radius: 50%;
-  padding: 3px;
-  background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%);
+.tarjeta .portero{
+  position: absolute;
+  font-size: 12px;
+  width: 25%;
+  height: 25%;
+  top: 22px;
+  left: 8px;
+
 }
 
-.tarjeta h2 {
-  background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.1) 100%);
-  color: #000;
-  position:absolute;
-  padding:3px;
-  border-radius: 50%;
-  top: -15%;
-  left: 5%;
+.tarjeta .numero{
+  font-weight: bold;
+  position: absolute;
+  width: 30%;
+  height: 30%;
+  top: 5px;
+  left: 5px;
 }
 
-.tarjeta p {
-  background-image: radial-gradient(circle at center,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  color: #000;
-  position:absolute;
+.tarjeta .nombre {
+  position: absolute;
+  font-size: 12px;
   text-align: center;
   width: 90%;
-  height: 30%;
-  padding:2px;
-  font-size: 80%;
-  top: 60%;
-  left: 5%;
+  bottom: 5px;
+  left: 5px;
 }
 
 .cardMonton {
