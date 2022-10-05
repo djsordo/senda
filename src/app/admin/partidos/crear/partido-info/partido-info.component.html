@@ -1,0 +1,69 @@
+
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Fecha:</ion-label>
+        <ion-input type="date"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">Lugar:</ion-label>
+        <ion-select>
+          <ion-select-option *ngFor="let lugar of lugares">{{lugar}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Temporada:</ion-label>
+        <ion-select>
+          <ion-select-option>2020-21</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Tipo:</ion-label>
+        <ion-select>
+          <ion-select-option>tipazo</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Jornada:</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label position="floating">Config:</ion-label>
+        <ion-select>
+          <ion-select-option>dos partes de 30 minutos</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button color="primary" [routerLink]="['..','rival']">
+        <ion-label>Sel. rival</ion-label>
+        <ion-icon name="chevron-back" slot="start"></ion-icon>
+      </ion-button>
+      <ion-button color="primary">Crear Partido</ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-grid>

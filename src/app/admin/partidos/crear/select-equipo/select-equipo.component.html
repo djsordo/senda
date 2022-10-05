@@ -1,0 +1,31 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1>Selecciona nuestro equipo</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card #resultCard id="{{e.id}}" *ngFor="let e of equipos"
+                (click)="onEquipoSelected( e.id )">
+          <ion-card-header>
+            <ion-icon src="assets/handball.svg" size="large" class="move_right"></ion-icon>
+            <ion-card-title>{{e.data().categoria | titlecase}} {{e.data().genero | titlecase}} {{e.data().temporada.alias}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{e.data().nombre | titlecase}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="primary" expand="block" [routerLink]="['..', 'rival']">
+          <ion-label>Selecciona rival</ion-label>
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

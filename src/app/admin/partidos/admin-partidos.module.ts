@@ -10,6 +10,9 @@ import { CrearComponent } from "./crear/crear.component";
 import { AdminPartidosPage } from "./admin-partidos.page";
 import { AdminPartidosPageRoutingModule } from "./admin-partidos-routing.module";
 import { UsefulDatePipe } from "src/app/services/usefulDate.pipe";
+import { SelectEquipoComponent } from "./crear/select-equipo/select-equipo.component";
+import { SelectRivalComponent } from "./crear/select-rival/select-rival.component";
+import { PartidoInfoComponent } from "./crear/partido-info/partido-info.component";
 
 
 @NgModule({
@@ -22,6 +25,9 @@ import { UsefulDatePipe } from "src/app/services/usefulDate.pipe";
     AdminPartidosPage, 
     BuscarComponent,
     CrearComponent,
+    SelectEquipoComponent,
+    SelectRivalComponent, 
+    PartidoInfoComponent,
     CambioComponent,
     UsefulDatePipe
   ]
