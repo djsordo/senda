@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { DocumentData, 
+          QueryDocumentSnapshot, 
           QuerySnapshot } from '@angular/fire/firestore';
 
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/modelo/usuario';
-import { Club } from 'src/app/modelo/club';
-import { ClubesService } from 'src/app/services/clubes.service';
 import { LocalStorage } from 'src/app/services/local.storage.mock';
+import { EquipoService } from 'src/app/services/equipo.service';
+import { PartidosService } from 'src/app/services/partidos.service';
 
 @Component({
   selector: 'usuarios-crear',
@@ -18,16 +19,13 @@ import { LocalStorage } from 'src/app/services/local.storage.mock';
 export class CrearComponent implements OnInit {
 
   usuario : Usuario;
-  nombre : string;
-  apellidos : string;
-  email : string;
-
-  selectedClub : string;
-
-  clubes : Club[];
+  equipos : QueryDocumentSnapshot<DocumentData>[];
+  rivales : Set<string>;
+  lugares : Set<string>;
 
   constructor( private usuarioService : UsuarioService,
-               private clubService : ClubesService,
+               private equipoService : EquipoService,
+               private partidoService : PartidosService,
                private toastController : ToastController, 
                private router : Router, 
                private route : ActivatedRoute,
@@ -35,16 +33,8 @@ export class CrearComponent implements OnInit {
 
   ngOnInit() { 
     this.initCurrentUser();
-    this.clubes = [];
-    this.clubService.getClubes()
-      .then( ( clubesList : QuerySnapshot<DocumentData> ) => {
-        for( let docData of clubesList.docs ){
-          let club = docData.data(); 
-          club.id = docData.id;
-          console.log( club );
-          this.clubes.push( club as Club );
-        }
-      });
+    this.loadEquipos();
+    this.loadRivales();
   }
 
   private async initCurrentUser(){
@@ -55,6 +45,29 @@ export class CrearComponent implements OnInit {
     });
   }
   
+  private async loadEquipos(){
+    this.equipoService.getEquipos()
+      .then( (docList: QuerySnapshot<DocumentData>) => {
+        this.equipos = [];
+        for( let docSnap of docList.docs ){
+          this.equipos.push( docSnap );
+        }
+      });
+  }
+
+  private async loadRivales(){
+    this.partidoService.getPartidosAsDoc()
+      .then( (docList : QuerySnapshot<DocumentData>) => {
+        this.rivales = new Set<string>();
+        this.lugares = new Set<string>();
+        for( let docSnap of docList.docs ){
+          this.rivales.add( docSnap.data().rival );
+          this.lugares.add( docSnap.data().ubicacion );
+        }
+      });
+  }
+
+  /*
   onClickCrear() {
     console.log( "creando usuario...", this.nombre, this.apellidos );
     let newUsuario = this.usuarioService.newUsuario();
@@ -80,6 +93,7 @@ export class CrearComponent implements OnInit {
           this.sendToast( `Se ha producido un error al crear el usuario ${this.nombre} ${this.apellidos}`));
     this.router.navigate( ['..'], { relativeTo : this.route } );
   }
+  */
 
   async sendToast( message : string ){
     return this.toastController.create({

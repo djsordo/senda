@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 
 import { make_id } from '../services/string-util';
 import { Partido } from '../modelo/partido';
+import { getDocs, QuerySnapshot } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -40,9 +41,13 @@ export class PartidosService {
             + partido.rival );
   }
 
-  getPartidos(equipoId: string): Observable<Partido[]>{
-    const partidoRef = query(this.partidoRef, where('equipoId', '==', equipoId));
-    return collectionData(partidoRef, {idField: 'id'}) as Observable<Partido[]>;
+  getPartidos(equipoId : string): Observable<Partido[]>{
+    let partidoResult = query(this.partidoRef, where('equipoId', '==', equipoId));
+    return collectionData(partidoResult, {idField: 'id'}) as Observable<Partido[]>;
+  }
+
+  async getPartidosAsDoc() : Promise<QuerySnapshot<DocumentData>>{
+    return getDocs( query( this.partidoRef ) );
   }
 
   getPartidosCallback( callback,

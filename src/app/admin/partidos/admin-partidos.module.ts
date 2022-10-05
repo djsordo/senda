@@ -9,6 +9,7 @@ import { CambioComponent } from "./cambio/cambio.component";
 import { CrearComponent } from "./crear/crear.component";
 import { AdminPartidosPage } from "./admin-partidos.page";
 import { AdminPartidosPageRoutingModule } from "./admin-partidos-routing.module";
+import { UsefulDatePipe } from "src/app/services/usefulDate.pipe";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AdminPartidosPageRoutingModule } from "./admin-partidos-routing.module"
     AdminPartidosPage, 
     BuscarComponent,
     CrearComponent,
-    CambioComponent
+    CambioComponent,
+    UsefulDatePipe
   ]
 })
 export class AdminPartidosPageModule { }

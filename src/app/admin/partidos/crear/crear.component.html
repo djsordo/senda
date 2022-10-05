@@ -2,54 +2,76 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        <ion-input name="usuarioName" 
-                placeholder="Nombre"
-                autofocus="true"
-                inputmode="text"
-                autocapitalize="on"
-                autocorrect="off"
-                type="text"
-                [(ngModel)]="nombre"></ion-input>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-input name="usuarioSurname" 
-                placeholder="Apellidos"
-                inputmode="text"
-                autocapitalize="on"
-                autocorrect="off"
-                type="text"
-                [(ngModel)]="apellidos"></ion-input>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-input name="usuarioEmail" 
-                placeholder="Correo Electrónico"
-                inputmode="email"
-                autocapitalize="off"
-                autocorrect="off"
-                pattern="\w+@[\w.]+"
-                type="text"
-                [(ngModel)]="email"></ion-input>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-
-  <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-label>Club:</ion-label>
-        <!-- valorar si aquí debería ir un componente llamado "combo categorias" que recogiese una categoría por defecto -->
-        <ion-select *ngIf="clubes.length > 1" [(ngModel)]="selectedClub">
-          <ion-select-option *ngFor="let club of clubes" value="{{club.id}}">{{club.nombre}}</ion-select-option>
+        <ion-label>Equipo:</ion-label>
+        <ion-select>
+          <ion-select-option *ngFor="let equipo of equipos">{{equipo.data().categoria + " " + equipo.data().temporada.alias}}</ion-select-option>
         </ion-select>
-        <ion-text *ngIf="clubes.length === 1">{{clubes[0]?.nombre}}</ion-text>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Rival:</ion-label>
+        <ion-select>
+          <ion-select-option *ngFor="let rival of rivales">{{rival}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Fecha:</ion-label>
+        <ion-input type="date"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Lugar:</ion-label>
+        <ion-select>
+          <ion-select-option *ngFor="let lugar of lugares">{{lugar}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Temporada:</ion-label>
+        <ion-select>
+          <ion-select-option>2020-21</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Tipo:</ion-label>
+        <ion-select>
+          <ion-select-option>tipazo</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Jornada:</ion-label>
+        <ion-input type="number"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Config:</ion-label>
+        <ion-select>
+          <ion-select-option>dos partes de 30 minutos</ion-select-option>
+        </ion-select>
       </ion-item>
     </ion-col>
   </ion-row>
