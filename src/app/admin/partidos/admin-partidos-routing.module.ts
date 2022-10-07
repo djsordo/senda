@@ -8,6 +8,7 @@ import { CambioComponent } from "./cambio/cambio.component";
 import { CrearComponent } from "./crear/crear.component";
 import { PartidoInfoComponent } from "./crear/partido-info/partido-info.component";
 import { SelectEquipoComponent } from "./crear/select-equipo/select-equipo.component";
+import { SelectLugarComponent } from "./crear/select-lugar/select-lugar.component";
 import { SelectRivalComponent } from "./crear/select-rival/select-rival.component";
 
 
@@ -27,6 +28,7 @@ const routes : Routes = [
         { path : '', redirectTo: 'equipo' },
         { path : 'equipo', component : SelectEquipoComponent }, 
         { path : 'rival',  component : SelectRivalComponent },
+        { path : 'lugar',  component : SelectLugarComponent },
         { path : 'info',   component : PartidoInfoComponent }
       ] }
   ] }

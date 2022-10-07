@@ -13,6 +13,7 @@ import { UsefulDatePipe } from "src/app/services/usefulDate.pipe";
 import { SelectEquipoComponent } from "./crear/select-equipo/select-equipo.component";
 import { SelectRivalComponent } from "./crear/select-rival/select-rival.component";
 import { PartidoInfoComponent } from "./crear/partido-info/partido-info.component";
+import { SelectLugarComponent } from "./crear/select-lugar/select-lugar.component";
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { PartidoInfoComponent } from "./crear/partido-info/partido-info.componen
     CrearComponent,
     SelectEquipoComponent,
     SelectRivalComponent, 
+    SelectLugarComponent,
     PartidoInfoComponent,
     CambioComponent,
     UsefulDatePipe

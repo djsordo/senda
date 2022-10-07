@@ -6,7 +6,10 @@ import { collection,
         DocumentReference, 
         Firestore, 
         getDoc,
+        query,
+        QuerySnapshot,
         setDoc} from "@angular/fire/firestore";
+import { getDocs } from "firebase/firestore";
 
 
 
@@ -22,6 +25,10 @@ export class TemporadaService {
 
   constructor( private firestore : Firestore ){
     this.temporadaRef = collection( this.firestore, 'temporadas' );
+  }
+
+  async getTemporadas(): Promise<QuerySnapshot<DocumentData>>{
+    return getDocs( query( this.temporadaRef ) );
   }
 
   async addTemporada( temporada : Temporada ){

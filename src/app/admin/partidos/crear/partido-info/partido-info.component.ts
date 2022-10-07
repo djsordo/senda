@@ -3,7 +3,6 @@ import { DocumentData,
         QuerySnapshot} from '@angular/fire/firestore';
 
 
-import { PartidosService } from "src/app/services/partidos.service";
 import { TemporadaService } from "src/app/services/temporada.service";
 
 @Component({
@@ -12,30 +11,48 @@ import { TemporadaService } from "src/app/services/temporada.service";
 })
 export class PartidoInfoComponent implements OnInit {
 
-  lugares : Set<string>;
+  temporadas : Set<any>;
+  selectedTemporada : string;
 
-  constructor( private partidoService : PartidosService,
-               private temporadaService : TemporadaService ){
+  constructor( private temporadaService : TemporadaService ){
 
   }
 
   ngOnInit(): void {
-    this.loadLugares();
     this.loadTemporadas();
   }
 
-  private async loadLugares(){
-    this.partidoService.getPartidosAsDoc()
-      .then( (docList : QuerySnapshot<DocumentData>) => {
-        this.lugares = new Set<string>();
-        for( let docSnap of docList.docs ){
-          this.lugares.add( docSnap.data().ubicacion );
+
+  private async loadTemporadas() {
+    this.temporadaService.getTemporadas()
+      .then( (temporadaList : QuerySnapshot<DocumentData>) => {
+        this.temporadas = new Set<any>();
+        for( let temporadaSnap of temporadaList.docs ){
+          let temporada = temporadaSnap.data();
+          temporada.id = temporadaSnap.id;
+          if( this.isDefaultTemporada( temporada.alias ) )
+            this.selectedTemporada = temporada.alias;
+          this.temporadas.add( temporada );
         }
       });
   }
 
-  private async loadTemporadas() {
-    // AQUI ME QUEDO, CARGANDO LA LISTA DE TEMPORADAS this.temporadaService.
+  private isDefaultTemporada( temporadaAlias : string ) : boolean {
+    let now = new Date();
+    let midYear = new Date( now.getFullYear(), 6, 16 );
+    let fullCurrentyear = now.getFullYear();
+    let fullPrevyear = fullCurrentyear - 1; 
+    let fullNextyear = fullCurrentyear + 1; 
+    let fullCurrentyear2 = fullCurrentyear.toString().substring(2,4);
+    let fullPrevyear2 = fullPrevyear.toString().substring(2,4);
+    let fullNextyear2 = fullNextyear.toString().substring(2,4);
+    if( now.getTime() > midYear.getTime() ){
+      // the default season is CURRENT_YEAR-CURRENT_YEAR+1
+      return temporadaAlias.match( new RegExp( `${2020}|${20}-${2022}|${22}` ) );
+    }else{
+      // the default seasion is CURRENT_YEAR-1-CURRENT_YEAR
+      return temporadaAlias.match( new RegExp( `${2020}|${20}-${2022}|${22}` ) );
+    }
   }
 
 }
