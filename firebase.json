@@ -1,5 +1,17 @@
 {
   "hosting": [
+    {"site": "apk-senda",
+     "public" : "android/app/release",
+     "ignore" : [
+      "output-metadata.json"
+     ], 
+     "rewrites": [
+      {
+        "source" : "**", 
+        "destination" : "/app-release.apk"
+      }
+     ]
+    },
     {"site": "senda-desa-web",
     "public": "www",
     "ignore": [
@@ -13,19 +25,20 @@
         "destination": "/index.html"
       }
     ]
-  },
-  {"site": "senda-413fe",
-  "public": "www",
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ],
-  "rewrites": [
-    {
-      "source": "**",
-      "destination": "/index.html"
+    },
+    {"site": "senda-413fe",
+    "public": "www",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
     }
   ]
-  }]
 }
