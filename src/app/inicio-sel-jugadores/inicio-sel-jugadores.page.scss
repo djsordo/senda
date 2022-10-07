@@ -1,17 +1,20 @@
-* {
-  /* Cálculo para texto responsive */
-  --diff: calc(var(--max-size) - var(--min-size));
-  --responsive: calc((var(--min-size) * 1px) + var(--diff) * ((100vw - 300px) / (1600 - 300))); /* Ranges from 301px to 1599px */
-}
-
 .cancha {
   position: relative;
   padding: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
-  border-style: solid;
+  background-color: var(--ion-segment-background);
   height: 320px;
   width: 100%;
+}
+
+.pasos {
+  font-size: 14px;
+  color: gray;
+}
+
+.pagina {
+  background-color: var(--ion-segment-background);
 }
 
 .drop-inicial{
@@ -31,34 +34,34 @@
 }
 
 .drop-inicial:nth-child(2){
-  top: 100px;
+  top: 110px;
   left: 10px;
 }
 
 .drop-inicial:nth-child(3){
-  top: 100px;
+  top: 110px;
   right: 10px;
 }
 
 .drop-inicial:nth-child(7){
-  top: 100px;
+  top: 110px;
   left: 0;
   right: 0;
   margin: auto;
 }
 
 .drop-inicial:nth-child(4){
-  top: 190px;
+  top: 210px;
   left: 10px;
 }
 
 .drop-inicial:nth-child(5){
-  top: 190px;
+  top: 210px;
   right: 10px;
 }
 
 .drop-inicial:nth-child(6){
-  top: 190px;
+  top: 210px;
   left: 0;
   right: 0;
   margin: auto;
@@ -66,9 +69,10 @@
 
 .drop-area {
   position: relative;
-  border: 2px dashed #ff00ff;
+  border: 2px solid #000000;
+  border-radius: 5%;
   width: 100%;
-  height: 100px;
+  height: 270px;
   user-select: none;
 }
 
@@ -84,6 +88,9 @@
 }
 
 .contenedorTarjetas {
+  position: absolute;
+  text-align: center;
+  top: 400px;
   width: 100%;
   padding: 5px;
   margin: 5px;
