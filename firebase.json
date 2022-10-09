@@ -1,5 +1,19 @@
 {
   "hosting": [
+    {"site": "sendaestadisticas-com-desa",
+     "public" : "www",
+     "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+    },
     {"site": "apk-senda",
      "public" : "android/app/release",
      "ignore" : [
