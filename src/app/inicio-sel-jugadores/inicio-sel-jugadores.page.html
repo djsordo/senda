@@ -9,6 +9,7 @@
 </ion-header>
 
 <ion-content [scrollY]="contentScrollActive">
+<<<<<<< HEAD
  <!--  <div class="ion-text-center"><h5>{{partes}} partes de {{segsParte*1000 | date: 'mm:ss'}} minutos</h5></div> -->
   <ion-slides pager="true" slot="fixed" class="pagina">
     <ion-slide >
@@ -38,15 +39,48 @@
             </div>
           </ion-col>
         </ion-row>
+=======
+  <!-- <div class="ion-text-center"><h5>{{partes}} partes de {{segsParte*1000 | date: 'mm:ss'}} minutos</h5></div> -->
+  <ion-slides pager="true" slot="fixed" class="pagina">
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="pasos">1. Selecciona el 7 inicial arrastrando a los jugadores a su posición</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div class="cancha">
+              <div *ngFor="let posicion of posiciones" class="drop-inicial" id="{{posicion}}" #drops (click)="borraPos(posicion.clave)">
+                <div class="fondo">{{posicion.desc}}</div>
+                <div *ngFor="let jugador of listaInicial">
+                  <div *ngIf="jugador.posicion === posicion.clave" class="tarjeta">
+                    <ion-img src="../../assets/fotos/{{jugador.foto}}" class="imagen"></ion-img>
+                    <!-- <ion-img src="../../assets/portero.png" *ngIf="jugador.portero" class="portero"></ion-img> -->
+                    <span *ngIf="jugador.portero" class="portero">P</span>
+                    <span class="numero">{{jugador.numero}}</span>
+                    <span class="nombre">{{jugador.nombre}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+>>>>>>> 0480859197fdc033d5614fd0a4089e8e07327908
       </ion-grid>
     </ion-slide>
     <ion-slide>
       <ion-grid>
         <ion-row>
           <ion-col>
+<<<<<<< HEAD
             <div class="pasos">
               2. Arrastra a los jugadores al banquillo.
             </div>
+=======
+            <div class="pasos">2. Selecciona a los jugadores de banquillo arrastrándolos a la zona correspondiente</div>
+>>>>>>> 0480859197fdc033d5614fd0a4089e8e07327908
           </ion-col>
         </ion-row>
         <ion-row>
@@ -68,9 +102,13 @@
       <ion-grid>
         <ion-row>
           <ion-col>
+<<<<<<< HEAD
             <div class="pasos">
               3. Arrastra a los jugadores no convocados.
             </div>
+=======
+            <div class="pasos">3. Por último, arrastra al resto de jugadores no convocados</div>
+>>>>>>> 0480859197fdc033d5614fd0a4089e8e07327908
           </ion-col>
         </ion-row>
         <ion-row>
@@ -84,9 +122,17 @@
                 <span class="nombre">{{jugador.nombre}}</span>
               </div>
             </div>
+<<<<<<< HEAD
             <div>
               <ion-button (click)="irAModo()" color="primary" slot="end" size="small">Empezar</ion-button>
             </div>
+=======
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button (click)="irAModo()" color="primary">Empezar</ion-button>
+>>>>>>> 0480859197fdc033d5614fd0a4089e8e07327908
           </ion-col>
         </ion-row>
       </ion-grid>
