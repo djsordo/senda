@@ -1,6 +1,7 @@
 import { Usuario } from './../modelo/usuario';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { UsuarioService } from '../services/usuario.service';
 
 @Component({
   selector: 'app-registro',
@@ -8,11 +9,12 @@ import { Location } from '@angular/common';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-  usuario: Usuario;
-  correo = '';
+  usuario = this.usuarioService.newUsuario();
   password = '';
+  password2 = '';
 
-  constructor(private location: Location) { }
+  constructor(private location: Location,
+    private usuarioService: UsuarioService) { }
 
   ngOnInit() {
   }
