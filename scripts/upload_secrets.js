@@ -1,6 +1,7 @@
 /**
  * 
  * Taken from: https://gist.github.com/Alhamou/10d5dcfc338c4e5a33485029b6d23b9d
+ * 
  */
 'use strict';
 
