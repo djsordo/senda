@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
 import { DocumentData, 
-  QueryDocumentSnapshot, 
-  QuerySnapshot} from '@angular/fire/firestore';
+        QuerySnapshot} from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from "@angular/router";
 
 
 import { PartidosService } from "src/app/services/partidos.service";
+import { CrearComponent } from "../crear.component";
 
 @Component({
   selector: 'select-rival', 
@@ -21,7 +21,8 @@ export class SelectRivalComponent implements OnInit {
   constructor( private partidoService : PartidosService,
                private renderer : Renderer2, 
                private router : Router,
-               private route : ActivatedRoute ){
+               private route : ActivatedRoute,
+               private crearComponent : CrearComponent ){
 
   }
 
@@ -48,6 +49,10 @@ export class SelectRivalComponent implements OnInit {
 
   public get rivalName(){
     return this._rivalName;
+  }
+
+  public getEquipoName() : string {
+    return this.crearComponent.equipoName;
   }
 
   private async loadRivales(){
@@ -81,7 +86,7 @@ export class SelectRivalComponent implements OnInit {
         this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
       }
     });
-    console.log( this._rivalName );
+    this.crearComponent.setRivalName( this._rivalName );
     this.router.navigate( ['..', 'lugar'], { relativeTo: this.route } );
   }
 

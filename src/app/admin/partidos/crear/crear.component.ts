@@ -7,6 +7,7 @@ import { DocumentData,
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/modelo/usuario';
 import { LocalStorage } from 'src/app/services/local.storage.mock';
+import { EquipoService } from 'src/app/services/equipo.service';
 
 @Component({
   selector: 'usuarios-crear',
@@ -19,8 +20,11 @@ export class CrearComponent implements OnInit {
   equipos : QueryDocumentSnapshot<DocumentData>[];
   rivales : Set<string>;
   lugares : Set<string>;
+  equipoId : string; 
+  equipoName : string;
 
   constructor( private usuarioService : UsuarioService,
+               private equipoService : EquipoService, 
                private toastController : ToastController, 
                private router : Router, 
                private route : ActivatedRoute,
@@ -38,7 +42,33 @@ export class CrearComponent implements OnInit {
     });
   }
   
+  public setEquipoId( equipoId : string ){
+    this.equipoId = equipoId;
+    this.equipoService.getEquipoById( this.equipoId )
+      .then( (equipoSnap) => {
+        let equipoData = equipoSnap.data();
+        this.equipoName = equipoData.categoria + ' '
+                          equipoData.genero + ' '
+                          equipoData.temporada.alias;
+        console.log( equipoData );
+      });
+  }
 
+  public setRivalName( rivalName : string ){
+    console.log( "recibido rival: ", rivalName );
+  }
+
+  public setLugar( lugarName : string ){
+    console.log( "recibido lugar: ", lugarName );
+  }
+
+  public setInfo( info : any ){
+    console.log( "info: ", info );
+  }
+
+  public createPartido(){
+
+  }
 
   /*
   onClickCrear() {

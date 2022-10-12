@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 
 import { PartidosService } from "src/app/services/partidos.service";
+import { CrearComponent } from "../crear.component";
 
 
 @Component({
@@ -24,7 +25,8 @@ export class SelectLugarComponent implements OnInit {
   public constructor( private partidoService : PartidosService, 
                       private renderer : Renderer2, 
                       private router : Router, 
-                      private route : ActivatedRoute ){
+                      private route : ActivatedRoute,
+                      private crearComponent : CrearComponent ){
 
   }
 
@@ -66,8 +68,12 @@ export class SelectLugarComponent implements OnInit {
       }
     });
     console.log( this.lugarSelected );
+    this.crearComponent.setLugar( this.lugarSelected );
     this.router.navigate( ['..', 'info'], { relativeTo: this.route } );
   }
 
 }
+
+
+
 

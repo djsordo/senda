@@ -3,8 +3,8 @@
 
     <ion-row>
       <ion-col>
-        <h1>¿Contra quien jugará PENDIENTE PONER NOMBRE DEL EQUIPO?</h1>
-        <h1>Selecciona el rival</h1>
+        <h1 *ngIf="getEquipoName()">¿Contra quien jugará {{getEquipoName()}}?</h1>
+        <h1 *ngIf="!getEquipoName()">Selecciona el rival</h1>
       </ion-col>
     </ion-row>
 

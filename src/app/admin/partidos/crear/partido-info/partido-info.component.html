@@ -4,16 +4,25 @@
     <ion-col>
       <ion-item>
         <ion-label>Fecha:</ion-label>
-        <ion-input type="date"></ion-input>
+        <ion-input type="date" [value]="fecha"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
       <ion-item>
+        <ion-label>Hora:</ion-label>
+        <ion-input type="time" [value]="hora"></ion-input>
+        <ion-note>Dejar en blanco si aún no se conoce</ion-note>
+      </ion-item>
+    </ion-col>
+  </ion-row>  
+  <ion-row>
+    <ion-col>
+      <ion-item>
         <ion-label>Temporada:</ion-label>
         <ion-select [value]="selectedTemporada">
-          <ion-select-option value="t.alias" 
+          <ion-select-option value="{{t.alias}}" 
                 *ngFor="let t of temporadas">{{t.alias}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -23,8 +32,9 @@
     <ion-col>
       <ion-item>
         <ion-label>Tipo:</ion-label>
-        <ion-select>
-          <ion-select-option>tipazo</ion-select-option>
+        <ion-select [value]="selectedTipo">
+          <ion-select-option value="{{t}}"
+              *ngFor="let t of tipos">{{t}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-col>
@@ -33,7 +43,7 @@
     <ion-col>
       <ion-item>
         <ion-label>Jornada:</ion-label>
-        <ion-input type="number"></ion-input>
+        <ion-input type="number" [value]="jornada"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -41,8 +51,9 @@
     <ion-col>
       <ion-item>
         <ion-label position="floating">Config:</ion-label>
-        <ion-select>
-          <ion-select-option>dos partes de 30 minutos</ion-select-option>
+        <ion-select [value]="selectedConfig">
+          <ion-select-option value="{{cfgAsString}}" 
+              *ngFor="let cfgAsString of getConfigKeys()">{{cfgAsString}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-col>
@@ -55,7 +66,7 @@
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-button color="primary" expand="block">Crear Partido</ion-button>
+      <ion-button color="primary" expand="block" (click)="onCreatePartido()">Crear Partido</ion-button>
     </ion-col>
   </ion-row>
 

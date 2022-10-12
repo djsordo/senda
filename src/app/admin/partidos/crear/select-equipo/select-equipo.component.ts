@@ -1,15 +1,15 @@
-import { Component, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output, QueryList, Renderer2, ViewChildren } from "@angular/core";
 import { DocumentData, 
   QueryDocumentSnapshot, 
   QuerySnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from "@angular/router";
 
 
-
 import { Usuario } from "src/app/modelo/usuario";
 import { EquipoService } from "src/app/services/equipo.service";
 import { LocalStorage } from "src/app/services/local.storage.mock";
 import { UsuarioService } from "src/app/services/usuario.service";
+import { CrearComponent } from "../crear.component";
 
 @Component({
   selector: 'select-equipo', 
@@ -30,7 +30,8 @@ export class SelectEquipoComponent implements OnInit {
                private localStorage : LocalStorage, 
                private renderer : Renderer2, 
                private router : Router, 
-               private route : ActivatedRoute ) {
+               private route : ActivatedRoute,
+               private crearComponent : CrearComponent ) {
     this.initCurrentUser();
   }
 
@@ -77,11 +78,12 @@ export class SelectEquipoComponent implements OnInit {
         this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
       }
     });
-    console.log( this.equipoSelected );
+    this.crearComponent.setEquipoId( this.equipoSelected );    
     this.router.navigate( ['..', 'rival'], { relativeTo: this.route } );
   }
 
 }
+
 
 
 
