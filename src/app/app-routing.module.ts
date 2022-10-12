@@ -78,6 +78,10 @@ const routes: Routes = [
   },  {
     path: 'estad-jugador',
     loadChildren: () => import('./estad-jugador/estad-jugador.module').then( m => m.EstadJugadorPageModule)
+  },
+  {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   }
 
 

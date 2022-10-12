@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-item slot="start" (click)="navAtras()" color="danger">
+      <ion-icon name="chevron-back"></ion-icon>
+    </ion-item>
+    <ion-title>Registro de usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides pager="true" slot="fixed">
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="pasos">
+              1. Introduce un correo electrónico válido y crea una contraseña
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Correo electrónico</ion-label>
+              <ion-input type="email" [(ngModel)]="usuario.email" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input name="password" type="password" [(ngModel)]="password" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Repite contraseña</ion-label>
+              <ion-input name="password2" type="password" [(ngModel)]="password2" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>
