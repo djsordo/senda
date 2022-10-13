@@ -2,7 +2,8 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <h1>¿Dónde será el encuentro entre PENDIENTE EQUIPO Y PENDIENTE RIVAL?</h1>
+        <h1 *ngIf="getEquipoName() != null && getRivalName() != null">¿Dónde será el encuentro entre {{getEquipoName()}} y {{getRivalName()}}?</h1>
+        <h1 *ngIf="getEquipoName() == null || getRivalName() == null">¿Dónde será el encuentro?</h1>
       </ion-col>
     </ion-row>
     <ion-row>

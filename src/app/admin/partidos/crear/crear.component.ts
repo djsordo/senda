@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ChildrenOutletContexts, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { DocumentData, 
-          QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { Timestamp} from '@angular/fire/firestore';
 
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/modelo/usuario';
 import { LocalStorage } from 'src/app/services/local.storage.mock';
 import { EquipoService } from 'src/app/services/equipo.service';
+import { Partido } from 'src/app/modelo/partido';
+import { fromStringToDate } from 'src/app/services/string-util';
+import { PartidosService } from 'src/app/services/partidos.service';
 
 @Component({
   selector: 'usuarios-crear',
@@ -17,20 +19,24 @@ import { EquipoService } from 'src/app/services/equipo.service';
 export class CrearComponent implements OnInit {
 
   usuario : Usuario;
-  equipos : QueryDocumentSnapshot<DocumentData>[];
-  rivales : Set<string>;
-  lugares : Set<string>;
   equipoId : string; 
   equipoName : string;
+  rivalName : string;
+  lugarName : string; 
+  partidoInfo : any; 
 
   constructor( private usuarioService : UsuarioService,
                private equipoService : EquipoService, 
+               private partidoService : PartidosService, 
                private toastController : ToastController, 
                private router : Router, 
                private route : ActivatedRoute,
                private localStorage : LocalStorage ) { }
 
   ngOnInit() { 
+    this.equipoName = null; 
+    this.rivalName = null;
+    this.lugarName = null;
     this.initCurrentUser();
   }
 
@@ -47,56 +53,54 @@ export class CrearComponent implements OnInit {
     this.equipoService.getEquipoById( this.equipoId )
       .then( (equipoSnap) => {
         let equipoData = equipoSnap.data();
-        this.equipoName = equipoData.categoria + ' '
-                          equipoData.genero + ' '
+        this.equipoName = equipoData.categoria + ' ' +
+                          equipoData.genero + ' ' +
                           equipoData.temporada.alias;
-        console.log( equipoData );
       });
   }
 
   public setRivalName( rivalName : string ){
-    console.log( "recibido rival: ", rivalName );
+    this.rivalName = rivalName;
   }
 
   public setLugar( lugarName : string ){
-    console.log( "recibido lugar: ", lugarName );
+    this.lugarName = lugarName;
   }
 
   public setInfo( info : any ){
-    console.log( "info: ", info );
+    this.partidoInfo = info; 
   }
 
-  public createPartido(){
-
-  }
-
-  /*
-  onClickCrear() {
-    console.log( "creando usuario...", this.nombre, this.apellidos );
-    let newUsuario = this.usuarioService.newUsuario();
-    newUsuario.nombre = this.nombre;
-    newUsuario.apellidos = this.apellidos;
-    newUsuario.email = this.email;
-    if( this.selectedClub ){
-      // hay varios clubes, y el usuario ha seleccionado de una lista
-      for( let club of this.clubes ){
-        if( club.id === this.selectedClub ){
-          newUsuario.club = club;
-          break;
-        }
-      }  
-    }else {
-      // sólo hay un club, y el usuario no ha efectuado ninguna selección
-      newUsuario.club = this.clubes[0];
+  public verifyAndCreatePartido() {
+    let partido = {} as Partido;
+    partido.equipoId = this.equipoId; 
+    partido.fecha = Timestamp.fromDate( fromStringToDate( this.partidoInfo.fecha, 
+                                      this.partidoInfo.hora ) );
+    partido.rival = this.rivalName;
+    partido.temporadaId = null; // PENDIENTE TEMPORADA
+    partido.tipo = this.partidoInfo.tipo;
+    partido.jornada = this.partidoInfo.jornada;
+    partido.ubicacion = this.lugarName;
+    // PENDIENTE CONFIG 
+    if( this.isPartidoValid( partido ) ){
+      this.createPartido( partido );
+      this.router.navigate( ['..'], { relativeTo : this.route } );  
+    }else{
+      console.log( 'faltan datos');
     }
-    this.usuarioService.addUsuario( newUsuario )
-      .then( docRef =>
-          this.sendToast( `${this.nombre} ${this.apellidos} se ha creado con éxito` ) )
-      .catch( reason => 
-          this.sendToast( `Se ha producido un error al crear el usuario ${this.nombre} ${this.apellidos}`));
-    this.router.navigate( ['..'], { relativeTo : this.route } );
   }
-  */
+
+  private isPartidoValid( partido : any ) : boolean {
+    return true;
+  }
+
+  private createPartido( partido: any ){
+    this.partidoService.addPartido( partido )
+      .then( docRef =>
+          this.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} creado con éxito` ) )
+      .catch( reason => 
+          this.sendToast( `Se ha producido un error al crear el partido entre ${this.equipoName} y ${this.rivalName}`));
+  }
 
   async sendToast( message : string ){
     return this.toastController.create({

@@ -99,7 +99,6 @@ export class EventosService {
     this.eventos.push( evento );
   }
 
-  // BASE DE DATOS
   async addEventoBD(evento: Evento){
     const eventoRef = collection(this.firestore, 'eventos');
     return await addDoc(eventoRef, evento);

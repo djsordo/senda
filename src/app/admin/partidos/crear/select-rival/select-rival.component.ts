@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
+import { Component, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
 import { DocumentData, 
         QuerySnapshot} from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from "@angular/router";

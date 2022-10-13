@@ -16,8 +16,8 @@ export class PartidoInfoComponent implements OnInit {
   temporadas : Set<any>;
   tipos : Set<string>;
   configs : Map<string,any>;
-  fecha : Date;
-  hora : Date;
+  fecha : string;
+  hora : string;
   selectedTemporada : string;
   selectedTipo : string;
   jornada : number;
@@ -97,20 +97,22 @@ export class PartidoInfoComponent implements OnInit {
     let fullCurrentyear2 = fullCurrentyear.toString().substring(2,4);
       // the default season is CURRENT_YEAR-NEXT_YEAR+1
       return temporadaAlias.match( 
-          new RegExp( `((${fullCurrentyear})|(${fullCurrentyear2}))\s*\-\s*((${fullNextyear})|(${fullNextyear2}))` ) )?true:false;
+          new RegExp( `((${fullCurrentyear})|(${fullCurrentyear2}))\s*`+
+                      `\-\s*((${fullNextyear})|(${fullNextyear2}))` ) )?true:false;
     }else{
       // the default seasion is PREV_YEAR-CURRENT_YEAR
       return temporadaAlias.match( 
-        new RegExp( `((${fullPrevyear})|(${fullPrevyear2}))\s*\-\s*((${fullCurrentyear})|(${fullCurrentyear2}))` ) )?true:false;
+        new RegExp( `((${fullPrevyear})|(${fullPrevyear2}))\s*`+
+                    `\-\s*((${fullCurrentyear})|(${fullCurrentyear2}))` ) )?true:false;
     }
   }
 
   public onCreatePartido(){
-    this.crearComponent.setInfo(
-          { "fecha" : this.fecha, 
+    this.crearComponent.setInfo({ 
+            "fecha" : this.fecha, 
             "hora" : this.hora, 
             "selectedTemporada": this.selectedTemporada, 
-            "selectedTipo" : this.selectedTipo,
+            "tipo" : this.selectedTipo,
             "jornada" : this.jornada, 
             "selectedConfig" : this.selectedConfig });
     this.crearComponent.createPartido();

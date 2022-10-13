@@ -46,6 +46,14 @@ export class SelectLugarComponent implements OnInit {
       });
   }
 
+  public getEquipoName(){
+    return this.crearComponent.equipoName;
+  }
+
+  public getRivalName(){
+    return this.crearComponent.rivalName;
+  }
+
   public onLugarSelected( lugar : string ) {
     this.resultCards.forEach( (card) => {
       if( card.el.id === lugar ){

@@ -107,6 +107,20 @@ export function properCase( s : string ){
 }
 
 /**
+ * Converts a string of the format "yyyy-mm-dd"
+ * and a string of the format "hh:mm" to a single 
+ * Date
+ */
+export function fromStringToDate( fecha: string, hora = "00:00" ){
+  let year = parseInt( fecha.substring( 0, 4 ) );
+  let month = parseInt( fecha.substring( 5, 7 ) );
+  let day = parseInt( fecha.substring( 8, 10 ) ); 
+  let hour = parseInt( hora.substring( 0, 2 ) );
+  let minute = parseInt( hora.substring( 3, 5 ) );
+  return new Date( year, month-1, day, hour+1, minute );
+}
+
+/**
  * Given a Date object, returns a string representing
  * a "useful" translation of that date.
  *

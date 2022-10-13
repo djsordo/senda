@@ -4,7 +4,7 @@
     <ion-col>
       <ion-item>
         <ion-label>Fecha:</ion-label>
-        <ion-input type="date" [value]="fecha"></ion-input>
+        <ion-input type="date" [(ngModel)]="fecha" pattern="date"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -12,8 +12,8 @@
     <ion-col>
       <ion-item>
         <ion-label>Hora:</ion-label>
-        <ion-input type="time" [value]="hora"></ion-input>
-        <ion-note>Dejar en blanco si aún no se conoce</ion-note>
+        <ion-input type="time" [(ngModel)]="hora" pattern="time"></ion-input>
+        <span>Dejar en blanco si aún no se conoce</span>
       </ion-item>
     </ion-col>
   </ion-row>  
@@ -21,7 +21,7 @@
     <ion-col>
       <ion-item>
         <ion-label>Temporada:</ion-label>
-        <ion-select [value]="selectedTemporada">
+        <ion-select [(ngModel)]="selectedTemporada">
           <ion-select-option value="{{t.alias}}" 
                 *ngFor="let t of temporadas">{{t.alias}}</ion-select-option>
         </ion-select>
@@ -43,7 +43,7 @@
     <ion-col>
       <ion-item>
         <ion-label>Jornada:</ion-label>
-        <ion-input type="number" [value]="jornada"></ion-input>
+        <ion-input type="number" [(ngModel)]="jornada"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>

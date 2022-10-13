@@ -32,13 +32,14 @@ export class PartidosService {
   }
 
   addPartido( partido: Partido ){
-    return setDoc( doc( this.partidoRef, this.make_id( partido ) ), partido );
+    return setDoc( doc( this.partidoRef, this.make_id( partido ) ), 
+                    partido );
   }
 
   make_id( partido: Partido ){
-    return make_id( partido.temporadaId
-            + partido.equipoId
-            + partido.rival );
+    return make_id( partido.temporadaId,
+                    partido.equipoId,
+                    partido.rival );
   }
 
   getPartidos(equipoId : string): Observable<Partido[]>{
