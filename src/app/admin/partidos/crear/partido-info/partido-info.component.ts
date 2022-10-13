@@ -115,7 +115,7 @@ export class PartidoInfoComponent implements OnInit {
             "tipo" : this.selectedTipo,
             "jornada" : this.jornada, 
             "selectedConfig" : this.selectedConfig });
-    this.crearComponent.createPartido();
+    this.crearComponent.verifyAndCreatePartido();
   }
 
 }
