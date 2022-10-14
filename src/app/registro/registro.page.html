@@ -42,8 +42,34 @@
             </ion-item>
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input type="text" [(ngModel)]="usuario.nombre" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Apellidos</ion-label>
+              <ion-input type="text" [(ngModel)]="usuario.apellidos" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="pasos">
+              2. Elige tu club y el rol que tienes en el equipo.
+            </div>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-slide>
   </ion-slides>
-
 </ion-content>
