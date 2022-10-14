@@ -1,0 +1,10 @@
+ion-card-header { position: relative }
+
+ion-icon.move_right{
+  position: absolute;
+  top: 50%;
+  right: 0.2em;
+  transform: translate(0,-50%);
+}
+
+

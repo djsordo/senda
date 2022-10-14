@@ -1,0 +1,53 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1 *ngIf="getEquipoName() != null && getRivalName() != null">¿Dónde será el encuentro entre {{getEquipoName()}} y {{getRivalName()}}?</h1>
+        <h1 *ngIf="getEquipoName() == null || getRivalName() == null">¿Dónde será el encuentro?</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-item>
+              <ion-checkbox slot="start" 
+                  value="Polideportivo Laguna"
+                  [checked]="lugarSelected" 
+                  (click)="onLugarSelected('home')"></ion-checkbox>
+              <ion-card-header>En casa (Polideportivo Laguna)</ion-card-header>
+              <ion-icon src="assets/home.svg" size="large" class="move_right"></ion-icon>
+            </ion-item>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card #resultCard id="{{l}}" *ngFor="let l of lugares"
+              (click)="onLugarSelected( l )">
+          <ion-card-header>
+            <ion-icon src="assets/handball.svg" size="large" class="move_right"></ion-icon>
+            <ion-card-title>{{l}}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button color="primary" expand="block" [routerLink]="['..','rival']">
+          <ion-label>Equipo</ion-label>
+          <ion-icon name="chevron-back" slot="start"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button color="primary" expand="block" [routerLink]="['..','info']">
+          <ion-label>+Info</ion-label>
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

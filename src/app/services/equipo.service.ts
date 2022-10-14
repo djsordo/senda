@@ -16,7 +16,6 @@ import { Firestore,
 import { setDoc } from "firebase/firestore";
 
 import { Equipo } from "../modelo/equipo";
-import { ClubesService } from "./clubes.service";
 import { make_id } from "./string-util";
 
 

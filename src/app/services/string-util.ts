@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Timestamp } from "firebase/firestore";
 
 
 /**
@@ -106,6 +107,20 @@ export function properCase( s : string ){
 }
 
 /**
+ * Converts a string of the format "yyyy-mm-dd"
+ * and a string of the format "hh:mm" to a single 
+ * Date
+ */
+export function fromStringToDate( fecha: string, hora = "00:00" ){
+  let year = parseInt( fecha.substring( 0, 4 ) );
+  let month = parseInt( fecha.substring( 5, 7 ) );
+  let day = parseInt( fecha.substring( 8, 10 ) ); 
+  let hour = parseInt( hora.substring( 0, 2 ) );
+  let minute = parseInt( hora.substring( 3, 5 ) );
+  return new Date( year, month-1, day, hour+1, minute );
+}
+
+/**
  * Given a Date object, returns a string representing
  * a "useful" translation of that date.
  *
@@ -134,6 +149,8 @@ export function properCase( s : string ){
  */
 export function formatDateUtil( d : Date,
                                 now : Date = null ) : string{
+  if( !now )
+    now = new Date();
   const terms = {
     now : 'ahora (${H}:${M})',
     nextHour : 'dentro de una hora (${H}:${M})',
@@ -155,7 +172,7 @@ export function formatDateUtil( d : Date,
     twoWeeksAgo : '${a} de hace dos semanas (${d}/${m})',
     catchAll : '${d}/${m}',
     catchAllWithYear : '${d}/${m}/${Y}'
-  };
+    };
   let dateInfo = {
     d : d,
     now : now?now:new Date(),
@@ -166,13 +183,13 @@ export function formatDateUtil( d : Date,
     hoursDiffTrunc : null,
     daysDiffTrunc : null,
     weeksDiffTrunc: null
-  };
+    };
   dateInfo.hoursDiff = (d.getTime() - now.getTime())  / (1000 * 3600);
   dateInfo.daysDiff = (d.getTime() - now.getTime()) / (1000 * 3600 * 24);
   dateInfo.hoursDiffTrunc = (dateInfo.dTrunc.getTime() - dateInfo.nowTrunc.getTime())
-                          / (1000 * 3600);
+  / (1000 * 3600);
   dateInfo.daysDiffTrunc = (dateInfo.dTrunc.getTime() - dateInfo.nowTrunc.getTime())
-                          / (1000 * 3600 * 24);
+  / (1000 * 3600 * 24);
   dateInfo.weeksDiffTrunc = weeksDiff( dateInfo.d, dateInfo.nowTrunc );
 
   if( differenceIsByHours( dateInfo ) ){
@@ -244,50 +261,50 @@ function isWeeksAgo( dateInfo: any, weeks : number ){
 }
 
 /**
- * Replacements:
- *
- * ${H} - hour as 24 hour format
- * ${M} - minutes, zero padded (00-59)
- * ${a} - day of the week. sunday = 0, monday = 1...
- * ${d} - actual day, zero padded (01-31)
- * ${m} - actual month, zero padded (01-12)
- * ${Y} - full year (2022)
- * @param term
- * @param dateInfo
- */
+* Replacements:
+*
+* ${H} - hour as 24 hour format
+* ${M} - minutes, zero padded (00-59)
+* ${a} - day of the week. sunday = 0, monday = 1...
+* ${d} - actual day, zero padded (01-31)
+* ${m} - actual month, zero padded (01-12)
+* ${Y} - full year (2022)
+* @param term
+* @param dateInfo
+*/
 function resolveString( term : string, dateInfo : any ) : string {
   const weekDays = ['domingo',
-  'lunes',
-  'martes',
-  'miércoles',
-  'jueves',
-  'viernes',
-  'sábado'];
+                    'lunes',
+                    'martes',
+                    'miércoles',
+                    'jueves',
+                    'viernes',
+                    'sábado'];
 
   let result = term;
   result = result.replaceAll( '${Y}',
-                          (dateInfo.d.getFullYear()).toString() );
+                  (dateInfo.d.getFullYear()).toString() );
   result = result.replaceAll( '${m}',
-                          (dateInfo.d.getMonth()+1).toString().padStart( 2, "0" ) );
+                  (dateInfo.d.getMonth()+1).toString().padStart( 2, "0" ) );
   result = result.replaceAll( '${d}',
-                          (dateInfo.d.getDate()).toString().padStart( 2, "0" ) );
+                  (dateInfo.d.getDate()).toString().padStart( 2, "0" ) );
   // day of the week
   result = result.replaceAll( '${a}',
-                          weekDays[ dateInfo.d.getDay() ] );
+                  weekDays[ dateInfo.d.getDay() ] );
   result = result.replaceAll( '${H}',
-                          dateInfo.d.getHours().toString().padStart( 2, "0") );
+                  dateInfo.d.getHours().toString().padStart( 2, "0") );
   result = result.replaceAll( '${M}',
-                          dateInfo.d.getMinutes().toString().padStart( 2, "0") );
+                  dateInfo.d.getMinutes().toString().padStart( 2, "0") );
   return result;
 }
 
 /**
- * Given two dates, return the difference in weeks between them.
- *
- * @param weekInfo1
- * @param weekInfo2
- * @returns
- */
+* Given two dates, return the difference in weeks between them.
+*
+* @param weekInfo1
+* @param weekInfo2
+* @returns
+*/
 function weeksDiff( d1 : Date, d2 : Date ){
   let weekInfo1 = getWeekNumber( d1 );
   let weekInfo2 = getWeekNumber( d2 );
@@ -295,35 +312,35 @@ function weeksDiff( d1 : Date, d2 : Date ){
     return weekInfo1[1] - weekInfo2[1];
   }else{
     let differenceInYears = weekInfo1[0] - weekInfo2[0];
-    return ( (365 * differenceInYears) / 7) + (weekInfo1[1] - weekInfo2[1]);
-  }
+  return ( (365 * differenceInYears) / 7) + (weekInfo1[1] - weekInfo2[1]);
+}
 }
 
 function truncateDate( d : Date ){
   return new Date( d.getFullYear(),
-                   d.getMonth(),
-                   d.getDate() );
+                  d.getMonth(),
+                  d.getDate() );
 }
 
 /**
- * For a given date, get the ISO week number
- *
- * https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php
- * Based on information at:
- *
- *    THIS PAGE (DOMAIN EVEN) DOESN'T EXIST ANYMORE UNFORTUNATELY
- *    http://www.merlyn.demon.co.uk/weekcalc.htm#WNR
- *
- * Algorithm is to find nearest thursday, it's year
- * is the year of the week number. Then get weeks
- * between that date and the first day of that year.
- *
- * Note that dates in one year can be weeks of previous
- * or next year, overlap is up to 3 days.
- *
- * e.g. 2014/12/29 is Monday in week  1 of 2015
- *      2012/1/1   is Sunday in week 52 of 2011
- */
+* For a given date, get the ISO week number
+*
+* https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php
+* Based on information at:
+*
+*    THIS PAGE (DOMAIN EVEN) DOESN'T EXIST ANYMORE UNFORTUNATELY
+*    http://www.merlyn.demon.co.uk/weekcalc.htm#WNR
+*
+* Algorithm is to find nearest thursday, it's year
+* is the year of the week number. Then get weeks
+* between that date and the first day of that year.
+*
+* Note that dates in one year can be weeks of previous
+* or next year, overlap is up to 3 days.
+*
+* e.g. 2014/12/29 is Monday in week  1 of 2015
+*      2012/1/1   is Sunday in week 52 of 2011
+*/
 function getWeekNumber( d : Date ) {
   // Copy date so don't modify original
   d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -337,6 +354,7 @@ function getWeekNumber( d : Date ) {
   // Return array of year and week number
   return [d.getUTCFullYear(), weekNo];
 }
+
 
 
 

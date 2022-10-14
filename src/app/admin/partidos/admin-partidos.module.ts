@@ -9,6 +9,11 @@ import { CambioComponent } from "./cambio/cambio.component";
 import { CrearComponent } from "./crear/crear.component";
 import { AdminPartidosPage } from "./admin-partidos.page";
 import { AdminPartidosPageRoutingModule } from "./admin-partidos-routing.module";
+import { SelectEquipoComponent } from "./crear/select-equipo/select-equipo.component";
+import { SelectRivalComponent } from "./crear/select-rival/select-rival.component";
+import { PartidoInfoComponent } from "./crear/partido-info/partido-info.component";
+import { SelectLugarComponent } from "./crear/select-lugar/select-lugar.component";
+import { TimestampPipe } from "src/app/services/timestamp-pipe";
 
 
 @NgModule({
@@ -21,7 +26,12 @@ import { AdminPartidosPageRoutingModule } from "./admin-partidos-routing.module"
     AdminPartidosPage, 
     BuscarComponent,
     CrearComponent,
-    CambioComponent
+    SelectEquipoComponent,
+    SelectRivalComponent, 
+    SelectLugarComponent,
+    PartidoInfoComponent,
+    CambioComponent,
+    TimestampPipe
   ]
 })
 export class AdminPartidosPageModule { }

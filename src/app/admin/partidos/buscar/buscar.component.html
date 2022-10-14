@@ -23,7 +23,7 @@
           <ion-card-title>{{p.equipoText}} vs. {{p.rival}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-text>{{p.fecha}}</ion-text> <br/>
+          <ion-text>{{p.fecha | timestamp : 'dd/MM/yyyy' }}</ion-text><br/>
           <ion-text>{{p.lugar}}</ion-text>
         </ion-card-content>
       </ion-card>

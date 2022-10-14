@@ -1,4 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
+
 export interface Partido{
   id?: string;
   equipoId: string;

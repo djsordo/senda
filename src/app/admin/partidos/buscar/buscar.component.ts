@@ -16,10 +16,9 @@ import { TemporadaService } from "src/app/services/temporada.service";
 @Component({
   selector: 'usuarios-buscar',
   templateUrl: './buscar.component.html',
-  styleUrls: ['./buscar.component.scss'],
+  styleUrls: ['./buscar.component.scss']
 })
 export class BuscarComponent implements OnInit {
-
 
   @ViewChildren('resultCard') resultCards: QueryList<any>;
   @Input() partidos : any = [];
@@ -36,19 +35,19 @@ export class BuscarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEQuipoList.apply( this, [ qSnapshot ] ) );
+    this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEquipoList.apply( this, [ qSnapshot ] ) );
     this.currentId = null;
   }
 
   public onClickSearch() {
-    this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEQuipoList.apply( this, [ qSnapshot ] ) );
+    this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEquipoList.apply( this, [ qSnapshot ] ) );
   }
 
   getSelectedId(){
     return this.mainPage.getSelectedId();
   }
 
-  private refreshEQuipoList( qSnapshot : QuerySnapshot<DocumentData> ) {
+  private refreshEquipoList( qSnapshot : QuerySnapshot<DocumentData> ) {
     this.partidos = [];
     console.log( qSnapshot );
     for( let docSnap of qSnapshot.docs ){
@@ -87,7 +86,6 @@ export class BuscarComponent implements OnInit {
     }
   }
 
-
   private matchesSearch( partido: DocumentData, searchText : string ){
     const composedInfo = ''; // tengo que juntar equipo, rival y temporada
     if( searchText )
@@ -115,7 +113,7 @@ export class BuscarComponent implements OnInit {
           handler: () => {
             // this.usuarioService.deleteUsuarioById( this.mainPage.getSelectedId() );
             this.mainPage.onSelectedId.emit( null );
-            this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEQuipoList.apply( this, [ qSnapshot ] ) );
+            this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEquipoList.apply( this, [ qSnapshot ] ) );
           },
         },
       ],
