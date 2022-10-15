@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Timestamp} from '@angular/fire/firestore';
 
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -23,12 +23,14 @@ export class CrearComponent implements OnInit {
   equipoName : string;
   rivalName : string;
   lugarName : string; 
-  partidoInfo : any; 
+  partidoInfo : any;
+  validationMessages : string[];
 
   constructor( private usuarioService : UsuarioService,
                private equipoService : EquipoService, 
                private partidoService : PartidosService, 
                private toastController : ToastController, 
+               private alertController : AlertController,
                private router : Router, 
                private route : ActivatedRoute,
                private localStorage : LocalStorage ) { }
@@ -87,11 +89,22 @@ export class CrearComponent implements OnInit {
       this.router.navigate( ['..'], { relativeTo : this.route } );  
     }else{
       console.log( 'faltan datos');
+      console.log( this.validationMessages );
     }
   }
 
   private isPartidoValid( partido : any ) : boolean {
-    return true;
+    this.validationMessages = [];
+    return this.check( partido.equipoId, "Debes seleccionar un equipo" )
+      && this.check( partido.rival, "Debe seleccionarse un rival" )
+      && this.check( partido.temporadaId, "Debe seleccionarse una temporada" )
+      && this.check( partido.tipo, "Debe seleccionarse un tipo: elige entre partido de liga o amistoso" );
+  }
+
+  private check( condition : boolean, message : string ) {
+    if( !condition )
+      this.validationMessages.push( message );
+    return condition;
   }
 
   private createPartido( partido: any ){
@@ -100,6 +113,48 @@ export class CrearComponent implements OnInit {
           this.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} creado con éxito` ) )
       .catch( reason => 
           this.sendToast( `Se ha producido un error al crear el partido entre ${this.equipoName} y ${this.rivalName}`));
+  }
+
+  async showAlertValidationFailed() {
+    const alert = await this.alertController.create({
+      header: '¿Seguro?',
+      message: this.composeMeaningfulMessage(),
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            // no hay necesidad de hacer nada
+            // en caso de que el usuario cancele
+          },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            // poner aquí el callback para el caso en que pulse ok
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+  }
+
+  private composeMeaningfulMessage() {
+    if( this.validationMessages.length === 0 )
+      return "Está todo, bien no sé porqué sale este mensaje";
+    else if( this.validationMessages.length === 1 )
+      return this.validationMessages[0]; 
+    else if( this.validationMessages.length === 2 )
+      return this.validationMessages[0] + " y "
+          + this.validationMessages[1];
+    else 
+      return this.validationMessages[0] + " y "
+          + (this.validationMessages.length - 1)
+          + " errores más"; 
   }
 
   async sendToast( message : string ){

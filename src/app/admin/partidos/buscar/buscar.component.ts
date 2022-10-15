@@ -112,6 +112,7 @@ export class BuscarComponent implements OnInit {
           role: 'confirm',
           handler: () => {
             // this.usuarioService.deleteUsuarioById( this.mainPage.getSelectedId() );
+            this.partidoService.deletePartidoById( this.currentId );
             this.mainPage.onSelectedId.emit( null );
             this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEquipoList.apply( this, [ qSnapshot ] ) );
           },

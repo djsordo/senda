@@ -80,12 +80,12 @@ export class EquipoService {
 
   async deleteEquipoByName( nombre : string ){
     const q = query( this.equipoRef, where( "nombre", "==", nombre ));
-    let docList = getDocs( q )
+    getDocs( q )
       .then( (docList) => {
         docList.forEach( (docRef) => {
           deleteDoc( docRef.ref );
         })
-      })
+      });
   }
 
   async deleteEquipoById( id : string ){

@@ -9,12 +9,13 @@ import { Firestore,
         doc,
         setDoc,
         onSnapshot,
-        WhereFilterOp} from '@angular/fire/firestore';
+        WhereFilterOp,
+        deleteDoc} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 import { make_id } from '../services/string-util';
 import { Partido } from '../modelo/partido';
-import { getDocs, QuerySnapshot } from 'firebase/firestore';
+import { getDoc, getDocs, QuerySnapshot } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,11 @@ export class PartidosService {
     }
 
     return onSnapshot( q, callback );
+  }
+
+  async deletePartidoById( partidoId : string ){
+    let docRef = doc( this.partidoRef, partidoId );
+    deleteDoc( docRef );
   }
 
 }
