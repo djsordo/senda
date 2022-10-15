@@ -101,7 +101,7 @@ function setCodeVersionGradle( envPath, filePath ){
   });
   let writeStream = fs.createWriteStream( tempFilePath );
   rl.on('line', (line) => {
-    writeStream.write( incrementCodeVersionGradle( line ) + '\n' );
+    writeStream.write( incrementCodeVersionGradle( path.basename( filePath ), line ) + '\n' );
   });
   rl.on('close', () => {
     writeStream.close();
@@ -111,13 +111,13 @@ function setCodeVersionGradle( envPath, filePath ){
 
 }
 
-function incrementCodeVersionGradle( line ){
+function incrementCodeVersionGradle( filename, line ){
   const versionRegexp = /(\s*versionCode\s*)([0-9]+)\s*/;
   let matching =  line.match( versionRegexp );
   if( matching ){
     let newCodeVersion = parseInt( matching[2] );
     let versionLineUpdated = `${matching[1]}${newCodeVersion+1}`;
-    console.log( `Subimos version de ${newCodeVersion} a ${newCodeVersion+1}` );
+    console.log( `Codigo de version pasa de ${newCodeVersion} a ${newCodeVersion+1} en ${filename}` );
     return versionLineUpdated;
   }else{
     return line;
