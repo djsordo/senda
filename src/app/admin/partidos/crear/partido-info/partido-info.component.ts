@@ -19,6 +19,7 @@ export class PartidoInfoComponent implements OnInit {
   fecha : string;
   hora : string;
   selectedTemporada : string;
+  temporadaId : string;
   selectedTipo : string;
   jornada : number;
   selectedConfig : string;
@@ -108,14 +109,25 @@ export class PartidoInfoComponent implements OnInit {
   }
 
   public onCreatePartido(){
-    this.crearComponent.setInfo({ 
-            "fecha" : this.fecha, 
-            "hora" : this.hora, 
-            "selectedTemporada": this.selectedTemporada, 
-            "tipo" : this.selectedTipo,
-            "jornada" : this.jornada, 
-            "selectedConfig" : this.selectedConfig });
-    this.crearComponent.verifyAndCreatePartido();
+    this.temporadaId = null; 
+    this.temporadaService.getTemporadas( this.selectedTemporada )
+    .then( (qSnap : QuerySnapshot<DocumentData>) => {
+      if( qSnap.docs.length > 0 ){
+        let doc = qSnap.docs[0]; 
+        this.temporadaId = doc.id;
+
+        this.crearComponent.setInfo({ 
+          "fecha" : this.fecha, 
+          "hora" : this.hora, 
+          "temporadaId": this.temporadaId, 
+          "tipo" : this.selectedTipo,
+          "jornada" : this.jornada, 
+          "selectedConfig" : this.selectedConfig });
+        this.crearComponent.verifyAndCreatePartido();
+        
+      }
+    });
+
   }
 
 }

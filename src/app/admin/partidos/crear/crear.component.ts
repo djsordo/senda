@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { Timestamp} from '@angular/fire/firestore';
+import { DocumentData, QuerySnapshot, Timestamp} from '@angular/fire/firestore';
 
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/modelo/usuario';
@@ -10,6 +10,12 @@ import { EquipoService } from 'src/app/services/equipo.service';
 import { Partido } from 'src/app/modelo/partido';
 import { fromStringToDate } from 'src/app/services/string-util';
 import { PartidosService } from 'src/app/services/partidos.service';
+import { TemporadaService } from 'src/app/services/temporada.service';
+
+interface Validation{
+  messages: string[], 
+  result: boolean 
+};
 
 @Component({
   selector: 'usuarios-crear',
@@ -24,11 +30,12 @@ export class CrearComponent implements OnInit {
   rivalName : string;
   lugarName : string; 
   partidoInfo : any;
-  validationMessages : string[];
+  validation : Validation;
 
   constructor( private usuarioService : UsuarioService,
                private equipoService : EquipoService, 
                private partidoService : PartidosService, 
+               private temporadaService : TemporadaService,
                private toastController : ToastController, 
                private alertController : AlertController,
                private router : Router, 
@@ -74,37 +81,42 @@ export class CrearComponent implements OnInit {
   }
 
   public verifyAndCreatePartido() {
-    let partido = {} as Partido;
-    partido.equipoId = this.equipoId; 
-    partido.fecha = Timestamp.fromDate( fromStringToDate( this.partidoInfo.fecha, 
-                                      this.partidoInfo.hora ) );
-    partido.rival = this.rivalName;
-    partido.temporadaId = null; // PENDIENTE TEMPORADA
-    partido.tipo = this.partidoInfo.tipo;
-    partido.jornada = this.partidoInfo.jornada;
-    partido.ubicacion = this.lugarName;
-    // PENDIENTE CONFIG 
-    if( this.isPartidoValid( partido ) ){
+    console.log( this.partidoInfo );
+    if( this.isPartidoValid( ) ){
+      let partido = {} as Partido;
+      partido.equipoId = this.equipoId; 
+      partido.rival = this.rivalName;
+      partido.ubicacion = this.lugarName;
+      partido.fecha = Timestamp.fromDate( fromStringToDate( this.partidoInfo.fecha, 
+                        this.partidoInfo.hora ) );
+      partido.temporadaId = this.partidoInfo.temporadaId;
+      // AQUI ME QUEDO
+      partido.tipo = this.partidoInfo.tipo;
+      partido.jornada = this.partidoInfo.jornada;
+      // PENDIENTE CONFIG 
+
       this.createPartido( partido );
+      
       this.router.navigate( ['..'], { relativeTo : this.route } );  
     }else{
-      console.log( 'faltan datos');
-      console.log( this.validationMessages );
+      this.showAlertValidationFailed();
     }
   }
 
-  private isPartidoValid( partido : any ) : boolean {
-    this.validationMessages = [];
-    return this.check( partido.equipoId, "Debes seleccionar un equipo" )
-      && this.check( partido.rival, "Debe seleccionarse un rival" )
-      && this.check( partido.temporadaId, "Debe seleccionarse una temporada" )
-      && this.check( partido.tipo, "Debe seleccionarse un tipo: elige entre partido de liga o amistoso" );
+  private isPartidoValid() : boolean {
+    this.validation = { messages: [], result : true };
+    this.check( this.validation, this.equipoId, "no se ha seleccionado un equipo" );
+    this.check( this.validation, this.rivalName, "no se ha seleccionado un rival" );
+    this.check( this.validation, this.partidoInfo.fecha, "no se ha puesto una fecha al partido" );
+    this.check( this.validation, this.partidoInfo.selectedTemporada, "no se ha seleccionado una temporada" );
+    this.check( this.validation, this.partidoInfo.tipo, "no se ha seleccionado un tipo de partido: elige entre partido de liga o amistoso" );
+    return this.validation.result;
   }
 
-  private check( condition : boolean, message : string ) {
+  private check( validation: Validation, condition : any, message : string ) {
     if( !condition )
-      this.validationMessages.push( message );
-    return condition;
+      this.validation.messages.push( message );
+    this.validation.result &&= condition;
   }
 
   private createPartido( partido: any ){
@@ -117,7 +129,7 @@ export class CrearComponent implements OnInit {
 
   async showAlertValidationFailed() {
     const alert = await this.alertController.create({
-      header: '¿Seguro?',
+      header: 'Faltan datos',
       message: this.composeMeaningfulMessage(),
       buttons: [
         {
@@ -144,16 +156,16 @@ export class CrearComponent implements OnInit {
   }
 
   private composeMeaningfulMessage() {
-    if( this.validationMessages.length === 0 )
+    if( this.validation.messages.length === 0 )
       return "Está todo, bien no sé porqué sale este mensaje";
-    else if( this.validationMessages.length === 1 )
-      return this.validationMessages[0]; 
-    else if( this.validationMessages.length === 2 )
-      return this.validationMessages[0] + " y "
-          + this.validationMessages[1];
+    else if( this.validation.messages.length === 1 )
+      return this.validation.messages[0]; 
+    else if( this.validation.messages.length === 2 )
+      return this.validation.messages[0] + " y "
+          + this.validation.messages[1];
     else 
-      return this.validationMessages[0] + " y "
-          + (this.validationMessages.length - 1)
+      return this.validation.messages[0] + " y "
+          + (this.validation.messages.length - 1)
           + " errores más"; 
   }
 
