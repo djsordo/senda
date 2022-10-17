@@ -69,6 +69,24 @@
             </div>
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-select interface="popover" placeholder="Club al que perteneces" value="{{clubIdElegido}}" (ionChange)="cambioLista($event)">
+              <div *ngFor="let club of clubes | async">
+                <ion-select-option value="{{club.id}}">{{club.nombre}}</ion-select-option>
+              </div>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-list *ngFor="let equipo of equiposClub">
+              <ion-item>
+                {{equipo.id}} - {{equipo.nombre}} - {{equipo.categoria}} - {{equipo.genero}}
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </ion-slide>
   </ion-slides>
