@@ -75,7 +75,6 @@ export class AppComponent implements OnInit {
   }
 
   public escribeUsuario() {
-    console.log('entra');
     this.usuarioActivo = {
       nombre: this.localStorage.getItem('nombreUsuario'),
       email: this.localStorage.getItem('emailUsuario'),

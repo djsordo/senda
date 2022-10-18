@@ -54,6 +54,14 @@ export class SelectLugarComponent implements OnInit {
     return this.crearComponent.rivalName;
   }
 
+  public onSelectedHome( ){
+    this.lugarSelected = 'Polideportivo Laguna';
+    this.resultCards.forEach( (card) => {
+      this.renderer.setStyle( card.el, "background", "" );
+      this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
+    });
+  }
+
   public onLugarSelected( lugar : string ) {
     this.resultCards.forEach( (card) => {
       if( card.el.id === lugar ){

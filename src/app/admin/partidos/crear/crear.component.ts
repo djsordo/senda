@@ -35,7 +35,6 @@ export class CrearComponent implements OnInit {
   constructor( private usuarioService : UsuarioService,
                private equipoService : EquipoService, 
                private partidoService : PartidosService, 
-               private temporadaService : TemporadaService,
                private toastController : ToastController, 
                private alertController : AlertController,
                private router : Router, 
@@ -77,6 +76,7 @@ export class CrearComponent implements OnInit {
   }
 
   public setInfo( info : any ){
+    console.log( info );
     this.partidoInfo = info; 
   }
 
@@ -90,11 +90,12 @@ export class CrearComponent implements OnInit {
       partido.fecha = Timestamp.fromDate( fromStringToDate( this.partidoInfo.fecha, 
                         this.partidoInfo.hora ) );
       partido.temporadaId = this.partidoInfo.temporadaId;
-      // AQUI ME QUEDO
       partido.tipo = this.partidoInfo.tipo;
-      partido.jornada = this.partidoInfo.jornada;
-      // PENDIENTE CONFIG 
-
+      if( this.partidoInfo.jornada )
+        partido.jornada = this.partidoInfo.jornada;
+      else 
+        partido.jornada = '';
+      console.log( this.partidoInfo.config );
       this.createPartido( partido );
       
       this.router.navigate( ['..'], { relativeTo : this.route } );  
@@ -108,7 +109,7 @@ export class CrearComponent implements OnInit {
     this.check( this.validation, this.equipoId, "no se ha seleccionado un equipo" );
     this.check( this.validation, this.rivalName, "no se ha seleccionado un rival" );
     this.check( this.validation, this.partidoInfo.fecha, "no se ha puesto una fecha al partido" );
-    this.check( this.validation, this.partidoInfo.selectedTemporada, "no se ha seleccionado una temporada" );
+    this.check( this.validation, this.partidoInfo.temporadaId, "no se ha seleccionado una temporada" );
     this.check( this.validation, this.partidoInfo.tipo, "no se ha seleccionado un tipo de partido: elige entre partido de liga o amistoso" );
     return this.validation.result;
   }

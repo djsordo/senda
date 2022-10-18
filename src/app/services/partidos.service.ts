@@ -63,7 +63,6 @@ export class PartidosService {
     else{
       q = query( this.partidoRef );
     }
-
     return onSnapshot( q, callback );
   }
 

@@ -49,12 +49,11 @@ export class BuscarComponent implements OnInit {
 
   private refreshEquipoList( qSnapshot : QuerySnapshot<DocumentData> ) {
     this.partidos = [];
-    console.log( qSnapshot );
     for( let docSnap of qSnapshot.docs ){
         try{
           let partido = docSnap.data(); 
           partido['id'] = docSnap.id;
-          if( 'equipoId' in partido )
+          if( 'equipoId' in partido && partido['equipoId'] )
             this.equipoService.getEquipoById( partido['equipoId'] )
               .then( (equipoDocSnap) => {
                 try{
@@ -65,16 +64,18 @@ export class BuscarComponent implements OnInit {
                   console.error( error );
                 }
               })
-          if( 'temporadaId' in partido )
-            this.temporadaService.getTemporadaById( partido['temporadaId'] )
-              .then( (temporadaDocSnap) => {
-                try{
-                  partido['temporadaText'] = temporadaDocSnap.data().alias;
-                }catch( error ){
-                  partido['temporadaText'] = partido['temporadaId'];
-                  console.error( 'error getting temporada by id', partido['temporadaId']);
-                  console.error( error );
-                }
+              .then( () => {
+                if( 'temporadaId' in partido && partido['temporadaId'] )
+                this.temporadaService.getTemporadaById( partido['temporadaId'] )
+                  .then( (temporadaDocSnap) => {
+                    try{
+                      partido['temporadaText'] = temporadaDocSnap.data().alias;
+                    }catch( error ){
+                      partido['temporadaText'] = partido['temporadaId'];
+                      console.error( 'error getting temporada by id', partido['temporadaId']);
+                      console.error( error );
+                    }
+                  });    
               });
           if( this.matchesSearch( partido, this.searchText ) ){
             this.partidos.push( partido );

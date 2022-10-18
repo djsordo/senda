@@ -21,7 +21,7 @@ export class PartidoInfoComponent implements OnInit {
   selectedTemporada : string;
   temporadaId : string;
   selectedTipo : string;
-  jornada : number;
+  jornada : string;
   selectedConfig : string;
 
   constructor( private temporadaService : TemporadaService,
@@ -32,6 +32,7 @@ export class PartidoInfoComponent implements OnInit {
   ngOnInit(): void {
     this.loadTemporadas();
     this.loadAdditionalData();
+    this.jornada = '';
   }
 
 
