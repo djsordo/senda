@@ -33,7 +33,7 @@ export class PartidosService {
   }
 
   addPartido( partido: Partido ){
-    return setDoc( doc( this.partidoRef, this.make_id( partido ) ), 
+    return setDoc( doc( this.partidoRef, this.make_id( partido ) ),
                     partido );
   }
 
@@ -43,12 +43,12 @@ export class PartidosService {
                     partido.rival );
   }
 
-  getPartidos(equipoId : string): Observable<Partido[]>{
-    let partidoResult = query(this.partidoRef, where('equipoId', '==', equipoId));
+  getPartidos(equipoId: string): Observable<Partido[]>{
+    const partidoResult = query(this.partidoRef, where('equipoId', '==', equipoId));
     return collectionData(partidoResult, {idField: 'id'}) as Observable<Partido[]>;
   }
 
-  async getPartidosAsDoc() : Promise<QuerySnapshot<DocumentData>>{
+  async getPartidosAsDoc(): Promise<QuerySnapshot<DocumentData>>{
     return getDocs( query( this.partidoRef ) );
   }
 
