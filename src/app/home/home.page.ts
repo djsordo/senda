@@ -1,3 +1,5 @@
+import { PartidosEquipo } from './../modelo/partidosEquipo';
+import { PartidosService } from 'src/app/services/partidos.service';
 import { BDGeneralService } from './../services/bdgeneral.service';
 
 import { Equipo } from './../modelo/equipo';
@@ -18,11 +20,21 @@ import { Subscription } from 'rxjs';
 })
 export class HomePage implements OnInit, OnDestroy {
   usuario: Usuario;
-  partidos: Partido[];
+  partidos: PartidosEquipo[] = [];
+
+  equipoSelec: PartidosEquipo = {
+    equipoId: '',
+    partidos: {
+      anteriores: [],
+      programados: [],
+      proximos: []
+      }
+    };
+
   subs: Subscription[] = [];
 
   cambioEq: string;
-  cambioFe: string;
+  cambioFe = 'proximos';
 
   fechaActual: Date;
   fIniSemana: Date;
@@ -30,24 +42,12 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private usuarioService: UsuarioService,
+              private partidoService: PartidosService,
               private pasoDatosService: PasoDatosService,
               private bdGeneralService: BDGeneralService
-              ) {
-  }
-
+              ) {}
 
   ngOnInit() {
-    this.partidos = [];
-
-    this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
-    .subscribe(usuarios => {
-      this.usuario = usuarios[0];
-      this.usuarioService.setUsuario(this.usuario);
-    });
-
-    this.cambioEq = this.usuario?.roles[0].equipo.id;
-    this.cambioFe = 'proximos';
-
     this.fechaActual = new Date();
     //console.log('Fecha actual: ', this.fechaActual);
 
@@ -64,6 +64,52 @@ export class HomePage implements OnInit, OnDestroy {
     this.fFinSemana.setMinutes(59);
     this.fFinSemana.setSeconds(59);
     //console.log('Fecha del último día de la semana: ', this.fFinSemana);
+
+    this.subs.push(this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
+    .subscribe(usuarios => {
+      this.usuario = usuarios[0];
+      this.usuarioService.setUsuario(this.usuario);
+
+      // Cargamos los partidos de los equipos a los que pertenece el usuario
+      this.usuario.roles.forEach(rol => {
+        // Por cada rol saco los partidos del equipo
+        this.subs.push(this.partidoService.getPartidos(rol.equipo.id)
+          .subscribe(partidos => {
+            const partidosEquipo: PartidosEquipo = {
+              equipoId: rol.equipo.id,
+              partidos: {
+                anteriores: [],
+                programados: [],
+                proximos: []
+              }
+            };
+
+            //console.log('Id del Equipo: ', partidosEquipo.equipoId);
+            partidos.forEach(partido => {
+              // Pongo cada partido en la lista adecuada
+              if (partido.fecha.toDate() < this.fIniSemana) {
+                // Va a lista de anteriores
+                partidosEquipo.partidos.anteriores.push(partido);
+              } else if (partido.fecha.toDate() > this.fFinSemana) {
+                // Va a lista de programados
+                partidosEquipo.partidos.programados.push(partido);
+              } else {
+                // Va a la lista de próximos
+                partidosEquipo.partidos.proximos.push(partido);
+              }
+            });
+
+            //console.log('Partidos del equipo: ', partidosEquipo);
+            this.partidos.push(partidosEquipo);
+          })
+        );
+      });
+    }));
+
+    /* this.cambioEq = this.usuario?.roles[0].equipo.id; */
+    /* this.equipoSelec = this.seleccionEquipo(this.cambioEq); */
+    /* this.equipoSelec = this.partidos[0]; */
+
   }
 
   irAModo(equipo: Equipo, partido: Partido, modo){
@@ -105,10 +151,31 @@ export class HomePage implements OnInit, OnDestroy {
 
   cambioEquipo(ev: any){
     this.cambioEq = ev.detail.value;
+    this.equipoSelec = this.seleccionEquipo(this.cambioEq);
   }
 
   cambioFecha(ev: any){
     this.cambioFe = ev.detail.value;
+  }
+
+  seleccionEquipo(equipoId: string){
+    let partidosEquipo: PartidosEquipo = {
+      equipoId: '',
+      partidos: {
+        anteriores: [],
+        programados: [],
+        proximos: []
+      }
+    };
+
+    /* console.log('seleccionEquipo(): ', equipoId); */
+    this.partidos.forEach(partido => {
+      if (partido.equipoId === equipoId){
+        partidosEquipo = partido;
+      }
+    });
+    console.log('retorno: ', partidosEquipo);
+    return partidosEquipo;
   }
 
   ngOnDestroy(){

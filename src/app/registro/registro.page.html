@@ -82,7 +82,7 @@
           <ion-col>
             <ion-list *ngFor="let equipo of equiposClub">
               <ion-item>
-                {{equipo.id}} - {{equipo.nombre}} - {{equipo.categoria}} - {{equipo.genero}}
+                {{equipo.id}} - {{(equipo.nombreCorto !== undefined)? equipo.nombreCorto : equipo.nombre}} {{equipo.categoria}} {{equipo.genero}}
               </ion-item>
             </ion-list>
           </ion-col>
