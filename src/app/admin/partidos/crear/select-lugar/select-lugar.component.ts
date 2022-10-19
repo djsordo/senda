@@ -40,7 +40,8 @@ export class SelectLugarComponent implements OnInit {
         this.lugares = new Set<string>();
         for( let docSnap of docList.docs ){
           // skip "Polideportivo Laguna" manually
-          if( docSnap.data().ubicacion !== "Polideportivo Laguna" )
+          if( docSnap.data().ubicacion &&
+              docSnap.data().ubicacion !== "Polideportivo Laguna" )
             this.lugares.add( docSnap.data().ubicacion );
         }
       });

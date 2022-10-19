@@ -116,14 +116,14 @@ export class PartidoInfoComponent implements OnInit {
       if( qSnap.docs.length > 0 ){
         let doc = qSnap.docs[0]; 
         this.temporadaId = doc.id;
-
+        console.log( "la config del partido es ", this.selectedConfig );
         this.crearComponent.setInfo({ 
           "fecha" : this.fecha, 
           "hora" : this.hora, 
           "temporadaId": this.temporadaId, 
           "tipo" : this.selectedTipo,
           "jornada" : this.jornada, 
-          "selectedConfig" : this.selectedConfig });
+          "config" : this.configs.get( this.selectedConfig ) });
         this.crearComponent.verifyAndCreatePartido();
         
       }

@@ -10,7 +10,7 @@ import { EquipoService } from 'src/app/services/equipo.service';
 import { Partido } from 'src/app/modelo/partido';
 import { fromStringToDate } from 'src/app/services/string-util';
 import { PartidosService } from 'src/app/services/partidos.service';
-import { TemporadaService } from 'src/app/services/temporada.service';
+
 
 interface Validation{
   messages: string[], 
@@ -91,6 +91,7 @@ export class CrearComponent implements OnInit {
                         this.partidoInfo.hora ) );
       partido.temporadaId = this.partidoInfo.temporadaId;
       partido.tipo = this.partidoInfo.tipo;
+      partido.config = this.partidoInfo.config;
       if( this.partidoInfo.jornada )
         partido.jornada = this.partidoInfo.jornada;
       else 
