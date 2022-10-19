@@ -30,7 +30,56 @@
     <div>
       <ion-item>{{equipoSelec?.equipoId}}</ion-item>
     </div>
-    <div  *ngFor="let rol of usuario?.roles">
+    <div>
+      <ul *ngIf="cambioFe === 'programados'">
+        <div *ngFor="let partido of equipoSelec.partidos.programados">
+          <li *ngIf="partido.fecha.toDate() > fFinSemana">
+            <h3 class="rival">{{partido.fecha.toDate() | date: 'HH:mm'}} {{partido.rival}}</h3>
+            <p class="ubicacion">{{partido.ubicacion}}</p>
+            <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
+            <span class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</span>
+          </li>
+        </div>
+      </ul>
+
+      <ul *ngIf="cambioFe === 'anteriores'">
+        <div *ngFor="let partido of equipoSelec.partidos.anteriores">
+          <li *ngIf="partido.fecha.toDate() < fIniSemana">
+            <h3 class="rival">{{partido.fecha.toDate() | date: 'HH:mm'}} {{partido.rival}}</h3>
+            <p class="ubicacion">{{partido.ubicacion}}</p>
+            <ion-button size="small" color="light" class="ver" (click)="irAModo(equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
+              <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+            <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
+            <span class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</span>
+          </li>
+        </div>
+      </ul>
+
+      <ul *ngIf="cambioFe === 'proximos'">
+        <div *ngFor="let partido of equipoSelec.partidos.proximos">
+          <li *ngIf="partido.fecha.toDate() > fIniSemana && partido.fecha.toDate() < fFinSemana">
+            <h3 class="rival">{{partido.fecha.toDate() | date: 'HH:mm'}} {{partido.rival}}</h3>
+            <p class="ubicacion">{{partido.ubicacion}}</p>
+            <ion-button size="small" color="light" class="generar" (click)="irAModo(equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">
+              <ion-icon name="document-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" color="light" class="ver" (click)="irAModo(equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
+              <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" color="light" class="reset" (click)="irAModo(equipo, partido, 'reset')" *ngIf="partido.config.estado !== 'finalizado'">
+              <ion-icon name="refresh-outline"></ion-icon>
+            </ion-button>
+            <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
+            <span class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</span>
+          </li>
+        </div>
+      </ul>
+    </div>
+
+
+
+<!--     <div  *ngFor="let rol of usuario?.roles">
       <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'programados'">
         <div *ngFor="let partido of rol.equipo.partidos">
           <li *ngIf="partido.fecha.toDate() > fFinSemana">
@@ -75,6 +124,6 @@
           </li>
         </div>
       </ul>
-    </div>
+    </div> -->
   </div>
 </ion-content>

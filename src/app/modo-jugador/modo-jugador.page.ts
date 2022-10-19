@@ -1,3 +1,4 @@
+import { PartidosService } from 'src/app/services/partidos.service';
 import { AlertController } from '@ionic/angular';
 import { BDGeneralService } from './../services/bdgeneral.service';
 import { Subscription } from 'rxjs';
@@ -56,6 +57,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
               private estadPartidoService: EstadPartidoService,
               private platform: Platform,
               private usuarioService: UsuarioService,
+              private partidoService: PartidosService,
               private estadJugadorService: EstadJugadorService,
               private bdGeneralService: BDGeneralService,
               private alertController: AlertController) {
@@ -64,8 +66,11 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   ngOnInit() {
     const listaInicialPrevia = this.pasoDatos.getListaInicial();
     const listaBanquilloPrevia = this.pasoDatos.getListaBanquillo();
-    const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId'));
+    /* const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId')); */
+    this.estadoPartido = this.partidoService.getEstado(localStorage.getItem('partidoId'));
+    localStorage.setItem('estadoPartido', this.estadoPartido);
 
+    console.log('estado: ', this.estadoPartido);
     this.nombres = this.pasoDatos.getNombresEquipos();
     this.usuario = this.usuarioService.getUsuario();
 
@@ -150,7 +155,8 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   }
 
   ngDoCheck(){
-    this.estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId'));
+    /* this.estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId')); */
+    this.estadoPartido = localStorage.getItem('estadoPartido');
   }
 
   cambioPortero(portero: EstadJugador){
@@ -179,8 +185,9 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
   navAtras(){
     // Esta función se encarga de navegar hacia atrás según convenga
-    const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId'));
-    if (estadoPartido === 'en curso'){
+    /* const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId')); */
+    this.estadoPartido = this.partidoService.getEstado(localStorage.getItem('partidoId'));
+    if (this.estadoPartido === 'en curso'){
       // Hay que avisar de que si se sale se borrarán todas las estadísticas.
       this.mostrarAlerta().then( resp => {
         console.log(resp);
@@ -190,7 +197,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
         };
       });
 
-    } else if (estadoPartido === 'en preparacion'){
+    } else if (this.estadoPartido === 'en preparacion'){
       // Hacemos reset de estadísticas
       this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
       this.router.navigate(['/inicio-sel-jugadores']);
