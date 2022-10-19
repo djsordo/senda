@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 })
 export class HomePage implements OnInit, OnDestroy {
   usuario: Usuario;
+  equipo: Equipo;
   partidos: PartidosEquipo[] = [];
 
   equipoSelec: PartidosEquipo = {
@@ -132,7 +133,9 @@ export class HomePage implements OnInit, OnDestroy {
         this.subs.forEach(sub => sub.unsubscribe());
         // A ver si puedo desde aquí cambiar el estado del partido.
         partido.config.estado = 'en preparacion';
-        this.usuarioService.updateUsuario(this.usuario);
+        this.partidoService.setEstado(partido.id, partido.config.estado);
+        /* this.usuarioService.updateUsuario(this.usuario); */
+        localStorage.setItem('estadoPartido', partido.config.estado);
 
         this.subs.forEach(sub => sub.unsubscribe());
         this.router.navigate(['/inicio-sel-jugadores']);
@@ -144,7 +147,10 @@ export class HomePage implements OnInit, OnDestroy {
     } else if (modo === 'reset'){
       // A ver si puedo desde aquí cambiar el estado del partido.
       partido.config.estado = 'programado';
-      this.usuarioService.updateUsuario(this.usuario);
+      this.partidoService.setEstado(partido.id, partido.config.estado);
+      /* this.usuarioService.updateUsuario(this.usuario);*/
+      localStorage.setItem('estadoPartido', partido.config.estado);
+
       this.subs = this.bdGeneralService.resetPartido(partido.id);
     }
   }
@@ -172,6 +178,12 @@ export class HomePage implements OnInit, OnDestroy {
     this.partidos.forEach(partido => {
       if (partido.equipoId === equipoId){
         partidosEquipo = partido;
+      }
+    });
+
+    this.usuario.roles.forEach(rol =>{
+      if (rol.equipo.id === equipoId){
+        this.equipo = rol.equipo;
       }
     });
     console.log('retorno: ', partidosEquipo);

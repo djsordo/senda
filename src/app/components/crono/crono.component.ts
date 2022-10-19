@@ -8,6 +8,7 @@ import { Crono } from './../../modelo/crono';
 import { CronoService } from './crono.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Usuario } from 'src/app/modelo/usuario';
+import { Partido } from 'src/app/modelo/partido';
 
 @Component({
   selector: 'app-crono',
@@ -32,6 +33,7 @@ export class CronoComponent implements OnInit, OnDestroy {
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
               private usuarioService: UsuarioService,
+              private partidoService: PartidosService,
               private alertController: AlertController) {}
 
   ngOnInit() {
@@ -53,8 +55,11 @@ export class CronoComponent implements OnInit, OnDestroy {
   pulsaCrono(){
     // Si es la primera vez que se pulsa (comienzo de partido) cambiamos el estado
     if (this.tiempo.segundos === 0 && this.tiempo.parte === 1){
-      this.usuarioService.setEstadoPartido(localStorage.getItem('partidoId'), 'en curso');
-      this.usuarioService.updateUsuario(this.usuarioService.getUsuario());
+      this.partidoService.setEstado(localStorage.getItem('partidoId'), 'en curso');
+      localStorage.setItem('estadoPartido', 'en curso');
+
+      /* this.usuarioService.setEstadoPartido(localStorage.getItem('partidoId'), 'en curso');
+      this.usuarioService.updateUsuario(this.usuarioService.getUsuario()); */
 
       // Evento de comienzo de partido
       const evento = this.eventosService.newEvento();
@@ -133,8 +138,10 @@ export class CronoComponent implements OnInit, OnDestroy {
     const indicePartido = this.usuario.roles[indiceRol].equipo.partidos.
       findIndex(partido => partido.id === localStorage.getItem('partidoId'));
 
-    this.usuario.roles[indiceRol].equipo.partidos[indicePartido].config.estado = 'finalizado';
-    this.usuarioService.updateUsuario(this.usuario);
+    this.partidoService.setEstado(localStorage.getItem('partidoId'), 'finalizado');
+    /* this.usuario.roles[indiceRol].equipo.partidos[indicePartido].config.estado = 'finalizado';
+    this.usuarioService.updateUsuario(this.usuario); */
+    localStorage.setItem('estadoPartido', 'finalizado');
   }
 
   async mostrarAlerta(){
