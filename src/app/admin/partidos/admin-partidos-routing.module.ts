@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminPartidosPage } from "./admin-partidos.page";
 import { BuscarComponent } from "./buscar/buscar.component";
-import { CambioComponent } from "./cambio/cambio.component";
 import { CrearComponent } from "./crear/crear.component";
 import { PartidoInfoComponent } from "./crear/partido-info/partido-info.component";
 import { SelectEquipoComponent } from "./crear/select-equipo/select-equipo.component";
@@ -21,7 +20,15 @@ const routes : Routes = [
     /* componente por defecto que se cargará en la página */
     { path : '',       component : BuscarComponent },
     { path : 'buscar', component : BuscarComponent },
-    { path : 'cambio', component : CambioComponent },
+    { path : 'cambio/:partidoId', 
+      component : CrearComponent,
+      children : [
+        { path : '', redirectTo: 'equipo' },
+        { path : 'equipo', component : SelectEquipoComponent }, 
+        { path : 'rival',  component : SelectRivalComponent },
+        { path : 'lugar',  component : SelectLugarComponent },
+        { path : 'info',   component : PartidoInfoComponent }
+      ] },
     { path : 'nuevo',  
       component : CrearComponent, 
       children : [

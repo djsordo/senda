@@ -34,7 +34,7 @@
       <ion-button color="primary"
             [routerLink]="['nuevo']">Nuevo</ion-button>
       <ion-button color="secondary" [disabled]="!getSelectedId()"
-            [routerLink]="['cambio']">Cambiar</ion-button>
+            [routerLink]="['cambio', currentId ]">Cambiar</ion-button>
       <ion-button color="danger" [disabled]="!getSelectedId()"
             (click)="onClickBorrar()">Borrar</ion-button>
     </ion-col>
