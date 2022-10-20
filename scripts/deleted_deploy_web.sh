@@ -2,8 +2,7 @@
 #
 # deploy_web.sh
 #
-# firebase login:add senda.developers@gmail.com
-#
+
 
 firebase login:use sendaappmail@gmail.com
 ##firebase login:use senda.developers@gmail.com
@@ -25,5 +24,3 @@ else
   fi
 fi
 
-# pruebas que estoy haciendo de desplegar en otra cuenta
-#firebase deploy --project sendaestadisticas-com-desa --only hosting:sendaestadisticas-com-desa
