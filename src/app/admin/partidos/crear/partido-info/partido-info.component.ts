@@ -128,7 +128,6 @@ export class PartidoInfoComponent implements OnInit {
         
       }
     });
-
   }
 
 }

@@ -37,6 +37,11 @@ export class SelectEquipoComponent implements OnInit {
 
   ngOnInit() {
     this.loadEquipos();
+    // xjx aqui me quedo
+    this.equipoSelected = this.crearComponent.equipoId;
+    if( this.equipoSelected ){
+      this.onEquipoSelected( this.equipoSelected );
+    }
   }
 
   private async initCurrentUser(){

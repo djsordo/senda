@@ -58,6 +58,7 @@ export class BuscarComponent implements OnInit {
               .then( (equipoDocSnap) => {
                 try{
                   partido['equipoText'] = equipoDocSnap.data().nombre;
+                  partido['equipo'] = equipoDocSnap.data();
                 }catch( error ){
                   partido['equipoText'] = partido['equipoId'];
                   console.error('error getting equipo by id: ', partido['equipoId'] );
