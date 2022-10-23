@@ -20,12 +20,12 @@
       <ion-card #resultCard id="{{p.id}}" *ngFor="let p of partidos" (click)="onCardSelected( p.id )">
         <ion-card-header>
           <ion-icon src="assets/handball.svg" size="large"></ion-icon>
-          <ion-card-title>{{p.equipoText}} vs. {{p.rival}}</ion-card-title>
+          <ion-card-title>{{p.categoria}} {{p.genero}} vs. {{p.rival}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <ion-text>{{p.equipo?.categoria}} {{p.equipo?.genero}}</ion-text><br/>
           <ion-text>{{p.fecha | timestamp : 'dd/MM/yyyy' }}</ion-text><br/>
-          <ion-text>{{p.lugar}}</ion-text>
+          <ion-text>{{p.ubicacion}}</ion-text>
         </ion-card-content>
       </ion-card>
     </ion-col>
