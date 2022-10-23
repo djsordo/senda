@@ -19,7 +19,8 @@ export class SelectLugarComponent implements OnInit {
 
   @ViewChildren('resultCard') resultCards : QueryList<any>;
   lugares : Set<string>;
-  lugarSelected : string; 
+  lugarSelected : string;
+  lugarName : string;
   
 
   public constructor( private partidoService : PartidosService, 
@@ -64,6 +65,7 @@ export class SelectLugarComponent implements OnInit {
   }
 
   public onLugarSelected( lugar : string ) {
+    this.lugarName = '';
     this.resultCards.forEach( (card) => {
       if( card.el.id === lugar ){
         if( card.el.id !== this.lugarSelected ){

@@ -24,6 +24,16 @@
     </ion-row>
     <ion-row>
       <ion-col>
+        <ion-item>
+          <ion-label position="floating">Escribe el lugar:</ion-label>
+          <ion-input id="lugar-name" type="text"
+            pattern="text" [(ngModel)]="lugarName"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label>O bien selecciónalo de la lista:</ion-label>
         <ion-card #resultCard id="{{l}}" *ngFor="let l of lugares"
               (click)="onLugarSelected( l )">
           <ion-card-header>
