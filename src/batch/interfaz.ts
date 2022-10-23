@@ -18,6 +18,11 @@ export async function doNothing(){
       });
 }
 
+export async function doExit(){
+  return new Promise( (resolve) => {
+    resolve( null );
+  });
+}
 
 export class Interfaz {
 
@@ -74,17 +79,17 @@ export class Interfaz {
               if( answer?.obj ){
                 if( answer?.arg )
                   answer.action.apply( answer.obj )
-                    .then( (val) => { resolve( val ) } );
+                    .then( (val) => { resolve( answer ) } );
                 else
                   answer.action.apply( answer.obj )
-                    .then( (val) => { resolve( val ) } );
+                    .then( (val) => { resolve( answer ) } );
               }else{
                 if( answer?.arg )
                 answer.action( answer.arg )
-                  .then( (val) => { resolve( val ) } );
+                  .then( (val) => { resolve( answer ) } );
               else
                 answer.action()
-                  .then( (val) => { resolve( val ) } );
+                  .then( (val) => { resolve( answer ) } );
               }
           });
         } )
