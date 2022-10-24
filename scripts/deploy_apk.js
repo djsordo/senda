@@ -58,7 +58,7 @@ function main(){
 
 async function runCommand( cmd ){
   console.log( cmd.reduce( (prev, current) => { return prev + ' ' + current;}, '' ) );
-  let cmdHandler = spawn( cmd[0], cmd.slice(1) );
+  let cmdHandler = spawn( cmd[0], cmd.slice(1), { shell : true } );
   cmdHandler.stdout.on( 'data', (data) => process.stdout.write(data) );
   cmdHandler.stderr.on( 'data', (data) => process.stderr.write(data) );
   return new Promise( (resolve, reject) => {
