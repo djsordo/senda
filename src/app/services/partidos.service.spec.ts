@@ -2,16 +2,19 @@ import { TestBed } from '@angular/core/testing';
 import { provideFirestore, 
   getFirestore, 
   QuerySnapshot,
-  DocumentData} from "@angular/fire/firestore";
+  DocumentData,
+  Timestamp} from "@angular/fire/firestore";
 import { initializeApp, 
   provideFirebaseApp } from '@angular/fire/app';
 
 import { environment } from './../../environments/environment';
 import { PartidosService } from './partidos.service';
 import { Partido } from '../modelo/partido';
+import { Subscription } from 'rxjs';
 
-describe('PartidosService', () => {
+fdescribe('PartidosService', () => {
   let partidosService: PartidosService;
+  let subscriptions : Subscription[];
 
   beforeAll( (callMeOnFinish) => {
     TestBed.configureTestingModule({
@@ -24,6 +27,10 @@ describe('PartidosService', () => {
 
   beforeEach(() => { /* do nothing */ });
 
+  afterAll( () => {
+    subscriptions.forEach( (subscription:Subscription) => subscription.unsubscribe() );
+  });
+
   it('should be created', () => {
     expect(partidosService).toBeTruthy();
   });
@@ -31,7 +38,7 @@ describe('PartidosService', () => {
   it('creacion de partidos funciona', ( callMeOnFinish ) => {
     let p = {} as Partido;
     p.equipoId = 'prueba-rlunaro';
-    p.fecha = (new Date()).toString();
+    p.fecha = Timestamp.now();
     p.rival = 'prueba2-rlunaro';
     p.temporadaId = '2022-23';
     p.tipo = 'liga';
@@ -58,5 +65,14 @@ describe('PartidosService', () => {
     });
   });
 
+  it('prueba de getPartidos de un equipo dado', (callMeOnFinish) => {
+    let equipoId = 'hVuCh6JJ0YiXThL9Jf6r';
+    let partidosSub = partidosService.getPartidos( equipoId )
+      .subscribe( (partidos) => {
+        console.log( partidos );
+        callMeOnFinish();
+      } );
+    subscriptions.push( partidosSub );
+  });
 
 });

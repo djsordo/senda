@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp} from '@angular/fire/firestore';
@@ -29,6 +29,7 @@ export class CrearComponent implements OnInit, OnDestroy {
   partidoId : string;
   usuario : Usuario;
   equipoId : string; 
+  equipoIdChanged = new EventEmitter<string>();
   equipoName : string;
   rivalName : string;
   lugarName : string; 
@@ -50,21 +51,23 @@ export class CrearComponent implements OnInit, OnDestroy {
     this.rivalName = null;
     this.lugarName = null;
     this.paramSubscription = this.route.params.subscribe( (params:Params) => {
-      this.partidoId = params['partidoId'];
-      this.partidoService.getPartido( this.partidoId )
-          .then( (docSnap : DocumentSnapshot<DocumentData>) => {
-            let partidoData = docSnap.data();
-            this.equipoName = "pendiente"; 
-            this.rivalName = partidoData.rival;
-            this.lugarName = partidoData.ubicacion;
-            this.partidoInfo = {
-              fecha: null, // descomponer partidoData.fecha en estos dos valores 
-              hora: null, 
-              temporadaId : partidoData.temporadaId, 
-              tipo : partidoData.tipo, 
-              jornada : partidoData.jornada, 
-              config : partidoData.config };
-          });
+      if( params['partidoId'] ){
+        this.partidoId = params['partidoId'];
+        this.partidoService.getPartido( this.partidoId )
+            .then( (docSnap : DocumentSnapshot<DocumentData>) => {
+              let partidoData = docSnap.data();
+              this.setEquipoId( partidoData.equipoId );
+              this.rivalName = partidoData.rival;
+              this.lugarName = partidoData.ubicacion;
+              this.partidoInfo = {
+                fecha: null, // descomponer partidoData.fecha en estos dos valores 
+                hora: null, 
+                temporadaId : partidoData.temporadaId, 
+                tipo : partidoData.tipo, 
+                jornada : partidoData.jornada, 
+                config : partidoData.config };
+            });
+      }
     });
   }
 
@@ -82,6 +85,7 @@ export class CrearComponent implements OnInit, OnDestroy {
   
   public setEquipoId( equipoId : string ){
     this.equipoId = equipoId;
+    this.equipoIdChanged.emit( this.equipoId );
     this.equipoService.getEquipoById( this.equipoId )
       .then( (equipoSnap) => {
         let equipoData = equipoSnap.data();
@@ -89,10 +93,6 @@ export class CrearComponent implements OnInit, OnDestroy {
                           equipoData.genero + ' ' +
                           equipoData.temporada.alias;
       });
-  }
-
-  public setRivalName( rivalName : string ){
-    this.rivalName = rivalName;
   }
 
   public setLugar( lugarName : string ){

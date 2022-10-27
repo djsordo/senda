@@ -32,47 +32,9 @@ export class PartidosService {
     return {} as Partido;
   }
 
-  addPartido( partido: Partido ){
-    return setDoc( doc( this.partidoRef, this.make_id( partido ) ),
-                    partido );
-  }
-
-  // Estas funciones están añadidas por Ángel
-  async updatePartido(partido: any, id: string){
-    const path = 'partidos/' + id;
-    const partidoRef = doc(this.firestore, path);
-    return await setDoc(partidoRef, partido);
-  }
-
   async getPartido( id: string ) {
     const docRef = doc( this.partidoRef, id );
     return getDoc( docRef );
-  }
-
-  setEstado(id: string, estado: string){
-    this.getPartido(id)
-    .then(part => {
-      const partido = part.data();
-      partido.config.estado = estado;
-      this.updatePartido(partido, id);
-    });
-  }
-
-  getEstado(id: string){
-    let estado: string;
-    this.getPartido(id)
-    .then(part => {
-      const partido = part.data();
-      estado = partido.config.estado;
-    });
-    return estado;
-  }
-  //---------------------------------------------
-
-  make_id( partido: Partido ){
-    return make_id( partido.temporadaId,
-                    partido.equipoId,
-                    partido.rival );
   }
 
   getPartidos(equipoId: string): Observable<Partido[]>{
@@ -96,6 +58,42 @@ export class PartidosService {
       q = query( this.partidoRef );
     }
     return onSnapshot( q, callback );
+  }
+
+  addPartido( partido: Partido ){
+    return setDoc( doc( this.partidoRef, this.make_id( partido ) ),
+                    partido );
+  }
+
+  async updatePartido(partido: any, id: string){
+    const path = 'partidos/' + id;
+    const partidoRef = doc(this.firestore, path);
+    return await setDoc(partidoRef, partido);
+  }
+
+  setEstado(id: string, estado: string){
+    this.getPartido(id)
+    .then(part => {
+      const partido = part.data();
+      partido.config.estado = estado;
+      this.updatePartido(partido, id);
+    });
+  }
+
+  getEstado(id: string){
+    let estado: string;
+    this.getPartido(id)
+    .then(part => {
+      const partido = part.data();
+      estado = partido.config.estado;
+    });
+    return estado;
+  }
+
+  make_id( partido: Partido ){
+    return make_id( partido.temporadaId,
+                    partido.equipoId,
+                    partido.rival );
   }
 
   async deletePartidoById( partidoId : string ){
