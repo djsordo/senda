@@ -67,8 +67,8 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     const listaInicialPrevia = this.pasoDatos.getListaInicial();
     const listaBanquilloPrevia = this.pasoDatos.getListaBanquillo();
     /* const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId')); */
-    this.estadoPartido = this.partidoService.getEstado(localStorage.getItem('partidoId'));
-    localStorage.setItem('estadoPartido', this.estadoPartido);
+    /* this.estadoPartido = this.partidoService.getEstado(localStorage.getItem('partidoId')); */
+    this.estadoPartido = localStorage.getItem('estadoPartido');
 
     console.log('estado: ', this.estadoPartido);
     this.nombres = this.pasoDatos.getNombresEquipos();
@@ -186,7 +186,8 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   navAtras(){
     // Esta función se encarga de navegar hacia atrás según convenga
     /* const estadoPartido = this.usuarioService.getEstadoPartido(localStorage.getItem('partidoId')); */
-    this.estadoPartido = this.partidoService.getEstado(localStorage.getItem('partidoId'));
+    /* this.estadoPartido = this.partidoService.getEstado(localStorage.getItem('partidoId')); */
+    this.estadoPartido = localStorage.getItem('estadoPartido');
     if (this.estadoPartido === 'en curso'){
       // Hay que avisar de que si se sale se borrarán todas las estadísticas.
       this.mostrarAlerta().then( resp => {
