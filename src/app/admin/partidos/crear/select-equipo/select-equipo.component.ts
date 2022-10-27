@@ -81,26 +81,7 @@ export class SelectEquipoComponent implements OnInit {
   }
 
   public onEquipoSelected( equipoId : string ){
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === equipoId ){
-        if( card.el.id !== this.crearComponent.equipoId ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.crearComponent.equipoId = equipoId;
-        }else{
-          // simulamos el efecto de que un click 
-          // en un elemento seleccionado, deja sin 
-          // efecto la selección 
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.crearComponent.equipoId = null;
-        }
-      }else{
-        // resto de elementos quedarán deseleccionados
-        this.renderer.setStyle( card.el, "background", "" );
-        this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-      }
-    });
+    this.crearComponent.setEquipoId( equipoId );
     this.router.navigate( ['..', 'rival'], { relativeTo: this.route } );
   }
 
