@@ -21,7 +21,7 @@ export class PartidoInfoComponent implements OnInit {
   selectedTemporada : string;
   temporadaId : string;
   selectedTipo : string;
-  jornada : string;
+  jornada : number;
   selectedConfig : string;
 
   constructor( private temporadaService : TemporadaService,
@@ -32,7 +32,7 @@ export class PartidoInfoComponent implements OnInit {
   ngOnInit(): void {
     this.loadTemporadas();
     this.loadAdditionalData();
-    this.jornada = '';
+    this.jornada = 0;
   }
 
 
@@ -41,16 +41,21 @@ export class PartidoInfoComponent implements OnInit {
       .then( (partidosList : QuerySnapshot<DocumentData>) => {
         this.tipos = new Set<string>();
         this.configs = new Map<string,any>();
+        let maxJornada = -Infinity;
         for( let partidoSnap of partidosList.docs ){
           let partido = partidoSnap.data();
           this.tipos.add( partido.tipo );
           this.selectedTipo = partido.tipo;
-          let partidoConfig = this.convertConfigToString( partido.config ); 
+          let partidoConfig = this.convertConfigToString( partido.config );
           if( partidoConfig && !this.configs.has( partidoConfig ) ){
             this.configs.set( partidoConfig, partido.config );
             this.selectedConfig = partidoConfig;
           }
+          if( partido.jornada > maxJornada ){
+            maxJornada = partido.jornada;
+          }
         }
+        this.jornada = maxJornada+1;
       });
   }
 
@@ -125,10 +130,8 @@ export class PartidoInfoComponent implements OnInit {
           "jornada" : this.jornada, 
           "config" : this.configs.get( this.selectedConfig ) });
         this.crearComponent.verifyAndCreatePartido();
-        
       }
     });
-
   }
 
 }

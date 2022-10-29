@@ -12,8 +12,8 @@ import { Firestore,
           updateDoc,
           DocumentReference,
           DocumentSnapshot,
-          doc } from '@angular/fire/firestore';
-import { setDoc } from 'firebase/firestore';
+          doc,
+          setDoc } from '@angular/fire/firestore';
 
 import { Equipo } from '../modelo/equipo';
 import { make_id } from './string-util';
@@ -52,9 +52,12 @@ export class EquipoService {
     }
   }
 
-  async addEquipo( equipo: Equipo ){
-    return setDoc( doc( this.equipoRef, this.make_id( equipo ) ), equipo );
-    addDoc( this.equipoRef, equipo );
+  async addEquipo( equipo: Equipo ) : Promise<string>{
+    return new Promise( (resolve) => {
+      let equipoId = this.make_id( equipo );
+      setDoc( doc( this.equipoRef, equipoId ), equipo )
+        .then( () => { resolve( equipoId ); } );
+    });
   }
 
   make_id( equipo: Equipo ){

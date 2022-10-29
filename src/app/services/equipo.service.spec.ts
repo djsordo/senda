@@ -28,9 +28,9 @@ describe( 'EquipoService', () => {
       equipoService.addEquipo( { nombre : 'rlunaro.melocotones' } as Equipo )])
         .then( ([ ref1, ref2, ref3 ]) => {
           console.log('creados los tres documentos:');
-          console.log( ref1.id );
-          console.log( ref2.id );
-          console.log( ref3.id );
+          console.log( ref1 );
+          console.log( ref2 );
+          console.log( ref3 );
         })
         .then( () => { 
           console.log('ultima llamada antes de dar por finalizado el beforeAll');
@@ -66,10 +66,10 @@ describe( 'EquipoService', () => {
     let equipo = equipoService.newEquipo();
     equipo.nombre = 'raul.luna.equipo';
     equipoService.addEquipo( equipo )
-      .then((equipoRef) =>  {
+      .then((equipoId) =>  {
           let check = equipoService.getEquipoByName( 'raul.luna.equipo' );
           console.log("que es equipo ref");
-          equipoService.getEquipoByRef( equipoRef )
+          equipoService.getEquipoById( equipoId )
             .then( value => {
               expect( value ).toBeTruthy();
               expect( value.data ).toBeTruthy();

@@ -5,7 +5,6 @@ import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
 
 import { BuscarComponent } from "./buscar/buscar.component";
-import { CambioComponent } from "./cambio/cambio.component";
 import { CrearComponent } from "./crear/crear.component";
 import { AdminPartidosPage } from "./admin-partidos.page";
 import { AdminPartidosPageRoutingModule } from "./admin-partidos-routing.module";
@@ -30,7 +29,6 @@ import { TimestampPipe } from "src/app/services/timestamp-pipe";
     SelectRivalComponent, 
     SelectLugarComponent,
     PartidoInfoComponent,
-    CambioComponent,
     TimestampPipe
   ]
 })

@@ -23,20 +23,40 @@ export class SelectEquipoComponent implements OnInit {
   @ViewChildren('resultCard') resultCards: QueryList<any>;
   usuario : Usuario;
   equipos: QueryDocumentSnapshot<DocumentData>[];
-  equipoSelected : string;
+  //equipoSelected : string;
 
   constructor( private equipoService : EquipoService, 
                private usuarioService : UsuarioService, 
+               private crearComponent : CrearComponent,
                private localStorage : LocalStorage, 
                private renderer : Renderer2, 
                private router : Router, 
-               private route : ActivatedRoute,
-               private crearComponent : CrearComponent ) {
+               private route : ActivatedRoute ) {
     this.initCurrentUser();
   }
 
   ngOnInit() {
-    this.loadEquipos();
+    this.loadEquipos()
+      .then( () => {
+        console.log( "equipoid:" );
+        console.log( this.crearComponent.equipoId );
+        this.crearComponent.equipoIdChanged.subscribe( (equipoId : string) => {
+          this.markAsSelected( equipoId );
+        });
+      } );
+  }
+
+  private markAsSelected( equipoId : string ){
+    this.resultCards.forEach( (card) => {
+      if( card.el.id === equipoId ){
+        this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
+        this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
+      }else{
+        // resto de elementos quedarán deseleccionados
+        this.renderer.setStyle( card.el, "background", "" );
+        this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
+      }
+    });
   }
 
   private async initCurrentUser(){
@@ -48,37 +68,20 @@ export class SelectEquipoComponent implements OnInit {
   }
 
   private async loadEquipos(){
-    this.equipoService.getEquipos()
+    return new Promise( (resolve, reject) => {
+      this.equipoService.getEquipos()
       .then( (docList: QuerySnapshot<DocumentData>) => {
         this.equipos = [];
         for( let docSnap of docList.docs ){
           this.equipos.push( docSnap );
         }
+        resolve( null );
       });
+    });
   }
 
   public onEquipoSelected( equipoId : string ){
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === equipoId ){
-        if( card.el.id !== this.equipoSelected ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.equipoSelected = equipoId;
-        }else{
-          // simulamos el efecto de que un click 
-          // en un elemento seleccionado, deja sin 
-          // efecto la selección 
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.equipoSelected = null;
-        }
-      }else{
-        // resto de elementos quedarán seleccionados
-        this.renderer.setStyle( card.el, "background", "" );
-        this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-      }
-    });
-    this.crearComponent.setEquipoId( this.equipoSelected );    
+    this.crearComponent.setEquipoId( equipoId );
     this.router.navigate( ['..', 'rival'], { relativeTo: this.route } );
   }
 

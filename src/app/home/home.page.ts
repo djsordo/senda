@@ -102,13 +102,18 @@ export class HomePage implements OnInit, OnDestroy {
 
             //console.log('Partidos del equipo: ', partidosEquipo);
             this.partidos.push(partidosEquipo);
+
+            this.cambioEq = this.usuario?.roles[0].equipo.id;
+            this.equipoSelec = this.seleccionEquipo(this.cambioEq);
           })
         );
       });
     }));
 
     /* this.cambioEq = this.usuario?.roles[0].equipo.id; */
-    /* this.equipoSelec = this.seleccionEquipo(this.cambioEq); */
+/*     this.cambioEq = 'zJ95IqWhrfJs4AgdGS2i';
+    this.equipoSelec = this.seleccionEquipo(this.cambioEq);
+ */
     /* this.equipoSelec = this.partidos[0]; */
 
   }

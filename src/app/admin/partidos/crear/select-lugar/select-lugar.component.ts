@@ -20,14 +20,13 @@ export class SelectLugarComponent implements OnInit {
   @ViewChildren('resultCard') resultCards : QueryList<any>;
   lugares : Set<string>;
   lugarSelected : string;
-  lugarName : string;
   
 
   public constructor( private partidoService : PartidosService, 
                       private renderer : Renderer2, 
                       private router : Router, 
                       private route : ActivatedRoute,
-                      private crearComponent : CrearComponent ){
+                      public  crearComponent : CrearComponent ){
 
   }
 
@@ -58,6 +57,7 @@ export class SelectLugarComponent implements OnInit {
 
   public onSelectedHome( ){
     this.lugarSelected = 'Polideportivo Laguna';
+    this.crearComponent.setLugar( this.lugarSelected );
     this.resultCards.forEach( (card) => {
       this.renderer.setStyle( card.el, "background", "" );
       this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
@@ -65,7 +65,6 @@ export class SelectLugarComponent implements OnInit {
   }
 
   public onLugarSelected( lugar : string ) {
-    this.lugarName = '';
     this.resultCards.forEach( (card) => {
       if( card.el.id === lugar ){
         if( card.el.id !== this.lugarSelected ){
@@ -86,7 +85,6 @@ export class SelectLugarComponent implements OnInit {
         this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
       }
     });
-    console.log( this.lugarSelected );
     this.crearComponent.setLugar( this.lugarSelected );
     this.router.navigate( ['..', 'info'], { relativeTo: this.route } );
   }

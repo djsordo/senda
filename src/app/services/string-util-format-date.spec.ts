@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { formatDateUtil } from './string-util';
 
 
-fdescribe( 'string-util-format-date.spec', () => {
+describe( 'string-util-format-date.spec', () => {
 
   beforeAll( () =>  {
   });

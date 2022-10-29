@@ -13,7 +13,7 @@
   <div slot="fixed" class="contenidoFijo">
     <ion-list>
       <ion-item>
-        <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="">
+        <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{usuario?.roles[0].equipo.id}}">
           <ion-select-option *ngFor="let rol of usuario?.roles" value="{{rol.equipo.id}}">{{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -27,9 +27,9 @@
   </div>
 
   <div class="contenedor">
-    <div>
+<!--     <div>
       <ion-item>{{equipoSelec?.equipoId}}</ion-item>
-    </div>
+    </div> -->
     <div>
       <ul *ngIf="cambioFe === 'programados'">
         <div *ngFor="let partido of equipoSelec.partidos.programados">
