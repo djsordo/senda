@@ -8,7 +8,7 @@
     "ejecutar": "node ./dist/batch/app.js",
     "depurar": "node --inspect ./dist/batch/app2.js"
   },
-  "dependencies": {
+  "devDependencies": {
     "typescript": "^4.8.4"
   }
 }

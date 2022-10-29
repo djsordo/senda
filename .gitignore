@@ -52,6 +52,7 @@ npm-debug.log*
 /dist
 /node_modules
 /scripts/node_modules
+/src/batch/node_modules
 /platforms
 /plugins
 /www
