@@ -16,7 +16,7 @@ import { collection,
         QuerySnapshot,
         setDoc} from 'firebase/firestore';
 
-import { environment } from '../environments/environment.prod.js';
+import { environment } from '../environments/environment.js';
 
 
 // Initialize Firebase
@@ -25,23 +25,10 @@ const firestore = getFirestore( app );
 
 let usuarioRef = collection( firestore, 'usuarios' );
 
-
-getDocs( query( usuarioRef ) )
-  .then( (value : QuerySnapshot<DocumentData> ) => {
-    for( let elem of value.docs ){
-      console.log('-----------------------------------');
-      writeFileSync( "prueba-angel.json", 
-            JSON.stringify( elem.data(), null, 2 ) );
-      console.log( "he terminado" );
-    }
-  } );
-
-/*
 let user = JSON.parse(
-    readFileSync( "prueba-angel.json", { encoding: 'utf-8' } ) );
+    readFileSync( "cadete-femenino.json", { encoding: 'utf-8' } ) );
 
-setDoc( doc( firestore, 'usuarios', 'raul-luna' ), user );
-*/
+setDoc( doc( firestore, 'usuarios', user.id ), user );
 
 
 

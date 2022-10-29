@@ -73,7 +73,7 @@ export class Interfaz {
   public async menu( title : string, options : Option[] ){
     let selectedOption = null;
     while( selectedOption === null ){
-      await this.showMenuWaitForAnswer( title, options )
+      /* xjx selectedOption = */await this.showMenuWaitForAnswer( title, options )
         .then( (answer) => {
           selectedOption = new Promise( (resolve) => {
               if( answer?.obj ){

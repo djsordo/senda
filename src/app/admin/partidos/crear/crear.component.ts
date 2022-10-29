@@ -30,6 +30,8 @@ export class CrearComponent implements OnInit, OnDestroy {
   usuario : Usuario;
   equipoId : string; 
   equipoIdChanged = new EventEmitter<string>();
+  rivalNameChanged = new EventEmitter<string>();
+  lugarChanged = new EventEmitter<string>();
   equipoName : string;
   rivalName : string;
   lugarName : string; 
@@ -50,6 +52,7 @@ export class CrearComponent implements OnInit, OnDestroy {
     this.equipoName = null; 
     this.rivalName = null;
     this.lugarName = null;
+    this.partidoId = '';
     this.paramSubscription = this.route.params.subscribe( (params:Params) => {
       if( params['partidoId'] ){
         this.partidoId = params['partidoId'];
@@ -57,8 +60,8 @@ export class CrearComponent implements OnInit, OnDestroy {
             .then( (docSnap : DocumentSnapshot<DocumentData>) => {
               let partidoData = docSnap.data();
               this.setEquipoId( partidoData.equipoId );
-              this.rivalName = partidoData.rival;
-              this.lugarName = partidoData.ubicacion;
+              this.setRivalName( partidoData.rival );
+              this.setLugar( partidoData.ubicacion );
               this.partidoInfo = {
                 fecha: null, // descomponer partidoData.fecha en estos dos valores 
                 hora: null, 
@@ -95,8 +98,14 @@ export class CrearComponent implements OnInit, OnDestroy {
       });
   }
 
+  public setRivalName( rivalName : string ){
+    this.rivalName = rivalName; 
+    this.rivalNameChanged.emit( this.rivalName );
+  }
+
   public setLugar( lugarName : string ){
     this.lugarName = lugarName;
+    this.lugarChanged.emit( this.lugarName );
   }
 
   public setInfo( info : any ){
@@ -105,8 +114,7 @@ export class CrearComponent implements OnInit, OnDestroy {
   }
 
   public verifyAndCreatePartido() {
-    console.log( this.partidoInfo );
-    if( this.isPartidoValid( ) ){
+    if( this.isPartidoValid() ){
       let partido = {} as Partido;
       partido.equipoId = this.equipoId; 
       partido.rival = this.rivalName;
@@ -121,12 +129,19 @@ export class CrearComponent implements OnInit, OnDestroy {
       else 
         partido.jornada = '';
       console.log( this.partidoInfo.config );
-      this.createPartido( partido );
+      if( this.isCreation() )
+        this.createPartido( partido );
+      else
+        console.log('creacion de partido: ', partido );
       
       this.router.navigate( ['..'], { relativeTo : this.route } );  
     }else{
       this.showAlertValidationFailed();
     }
+  }
+
+  private isCreation(){
+    return this.partidoId === '';
   }
 
   private isPartidoValid() : boolean {

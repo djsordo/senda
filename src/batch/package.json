@@ -5,8 +5,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ejecutar": "node ./dist/batch/app.js",
-    "depurar": "node --inspect ./dist/batch/app2.js"
   },
   "devDependencies": {
     "typescript": "^4.8.4"
