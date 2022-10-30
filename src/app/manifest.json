@@ -1,0 +1,60 @@
+{
+  "short_name": "Senda",
+  "name": "Sistema de Estadísticas y Notificaciones Deportivas Asociativas",
+  "icons": [
+    {
+      "src": "/assets/icon/logo1_640.png",
+      "type": "image/png",
+      "sizes": "640x640"
+    },
+    {
+      "src": "/assets/icon/logo1_512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/assets/icon/logo1_192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/icon/logo1_128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/assets/icon/logo1_64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#bfbfbf",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#222428",
+  "shortcuts": [
+    {
+      "name": "Ver un partido",
+      "short_name": "Ver un partido",
+      "description": "Ver el partido que se está jugando",
+      "url": "/modo-ver",
+      "icons": [{ "src": "/assets/icon/logo1_64.png", "sizes": "64x64" }]
+    }
+  ],
+  "description": "La aplicación de estadísticas deportivas definitiva",
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/screenshot1_es.png",
+      "type": "image/png",
+      "sizes": "1000x1165"
+    },
+    {
+      "src": "/assets/screenshots/screenshot2_es.png",
+      "type": "image/png",
+      "sizes": "1000x1165"
+    }
+  ]
+}
+
+

@@ -47,6 +47,10 @@
         </ion-list>
       </ion-content>
       <ion-footer>
+        <ion-item (click)="onClickShare()" routerLinkActive="selected">
+          <ion-icon slot="start" src="assets/speaker.svg"></ion-icon>
+          <ion-label>Compartir</ion-label>
+        </ion-item>
         <ion-item>
           <ion-icon slot="start" src="assets/rocket.svg" *ngIf="isProduction"></ion-icon>
           <ion-icon slot="start" src="assets/development.svg" *ngIf="!isProduction"></ion-icon>

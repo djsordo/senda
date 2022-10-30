@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Comparte la aplicación con otro móvil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p style="margin: 1.5em;">
+          <ion-icon src="assets/speaker.svg"></ion-icon>Difunde la buena noticia! Puedes compartir esta 
+          aplicación con quien quieras. Simplemente dile que 
+          apunte con su cámara al QR:
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-img *ngIf="!isProduction" src="assets/senda_web_desarrollo.png"></ion-img>
+        <ion-img *ngIf="isProduction" src="assets/senda_web_produccion.png"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="center">
+        <ion-button (click)="navigateHome()">Ir a la página principal</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

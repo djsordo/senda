@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-title>Añadir a inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-grid *ngIf="getMobileOperatingSystem() === 'ios'">
+  <ion-row>
+    <ion-col>
+      <h3>1. Haz clic en el icono [^] de la parte superior
+        derecha
+      </h3>  
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-img src="/assets/add-to-home/ios-0.png"></ion-img>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h3>2. A continuación, clic en "añadir a pantalla de inicio"</h3>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-img src="/assets/add-to-home/ios-1.png"></ion-img>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h3>3. Y clic en "añadir":</h3>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-img src="/assets/add-to-home/ios-2.png"></ion-img>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-grid *ngIf="getMobileOperatingSystem() !== 'ios'">
+  <ion-row>
+    <ion-col>
+      <h3>1. Haz clic en los tres puntos de 
+        la parte superior derecha
+      </h3>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-img src="/assets/add-to-home/android-0.jpg"></ion-img>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h3>2. Y luego selecciona "añadir a pantalla de inicio":</h3>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-img src="/assets/add-to-home/android-1.jpg"></ion-img>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      Puede que para tu dispositivo no funcione exactamente 
+      así, pero creo que ya te has hecho a la idea....
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+</ion-content>

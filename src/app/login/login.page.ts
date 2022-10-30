@@ -56,5 +56,6 @@ export class LoginPage implements OnInit {
   desactivarMenu(){
     this.menu.enable(false);
   }
+
 }
 

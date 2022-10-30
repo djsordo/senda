@@ -1,0 +1,137 @@
+[
+  {
+    "categoria": "cadete",
+    "nombre": "DENTAL COMPANY - Balonmano Laguna",
+    "club": {
+      "nombre": "Club Balonmano Laguna",
+      "clubId": "ruyHqsedtncUxZOFNAZB"
+    },
+    "temporada": {
+      "temporadaId": "2022-2023",
+      "alias": "22-23",
+      "actual": true,
+      "nombre": "2022-2023"
+    },
+    "genero": "femenino"
+  },
+  {
+    "temporada": {
+      "nombre": "2022-2023",
+      "actual": true,
+      "temporadaId": "2022-2023",
+      "alias": "22-23"
+    },
+    "club": {
+      "nombre": "Club Balonmano Laguna",
+      "clubId": "ruyHqsedtncUxZOFNAZB"
+    },
+    "nombre": "DENTAL COMPANY - Balonmano Laguna",
+    "categoria": "cadete",
+    "genero": "masculino"
+  },
+  {
+    "nombre": "DENTAL COMPANY - Balonmano Laguna",
+    "genero": "masculino",
+    "categoria": "infantil",
+    "temporada": {
+      "nombre": "2022-2023",
+      "actual": true,
+      "alias": "22-23",
+      "temporadaId": "2022-2023"
+    },
+    "club": {
+      "clubId": "ruyHqsedtncUxZOFNAZB",
+      "nombre": "Club Balonmano Laguna"
+    }
+  },
+  {
+    "club": {
+      "nombre": "Club Balonmano Laguna",
+      "clubId": "ruyHqsedtncUxZOFNAZB"
+    },
+    "categoria": "infantil",
+    "nombre": "DENTAL COMPANY - Balonmano Laguna",
+    "temporada": {
+      "actual": true,
+      "alias": "22-23",
+      "temporadaId": "2022-2023",
+      "nombre": "2022-2023"
+    },
+    "genero": "femenino"
+  },
+  {
+    "temporada": {
+      "alias": "22-23",
+      "nombre": "2022-2023",
+      "actual": true,
+      "temporadaId": "2022-2023"
+    },
+    "nombre": "Balonmano Melgar",
+    "club": {
+      "nombre": "Club Balonmano Melgar",
+      "clubId": "9QXtOxWcsAxYfthcykId"
+    },
+    "genero": "Masculino",
+    "categoria": "Cadete"
+  },
+  {
+    "club": {
+      "nombre": "Club Balonmano Laguna",
+      "clubId": "ruyHqsedtncUxZOFNAZB"
+    },
+    "nombre": "Dental Company BM Laguna A",
+    "temporada": {
+      "temporadaId": "kCnQV0Cne3Oj6yf6CAH1",
+      "alias": "21-22",
+      "nombre": "2021-2022"
+    },
+    "nombreCorto": "B.M. Laguna",
+    "categoría": "juvenil",
+    "genero": "masculino"
+  },
+  {
+    "categoria": "cadete",
+    "genero": "femenino",
+    "club": {
+      "clubId": "ruyHqsedtncUxZOFNAZB",
+      "nombre": "Club Balonmano Laguna"
+    },
+    "nombre": "Dental Company BM Laguna",
+    "temporada": {
+      "temporadaId": "kCnQV0Cne3Oj6yf6CAH1",
+      "alias": "21-22",
+      "nombre": "2021-2022"
+    }
+  },
+  {
+    "club": {
+      "clubId": "ruyHqsedtncUxZOFNAZB",
+      "nombre": "Club Balonmano Laguna"
+    },
+    "nombre": "DENTAL COMPANY - Balonmano Laguna",
+    "temporada": {
+      "nombre": "2022-2023",
+      "alias": "22-23",
+      "temporadaId": "2022-2023",
+      "actual": true
+    },
+    "categoria": "juvenil",
+    "genero": "femenino"
+  },
+  {
+    "temporada": {
+      "nombre": "2022-2023",
+      "actual": true,
+      "temporadaId": "2022-2023",
+      "alias": "22-23"
+    },
+    "genero": "masculino",
+    "club": {
+      "clubId": "ruyHqsedtncUxZOFNAZB",
+      "nombre": "Club Balonmano Laguna"
+    },
+    "nombre": "DENTAL COMPANY - Balonmano Laguna",
+    "categoria": "juvenil",
+    "nombreCorto": "B.M. Laguna"
+  }
+]

@@ -75,14 +75,24 @@ const routes: Routes = [
   {
     path : 'privacy',
     loadChildren: () => import('./privacy/privacy.module').then( m => m.PrivacyModule )
-  },  {
+  },
+  {
+    path: 'share',
+    loadChildren: () => import('./share/share.module').then( m => m.SharePageModule )
+  },
+  {
     path: 'estad-jugador',
     loadChildren: () => import('./estad-jugador/estad-jugador.module').then( m => m.EstadJugadorPageModule)
   },
   {
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+  },  {
+    path: 'add-to-home',
+    loadChildren: () => import('./add-to-home/add-to-home.module').then( m => m.AddToHomePageModule)
   }
+
+
 
 
 ];

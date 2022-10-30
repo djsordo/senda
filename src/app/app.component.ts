@@ -1,9 +1,11 @@
 import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
-import { NavegacionService } from './services/navegacion.service';
-import { LocalStorage } from './services/local.storage.mock';
+import { Router } from '@angular/router';
+
 import { environment } from 'src/environments/environment';
 
+import { LocalStorage } from './services/local.storage.mock';
+import { NavegacionService } from './services/navegacion.service';
 
 @Component({
   selector: 'app-root',
@@ -47,6 +49,7 @@ export class AppComponent implements OnInit {
 
   constructor(private menu: MenuController,
               private navegacion: NavegacionService,
+              private router : Router,
               private localStorage: LocalStorage ) {
     this.isProduction = environment.production;
     this.version = environment.version;
@@ -72,6 +75,11 @@ export class AppComponent implements OnInit {
     else{
       ionItem.detailIcon = 'chevron-forward';
     }
+  }
+
+  public onClickShare(){
+    this.menu.toggle();
+    this.router.navigate( ['./share' ] );
   }
 
   public escribeUsuario() {

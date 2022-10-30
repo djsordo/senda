@@ -1,0 +1,30 @@
+{
+  "nombre": "Cadete",
+  "apellidos": "Femenino",
+  "id" : "cadete.femenino@gmail.com",
+  "email": "cadete.femenino@gmail.com",
+  "club": {
+    "nombre": "Club Balonmano Laguna",
+    "clubId": "ruyHqsedtncUxZOFNAZB"
+  },
+  "roles": [
+    {
+      "nombre": "delegado",
+      "equipo":   {
+        "categoria": "cadete",
+        "nombre": "DENTAL COMPANY - Balonmano Laguna",
+        "club": {
+          "nombre": "Club Balonmano Laguna",
+          "clubId": "ruyHqsedtncUxZOFNAZB"
+        },
+        "temporada": {
+          "temporadaId": "2022-2023",
+          "alias": "22-23",
+          "actual": true,
+          "nombre": "2022-2023"
+        },
+        "genero": "femenino"
+      }
+    }
+  ]
+}
