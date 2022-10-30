@@ -26,9 +26,9 @@
                 "output": "assets"
               },
               {
-                "glob": "src/app/manifest.json",
-                "input": "", 
-                "output": ""
+                "glob" : "**/manifest.json",
+                "input" : "src/app",
+                "output" : "/"
               },
               {
                 "glob": "**/*.svg",
