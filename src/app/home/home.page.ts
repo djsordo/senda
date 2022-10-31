@@ -100,6 +100,33 @@ export class HomePage implements OnInit, OnDestroy {
               }
             });
 
+            partidosEquipo.partidos.anteriores.sort((a, b) => {
+              if (b.fecha.toDate() > a.fecha.toDate()) {
+                return 1;
+              }
+              else {
+                return -1;
+              }
+            });
+
+            partidosEquipo.partidos.programados.sort((a, b) => {
+              if (b.fecha.toDate() >= a.fecha.toDate()) {
+                return -1;
+              }
+              else {
+                return 1;
+              }
+            });
+
+            partidosEquipo.partidos.proximos.sort((a, b) => {
+              if (b.fecha.toDate() > a.fecha.toDate()) {
+                return 1;
+              }
+              else {
+                return -1;
+              }
+            });
+
             //console.log('Partidos del equipo: ', partidosEquipo);
             this.partidos.push(partidosEquipo);
 
