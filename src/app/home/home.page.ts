@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
 import { Subscription } from 'rxjs';
+import { CAPACITOR_CONFIG_JSON_FILE } from '@ionic/cli/lib/integrations/capacitor/config';
 
 @Component({
   selector: 'app-home',
@@ -74,6 +75,7 @@ export class HomePage implements OnInit, OnDestroy {
       // Cargamos los partidos de los equipos a los que pertenece el usuario
       this.usuario.roles.forEach(rol => {
         // Por cada rol saco los partidos del equipo
+        this.cambioEq = this.usuario?.roles[0].equipo.id;
         this.subs.push(this.partidoService.getPartidos(rol.equipo.id)
           .subscribe(partidos => {
             const partidosEquipo: PartidosEquipo = {
@@ -130,7 +132,7 @@ export class HomePage implements OnInit, OnDestroy {
             //console.log('Partidos del equipo: ', partidosEquipo);
             this.partidos.push(partidosEquipo);
 
-            this.cambioEq = this.usuario?.roles[0].equipo.id;
+            /* this.cambioEq = this.usuario?.roles[0].equipo.id; */
             this.equipoSelec = this.seleccionEquipo(this.cambioEq);
           })
         );
