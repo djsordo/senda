@@ -70,7 +70,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     /* this.estadoPartido = this.partidoService.getEstado(localStorage.getItem('partidoId')); */
     this.estadoPartido = localStorage.getItem('estadoPartido');
 
-    console.log('estado: ', this.estadoPartido);
+    /* console.log('estado: ', this.estadoPartido); */
     this.nombres = this.pasoDatos.getNombresEquipos();
     this.usuario = this.usuarioService.getUsuario();
 
@@ -104,7 +104,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       jugador.segJugados = 0;
       this.listaInicial.push(jugador);
     });
-    console.log('listaInicial: ', this.listaInicial);
+    /* console.log('listaInicial: ', this.listaInicial); */
     listaBanquilloPrevia.forEach(jugadorPrevia => {
       const jugador = {} as EstadJugador;
       jugador.datos = jugadorPrevia;
@@ -178,7 +178,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnDestroy(){
-    console.log('Compònente modo-jugador destruido');
+    /* console.log('Compònente modo-jugador destruido'); */
     this.miSuscripcionAEventoJugador.unsubscribe();
     this.subs.forEach(sub => sub.unsubscribe());
   }
@@ -191,7 +191,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     if (this.estadoPartido === 'en curso'){
       // Hay que avisar de que si se sale se borrarán todas las estadísticas.
       this.mostrarAlerta().then( resp => {
-        console.log(resp);
+        /* console.log(resp); */
         if (resp === 'confirm'){
           this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
           this.router.navigate(['/home']);
@@ -227,7 +227,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
   finalPartido(){
     // Grabamos estadísticas de cada jugador
-    console.log('Portero: ', this.portero);
+    /* console.log('Portero: ', this.portero); */
     if (this.portero){
       this.estadJugadorService.addEstadJugador(this.portero).then(estad => {
         this.portero.id = estad.id;
@@ -236,7 +236,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     }
 
     this.listaInicial.forEach(jug => {
-      console.log('Pista: ', jug);
+      /* console.log('Pista: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
         this.estadJugadorService.updateEstadJugador(jug);
@@ -244,7 +244,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     });
 
     this.listaBanquillo.forEach(jug => {
-      console.log('Banquillo: ', jug);
+      /* console.log('Banquillo: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
         this.estadJugadorService.updateEstadJugador(jug);
@@ -252,7 +252,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     });
 
     this.listaExcluidos.forEach(jug => {
-      console.log('Excluidos: ', jug);
+      /* console.log('Excluidos: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
         this.estadJugadorService.updateEstadJugador(jug);
@@ -260,7 +260,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     });
 
     this.listaEliminados.forEach(jug => {
-      console.log('Eliminados: ', jug);
+      /* console.log('Eliminados: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
         this.estadJugadorService.updateEstadJugador(jug);

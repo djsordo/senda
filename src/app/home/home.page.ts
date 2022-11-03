@@ -139,13 +139,6 @@ export class HomePage implements OnInit, OnDestroy {
         );
       });
     }));
-
-    /* this.cambioEq = this.usuario?.roles[0].equipo.id; */
-/*     this.cambioEq = 'zJ95IqWhrfJs4AgdGS2i';
-    this.equipoSelec = this.seleccionEquipo(this.cambioEq);
- */
-    /* this.equipoSelec = this.partidos[0]; */
-
   }
 
   irAModo(equipo: Equipo, partido: Partido, modo){
@@ -209,7 +202,6 @@ export class HomePage implements OnInit, OnDestroy {
       }
     };
 
-    /* console.log('seleccionEquipo(): ', equipoId); */
     this.partidos.forEach(partido => {
       if (partido.equipoId === equipoId){
         partidosEquipo = partido;
@@ -221,12 +213,10 @@ export class HomePage implements OnInit, OnDestroy {
         this.equipo = rol.equipo;
       }
     });
-    console.log('retorno: ', partidosEquipo);
     return partidosEquipo;
   }
 
   ngOnDestroy(){
-    console.log('ngOndestroy');
     this.subs.forEach(sub => sub.unsubscribe());
   }
 }

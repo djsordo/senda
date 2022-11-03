@@ -58,13 +58,11 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   public ngOnInit(): void {
-    console.log('ngOnInit');
     this.perfil = this.localStorage.getItem('perfil');
     this.navegacion.init();
   }
 
   public ngDoCheck(): void {
-    console.log('ngOnCheck');
     this.perfil = this.localStorage.getItem('perfil');
   }
 
