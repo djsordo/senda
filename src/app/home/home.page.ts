@@ -71,6 +71,7 @@ export class HomePage implements OnInit, OnDestroy {
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
       this.usuarioService.setUsuario(this.usuario);
+      localStorage.setItem('perfil', this.usuario.perfil);
 
       // Cargamos los partidos de los equipos a los que pertenece el usuario
       this.usuario.roles.forEach(rol => {

@@ -50,6 +50,9 @@
             <ion-button size="small" color="light" class="ver" (click)="irAModo(equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
               <ion-icon name="eye-outline"></ion-icon>
             </ion-button>
+            <ion-button size="small" color="light" class="reset" (click)="irAModo(equipo, partido, 'reset')" *ngIf="usuario.perfil === 'admin'">
+              <ion-icon name="refresh-outline"></ion-icon>
+            </ion-button>
             <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
             <span class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</span>
           </li>
@@ -67,7 +70,7 @@
             <ion-button size="small" color="light" class="ver" (click)="irAModo(equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
               <ion-icon name="eye-outline"></ion-icon>
             </ion-button>
-            <ion-button size="small" color="light" class="reset" (click)="irAModo(equipo, partido, 'reset')" *ngIf="partido.config.estado !== 'finalizado'">
+            <ion-button size="small" color="light" class="reset" (click)="irAModo(equipo, partido, 'reset')" *ngIf="partido.config.estado !== 'finalizado' && usuario.perfil === 'admin'">
               <ion-icon name="refresh-outline"></ion-icon>
             </ion-button>
             <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>

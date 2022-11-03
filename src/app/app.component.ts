@@ -1,5 +1,5 @@
 import { MenuController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { environment } from 'src/environments/environment';
@@ -12,7 +12,7 @@ import { NavegacionService } from './services/navegacion.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, DoCheck {
 
 
   public appPages = [
@@ -44,19 +44,28 @@ export class AppComponent implements OnInit {
     email: '',
   };
 
-  public isProduction : boolean; 
-  public version : string; 
+  perfil: string;
+
+  public isProduction: boolean;
+  public version: string;
 
   constructor(private menu: MenuController,
               private navegacion: NavegacionService,
-              private router : Router,
+              private router: Router,
               private localStorage: LocalStorage ) {
     this.isProduction = environment.production;
     this.version = environment.version;
   }
 
   public ngOnInit(): void {
+    console.log('ngOnInit');
+    this.perfil = this.localStorage.getItem('perfil');
     this.navegacion.init();
+  }
+
+  public ngDoCheck(): void {
+    console.log('ngOnCheck');
+    this.perfil = this.localStorage.getItem('perfil');
   }
 
   public collapseMenu(): void {

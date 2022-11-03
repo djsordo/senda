@@ -16,7 +16,7 @@
 
 
           <span *ngFor="let p of appPages">
-            <ion-item #currentElement lines="none"
+            <ion-item #currentElement lines="none" *ngIf="(p.title === 'Admin' && perfil === 'admin') || p.title !== 'Admin'"
             routerLinkActive="selected"
             [routerLink]="p.url"
             [detail]="p.submenu"
@@ -33,7 +33,7 @@
                     (click)="onClickElement( subp, currentSubmenu )">
                   <ion-icon slot="start" *ngIf="subp.icon"
                             name="subp.icon"
-                            [ios]="subp.icon + '-outline'" 
+                            [ios]="subp.icon + '-outline'"
                             [md]="subp.icon + '-sharp'"></ion-icon>
                   <ion-icon slot="start" *ngIf="!subp.icon && subp.src"
                             src="{{subp.src}}"></ion-icon>
