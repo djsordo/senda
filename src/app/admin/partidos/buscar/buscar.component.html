@@ -24,7 +24,8 @@
         </ion-card-header>
         <ion-card-content>
           <ion-text>{{p.equipo?.categoria}} {{p.equipo?.genero}}</ion-text><br/>
-          <ion-text>{{p.fecha | timestamp : 'dd/MM/yyyy' }}</ion-text><br/>
+          <ion-text>{{p.fecha | timestamp : 'dd/MM/yyyy' }}</ion-text>
+          <ion-text *ngIf="p.hora !== '00:00'"> {{p.hora}}</ion-text><br/>
           <ion-text>{{p.ubicacion}}</ion-text>
         </ion-card-content>
       </ion-card>

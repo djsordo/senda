@@ -5,7 +5,7 @@ import { Component,
   Renderer2,
   ViewChildren} from "@angular/core";
 import { AlertController } from "@ionic/angular";
-import { DocumentData, QuerySnapshot } from '@angular/fire/firestore';
+import { DocumentData, QuerySnapshot, Timestamp } from '@angular/fire/firestore';
 
 import { StringUtil } from "src/app/services/string-util";
 import { AdminPartidosPage } from "../admin-partidos.page";
@@ -77,8 +77,9 @@ export class BuscarComponent implements OnInit {
                       console.error( 'error getting temporada by id', partido['temporadaId']);
                       console.error( error );
                     }
-                  });    
+                  });
               });
+          partido.hora = this.getHour( partido.fecha );
           if( this.matchesSearch( partido, this.searchText ) ){
             this.partidos.push( partido );
           }
@@ -87,6 +88,13 @@ export class BuscarComponent implements OnInit {
           console.error( err );
         }
     }
+  }
+
+  private getHour( fecha : Timestamp ){
+    let d = fecha.toDate();
+    let hour = d.getHours().toString().padStart(2, '0');
+    let minute = d.getMinutes().toString().padStart(2, '0');
+    return `${hour}:${minute}`;  
   }
 
   private matchesSearch( partido: DocumentData, searchText : string ){

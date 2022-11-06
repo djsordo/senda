@@ -1,14 +1,15 @@
-import { Component, EventEmitter, OnInit, Output, QueryList, Renderer2, ViewChildren } from "@angular/core";
+import { Component, 
+        OnInit, 
+        QueryList, 
+        Renderer2, 
+        ViewChildren } from "@angular/core";
 import { DocumentData, 
-  QueryDocumentSnapshot, 
-  QuerySnapshot } from '@angular/fire/firestore';
+        QueryDocumentSnapshot, 
+        QuerySnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from "@angular/router";
 
 
-import { Usuario } from "src/app/modelo/usuario";
 import { EquipoService } from "src/app/services/equipo.service";
-import { LocalStorage } from "src/app/services/local.storage.mock";
-import { UsuarioService } from "src/app/services/usuario.service";
 import { CrearComponent } from "../crear.component";
 
 @Component({
@@ -21,29 +22,34 @@ import { CrearComponent } from "../crear.component";
 export class SelectEquipoComponent implements OnInit {
 
   @ViewChildren('resultCard') resultCards: QueryList<any>;
-  usuario : Usuario;
   equipos: QueryDocumentSnapshot<DocumentData>[];
-  //equipoSelected : string;
 
   constructor( private equipoService : EquipoService, 
-               private usuarioService : UsuarioService, 
                private crearComponent : CrearComponent,
-               private localStorage : LocalStorage, 
                private renderer : Renderer2, 
                private router : Router, 
                private route : ActivatedRoute ) {
-    this.initCurrentUser();
   }
 
   ngOnInit() {
+    console.log( 'ngOnInit select equipo');
     this.loadEquipos()
       .then( () => {
-        console.log( "equipoid:" );
-        console.log( this.crearComponent.equipoId );
-        this.crearComponent.equipoIdChanged.subscribe( (equipoId : string) => {
-          this.markAsSelected( equipoId );
-        });
+        console.log( "equipo es: ", this.crearComponent.equipoId );
+        // A VER, ESTO NO FUNCIONA PORQUE DEBERÍA 
+        // EJECUTARSE CUANDO SE HUBIERA TERMINADO 
+        // DE CARGAR LA LISTA DE TARJETAS: EN EL 
+        // MOMENTO EN QUE SE DISPARA, NO SE HA CARGADO 
+        // NINGUNA TARJETA AÚN
+        setTimeout( () => {
+          this.markAsSelected( this.crearComponent.equipoId );
+        }, 2000 );
       } );
+    // la subscripción es necesaria para 
+    // cuando efectúo cambios en la página
+    this.crearComponent.equipoIdChanged.subscribe( (equipoId : string) => {
+      this.markAsSelected( equipoId );
+    });
   }
 
   private markAsSelected( equipoId : string ){
@@ -56,14 +62,6 @@ export class SelectEquipoComponent implements OnInit {
         this.renderer.setStyle( card.el, "background", "" );
         this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
       }
-    });
-  }
-
-  private async initCurrentUser(){
-    this.usuarioService.getUsuarioBD( this.localStorage.getItem('emailUsuario') )
-    .subscribe(usuarios => {
-      this.usuario = usuarios[0];
-      console.log('usuario: ', usuarios);
     });
   }
 

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController, ToastController } from '@ionic/angular';
+
+
 import { LoginService } from './login.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -9,15 +12,25 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  usuario= {
-    email: 'ajvitores@gmail.com',
-    password: '123456'
-  };
+  usuario : { email: string,
+              password: string };
 
   constructor(private menu: MenuController,
     private loginService: LoginService,
     private router: Router,
-    private toastController: ToastController) { }
+    private toastController: ToastController) { 
+    if( environment.production ) {
+      this.usuario = {
+        email : '', 
+        password : ''
+      };
+    }else{
+      this.usuario = {
+        email : 'ajvitores@gmail.com',
+        password : '123456'
+      }
+    }
+  }
 
   ngOnInit() {
     this.menu.enable(false);

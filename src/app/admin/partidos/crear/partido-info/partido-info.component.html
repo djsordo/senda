@@ -4,7 +4,8 @@
     <ion-col>
       <ion-item>
         <ion-label>Fecha:</ion-label>
-        <ion-input type="date" [(ngModel)]="fecha" pattern="date"></ion-input>
+        <ion-input type="date" [(ngModel)]="fecha"
+                pattern="date"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
@@ -22,8 +23,8 @@
       <ion-item>
         <ion-label>Temporada:</ion-label>
         <ion-select [(ngModel)]="selectedTemporada">
-          <ion-select-option value="{{t.alias}}" 
-                *ngFor="let t of temporadas">{{t.alias}}</ion-select-option>
+          <ion-select-option value="{{t}}" 
+                *ngFor="let t of temporadas">{{t}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-col>
@@ -66,7 +67,8 @@
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-button color="primary" expand="block" (click)="onCreatePartido()">Crear Partido</ion-button>
+      <ion-button color="primary" expand="block" (click)="onTest()">T</ion-button>
+      <ion-button color="primary" expand="block" (click)="onCreatePartido()">{{isCreation() ? 'Crear Partido' : 'Guardar cambios'}}</ion-button>
     </ion-col>
   </ion-row>
 

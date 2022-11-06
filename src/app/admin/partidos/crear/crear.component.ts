@@ -2,15 +2,16 @@ import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp} from '@angular/fire/firestore';
+import { Subscription } from 'rxjs';
 
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/modelo/usuario';
 import { LocalStorage } from 'src/app/services/local.storage.mock';
 import { EquipoService } from 'src/app/services/equipo.service';
 import { Partido } from 'src/app/modelo/partido';
-import { fromStringToDate } from 'src/app/services/string-util';
+import { fromStringToDate,
+         fromDateToString } from 'src/app/services/string-util';
 import { PartidosService } from 'src/app/services/partidos.service';
-import { Subscription } from 'rxjs';
 
 
 interface Validation{
@@ -62,14 +63,18 @@ export class CrearComponent implements OnInit, OnDestroy {
               this.setEquipoId( partidoData.equipoId );
               this.setRivalName( partidoData.rival );
               this.setLugar( partidoData.ubicacion );
+              let f = fromDateToString( partidoData.fecha );
               this.partidoInfo = {
-                fecha: null, // descomponer partidoData.fecha en estos dos valores 
-                hora: null, 
+                fecha: f.date, 
+                hora: f.hour, 
                 temporadaId : partidoData.temporadaId, 
                 tipo : partidoData.tipo, 
                 jornada : partidoData.jornada, 
                 config : partidoData.config };
+              this.router.navigate( ['equipo'], { relativeTo: this.route } );
             });
+      }else{
+        this.router.navigate( ['equipo'], { relativeTo: this.route } );
       }
     });
   }
@@ -113,7 +118,7 @@ export class CrearComponent implements OnInit, OnDestroy {
     this.partidoInfo = info; 
   }
 
-  public verifyAndCreatePartido() {
+  public verifyAndUpdatePartido() {
     if( this.isPartidoValid() ){
       let partido = {} as Partido;
       partido.equipoId = this.equipoId; 
@@ -132,7 +137,7 @@ export class CrearComponent implements OnInit, OnDestroy {
       if( this.isCreation() )
         this.createPartido( partido );
       else
-        console.log('creacion de partido: ', partido );
+        console.log('cambio de partido: ', partido );
       
       this.router.navigate( ['..'], { relativeTo : this.route } );  
     }else{
@@ -140,7 +145,7 @@ export class CrearComponent implements OnInit, OnDestroy {
     }
   }
 
-  private isCreation(){
+  public isCreation(){
     return this.partidoId === '';
   }
 
@@ -163,9 +168,17 @@ export class CrearComponent implements OnInit, OnDestroy {
   private createPartido( partido: any ){
     this.partidoService.addPartido( partido )
       .then( docRef =>
-          this.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} creado con éxito` ) )
+          this.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} guardado` ) )
       .catch( reason => 
           this.sendToast( `Se ha producido un error al crear el partido entre ${this.equipoName} y ${this.rivalName}`));
+  }
+
+  private updatePartido( partido : any ){
+    this.partidoService.updatePartido( partido, this.partidoId )
+     .then( docRef =>
+        this.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} modificado` ) )
+    .catch( reason => 
+        this.sendToast( `Se ha producido un error al modificar el partido entre ${this.equipoName} y ${this.rivalName}`));
   }
 
   async showAlertValidationFailed() {

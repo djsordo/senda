@@ -13,14 +13,17 @@ import { CrearComponent } from "../crear.component";
 })
 export class PartidoInfoComponent implements OnInit {
 
-  temporadas : Set<any>;
+  temporadas : Set<string>;
   tipos : Set<string>;
   configs : Map<string,any>;
+  // fecha must be in ISO format (yyyy-mm-dd)
   fecha : string;
+  // hora must be in format HH:MM or HH:MM:SS
   hora : string;
   selectedTemporada : string;
   temporadaId : string;
   selectedTipo : string;
+  maxJornada : number;
   jornada : number;
   selectedConfig : string;
 
@@ -30,33 +33,56 @@ export class PartidoInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadTemporadas();
-    this.loadAdditionalData();
-    this.jornada = 0;
+    Promise.all( [
+      this.loadTemporadas(),
+      this.loadAdditionalData()  
+    ] )
+    .then( ( _ ) => {
+      if( this.crearComponent.isCreation() ){
+        if( this.tipos.size > 0 )
+          this.selectedTipo = this.tipos[0];
+        if( this.configs.size > 0 )
+          this.selectedConfig = this.configs.get( this.configs.keys[0] );
+        // AQUI ME QUEDO, HAY QUE HACER QUE COJA UNA TEMPORADA POR DEFECTO
+        // if( this.isDefaultTemporada( temporada.alias ) ){
+        //   this.selectedTemporada = temporada.alias;
+
+        this.jornada = this.maxJornada+1;
+  
+      }else{
+        this.fecha = this.crearComponent.partidoInfo.fecha;  
+        this.hora = this.crearComponent.partidoInfo.hora;
+        // this.selectedTemporada YAVEREMOS
+        this.temporadaId = this.crearComponent.partidoInfo.temporadaId;
+        this.selectedTipo = this.crearComponent.partidoInfo.tipo; 
+        this.jornada = this.crearComponent.partidoInfo.jornada;
+      }
+    } );
   }
 
 
   private async loadAdditionalData(){
-    this.partidoService.getPartidosAsDoc()
+    return new Promise( (resolve, reject ) => {
+      this.partidoService.getPartidosAsDoc()
       .then( (partidosList : QuerySnapshot<DocumentData>) => {
         this.tipos = new Set<string>();
         this.configs = new Map<string,any>();
-        let maxJornada = -Infinity;
+        this.maxJornada = 0;
         for( let partidoSnap of partidosList.docs ){
           let partido = partidoSnap.data();
           this.tipos.add( partido.tipo );
-          this.selectedTipo = partido.tipo;
           let partidoConfig = this.convertConfigToString( partido.config );
           if( partidoConfig && !this.configs.has( partidoConfig ) ){
             this.configs.set( partidoConfig, partido.config );
-            this.selectedConfig = partidoConfig;
           }
-          if( partido.jornada > maxJornada ){
-            maxJornada = partido.jornada;
+          if( partido.jornada > this.maxJornada ){
+            this.maxJornada = partido.jornada;
           }
         }
-        this.jornada = maxJornada+1;
+        resolve( null );
       });
+
+    } );
   }
 
   public getConfigKeys() : string[] {
@@ -77,18 +103,22 @@ export class PartidoInfoComponent implements OnInit {
   }
 
   private async loadTemporadas() {
-    this.temporadaService.getTemporadas()
+    return new Promise( (resolve,reject) => { 
+      this.temporadaService.getTemporadas()
       .then( (temporadaList : QuerySnapshot<DocumentData>) => {
         this.temporadas = new Set<any>();
         for( let temporadaSnap of temporadaList.docs ){
           let temporada = temporadaSnap.data();
           temporada.id = temporadaSnap.id;
-          if( this.isDefaultTemporada( temporada.alias ) ){
-            this.selectedTemporada = temporada.alias;
-          }
-          this.temporadas.add( temporada );
+          this.temporadas.add( temporada.alias );
         }
-      });
+        resolve( null );
+      } );  
+    } );
+  }
+
+  public isCreation(){
+    return this.crearComponent.isCreation();
   }
 
   private isDefaultTemporada( temporadaAlias : string ) : boolean {
@@ -114,6 +144,12 @@ export class PartidoInfoComponent implements OnInit {
     }
   }
 
+  public onTest(){
+    console.log( this.fecha );
+    console.log( this.hora );
+    console.log( this.selectedTipo );
+  }
+
   public onCreatePartido(){
     this.temporadaId = null; 
     this.temporadaService.getTemporadas( this.selectedTemporada )
@@ -129,7 +165,7 @@ export class PartidoInfoComponent implements OnInit {
           "tipo" : this.selectedTipo,
           "jornada" : this.jornada, 
           "config" : this.configs.get( this.selectedConfig ) });
-        this.crearComponent.verifyAndCreatePartido();
+        this.crearComponent.verifyAndUpdatePartido();
       }
     });
   }
