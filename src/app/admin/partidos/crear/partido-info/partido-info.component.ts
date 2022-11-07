@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { DocumentData, 
+        DocumentSnapshot, 
         QuerySnapshot} from '@angular/fire/firestore';
 import { PartidosService } from "src/app/services/partidos.service";
 
@@ -21,7 +22,6 @@ export class PartidoInfoComponent implements OnInit {
   // hora must be in format HH:MM or HH:MM:SS
   hora : string;
   selectedTemporada : string;
-  temporadaId : string;
   selectedTipo : string;
   maxJornada : number;
   jornada : number;
@@ -43,23 +43,32 @@ export class PartidoInfoComponent implements OnInit {
           this.selectedTipo = this.tipos[0];
         if( this.configs.size > 0 )
           this.selectedConfig = this.configs.get( this.configs.keys[0] );
-        // AQUI ME QUEDO, HAY QUE HACER QUE COJA UNA TEMPORADA POR DEFECTO
-        // if( this.isDefaultTemporada( temporada.alias ) ){
-        //   this.selectedTemporada = temporada.alias;
-
+          this.selectedTemporada = this.selectSuitableTemporada();
         this.jornada = this.maxJornada+1;
   
       }else{
         this.fecha = this.crearComponent.partidoInfo.fecha;  
         this.hora = this.crearComponent.partidoInfo.hora;
-        // this.selectedTemporada YAVEREMOS
-        this.temporadaId = this.crearComponent.partidoInfo.temporadaId;
+        this.temporadaService.getTemporadaById( this.crearComponent.partidoInfo.temporadaId )
+          .then( ( temporadaSnap : DocumentSnapshot<DocumentData> ) => {
+            this.selectedTemporada = temporadaSnap.data().alias;
+          });
         this.selectedTipo = this.crearComponent.partidoInfo.tipo; 
         this.jornada = this.crearComponent.partidoInfo.jornada;
+        this.selectedConfig = this.convertConfigToString( this.crearComponent.partidoInfo.config );
       }
     } );
   }
 
+
+  private selectSuitableTemporada() : string {
+    for( let temporadaAlias of this.temporadas ){
+      if( this.isDefaultTemporada( temporadaAlias ) ){
+        return temporadaAlias;
+      }
+    }
+    return this.temporadas[0];
+  }
 
   private async loadAdditionalData(){
     return new Promise( (resolve, reject ) => {
@@ -148,20 +157,22 @@ export class PartidoInfoComponent implements OnInit {
     console.log( this.fecha );
     console.log( this.hora );
     console.log( this.selectedTipo );
+    console.log( 'temporadaId:', this.selectedTemporada );
+    console.log( this.crearComponent.partidoInfo.config );
   }
 
   public onCreatePartido(){
-    this.temporadaId = null; 
+    let temporadaId : string = null; 
     this.temporadaService.getTemporadas( this.selectedTemporada )
     .then( (qSnap : QuerySnapshot<DocumentData>) => {
       if( qSnap.docs.length > 0 ){
         let doc = qSnap.docs[0]; 
-        this.temporadaId = doc.id;
+        temporadaId = doc.id;
         console.log( "la config del partido es ", this.selectedConfig );
         this.crearComponent.setInfo({ 
           "fecha" : this.fecha, 
           "hora" : this.hora, 
-          "temporadaId": this.temporadaId, 
+          "temporadaId": temporadaId, 
           "tipo" : this.selectedTipo,
           "jornada" : this.jornada, 
           "config" : this.configs.get( this.selectedConfig ) });

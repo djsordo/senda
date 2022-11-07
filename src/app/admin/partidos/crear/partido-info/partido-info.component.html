@@ -33,7 +33,7 @@
     <ion-col>
       <ion-item>
         <ion-label>Tipo:</ion-label>
-        <ion-select [value]="selectedTipo">
+        <ion-select [(ngModel)]="selectedTipo">
           <ion-select-option value="{{t}}"
               *ngFor="let t of tipos">{{t}}</ion-select-option>
         </ion-select>

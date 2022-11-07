@@ -137,7 +137,7 @@ export class CrearComponent implements OnInit, OnDestroy {
       if( this.isCreation() )
         this.createPartido( partido );
       else
-        console.log('cambio de partido: ', partido );
+        this.updatePartido( partido );
       
       this.router.navigate( ['..'], { relativeTo : this.route } );  
     }else{
