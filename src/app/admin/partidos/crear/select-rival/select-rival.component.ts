@@ -37,9 +37,9 @@ export class SelectRivalComponent implements OnInit {
   ngOnInit(): void {
     this.loadRivales()
     .then( () => {
-      setTimeout( () => {
-        this.markAsSelected( this.crearComponent.rivalName );
-      }, 2000 );
+      this.resultCards.changes.subscribe( () => { 
+        this.markAsSelected( this.crearComponent.rivalName ); 
+      } );
     } );
     // la subscripción es necesaria para 
     // cuando efectúo cambios en la página

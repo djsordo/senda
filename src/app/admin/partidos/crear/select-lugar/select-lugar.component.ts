@@ -33,9 +33,9 @@ export class SelectLugarComponent implements OnInit {
   public ngOnInit(): void {
     this.loadLugares()
       .then( () => {
-        setTimeout( () => {
+        this.resultCards.changes.subscribe( () => {
           this.markAsSelected( this.crearComponent.lugarName );
-        }, 2000 );
+        });
       } );
     // la subscripción es necesaria para cuando efectúo 
     // cambios en la página

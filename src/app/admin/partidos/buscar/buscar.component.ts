@@ -78,11 +78,13 @@ export class BuscarComponent implements OnInit {
                       console.error( error );
                     }
                   });
+              })
+              .then( () => {
+                partido.hora = this.getHour( partido.fecha );
+                if( this.matchesSearch( partido, this.searchText ) ){
+                  this.partidos.push( partido );
+                }      
               });
-          partido.hora = this.getHour( partido.fecha );
-          if( this.matchesSearch( partido, this.searchText ) ){
-            this.partidos.push( partido );
-          }
         }catch( err ){
           console.error( 'Error in refreshUsuarioList' );
           console.error( err );
@@ -98,7 +100,7 @@ export class BuscarComponent implements OnInit {
   }
 
   private matchesSearch( partido: DocumentData, searchText : string ){
-    const composedInfo = ''; // tengo que juntar equipo, rival y temporada
+    const composedInfo = `${partido.categoria} ${partido.genero} ${partido.rival} ${partido.ubicacion}`;
     if( searchText )
       return this.stringUtil.like( composedInfo, searchText );
     else

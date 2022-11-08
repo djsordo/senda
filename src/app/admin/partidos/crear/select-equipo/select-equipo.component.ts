@@ -32,7 +32,6 @@ export class SelectEquipoComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log( 'ngOnInit select equipo');
     this.loadEquipos()
       .then( () => {
         console.log( "equipo es: ", this.crearComponent.equipoId );
