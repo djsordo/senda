@@ -36,14 +36,7 @@ export class SelectEquipoComponent implements OnInit {
     this.loadEquipos()
       .then( () => {
         console.log( "equipo es: ", this.crearComponent.equipoId );
-        // A VER, ESTO NO FUNCIONA PORQUE DEBERÍA 
-        // EJECUTARSE CUANDO SE HUBIERA TERMINADO 
-        // DE CARGAR LA LISTA DE TARJETAS: EN EL 
-        // MOMENTO EN QUE SE DISPARA, NO SE HA CARGADO 
-        // NINGUNA TARJETA AÚN
-        setTimeout( () => {
-          this.markAsSelected( this.crearComponent.equipoId );
-        }, 2000 );
+        this.resultCards.changes.subscribe(() => { this.markAsSelected( this.crearComponent.equipoId ); });
       } );
     // la subscripción es necesaria para 
     // cuando efectúo cambios en la página
