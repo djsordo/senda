@@ -134,12 +134,14 @@ export class CrearComponent implements OnInit, OnDestroy {
       else 
         partido.jornada = '';
       console.log( this.partidoInfo.config );
-      if( this.isCreation() )
+      if( this.isCreation() ){
         this.createPartido( partido );
-      else
+        this.router.navigate( ['..'], { relativeTo : this.route } );  
+      }else{
         this.updatePartido( partido );
+        this.router.navigate( ['..'], { relativeTo: this.route } );
+      }
       
-      this.router.navigate( ['..'], { relativeTo : this.route } );  
     }else{
       this.showAlertValidationFailed();
     }

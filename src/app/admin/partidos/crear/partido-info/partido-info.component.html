@@ -52,7 +52,7 @@
     <ion-col>
       <ion-item>
         <ion-label position="floating">Config:</ion-label>
-        <ion-select [value]="selectedConfig">
+        <ion-select [(ngModel)]="selectedConfig">
           <ion-select-option value="{{cfgAsString}}" 
               *ngFor="let cfgAsString of getConfigKeys()">{{cfgAsString}}</ion-select-option>
         </ion-select>
@@ -67,7 +67,6 @@
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-button color="primary" expand="block" (click)="onTest()">T</ion-button>
       <ion-button color="primary" expand="block" (click)="onCreatePartido()">{{isCreation() ? 'Crear Partido' : 'Guardar cambios'}}</ion-button>
     </ion-col>
   </ion-row>

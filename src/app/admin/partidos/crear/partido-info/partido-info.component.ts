@@ -153,14 +153,6 @@ export class PartidoInfoComponent implements OnInit {
     }
   }
 
-  public onTest(){
-    console.log( this.fecha );
-    console.log( this.hora );
-    console.log( this.selectedTipo );
-    console.log( 'temporadaId:', this.selectedTemporada );
-    console.log( this.crearComponent.partidoInfo.config );
-  }
-
   public onCreatePartido(){
     let temporadaId : string = null; 
     this.temporadaService.getTemporadas( this.selectedTemporada )
@@ -168,7 +160,6 @@ export class PartidoInfoComponent implements OnInit {
       if( qSnap.docs.length > 0 ){
         let doc = qSnap.docs[0]; 
         temporadaId = doc.id;
-        console.log( "la config del partido es ", this.selectedConfig );
         this.crearComponent.setInfo({ 
           "fecha" : this.fecha, 
           "hora" : this.hora, 

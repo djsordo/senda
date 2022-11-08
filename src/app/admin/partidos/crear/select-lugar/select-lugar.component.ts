@@ -16,12 +16,11 @@ import { CrearComponent } from "../crear.component";
     './select-lugar.component.scss'
   ]
 })
-export class SelectLugarComponent implements OnInit, OnDestroy {
+export class SelectLugarComponent implements OnInit {
 
   @ViewChildren('resultCard') resultCards : QueryList<any>;
   lugares : Set<string>;
   lugarSelected : string;
-  routeSubscription : Subscription;
 
   public constructor( private partidoService : PartidosService, 
                       private renderer : Renderer2, 
@@ -43,10 +42,6 @@ export class SelectLugarComponent implements OnInit, OnDestroy {
     this.crearComponent.lugarChanged.subscribe( (lugarName:string) => {
       this.markAsSelected( lugarName );
     });
-  }
-
-  public ngOnDestroy() : void {
-    this.routeSubscription.unsubscribe();
   }
 
   private markAsSelected( lugarName : string ){
