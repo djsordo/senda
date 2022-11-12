@@ -133,14 +133,7 @@ export class CronoComponent implements OnInit, OnDestroy {
     this.pasoDatos.onEventoJugador( evento );
 
     // Dejamos el estado del partido como 'finalizado'
-    const indiceRol = this.usuario.roles.findIndex(rol => rol.equipo.id === localStorage.getItem('equipoId'));
-
-    const indicePartido = this.usuario.roles[indiceRol].equipo.partidos.
-      findIndex(partido => partido.id === localStorage.getItem('partidoId'));
-
     this.partidoService.setEstado(localStorage.getItem('partidoId'), 'finalizado');
-    /* this.usuario.roles[indiceRol].equipo.partidos[indicePartido].config.estado = 'finalizado';
-    this.usuarioService.updateUsuario(this.usuario); */
     localStorage.setItem('estadoPartido', 'finalizado');
   }
 

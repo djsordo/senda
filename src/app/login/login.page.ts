@@ -10,8 +10,8 @@ import { LoginService } from './login.service';
 })
 export class LoginPage implements OnInit {
   usuario= {
-    email: 'ajvitores@gmail.com',
-    password: '123456'
+    email: '',
+    password: ''
   };
 
   constructor(private menu: MenuController,
