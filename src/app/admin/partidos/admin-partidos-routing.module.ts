@@ -23,7 +23,7 @@ const routes : Routes = [
     { path : 'cambio/:partidoId', 
       component : CrearComponent,
       children : [
-        { path : '', redirectTo: 'equipo' },
+        /*{ path : '', redirectTo: 'equipo' },*/
         { path : 'equipo', component : SelectEquipoComponent }, 
         { path : 'rival',  component : SelectRivalComponent },
         { path : 'lugar',  component : SelectLugarComponent },

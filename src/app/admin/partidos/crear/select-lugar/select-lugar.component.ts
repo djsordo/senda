@@ -1,7 +1,8 @@
-import { Component, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
+import { Component, OnDestroy, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
 import { DocumentData, 
   QuerySnapshot} from '@angular/fire/firestore';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Data, Router } from "@angular/router";
+import { Subscription } from "rxjs";
 
 
 import { PartidosService } from "src/app/services/partidos.service";
@@ -20,7 +21,6 @@ export class SelectLugarComponent implements OnInit {
   @ViewChildren('resultCard') resultCards : QueryList<any>;
   lugares : Set<string>;
   lugarSelected : string;
-  
 
   public constructor( private partidoService : PartidosService, 
                       private renderer : Renderer2, 
@@ -31,11 +31,35 @@ export class SelectLugarComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.loadLugares();
+    this.loadLugares()
+      .then( () => {
+        this.resultCards.changes.subscribe( () => {
+          this.markAsSelected( this.crearComponent.lugarName );
+        });
+      } );
+    // la subscripción es necesaria para cuando efectúo 
+    // cambios en la página
+    this.crearComponent.lugarChanged.subscribe( (lugarName:string) => {
+      this.markAsSelected( lugarName );
+    });
+  }
+
+  private markAsSelected( lugarName : string ){
+    this.resultCards.forEach( (card) => {
+      if( card.el.id === lugarName ){
+        this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
+        this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
+      }else{
+        // resto de elementos quedarán deseleccionados
+        this.renderer.setStyle( card.el, "background", "" );
+        this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
+      }
+    });
   }
 
   private async loadLugares(){
-    this.partidoService.getPartidosAsDoc()
+    return new Promise( (resolve) => {
+      this.partidoService.getPartidosAsDoc()
       .then( (docList : QuerySnapshot<DocumentData>) => {
         this.lugares = new Set<string>();
         for( let docSnap of docList.docs ){
@@ -44,7 +68,9 @@ export class SelectLugarComponent implements OnInit {
               docSnap.data().ubicacion !== "Polideportivo Laguna" )
             this.lugares.add( docSnap.data().ubicacion );
         }
+        resolve( null );
       });
+    } );
   }
 
   public getEquipoName(){
@@ -65,27 +91,7 @@ export class SelectLugarComponent implements OnInit {
   }
 
   public onLugarSelected( lugar : string ) {
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === lugar ){
-        if( card.el.id !== this.lugarSelected ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.lugarSelected = lugar;
-        }else{
-          // simulamos el efecto de que un click 
-          // en un elemento seleccionado, deja sin 
-          // efecto la selección 
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.lugarSelected = null;
-        }
-      }else{
-        // resto de elementos quedarán seleccionados
-        this.renderer.setStyle( card.el, "background", "" );
-        this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-      }
-    });
-    this.crearComponent.setLugar( this.lugarSelected );
+    this.crearComponent.setLugar( lugar );
     this.router.navigate( ['..', 'info'], { relativeTo: this.route } );
   }
 

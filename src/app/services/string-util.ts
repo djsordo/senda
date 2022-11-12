@@ -121,6 +121,25 @@ export function fromStringToDate( fecha: string, hora = "00:00" ){
 }
 
 /**
+ * Given a timestamp object, returns an object with the 
+ * following values: 
+ * 
+ * date: the date in ISO format (yyyy-mm-dd)
+ * hour: the hour in format HH:MM:SS
+ * @param fecha 
+ */
+export function fromDateToString( fecha : Timestamp ){
+  let d = fecha.toDate();
+  let year = d.getFullYear().toString();
+  let month = (d.getMonth() + 1).toString().padStart(2, '0');
+  let day = d.getDate().toString().padStart(2, '0');
+  let hour = d.getHours().toString().padStart(2, '0');
+  let minute = d.getMinutes().toString().padStart(2, '0');
+  return { "date" : `${year}-${month}-${day}`,
+          "hour" : `${hour}:${minute}` };
+}
+
+/**
  * Given a Date object, returns a string representing
  * a "useful" translation of that date.
  *

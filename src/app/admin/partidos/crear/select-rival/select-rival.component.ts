@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
 import { DocumentData, 
         QuerySnapshot} from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from "@angular/router";
@@ -17,6 +17,15 @@ export class SelectRivalComponent implements OnInit {
   @ViewChildren('resultCard') resultCards : QueryList<any>;
   rivales : Set<string>;
 
+
+  public set rivalName( rivalName : string ){
+    this.crearComponent.setRivalName( rivalName );
+  }
+
+  public get rivalName() {
+    return this.crearComponent.rivalName;
+  }
+
   constructor( private partidoService : PartidosService,
                private crearComponent : CrearComponent,
                private renderer : Renderer2, 
@@ -28,19 +37,21 @@ export class SelectRivalComponent implements OnInit {
   ngOnInit(): void {
     this.loadRivales()
     .then( () => {
-      console.log( "rival:" ); 
-      console.log( this.crearComponent.rivalName );
-
+      this.resultCards.changes.subscribe( () => { 
+        this.markAsSelected( this.crearComponent.rivalName ); 
+      } );
     } );
+    // la subscripción es necesaria para 
+    // cuando efectúo cambios en la página
+    this.crearComponent.rivalNameChanged.subscribe( (rivalName:string) => {
+      console.log( "suscripcion rival: ", rivalName );
+      this.markAsSelected( rivalName );   
+    });
   }
 
-  public set rivalName( rivalName : string ){
-    this.crearComponent.rivalName = rivalName;
-    // paint the cards again (don't use onRivalSelected
-    // for this job, because if you type the exact value
-    // of a card, it doesn't work)
+  public markAsSelected( rivalName : string ){
     this.resultCards.forEach( (card) => {
-      if( card.el.id === this.crearComponent.rivalName ){
+      if( card.el.id === rivalName ){
         this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
         this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
       }else{
@@ -69,26 +80,7 @@ export class SelectRivalComponent implements OnInit {
   }
 
   public onRivalSelected( rival ){
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === rival ){
-        if( card.el.id !== this.crearComponent.rivalName ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.crearComponent.rivalName = rival;
-        }else{
-          // simulamos el efecto de que un click 
-          // en un elemento seleccionado, deja sin 
-          // efecto la selección 
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.crearComponent.rivalName = null;
-        }
-      }else{
-        // resto de elementos quedarán seleccionados
-        this.renderer.setStyle( card.el, "background", "" );
-        this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-      }
-    });
+    this.crearComponent.setRivalName( rival );
     this.router.navigate( ['..', 'lugar'], { relativeTo: this.route } );
   }
 

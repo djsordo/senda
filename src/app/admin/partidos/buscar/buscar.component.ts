@@ -5,7 +5,7 @@ import { Component,
   Renderer2,
   ViewChildren} from "@angular/core";
 import { AlertController } from "@ionic/angular";
-import { DocumentData, QuerySnapshot } from '@angular/fire/firestore';
+import { DocumentData, QuerySnapshot, Timestamp } from '@angular/fire/firestore';
 
 import { StringUtil } from "src/app/services/string-util";
 import { AdminPartidosPage } from "../admin-partidos.page";
@@ -77,11 +77,14 @@ export class BuscarComponent implements OnInit {
                       console.error( 'error getting temporada by id', partido['temporadaId']);
                       console.error( error );
                     }
-                  });    
+                  });
+              })
+              .then( () => {
+                partido.hora = this.getHour( partido.fecha );
+                if( this.matchesSearch( partido, this.searchText ) ){
+                  this.partidos.push( partido );
+                }      
               });
-          if( this.matchesSearch( partido, this.searchText ) ){
-            this.partidos.push( partido );
-          }
         }catch( err ){
           console.error( 'Error in refreshUsuarioList' );
           console.error( err );
@@ -89,8 +92,15 @@ export class BuscarComponent implements OnInit {
     }
   }
 
+  private getHour( fecha : Timestamp ){
+    let d = fecha.toDate();
+    let hour = d.getHours().toString().padStart(2, '0');
+    let minute = d.getMinutes().toString().padStart(2, '0');
+    return `${hour}:${minute}`;  
+  }
+
   private matchesSearch( partido: DocumentData, searchText : string ){
-    const composedInfo = ''; // tengo que juntar equipo, rival y temporada
+    const composedInfo = `${partido.categoria} ${partido.genero} ${partido.rival} ${partido.ubicacion}`;
     if( searchText )
       return this.stringUtil.like( composedInfo, searchText );
     else
