@@ -114,7 +114,6 @@ export class CrearComponent implements OnInit, OnDestroy {
   }
 
   public setInfo( info : any ){
-    console.log( info );
     this.partidoInfo = info; 
   }
 
@@ -128,18 +127,18 @@ export class CrearComponent implements OnInit, OnDestroy {
                         this.partidoInfo.hora ) );
       partido.temporadaId = this.partidoInfo.temporadaId;
       partido.tipo = this.partidoInfo.tipo;
-      partido.config = this.partidoInfo.config;
+      if( this.partidoInfo.config )
+        partido.config = this.partidoInfo.config;
       if( this.partidoInfo.jornada )
         partido.jornada = this.partidoInfo.jornada;
       else 
         partido.jornada = '';
-      console.log( this.partidoInfo.config );
       if( this.isCreation() ){
         this.createPartido( partido );
         this.router.navigate( ['..'], { relativeTo : this.route } );  
       }else{
         this.updatePartido( partido );
-        this.router.navigate( ['..'], { relativeTo: this.route } );
+        this.router.navigate( ['admin', 'partidos'] );
       }
       
     }else{

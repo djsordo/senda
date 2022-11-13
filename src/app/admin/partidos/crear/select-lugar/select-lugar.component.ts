@@ -1,8 +1,14 @@
-import { Component, OnDestroy, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
+import { Component, 
+          OnInit, 
+          QueryList, 
+          Renderer2, 
+          ViewChild, 
+          ViewChildren } from "@angular/core";
 import { DocumentData, 
   QuerySnapshot} from '@angular/fire/firestore';
-import { ActivatedRoute, Data, Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { ActivatedRoute, 
+        Router } from "@angular/router";
+import { IonCheckbox } from "@ionic/angular";
 
 
 import { PartidosService } from "src/app/services/partidos.service";
@@ -19,6 +25,7 @@ import { CrearComponent } from "../crear.component";
 export class SelectLugarComponent implements OnInit {
 
   @ViewChildren('resultCard') resultCards : QueryList<any>;
+  @ViewChild('home') home : IonCheckbox;
   lugares : Set<string>;
   lugarSelected : string;
 
@@ -34,7 +41,10 @@ export class SelectLugarComponent implements OnInit {
     this.loadLugares()
       .then( () => {
         this.resultCards.changes.subscribe( () => {
-          this.markAsSelected( this.crearComponent.lugarName );
+          if( this.crearComponent.lugarName === 'Polideportivo Laguna' )
+            this.home.checked = true;
+          else 
+            this.markAsSelected( this.crearComponent.lugarName );
         });
       } );
     // la subscripción es necesaria para cuando efectúo 

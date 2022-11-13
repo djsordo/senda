@@ -117,7 +117,7 @@ export function fromStringToDate( fecha: string, hora = "00:00" ){
   let day = parseInt( fecha.substring( 8, 10 ) ); 
   let hour = parseInt( hora.substring( 0, 2 ) );
   let minute = parseInt( hora.substring( 3, 5 ) );
-  return new Date( year, month-1, day, hour+1, minute );
+  return new Date( year, month-1, day, hour, minute );
 }
 
 /**
