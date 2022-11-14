@@ -33,7 +33,7 @@ function main( args ){
   .then( (_) => {
     if( args[0] === 'desa' ){
       console.log("Building and deploying for development");
-      runCommand( ['ionic', 'build', '--configuration=development'] )
+      runCommand( ['ionic', 'build'] )
       .then( (_) => {
         runCommand( ['firebase', 'deploy', '--project', config['dev_project'], '--only', `hosting:${config['dev_hosting']}` ] );
       });
@@ -45,7 +45,7 @@ function main( args ){
       });
     }else if( args[0] === 'serve_desa' ){
       console.log("Serving locally development");
-      runCommand( ['ionic', 'build', '--configuration=development'] )
+      runCommand( ['ionic', 'build'] )
       .then( (_) => {
         runCommand( ['firebase', 'serve', '--project', config['dev_project'], '--only', `hosting:${config['dev_hosting']}` ] );
       });
