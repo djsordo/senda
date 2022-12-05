@@ -9,10 +9,17 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/en/**",
+        "destination": "/en/index.html"
+      }, 
+      {
+        "source": "/es/**", 
+        "destination" : "/es/index.html"
       }
-    ]
+    ],
+    "i18n": {
+      "root" : "/"
+    }
     },
     {"site": "sendaestadisticas-com-prod",
      "public" : "www",
