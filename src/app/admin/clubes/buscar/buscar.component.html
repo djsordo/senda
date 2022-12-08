@@ -23,7 +23,7 @@
           <ion-card-title>{{p.nombre}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <p class="list-elem">Deporte: {{ p.deporte_name }}</p>
+          <p class="list-elem" i18n>Deporte: {{ p.deporte_name }}</p>
         </ion-card-content>
       </ion-card>
     </ion-col>
@@ -31,11 +31,11 @@
   <ion-row>
     <ion-col >
       <ion-button color="primary"
-            [routerLink]="['nuevo']">Nuevo</ion-button>
+            [routerLink]="['nuevo']" i18n>Nuevo</ion-button>
       <ion-button color="secondary" [disabled]="!getSelectedId()"
-            [routerLink]="['cambio']">Cambiar</ion-button>
+            [routerLink]="['cambio']" i18n>Cambiar</ion-button>
       <ion-button color="danger" [disabled]="!getSelectedId()"
-            (click)="onClickBorrar()">Borrar</ion-button>
+            (click)="onClickBorrar()" i18n>Borrar</ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>

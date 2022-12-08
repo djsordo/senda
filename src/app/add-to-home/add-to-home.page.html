@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="danger">
-    <ion-title>Añadir a inicio</ion-title>
+    <ion-title i18n>Añadir a inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,7 +9,7 @@
 <ion-grid *ngIf="getMobileOperatingSystem() === 'ios'">
   <ion-row>
     <ion-col>
-      <h3>1. Haz clic en el icono [^] de la parte superior
+      <h3 i18n>1. Haz clic en el icono [^] de la parte superior
         derecha
       </h3>  
     </ion-col>
@@ -21,7 +21,7 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <h3>2. A continuación, clic en "añadir a pantalla de inicio"</h3>
+      <h3 i18n>2. A continuación, clic en "añadir a pantalla de inicio"</h3>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -31,7 +31,7 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <h3>3. Y clic en "añadir":</h3>
+      <h3 i18n>3. Y clic en "añadir":</h3>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -44,7 +44,7 @@
 <ion-grid *ngIf="getMobileOperatingSystem() !== 'ios'">
   <ion-row>
     <ion-col>
-      <h3>1. Haz clic en los tres puntos de 
+      <h3 i18n>1. Haz clic en los tres puntos de 
         la parte superior derecha
       </h3>
     </ion-col>
@@ -56,7 +56,7 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <h3>2. Y luego selecciona "añadir a pantalla de inicio":</h3>
+      <h3 i18n>2. Y luego selecciona "añadir a pantalla de inicio":</h3>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -65,7 +65,7 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col>
+    <ion-col i18n>
       Puede que para tu dispositivo no funcione exactamente 
       así, pero creo que ya te has hecho a la idea....
     </ion-col>

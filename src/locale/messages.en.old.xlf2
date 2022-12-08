@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="es">
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
   <file id="ngi18n" original="ng.template">
     <unit id="6315481646375076031">
       <notes>
         <note category="location">src/app/add-to-home/add-to-home.page.html:3</note>
       </notes>
       <segment>
-        <source>Añadir a inicio</source>
+        <source>Add to home page</source>
       </segment>
     </unit>
     <unit id="4262975402138043920">
@@ -14,7 +14,7 @@
         <note category="location">src/app/add-to-home/add-to-home.page.html:12,14</note>
       </notes>
       <segment>
-        <source>1. Haz clic en el icono [^] de la parte superior derecha </source>
+        <source>1. Click on the icon [^] of the upper right </source>
       </segment>
     </unit>
     <unit id="5815649056402037614">
@@ -22,7 +22,7 @@
         <note category="location">src/app/add-to-home/add-to-home.page.html:24</note>
       </notes>
       <segment>
-        <source>2. A continuación, clic en &quot;añadir a pantalla de inicio&quot;</source>
+        <source>2. Then, click on &quot;add to desktop&quot;</source>
       </segment>
     </unit>
     <unit id="2237730320215467632">
@@ -30,7 +30,7 @@
         <note category="location">src/app/add-to-home/add-to-home.page.html:34</note>
       </notes>
       <segment>
-        <source>3. Y clic en &quot;añadir&quot;:</source>
+        <source>3. And click on &quot;add&quot;:</source>
       </segment>
     </unit>
     <unit id="4302531753354228778">
@@ -38,7 +38,7 @@
         <note category="location">src/app/add-to-home/add-to-home.page.html:47,49</note>
       </notes>
       <segment>
-        <source>1. Haz clic en los tres puntos de la parte superior derecha </source>
+        <source>1. Do click in the three dots of the upper right part </source>
       </segment>
     </unit>
     <unit id="7266183673837931309">
@@ -46,7 +46,7 @@
         <note category="location">src/app/add-to-home/add-to-home.page.html:59</note>
       </notes>
       <segment>
-        <source>2. Y luego selecciona &quot;añadir a pantalla de inicio&quot;:</source>
+        <source>2. And then select &quot;add to home screen&quot;:</source>
       </segment>
     </unit>
     <unit id="4999914842424276297">
@@ -54,7 +54,7 @@
         <note category="location">src/app/add-to-home/add-to-home.page.html:68,71</note>
       </notes>
       <segment>
-        <source> Puede que para tu dispositivo no funcione exactamente así, pero creo que ya te has hecho a la idea.... </source>
+        <source> May it be that your device doesn't work like that, but I think you got the idea.... </source>
       </segment>
     </unit>
     <unit id="7998445733892222038">
@@ -62,7 +62,7 @@
         <note category="location">src/app/admin/clubes/admin-clubes.page.html:6</note>
       </notes>
       <segment>
-        <source>Clubes</source>
+        <source>Clubs</source>
       </segment>
     </unit>
     <unit id="6165999552274728163">
@@ -70,7 +70,7 @@
         <note category="location">src/app/admin/clubes/buscar/buscar.component.html:26</note>
       </notes>
       <segment>
-        <source>Deporte: <ph id="0" equiv="INTERPOLATION" disp="{{ p.deporte_name }}"/></source>
+        <source>Sport: <ph id="0" equiv="INTERPOLATION" disp="{{ p.deporte_name }}"/></source>
       </segment>
     </unit>
     <unit id="7776873252561096935">
@@ -78,7 +78,7 @@
         <note category="location">src/app/admin/clubes/buscar/buscar.component.html:34</note>
       </notes>
       <segment>
-        <source>Nuevo</source>
+        <source>New</source>
       </segment>
     </unit>
     <unit id="8242485735462684029">
@@ -87,7 +87,7 @@
         <note category="location">src/app/admin/clubes/cambio/cambio.component.html:30</note>
       </notes>
       <segment>
-        <source>Cambiar</source>
+        <source>Change</source>
       </segment>
     </unit>
     <unit id="7099780434896458019">
@@ -95,25 +95,7 @@
         <note category="location">src/app/admin/clubes/buscar/buscar.component.html:38</note>
       </notes>
       <segment>
-        <source>Borrar</source>
-      </segment>
-    </unit>
-    <unit id="8163528416481919494">
-      <notes>
-        <note category="location">src/app/admin/clubes/cambio/cambio.component.html:17</note>
-        <note category="location">src/app/admin/clubes/crear/crear.component.html:17</note>
-      </notes>
-      <segment>
-        <source>Deporte:</source>
-      </segment>
-    </unit>
-    <unit id="5973200457052621082">
-      <notes>
-        <note category="location">src/app/admin/clubes/cambio/cambio.component.html:23</note>
-        <note category="location">src/app/admin/clubes/crear/crear.component.html:23</note>
-      </notes>
-      <segment>
-        <source>No hay deporte definido</source>
+        <source>Delete</source>
       </segment>
     </unit>
     <unit id="6402951927316857780">
@@ -122,7 +104,7 @@
         <note category="location">src/app/admin/clubes/crear/crear.component.html:29</note>
       </notes>
       <segment>
-        <source>Cancelar</source>
+        <source>Cancel</source>
       </segment>
     </unit>
     <unit id="8284705088749866157">
@@ -130,7 +112,7 @@
         <note category="location">src/app/admin/clubes/crear/crear.component.html:30</note>
       </notes>
       <segment>
-        <source>Crear</source>
+        <source>Add</source>
       </segment>
     </unit>
     <unit id="2454050363478003966">
@@ -148,7 +130,7 @@
         <note category="description">Email requested in the login screen</note>
       </notes>
       <segment>
-        <source>Correo electrónico</source>
+        <source>Email</source>
       </segment>
     </unit>
     <unit id="7132730488496169673">
@@ -157,7 +139,7 @@
         <note category="description">Password requested in the login screen</note>
       </notes>
       <segment>
-        <source>Contraseña</source>
+        <source>Password</source>
       </segment>
     </unit>
     <unit id="600376029726528115">
@@ -165,7 +147,7 @@
         <note category="location">src/app/login/login.page.html:35</note>
       </notes>
       <segment>
-        <source>Entrar</source>
+        <source>Log in</source>
       </segment>
     </unit>
     <unit id="8165215117433862268">
@@ -173,7 +155,7 @@
         <note category="location">src/app/login/login.page.html:51</note>
       </notes>
       <segment>
-        <source>Añadir a la pantalla de inicio</source>
+        <source>Add to home screen</source>
       </segment>
     </unit>
   </file>
