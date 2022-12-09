@@ -1,151 +1,32 @@
-<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en">
-  <file id="ngi18n">
-    <unit id="6315481646375076031">
-      <notes>
-        <note>src/app/add-to-home/add-to-home.page.html:3</note>
-      </notes>
-      <segment>
-        <source>Añadir a inicio</source>
-      </segment>
-    </unit>
-    <unit id="4262975402138043920">
-      <notes>
-        <note>src/app/add-to-home/add-to-home.page.html:12,14</note>
-      </notes>
-      <segment>
-        <source>1. Haz clic en el icono [^] de la parte superior derecha </source>
-      </segment>
-    </unit>
-    <unit id="5815649056402037614">
-      <notes>
-        <note>src/app/add-to-home/add-to-home.page.html:24</note>
-      </notes>
-      <segment>
-        <source>2. A continuación, clic en "añadir a pantalla de inicio"</source>
-      </segment>
-    </unit>
-    <unit id="2237730320215467632">
-      <notes>
-        <note>src/app/add-to-home/add-to-home.page.html:34</note>
-      </notes>
-      <segment>
-        <source>3. Y clic en "añadir":</source>
-      </segment>
-    </unit>
-    <unit id="4302531753354228778">
-      <notes>
-        <note>src/app/add-to-home/add-to-home.page.html:47,49</note>
-      </notes>
-      <segment>
-        <source>1. Haz clic en los tres puntos de la parte superior derecha </source>
-      </segment>
-    </unit>
-    <unit id="7266183673837931309">
-      <notes>
-        <note>src/app/add-to-home/add-to-home.page.html:59</note>
-      </notes>
-      <segment>
-        <source>2. Y luego selecciona "añadir a pantalla de inicio":</source>
-      </segment>
-    </unit>
-    <unit id="4999914842424276297">
-      <notes>
-        <note>src/app/add-to-home/add-to-home.page.html:68,71</note>
-      </notes>
-      <segment>
-        <source> Puede que para tu dispositivo no funcione exactamente así, pero creo que ya te has hecho a la idea.... </source>
-      </segment>
-    </unit>
-    <unit id="7998445733892222038">
-      <notes>
-        <note>src/app/admin/clubes/admin-clubes.page.html:6</note>
-      </notes>
-      <segment>
-        <source>Clubes</source>
-      </segment>
-    </unit>
-    <unit id="6165999552274728163">
-      <notes>
-        <note>src/app/admin/clubes/buscar/buscar.component.html:26</note>
-      </notes>
-      <segment>
-        <source>Deporte: 
-          <ph id="0" equiv="INTERPOLATION" disp="{{ p.deporte_name }}"/>
-        </source>
-      </segment>
-    </unit>
-    <unit id="7776873252561096935">
-      <notes>
-        <note>src/app/admin/clubes/buscar/buscar.component.html:34</note>
-      </notes>
-      <segment>
-        <source>Nuevo</source>
-      </segment>
-    </unit>
-    <unit id="8242485735462684029">
-      <notes>
-        <note>src/app/admin/clubes/buscar/buscar.component.html:36</note>
-        <note>src/app/admin/clubes/cambio/cambio.component.html:30</note>
-      </notes>
-      <segment>
-        <source>Cambiar</source>
-      </segment>
-    </unit>
-    <unit id="7099780434896458019">
-      <notes>
-        <note>src/app/admin/clubes/buscar/buscar.component.html:38</note>
-      </notes>
-      <segment>
-        <source>Borrar</source>
-      </segment>
-    </unit>
-    <unit id="6402951927316857780">
-      <notes>
-        <note>src/app/admin/clubes/cambio/cambio.component.html:29</note>
-        <note>src/app/admin/clubes/crear/crear.component.html:29</note>
-      </notes>
-      <segment>
-        <source>Cancelar</source>
-      </segment>
-    </unit>
-    <unit id="8284705088749866157">
-      <notes>
-        <note>src/app/admin/clubes/crear/crear.component.html:30</note>
-      </notes>
-      <segment>
-        <source>Crear</source>
-      </segment>
-    </unit>
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="ngi18n" original="ng.template">
     <unit id="2454050363478003966">
       <notes>
-        <note>src/app/login/login.page.html:3</note>
-        <note>src/app/login/login.page.html:10</note>
+        <note category="description">Title of the login screen</note>
       </notes>
       <segment>
-        <source>Login</source>
+        <source>en-xlf2-Login</source>
       </segment>
     </unit>
     <unit id="4401057011206112121">
       <notes>
-        <note>src/app/login/login.page.html:18</note>
-        <note>Email requested in the login screen</note>
+        <note category="description">Email requested in the login screen</note>
       </notes>
       <segment>
-        <source>Correo electrónico</source>
+        <source>en-xlf2-Correo electrónico</source>
       </segment>
     </unit>
     <unit id="7132730488496169673">
       <notes>
-        <note>src/app/login/login.page.html:26</note>
-        <note>Password requested in the login screen</note>
+        <note category="description">Password requested in the login screen</note>
       </notes>
       <segment>
-        <source>Contraseña</source>
+        <source>en-xlf2-Contraseña</source>
       </segment>
     </unit>
     <unit id="600376029726528115">
       <notes>
-        <note>src/app/login/login.page.html:35</note>
       </notes>
       <segment>
         <source>Entrar</source>
@@ -153,28 +34,9 @@
     </unit>
     <unit id="8165215117433862268">
       <notes>
-        <note>src/app/login/login.page.html:51</note>
       </notes>
       <segment>
-        <source>Añadir a la pantalla de inicio</source>
-      </segment>
-    </unit>
-    <unit id="8163528416481919494">
-      <notes>
-        <note>src/app/admin/clubes/cambio/cambio.component.html:17</note>
-        <note>src/app/admin/clubes/crear/crear.component.html:17</note>
-      </notes>
-      <segment>
-        <source>xx_o_xx Deporte:</source>
-      </segment>
-    </unit>
-    <unit id="5973200457052621082">
-      <notes>
-        <note>src/app/admin/clubes/cambio/cambio.component.html:23</note>
-        <note>src/app/admin/clubes/crear/crear.component.html:23</note>
-      </notes>
-      <segment>
-        <source>xx_o_xx No hay deporte definido</source>
+        <source>en-xlf2-Añadir a la pantalla de inicio</source>
       </segment>
     </unit>
   </file>

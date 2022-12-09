@@ -27,7 +27,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "localize" : true,
+            "localize" : ["en", "es"],
             "assets": [
               {
                 "glob": "**/*",
@@ -79,15 +79,6 @@
                 }
               ]
             },
-            "development": {
-              "localize": false,
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
-            },
             "es": {
               "localize" : ["es"]
             },
@@ -105,15 +96,11 @@
             "production": {
               "browserTarget": "app:build:production"
             },
-            "development" : {
-              "browserTarget": "app:build:development"
-            },
             "es" : {
-              "browserTarget" : "app:build:development,es"
+              "browserTarget" : "app:build:es"
             },
             "ci": { }
-          },
-          "defaultConfiguration": "development"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

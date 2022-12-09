@@ -12,7 +12,6 @@
     "@google-cloud/local-auth": "^2.1.1",
     "child_process": "^1.0.2",
     "google-auth-library": "^8.5.1",
-    "googleapis": "^107.0.0",
-    "xliff": "^6.1.0"
+    "googleapis": "^107.0.0"
   }
 }

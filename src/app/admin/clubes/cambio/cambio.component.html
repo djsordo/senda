@@ -14,20 +14,20 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        <ion-label i18n>Deporte:</ion-label> 
+        <ion-label>Deporte:</ion-label> 
         <ion-select *ngIf="getDeportes()?.length > 1" 
               [(ngModel)]="selectedDeporte">
           <ion-select-option *ngFor="let deporte of getDeportes(); let deporteIndex=index;" [value]="deporte">{{deporte?.data()['nombre']}}</ion-select-option>
         </ion-select>
         <p *ngIf="getDeportes()?.length === 1">{{getDeportes()[0]?.data()['nombre']}}</p>
-        <p *ngIf="getDeportes()?.length === 0" i18n>No hay deporte definido</p>
+        <p *ngIf="getDeportes()?.length === 0">No hay deporte definido</p>
       </ion-item>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-button color="medium" [routerLink]="['..']" i18n>Cancelar</ion-button>
-      <ion-button color="primary" (click)="onClickCambiar()" i18n>Cambiar</ion-button>
+      <ion-button color="medium" [routerLink]="['..']">Cancelar</ion-button>
+      <ion-button color="primary" (click)="onClickCambiar()">Cambiar</ion-button>
     </ion-col>
   </ion-row>
 
