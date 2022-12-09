@@ -23,7 +23,7 @@ let msgProd = `
 Ahora tienes que ir al android Studio y 
 compilar la solución, y generar un fichero *.apk. 
 
-Cuando hayas terminado, lo subimos a internet (s/n)?`;
+Cuando hayas terminado, lo subimos a internet (s/n)? `;
 
 function main( args ){
 
