@@ -12,46 +12,76 @@ const { spawn } = require('child_process');
 
 const CONFIG = path.join( __dirname, "..", "PRIVATE", "config.json" );
 
-
-let msg2 = `
+let msgDevel = `
 ------------------------------------
 Ahora tienes que ir al android Studio y 
 compilar la solución, y generar un fichero *.apk. 
 
-Pulsa <intro> cuando hayas terminado`;
+Aquí ya hemos terminado`;
+let msgProd = `
+------------------------------------
+Ahora tienes que ir al android Studio y 
+compilar la solución, y generar un fichero *.apk. 
 
-function main(){
+Cuando hayas terminado, lo subimos a internet (s/n)?`;
 
-  const config_all = JSON.parse( fs.readFileSync( CONFIG ) );
-  const config = config_all['deploy_apk.js'];
+function main( args ){
+
+  if( args[0] !== 'desa' && args[0] !== 'prod' && args[0] != 'produccion' ){
+    console.log( "debe indicarse uno de estos valores:" );
+    console.log( "deploy_apk.js desa -> genera un apk para desarrollo");
+    console.log( "deploy_apk.js prod -> genera un apk para producción y permite subirlo a internet");
+    return;
+  }
+
+  const config = JSON.parse( fs.readFileSync( CONFIG ) );
   const rl = readline.createInterface({
     input : process.stdin, 
     output : process.stdout
   });
 
-  console.log( 'Subiendo código de versión....' );
-  setCodeVersionGradle( config.environment_prod, config.build_gradle );
+  if( args[0] === 'desa' ){
+    let capacitorCommand = ["ionic", "capacitor", "sync", "--configuration=development"];
+    console.log( 'Ejecutamos ', capacitorCommand );
+    runCommand( capacitorCommand )
+    .then( (val) => {
+      console.log( msgDevel );
+      rl.close();
+    });
+    return;
+  }
+  if( args[0] === 'prod' || args[0] === 'produccion' ){
+    console.log( 'Subiendo código de versión....' );
+    setCodeVersionGradle( config.environment_prod, config.build_gradle );
 
-  console.log( 'Ejecutamos ', config["capacitor_sync"] );
-  runCommand( config["capacitor_sync"] )
-  .then( (val) => {
-    rl.question( msg2, 
-      (value) => {
-        moveFile( config["move_rename"]["from"],
-                  config["move_rename"]["to"] )
-          .then( (value) => {
-            runCommand( config["deploy_apk"] )
-            .then( () => {
-              rl.close();
+    let capacitorCommand = ["ionic", "capacitor", "sync", "--configuration=production"];
+    console.log( 'Ejecutamos ', capacitorCommand );
+    runCommand( capacitorCommand )
+    .then( (val) => {
+      rl.question( msgProd, 
+        (value) => {
+          if( value.toLowerCase() === 's' ){
+            moveFile( config["move_rename"]["from"],
+                      config["move_rename"]["to"] )
+            .then( (_) => {
+              runCommand( config["deploy_apk"] )
+              .then( () => {
+                rl.close();
+              })
             })
-          })
-          .catch( (error) => {
-            console.error("se ha producido un error:");
-            console.error( error );
+            .catch( (error) => {
+              console.error("se ha producido un error:");
+              console.error( error );
+              rl.close();
+            });
+          }else{
             rl.close();
-          });
-      });
-  });
+          }
+        });
+    });
+    return;  
+  }
+
 
 }
 
@@ -128,7 +158,7 @@ function incrementCodeVersionGradle( filename, line ){
 
 
 
-main(); 
+main( process.argv.slice(2) ); 
 
 
 
