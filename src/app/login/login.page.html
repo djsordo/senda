@@ -7,7 +7,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large" i18n="Title of the login screen">Login</ion-title>
+      <ion-title size="large">Login</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -15,7 +15,7 @@
     <ion-row style="padding-top: 6em;">
       <ion-col>
         <ion-item>
-          <ion-label position="floating" i18n="Email requested in the login screen">Correo electrónico</ion-label>
+          <ion-label position="floating">Correo electrónico</ion-label>
           <ion-input type="email" [(ngModel)]="usuario.email" required></ion-input>
         </ion-item>
       </ion-col>
@@ -23,7 +23,7 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label position="floating" i18n="Password requested in the login screen">Contraseña</ion-label>
+          <ion-label position="floating">Contraseña</ion-label>
           <ion-input name="password" type="password" [(ngModel)]="usuario.password" required></ion-input>
         </ion-item>
       </ion-col>
@@ -32,7 +32,7 @@
       <ion-col class="ion-text-end">
         <ion-button type="submit" (click)="login()">
           <ion-icon slot="end" icon="chevron-forward"></ion-icon>
-          <ion-label i18n>Entrar</ion-label>
+          <ion-label>Entrar</ion-label>
         </ion-button>
       </ion-col>
     </ion-row>
@@ -40,7 +40,7 @@
       <ion-col class="ion-text-center">
         <ion-button routerLink="/registro">
           <ion-icon slot="start" src="assets/registration.svg"></ion-icon>
-          <ion-label i18n>Registrarse</ion-label>
+          <ion-label>Registrarse</ion-label>
         </ion-button>
       </ion-col>
     </ion-row> -->
@@ -48,7 +48,7 @@
       <ion-col class="ion-text-center">
         <ion-button routerLink="/add-to-home">
           <ion-icon slot="start" icon="home"></ion-icon>
-          <ion-label i18n>Añadir a la pantalla de inicio</ion-label>
+          <ion-label>Añadir a la pantalla de inicio</ion-label>
         </ion-button>
       </ion-col>
     </ion-row>

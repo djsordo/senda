@@ -46,7 +46,6 @@
     "@angular/compiler": "~13.2.2",
     "@angular/compiler-cli": "~13.2.2",
     "@angular/language-service": "~13.2.2",
-    "@angular/localize": "^13.2.7",
     "@capacitor/cli": "3.5.1",
     "@ionic/angular-toolkit": "^6.0.0",
     "@ionic/lab": "3.2.13",
