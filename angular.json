@@ -1,12 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "defaultProject": "app",
+  "defaultProject": "mobile",
   "newProjectRoot": "projects",
   "projects": {
-    "app": {
-      "root": "",
-      "sourceRoot": "src",
+    "mobile": {
+      "root": "projects/mobile",
+      "sourceRoot": "projects/mobile/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -14,20 +14,20 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "www",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
+            "outputPath": "www/mobile",
+            "index": "projects/mobile/src/index.html",
+            "main": "projects/mobile/src/main.ts",
+            "polyfills": "projects/mobile/src/polyfills.ts",
+            "tsConfig": "projects/mobile/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
+                "input": "projects/mobile/src/assets",
+                "output": "projects/mobile/assets"
               },
               {
                 "glob" : "**/manifest.json",
-                "input" : "src/app",
+                "input" : "projects/mobile/src/app",
                 "output" : "/"
               },
               {
@@ -36,7 +36,8 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": ["projects/mobile/src/theme/variables.scss", 
+                    "projects/mobile/src/global.scss"],
             "scripts": [ ],
             "aot": false,
             "vendorChunk": true,
@@ -50,8 +51,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/mobile/src/environments/environment.ts",
+                  "with": "projects/mobile/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -88,14 +89,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build"
+            "browserTarget": "mobile:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "app:build:production"
+              "browserTarget": "mobile:build:production"
             },
             "development" : {
-              "browserTarget": "app:build:development"
+              "browserTarget": "mobile:build:development"
             },
             "ci": { }
           },
@@ -104,27 +105,27 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "app:build"
+            "browserTarget": "mobile:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "main": "projects/mobile/src/test.ts",
+            "polyfills": "projects/mobile/src/polyfills.ts",
+            "tsConfig": "projects/mobile/tsconfig.spec.json",
+            "karmaConfig": "projects/mobile/karma.conf.js",
             "styles": [],
             "scripts": [],
             "assets": [
               {
                 "glob": "favicon.ico",
-                "input": "src/",
+                "input": "projects/mobile/src/",
                 "output": "/"
               },
               {
                 "glob": "**/*",
-                "input": "src/assets",
+                "input": "projects/mobile/src/assets",
                 "output": "/assets"
               }
             ]
@@ -149,21 +150,156 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "app:serve"
+            "devServerTarget": "mobile:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "app:serve:production"
+              "devServerTarget": "mobile:serve:production"
             },
             "ci": {
-              "devServerTarget": "app:serve:ci"
+              "devServerTarget": "mobile:serve:ci"
             }
+          }
+        }
+      }
+    },
+    "desktop": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/desktop",
+      "sourceRoot": "projects/desktop/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "www/desktop",
+            "index": "projects/desktop/src/index.html",
+            "main": "projects/desktop/src/main.ts",
+            "polyfills": "projects/desktop/src/polyfills.ts",
+            "tsConfig": "projects/desktop/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/desktop/src/favicon.ico",
+              "projects/desktop/src/assets"
+            ],
+            "styles": [
+              "projects/desktop/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],              
+              "fileReplacements": [
+                {
+                  "replace": "projects/desktop/src/environments/environment.ts",
+                  "with": "projects/desktop/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "desktop:build:production"
+            },
+            "development": {
+              "browserTarget": "desktop:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "desktop:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/desktop/src/test.ts",
+            "polyfills": "projects/desktop/src/polyfills.ts",
+            "tsConfig": "projects/desktop/tsconfig.spec.json",
+            "karmaConfig": "projects/desktop/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/desktop/src/favicon.ico",
+              "projects/desktop/src/assets"
+            ],
+            "styles": [
+              "projects/desktop/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "lib": {
+      "projectType": "library",
+      "root": "projects/lib",
+      "sourceRoot": "projects/lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/lib/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/lib/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/lib/src/test.ts",
+            "tsConfig": "projects/lib/tsconfig.spec.json",
+            "karmaConfig": "projects/lib/karma.conf.js"
           }
         }
       }
     }
   },
   "cli": {
+    "analytics": "41420ae5-c192-423d-ab79-1951bdf29c30",
     "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {
