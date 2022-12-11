@@ -7,8 +7,8 @@ import { Acciones, EventosService } from './../../services/eventos.service';
 import { Crono } from './../../modelo/crono';
 import { CronoService } from './crono.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Usuario } from 'src/app/modelo/usuario';
-import { Partido } from 'src/app/modelo/partido';
+import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
+import { Partido } from 'projects/mobile/src/app/modelo/partido';
 
 @Component({
   selector: 'app-crono',

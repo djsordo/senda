@@ -1,4 +1,4 @@
-import { Crono } from 'src/app/modelo/crono';
+import { Crono } from 'projects/mobile/src/app/modelo/crono';
 export interface EstadPartido{
   id?: string;
   partidoId: string;

@@ -4,11 +4,11 @@ import { ToastController } from '@ionic/angular';
 import { DocumentData, 
           QuerySnapshot } from '@angular/fire/firestore';
 
-import { UsuarioService } from 'src/app/services/usuario.service';
-import { Usuario } from 'src/app/modelo/usuario';
-import { Club } from 'src/app/modelo/club';
-import { ClubesService } from 'src/app/services/clubes.service';
-import { LocalStorage } from 'src/app/services/local.storage.mock';
+import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
+import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
+import { Club } from 'projects/mobile/src/app/modelo/club';
+import { ClubesService } from 'projects/mobile/src/app/services/clubes.service';
+import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
 
 @Component({
   selector: 'usuarios-crear',

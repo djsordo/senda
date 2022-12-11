@@ -1,5 +1,5 @@
 import { PartidosEquipo } from './../modelo/partidosEquipo';
-import { PartidosService } from 'src/app/services/partidos.service';
+import { PartidosService } from 'projects/mobile/src/app/services/partidos.service';
 import { BDGeneralService } from './../services/bdgeneral.service';
 
 import { Equipo } from './../modelo/equipo';

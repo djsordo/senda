@@ -6,8 +6,8 @@ import { Component,
         HostListener,
         ElementRef,
         EventEmitter} from '@angular/core';
-import { PosicionCampo, PosicionPorteria } from 'src/app/services/balonmano.service';
-import { ColorScheme, StylesService } from 'src/app/services/styles.service';
+import { PosicionCampo, PosicionPorteria } from 'projects/mobile/src/app/services/balonmano.service';
+import { ColorScheme, StylesService } from 'projects/mobile/src/app/services/styles.service';
 
 const X = 0; 
 const Y = 1;

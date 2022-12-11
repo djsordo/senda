@@ -1,11 +1,11 @@
 import { Router } from '@angular/router';
 import { EstadPartidoService } from './../../services/estad-partido.service';
 import { PasoDatosService } from './../../services/paso-datos.service';
-import { Acciones, EventosService } from 'src/app/services/eventos.service';
+import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { MarcadorService } from './../marcador/marcador.service';
 import { CronoService, Tick } from './../crono/crono.service';
 import { Component, DoCheck, Input, OnInit, OnDestroy } from '@angular/core';
-import { EstadJugador } from 'src/app/modelo/estadJugador';
+import { EstadJugador } from 'projects/mobile/src/app/modelo/estadJugador';
 import { Observable, Subscription } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 

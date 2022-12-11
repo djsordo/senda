@@ -2,10 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { DocumentData, 
         DocumentSnapshot, 
         QuerySnapshot} from '@angular/fire/firestore';
-import { PartidosService } from "src/app/services/partidos.service";
+import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 
 
-import { TemporadaService } from "src/app/services/temporada.service";
+import { TemporadaService } from "projects/mobile/src/app/services/temporada.service";
 import { CrearComponent } from "../crear.component";
 
 @Component({

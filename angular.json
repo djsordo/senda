@@ -23,7 +23,7 @@
               {
                 "glob": "**/*",
                 "input": "projects/mobile/src/assets",
-                "output": "projects/mobile/assets"
+                "output": "assets"
               },
               {
                 "glob" : "**/manifest.json",

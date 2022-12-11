@@ -4,13 +4,13 @@ import { ToastController } from '@ionic/angular';
 import { DocumentData, 
           QuerySnapshot } from '@angular/fire/firestore';
 
-import { UsuarioService } from 'src/app/services/usuario.service';
-import { EquipoService } from 'src/app/services/equipo.service';
-import { properCase } from 'src/app/services/string-util';
-import { Usuario } from 'src/app/modelo/usuario';
-import { Temporada } from 'src/app/modelo/temporada';
-import { TemporadaService } from 'src/app/services/temporada.service';
-import { LocalStorage } from 'src/app/services/local.storage.mock';
+import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
+import { EquipoService } from 'projects/mobile/src/app/services/equipo.service';
+import { properCase } from 'projects/mobile/src/app/services/string-util';
+import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
+import { Temporada } from 'projects/mobile/src/app/modelo/temporada';
+import { TemporadaService } from 'projects/mobile/src/app/services/temporada.service';
+import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
 
 @Component({
   selector: 'equipos-crear',

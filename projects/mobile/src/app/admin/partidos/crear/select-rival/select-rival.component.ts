@@ -4,7 +4,7 @@ import { DocumentData,
 import { ActivatedRoute, Router } from "@angular/router";
 
 
-import { PartidosService } from "src/app/services/partidos.service";
+import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 import { CrearComponent } from "../crear.component";
 
 @Component({

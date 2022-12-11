@@ -1,4 +1,4 @@
-import { Acciones, EventosService } from 'src/app/services/eventos.service';
+import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { Gesture, GestureController } from '@ionic/angular';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';

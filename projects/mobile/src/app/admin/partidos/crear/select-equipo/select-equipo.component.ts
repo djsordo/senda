@@ -9,7 +9,7 @@ import { DocumentData,
 import { ActivatedRoute, Router } from "@angular/router";
 
 
-import { EquipoService } from "src/app/services/equipo.service";
+import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
 import { CrearComponent } from "../crear.component";
 
 @Component({

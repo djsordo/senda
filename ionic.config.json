@@ -1,7 +1,19 @@
 {
-  "name": "senda",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
+  "defaultProject" : "mobile", 
+  "projects" : {
+    "mobile" : {
+      "name": "senda",
+      "integrations": {
+        "capacitor": {}
+      },
+      "type": "angular"
+    }, 
+    "desktop" : {
+      "name": "senda",
+      "integrations": {
+        "capacitor": {}
+      },
+      "type": "angular"
+    }
+  }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { BalonmanoService } from 'src/app/services/balonmano.service';
+import { BalonmanoService } from 'projects/mobile/src/app/services/balonmano.service';
 
 import { Jugador } from '../../modelo/jugador';
-import { JugadoresService } from 'src/app/services/jugadores.service';
+import { JugadoresService } from 'projects/mobile/src/app/services/jugadores.service';
 
 import { Acciones, EventosService } from '../../services/eventos.service';
 

@@ -1,10 +1,10 @@
-import { PartidosService } from 'src/app/services/partidos.service';
+import { PartidosService } from 'projects/mobile/src/app/services/partidos.service';
 import { AlertController } from '@ionic/angular';
 import { BDGeneralService } from './../services/bdgeneral.service';
 import { Subscription } from 'rxjs';
 import { EstadJugadorService } from './../services/estad-jugador.service';
 import { UsuarioService } from './../services/usuario.service';
-import { EventosService } from 'src/app/services/eventos.service';
+import { EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';

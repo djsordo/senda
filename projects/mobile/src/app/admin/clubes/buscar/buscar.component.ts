@@ -7,9 +7,9 @@ import { Component,
 import { DocumentData } from "@angular/fire/firestore";
 import { AlertController } from "@ionic/angular";
 
-import { ClubesService } from "src/app/services/clubes.service";
-import { DeportesService } from "src/app/services/deportes.service";
-import { StringUtil } from "src/app/services/string-util";
+import { ClubesService } from "projects/mobile/src/app/services/clubes.service";
+import { DeportesService } from "projects/mobile/src/app/services/deportes.service";
+import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { AdminClubesPage } from "../admin-clubes.page";
 
 @Component({

@@ -11,7 +11,7 @@ import { SelectEquipoComponent } from "./crear/select-equipo/select-equipo.compo
 import { SelectRivalComponent } from "./crear/select-rival/select-rival.component";
 import { PartidoInfoComponent } from "./crear/partido-info/partido-info.component";
 import { SelectLugarComponent } from "./crear/select-lugar/select-lugar.component";
-import { TimestampPipe } from "src/app/services/timestamp-pipe";
+import { TimestampPipe } from "projects/mobile/src/app/services/timestamp-pipe";
 
 
 @NgModule({

@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EstadJugadorService } from './../services/estad-jugador.service';
 import { EstadPartidoService } from './../services/estad-partido.service';
-import { EventosService } from 'src/app/services/eventos.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { EventosService } from 'projects/mobile/src/app/services/eventos.service';
+import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
 
 @Injectable({
   providedIn: 'root'

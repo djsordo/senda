@@ -7,11 +7,11 @@ import { Component,
 import { AlertController } from "@ionic/angular";
 import { DocumentData, QuerySnapshot, Timestamp } from '@angular/fire/firestore';
 
-import { StringUtil } from "src/app/services/string-util";
+import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { AdminPartidosPage } from "../admin-partidos.page";
-import { PartidosService } from "src/app/services/partidos.service";
-import { EquipoService } from "src/app/services/equipo.service";
-import { TemporadaService } from "src/app/services/temporada.service";
+import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
+import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
+import { TemporadaService } from "projects/mobile/src/app/services/temporada.service";
 
 @Component({
   selector: 'usuarios-buscar',

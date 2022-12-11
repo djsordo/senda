@@ -8,7 +8,7 @@ import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { CronoService, Tick } from './../crono/crono.service';
-import { Acciones, EventosService } from 'src/app/services/eventos.service';
+import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 
 @Component({
   selector: 'app-titulares',

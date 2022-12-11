@@ -41,7 +41,7 @@ function main( args ){
   });
 
   if( args[0] === 'desa' ){
-    let capacitorCommand = ["ionic", "capacitor", "sync", "--configuration=development"];
+    let capacitorCommand = ["ionic", "capacitor", "sync", "--project=mobile", "--configuration=development"];
     console.log( 'Ejecutamos ', capacitorCommand );
     runCommand( capacitorCommand )
     .then( (val) => {
@@ -54,7 +54,7 @@ function main( args ){
     console.log( 'Subiendo código de versión....' );
     setCodeVersionGradle( config.environment_prod, config.build_gradle );
 
-    let capacitorCommand = ["ionic", "capacitor", "sync", "--configuration=production"];
+    let capacitorCommand = ["ionic", "capacitor", "sync", "--project=mobile", "--configuration=production"];
     console.log( 'Ejecutamos ', capacitorCommand );
     runCommand( capacitorCommand )
     .then( (val) => {

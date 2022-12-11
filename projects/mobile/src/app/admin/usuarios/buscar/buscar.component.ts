@@ -7,8 +7,8 @@ import { Component,
 import { AlertController } from "@ionic/angular";
 import { DocumentData } from '@angular/fire/firestore';
 
-import { StringUtil } from "src/app/services/string-util";
-import { UsuarioService } from "src/app/services/usuario.service";
+import { StringUtil } from "projects/mobile/src/app/services/string-util";
+import { UsuarioService } from "projects/mobile/src/app/services/usuario.service";
 import { AdminUsuariosPage } from "../admin-usuarios.page";
 
 @Component({

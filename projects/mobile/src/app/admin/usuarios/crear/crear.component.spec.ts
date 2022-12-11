@@ -8,7 +8,7 @@ import { initializeApp } from 'firebase/app';
 
 import { environment } from 'src/environments/environment';
 import { CrearComponent } from './crear.component';
-import { LocalStorage } from 'src/app/services/local.storage.mock';
+import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
 import { FormsModule } from '@angular/forms';
 
 

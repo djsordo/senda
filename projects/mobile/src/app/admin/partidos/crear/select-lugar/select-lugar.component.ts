@@ -11,7 +11,7 @@ import { ActivatedRoute,
 import { IonCheckbox } from "@ionic/angular";
 
 
-import { PartidosService } from "src/app/services/partidos.service";
+import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 import { CrearComponent } from "../crear.component";
 
 

@@ -4,8 +4,8 @@ import { ToastController } from '@ionic/angular';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
 
-import { ClubesService } from 'src/app/services/clubes.service';
-import { DeportesService } from 'src/app/services/deportes.service';
+import { ClubesService } from 'projects/mobile/src/app/services/clubes.service';
+import { DeportesService } from 'projects/mobile/src/app/services/deportes.service';
 import { AdminClubesPage } from '../admin-clubes.page';
 
 @Component({

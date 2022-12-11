@@ -1,7 +1,21 @@
 {
   "hosting": [
     {"site": "sendaestadisticas-com-desa",
-     "public" : "www",
+     "public" : "www/mobile",
+     "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+    },
+    {"site": "sendaestadisticas-com-pre",
+     "public" : "www/mobile",
      "ignore": [
       "firebase.json",
       "**/.*",
@@ -15,7 +29,7 @@
     ]
     },
     {"site": "sendaestadisticas-com-prod",
-     "public" : "www",
+     "public" : "www/mobile",
      "ignore": [
       "firebase.json",
       "**/.*",

@@ -3,7 +3,7 @@ import { CronoService } from './../crono/crono.service';
 import { Crono } from './../../modelo/crono';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { PasoDatosService } from './../../services/paso-datos.service';
-import { Acciones, EventosService } from 'src/app/services/eventos.service';
+import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({

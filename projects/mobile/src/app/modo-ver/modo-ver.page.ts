@@ -2,7 +2,7 @@ import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Acciones, EventosService } from 'src/app/services/eventos.service';
+import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { EstadJugador } from '../modelo/estadJugador';
 import { Evento } from '../modelo/evento';
 import { EstadPartido } from './../modelo/estadPartido';

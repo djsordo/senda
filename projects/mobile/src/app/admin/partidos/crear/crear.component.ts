@@ -4,14 +4,14 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp} from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 
-import { UsuarioService } from 'src/app/services/usuario.service';
-import { Usuario } from 'src/app/modelo/usuario';
-import { LocalStorage } from 'src/app/services/local.storage.mock';
-import { EquipoService } from 'src/app/services/equipo.service';
-import { Partido } from 'src/app/modelo/partido';
+import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
+import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
+import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
+import { EquipoService } from 'projects/mobile/src/app/services/equipo.service';
+import { Partido } from 'projects/mobile/src/app/modelo/partido';
 import { fromStringToDate,
-         fromDateToString } from 'src/app/services/string-util';
-import { PartidosService } from 'src/app/services/partidos.service';
+         fromDateToString } from 'projects/mobile/src/app/services/string-util';
+import { PartidosService } from 'projects/mobile/src/app/services/partidos.service';
 
 
 interface Validation{

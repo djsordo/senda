@@ -2,7 +2,7 @@ import { MenuController } from '@ionic/angular';
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { environment } from 'src/environments/environment';
+import { environment } from 'projects/mobile/src/environments/environment';
 
 import { LocalStorage } from './services/local.storage.mock';
 import { NavegacionService } from './services/navegacion.service';

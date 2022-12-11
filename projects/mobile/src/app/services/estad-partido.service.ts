@@ -1,4 +1,4 @@
-import { Crono } from 'src/app/modelo/crono';
+import { Crono } from 'projects/mobile/src/app/modelo/crono';
 import { EstadPartido } from './../modelo/estadPartido';
 import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where, deleteDoc } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';

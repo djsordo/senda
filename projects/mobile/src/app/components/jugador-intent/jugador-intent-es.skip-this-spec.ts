@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Evento } from '../../modelo/evento';
-import { Acciones, EventosService } from 'src/app/services/eventos.service';
+import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { JugadorIntentEs } from './jugador-intent-es';
-import { PosicionCampo, PosicionPorteria } from 'src/app/services/balonmano.service';
+import { PosicionCampo, PosicionPorteria } from 'projects/mobile/src/app/services/balonmano.service';
 
 describe('JugadorIntentEs', () => {
   let jugadorIntent : JugadorIntentEs; 

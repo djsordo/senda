@@ -1,4 +1,4 @@
-import { EstadJugador } from 'src/app/modelo/estadJugador';
+import { EstadJugador } from 'projects/mobile/src/app/modelo/estadJugador';
 import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where, deleteDoc } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';

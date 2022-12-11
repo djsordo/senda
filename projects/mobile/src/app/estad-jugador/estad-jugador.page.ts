@@ -1,5 +1,5 @@
 import { EstadPartido } from './../modelo/estadPartido';
-import { EstadJugador } from 'src/app/modelo/estadJugador';
+import { EstadJugador } from 'projects/mobile/src/app/modelo/estadJugador';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { PasoDatosService } from '../services/paso-datos.service';

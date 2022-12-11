@@ -6,12 +6,12 @@ import { DocumentData,
         QuerySnapshot } from '@angular/fire/firestore';
 
 
-import { Usuario } from 'src/app/modelo/usuario';
-import { UsuarioService } from 'src/app/services/usuario.service';
+import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
+import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
 import { AdminUsuariosPage } from '../admin-usuarios.page';
-import { ClubesService } from 'src/app/services/clubes.service';
-import { Club } from 'src/app/modelo/club';
-import { LocalStorage } from 'src/app/services/local.storage.mock';
+import { ClubesService } from 'projects/mobile/src/app/services/clubes.service';
+import { Club } from 'projects/mobile/src/app/modelo/club';
+import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
 
 
 @Component({

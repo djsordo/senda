@@ -10,7 +10,7 @@ import { TestService } from 'projects/desktop/src/app/service/test.service';
 export class AppComponent {
   title = 'desktop';
 
-  constructor( private TestService test ){
+  constructor( private testService : TestService ){
 
   }
 
