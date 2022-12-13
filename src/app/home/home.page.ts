@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
 import { Subscription } from 'rxjs';
-import { CAPACITOR_CONFIG_JSON_FILE } from '@ionic/cli/lib/integrations/capacitor/config';
+//import { CAPACITOR_CONFIG_JSON_FILE } from '@ionic/cli/lib/integrations/capacitor/config';
 
 @Component({
   selector: 'app-home',
