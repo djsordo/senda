@@ -5,7 +5,7 @@
 package-lock.json
 
 src/batch/dist
-environments/*.ts
+**/environments/*.ts
 SECRETS.md
 PRIVATE/
 
