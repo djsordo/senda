@@ -21,8 +21,10 @@
             [routerLink]="p.url"
             [detail]="p.submenu"
             (click)="onClickElement( p, currentElement )">
-              <ion-icon slot="start" [name]="p.icon"
+              <ion-icon slot="start" [name]="p.icon" *ngIf="p.icon"
               [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-icon slot="start" *ngIf="!p.icon && p.src"
+              src="{{p.src}}"></ion-icon>
               <ion-label>{{p.title}}</ion-label>
             </ion-item>
             <div style="margin-left: 1.7em;" *ngIf="p.submenu && p.showDetails">

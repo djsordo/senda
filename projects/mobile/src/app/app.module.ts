@@ -16,7 +16,6 @@ import { LocalStorageService } from './services/local.storage.service';
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
   imports: [BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,

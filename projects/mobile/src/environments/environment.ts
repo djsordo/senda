@@ -7,7 +7,7 @@ export const environment = {
   // actualizaciones de la versión deben trasladarse a
   // android/app/build.gradle para que sea coherente 
   // con el bundle que generemos para google
-  version: "1.1.13", 
+  version: "1.1.13",
   firebaseConfig: {
     apiKey: "AIzaSyBwKFZtaBY0DkbB_BcfQjuDjjNFDiBbOAo",
     authDomain: "sendaestadisticas-com-desa.firebaseapp.com",

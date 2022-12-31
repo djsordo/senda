@@ -19,6 +19,11 @@ export class AppComponent implements OnInit, DoCheck {
     { title: 'Home',
       url: '/home',
       icon: 'home'},
+    {
+      title: 'Datos', 
+      url: '/estadisticas', 
+      src: 'assets/estadisticas.svg'
+    },
     { title: 'Admin',
       url: '/admin/home',
       icon: 'cog',

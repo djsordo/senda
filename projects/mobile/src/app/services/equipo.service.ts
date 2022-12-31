@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Firestore,
-          addDoc,
           getDoc,
           getDocs,
           CollectionReference,
@@ -44,8 +43,8 @@ export class EquipoService {
 
   async getEquiposClub( clubId?: string ){
     if( clubId && clubId.trim().length > 0 ){
-      return getDocs( query( this.equipoRef,  where( 'club.clubId', '==', clubId.trim() ),
-                                              where( 'temporada.actual', '==', true) )
+      return getDocs( query( this.equipoRef, where( 'club.clubId', '==', clubId.trim() ),
+                                             where( 'temporada.actual', '==', true) )
                             );
     }else{
       return getDocs( query( this.equipoRef, where( 'club.clubId', '==', '' ) ) );

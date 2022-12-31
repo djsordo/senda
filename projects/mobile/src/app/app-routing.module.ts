@@ -53,6 +53,10 @@ const routes: Routes = [
     loadChildren: () => import('./admin/home/admin-home.module').then( m => m.AdminHomePageModule)
   },
   {
+    path: 'estadisticas',
+    loadChildren: () => import('./estadisticas/home/home.module').then( m => m.EstadisticasPageModule)
+  },
+  {
     path: 'admin/clubes',
     loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule )
   },
@@ -87,7 +91,8 @@ const routes: Routes = [
   {
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
-  },  {
+  },
+  {
     path: 'add-to-home',
     loadChildren: () => import('./add-to-home/add-to-home.module').then( m => m.AddToHomePageModule)
   }
