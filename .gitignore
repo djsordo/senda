@@ -8,6 +8,7 @@ src/batch/dist
 src/environments/environment.prod.ts
 src/environments/environment.desa.ts
 src/environments/environment.ts
+environments/*.ts
 SECRETS.md
 PRIVATE/
 
