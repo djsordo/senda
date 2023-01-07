@@ -1,11 +1,24 @@
-<app-selectable-card-list [objectList]="equipos"
-    [title]="'genero'"></app-selectable-card-list>
 
-<!--
-<app-selectable-cards *ngFor="let equipo of equipos;"
-      id="equipo.id"
-      [title]="equipo.categoria + ' ' + equipo.genero"
-      [content]="equipo.temporada.nombre"
-      icon="people"
-      ></app-selectable-cards>
--->
+
+<ng-template #equipoTemplate let-equipo>
+    <ion-card #resultCard id="{{equipo.id}}">
+        <ion-card-header>
+          <ion-icon name="people" size="large"></ion-icon>
+          <ion-card-title>{{equipo.categoria}} {{equipo.genero}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="list-elem">{{equipo.temporada.nombre}}</p>
+        </ion-card-content>
+      </ion-card>      
+</ng-template>
+
+<ion-grid align-items-center="true">
+  <ion-row>
+    <ion-col>
+      <app-selectable-card-list [objectList]="equipos"
+      [cardTemplate]="equipoTemplate"
+      (cardSelect)="onSelectedEquipo( $event )"></app-selectable-card-list>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+

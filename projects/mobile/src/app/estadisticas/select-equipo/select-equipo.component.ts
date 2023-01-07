@@ -32,4 +32,8 @@ export class SelectEquipoComponent implements OnInit {
     });
   }
 
+  public onSelectedEquipo( equipo: any ){
+    console.log( equipo );
+  }
+
 }

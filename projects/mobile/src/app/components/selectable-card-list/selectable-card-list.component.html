@@ -1,2 +1,22 @@
-<selectable-card *ngFor="let object of objectList;"
-    [title]="object[title]"></selectable-card>
+  <ng-template #defaultTemplate let-object>
+      <ion-card #resultCard id="{{object.id}}">
+          <ion-card-header>
+            <ion-icon name="{{object.icon}}" size="large"></ion-icon>
+            <ion-card-title>{{object.title}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p class="list-elem">{{object.content}}</p>
+          </ion-card-content>
+        </ion-card>      
+  </ng-template>
+
+
+<ion-grid #selectableCard *ngFor="let object of objectList;"
+  (click)="onCardSelected( object.id )"
+  id="{{object.id}}"
+  style="padding: 0em;">
+    <ng-container 
+        [ngTemplateOutlet]="cardTemplate || defaultTemplate"
+        [ngTemplateOutletContext]="{ $implicit : object }">
+    </ng-container>
+  </ion-grid>
