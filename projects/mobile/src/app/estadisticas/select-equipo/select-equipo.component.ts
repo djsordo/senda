@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentData, QuerySnapshot } from '@angular/fire/firestore';
+import { Equipo } from '../../modelo/equipo';
 
 import { EquipoService } from '../../services/equipo.service';
 
@@ -12,10 +13,12 @@ import { EquipoService } from '../../services/equipo.service';
 export class SelectEquipoComponent implements OnInit {
 
   public equipos : any;
+  public selectedEquipo : Equipo;
 
   constructor( private equipoService : EquipoService ) { }
 
   ngOnInit() {
+    this.selectedEquipo = null;
     this.loadEquipos();
   }
 
@@ -32,8 +35,8 @@ export class SelectEquipoComponent implements OnInit {
     });
   }
 
-  public onSelectedEquipo( equipo: any ){
-    console.log( equipo );
+  public onSelectedEquipo( equipo: Equipo ){
+    this.selectedEquipo = equipo;
   }
 
 }

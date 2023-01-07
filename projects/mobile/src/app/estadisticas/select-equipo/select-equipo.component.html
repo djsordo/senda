@@ -20,5 +20,15 @@
       (cardSelect)="onSelectedEquipo( $event )"></app-selectable-card-list>
     </ion-col>
   </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button color="primary" expand="block" 
+          [disabled]="!selectedEquipo"
+          [routerLink]="['select-jugador','yaveremos']">
+        <ion-label>Selecciona jugador</ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
 </ion-grid>
 
