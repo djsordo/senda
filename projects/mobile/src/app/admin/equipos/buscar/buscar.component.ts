@@ -4,13 +4,10 @@ import { Component,
   QueryList, 
   Renderer2,
   ViewChildren} from "@angular/core";
-import { DocumentData } from "@angular/fire/firestore";
 import { AlertController } from "@ionic/angular";
-import { ClubesService } from "projects/mobile/src/app/services/clubes.service";
 
 import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
-import { TemporadaService } from "projects/mobile/src/app/services/temporada.service";
 import { AdminEquiposPage } from "../admin-equipos.page";
 
 @Component({

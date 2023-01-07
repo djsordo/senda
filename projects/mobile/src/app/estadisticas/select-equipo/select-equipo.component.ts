@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentData, QuerySnapshot } from '@angular/fire/firestore';
 
-import { SelectableCardsComponent } from "../../components/selectable-cards/selectable-cards.component";
-import { Equipo } from '../../modelo/equipo';
 import { EquipoService } from '../../services/equipo.service';
 
 
@@ -25,7 +23,11 @@ export class SelectEquipoComponent implements OnInit {
     this.equipoService.getEquipos()
     .then( (elements : QuerySnapshot<DocumentData>) => {
       this.equipos = [];
-      elements.forEach( elem => this.equipos.push(elem.data() ) );
+      elements.forEach( elem => {
+        let data = elem.data();
+        data.id = elem.id;
+        this.equipos.push(data);
+        } );
       console.log( this.equipos );
     });
   }

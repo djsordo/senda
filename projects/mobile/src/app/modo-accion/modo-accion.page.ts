@@ -7,6 +7,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./modo-accion.page.scss'],
 })
 export class ModoAccionPage implements OnInit {
+  nombres= {
+    casa: '',
+    fuera: ''
+  };
 
   marcador= {
     nuestro: 0,

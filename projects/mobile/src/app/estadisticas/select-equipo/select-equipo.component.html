@@ -1,1 +1,11 @@
-<app-selectable-cards *ngFor="let equipo of equipos;"></app-selectable-cards>
+<app-selectable-card-list [objectList]="equipos"
+    [title]="'genero'"></app-selectable-card-list>
+
+<!--
+<app-selectable-cards *ngFor="let equipo of equipos;"
+      id="equipo.id"
+      [title]="equipo.categoria + ' ' + equipo.genero"
+      [content]="equipo.temporada.nombre"
+      icon="people"
+      ></app-selectable-cards>
+-->

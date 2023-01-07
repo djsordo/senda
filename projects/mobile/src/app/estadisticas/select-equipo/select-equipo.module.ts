@@ -3,21 +3,23 @@ import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 
 
-import { SelectableCardsComponent } from "../../components/selectable-cards/selectable-cards.component";
+import { SelectableCardListComponent } from "../../components/selectable-card-list/selectable-card-list.component";
+import { SelectableCardComponent } from "../../components/selectable-card/selectable-card.component";
 import { SelectEquipoComponent } from "./select-equipo.component";
 
 
 @NgModule({
   declarations: [
     SelectEquipoComponent,
-    SelectableCardsComponent
+    SelectableCardComponent, 
+    SelectableCardListComponent
   ], 
   imports : [
     CommonModule,
     IonicModule
   ],
   exports : [
-    SelectableCardsComponent
+    SelectableCardComponent
   ]
 })
 export class SelectEquipoModule {}

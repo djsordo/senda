@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { EstadisticasPageRoutingModule } from './home-routing.module';
 
 import { EstadisticasPage } from './home.page';
-import { SelectableCardsComponent } from '../../components/selectable-cards/selectable-cards.component';
 
 @NgModule({
   declarations: [
