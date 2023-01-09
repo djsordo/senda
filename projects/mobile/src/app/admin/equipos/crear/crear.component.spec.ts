@@ -6,8 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 
 
-import { environment } from 'src/environments/environment';
 import { CrearComponent } from './crear.component';
+import { environment } from 'projects/mobile/src/environments/environment';
 
 
 describe('CrearComponent', () => {

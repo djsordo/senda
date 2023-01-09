@@ -66,7 +66,7 @@ fdescribe('PartidosService', () => {
   });
 
   it('prueba de getPartidos de un equipo dado', (callMeOnFinish) => {
-    let equipoId = 'hVuCh6JJ0YiXThL9Jf6r';
+    let equipoId = '5IQaM5kLDoc2ng8Drsdw';
     let partidosSub = partidosService.getPartidos( equipoId )
       .subscribe( (partidos) => {
         console.log( partidos );

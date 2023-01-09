@@ -3,8 +3,9 @@ import { provideFirebaseApp } from '@angular/fire/app';
 import { provideFirestore } from '@angular/fire/firestore';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { environment } from 'src/environments/environment';
 
+
+import { environment } from 'projects/mobile/src/environments/environment';
 import { EventosService } from './eventos.service';
 
 describe( 'EventoPrototipoService', () => {

@@ -7,7 +7,7 @@ import { initializeApp,
 
 
 import { DeportesService } from "./deportes.service"
-import { environment } from "src/environments/environment";
+import { environment } from 'projects/mobile/src/environments/environment';
 
 
 
