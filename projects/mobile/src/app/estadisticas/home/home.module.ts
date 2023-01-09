@@ -8,17 +8,23 @@ import { IonicModule } from '@ionic/angular';
 import { EstadisticasPageRoutingModule } from './home-routing.module';
 
 import { EstadisticasPage } from './home.page';
+import { SelectEquipoComponent } from '../select-equipo/select-equipo.component';
+import { SelectableCardListModule } from '../../components/selectable-card-list/selectable-card-list.module';
+import { SelectJugadorComponent } from '../select-jugador/select-jugador.component';
 
 @NgModule({
-  declarations: [
-    EstadisticasPage
-  ],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     RouterModule,
-    EstadisticasPageRoutingModule
+    EstadisticasPageRoutingModule, 
+    SelectableCardListModule
+  ],
+  declarations: [
+    EstadisticasPage,
+    SelectEquipoComponent, 
+    SelectJugadorComponent
   ]
 })
 export class EstadisticasPageModule {}

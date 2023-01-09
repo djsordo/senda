@@ -15,8 +15,8 @@
   (click)="onCardSelected( object.id )"
   id="{{object.id}}"
   style="padding: 0em;">
-    <ng-container 
-        [ngTemplateOutlet]="cardTemplate || defaultTemplate"
-        [ngTemplateOutletContext]="{ $implicit : object }">
-    </ng-container>
-  </ion-grid>
+  <ng-container 
+      [ngTemplateOutlet]="cardTemplate || defaultTemplate"
+      [ngTemplateOutletContext]="{ $implicit : object }">
+  </ng-container>
+</ion-grid>
