@@ -12,7 +12,7 @@ import { PartidosService } from './partidos.service';
 import { Partido } from '../modelo/partido';
 import { Subscription } from 'rxjs';
 
-fdescribe('PartidosService', () => {
+describe('PartidosService', () => {
   let partidosService: PartidosService;
   let subscriptions : Subscription[];
 

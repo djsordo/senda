@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Jugador } from '../../modelo/jugador';
+import { JugadoresService } from '../../services/jugadores.service';
 
 @Component({
   selector: 'app-select-jugador',
@@ -7,8 +11,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectJugadorComponent implements OnInit {
 
-  constructor() { }
+  private paramsSubscription : Subscription;
+  public equipoId : string;
+  public jugadores : Jugador[];
+  public selectedJugador : Jugador;
 
-  ngOnInit() {}
+  constructor( private jugadorService : JugadoresService,
+               private route : ActivatedRoute ) { }
+
+  ngOnInit() {
+    this.selectedJugador = null; 
+    this.paramsSubscription = this.route.params.subscribe( params => {
+      this.equipoId = params['equipoId'];
+      console.log(`recibido equipoid: ${this.equipoId}`);
+      this.loadJugadores( this.equipoId );
+    } );
+  }
+
+  private loadJugadores( equipoId : string ) {
+    this.jugadorService.getJugadoresEquipoArray( equipoId )
+    .then( (jugadores) => {
+      this.jugadores = jugadores;
+      console.log( this.jugadores );
+    });
+  }
+
+  public onSelectedJugador( jugador : Jugador ){
+    console.log( jugador );
+    this.selectedJugador = jugador;
+  }
 
 }

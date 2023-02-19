@@ -40,7 +40,11 @@ export class JugadorIntentEs{
                private jugadoresService: JugadoresService,
                private balonmanoService: BalonmanoService ){
     this.acciones = this.eventosService.getAcciones();
-    this.jugadores = this.jugadoresService.getJugadores();
+    // rlunaro. getJugadores() se depreca, ya que es directa 
+    // (no devuelve una promesa) y la nueva llamada necesita 
+    // que se le pase un código de equipo
+    // this.jugadores = this.jugadoresService.getJugadores();
+    this.jugadores = [];
     this.aliasAcciones = [  { accion: Acciones.parada, alias: ['parada', 'paradón'] },
                             { accion: Acciones.golRival, alias: ['gol rival', 'gol del rival'] },
                             { accion: Acciones.gol, alias: ['gol', 'golazo', 'tanto'] },

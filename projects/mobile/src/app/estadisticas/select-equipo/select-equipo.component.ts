@@ -31,7 +31,6 @@ export class SelectEquipoComponent implements OnInit {
         data.id = elem.id;
         this.equipos.push(data);
         } );
-      console.log( this.equipos );
     });
   }
 

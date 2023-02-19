@@ -1,9 +1,9 @@
 import { TestBed } from "@angular/core/testing";
 import { initializeApp, 
          provideFirebaseApp } from "@angular/fire/app";
-import { getFirestore, 
-         provideFirestore } from "@angular/fire/firestore";
-import { Subscription } from "rxjs";
+import { DocumentData, getFirestore, 
+         provideFirestore, 
+         QuerySnapshot} from "@angular/fire/firestore";
 
 
 import { environment } from "../../environments/environment";
@@ -11,7 +11,7 @@ import { Jugador } from "../modelo/jugador";
 import { JugadoresService } from "./jugadores.service";
 
 
-describe('JugadoresService', () => {
+fdescribe('JugadoresService', () => {
 
   let jugadoresService : JugadoresService;
 
@@ -40,6 +40,19 @@ describe('JugadoresService', () => {
             s.unsubscribe();
             callMeOnFinish();      
           });
+  });
+
+  it('consulta de jugadores como promesa', (callMeOnFinish) => {
+    console.log( "entro en el test, pero no pasa nada" );
+    jugadoresService.getJugadoresEquipoAsDoc( 'zJ95IqWhrfJs4AgdGS2i' )
+      .then( ( val : QuerySnapshot<DocumentData> ) => {
+          let result = [];
+          for( let doc of val.docs ){
+            result.push( doc.data() );
+          }
+          expect( result.length ).toBeGreaterThanOrEqual( 0 );
+          callMeOnFinish();
+      });
   });
 
 });

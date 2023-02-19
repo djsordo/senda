@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
+import { Firestore, 
+        collection, 
+        collectionData, 
+        query, 
+        where, 
+        CollectionReference, 
+        DocumentData,
+        QuerySnapshot } from '@angular/fire/firestore';
+import { getDocs } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 import { Jugador } from '../modelo/jugador';
@@ -9,10 +17,13 @@ import { Jugador } from '../modelo/jugador';
 })
 export class JugadoresService {
 
-  jugadores: Array<Jugador> = [];
+  jugadoresRef : CollectionReference<DocumentData>;  
 
   constructor(private firestore: Firestore) {
-/*     this.jugadores = [
+    this.jugadoresRef = collection( this.firestore, 'jugadores');
+/*
+  jugadores: Array<Jugador> = [];
+    this.jugadores = [
       {id:  '0', numero: '70', nombre: 'Daniel Vaquero',  portero: true, posicion:'', foto: 'SinImagen.jpg'},
       {id:  '1', numero: '10', nombre: 'Mario Palomo',    portero: true, posicion:'', foto: 'SinImagen.jpg'},
       {id:  '2', numero: '25', nombre: 'Adrián González', portero: false, posicion:'', foto: 'Adrian_Gonzalez_Garcia.jpeg'},
@@ -33,17 +44,30 @@ export class JugadoresService {
     ];*/
   }
 
-  public getJugadores(){
-    return this.jugadores;
-  }
-
   public newJugador(){
     return {} as Jugador;
   }
 
   getJugadoresEquipo(equipoId: string): Observable<Jugador[]>{
-    const jugadoresRef = query(collection(this.firestore, 'jugadores'), where('equipoId', 'array-contains', equipoId));
+    const jugadoresRef = query(this.jugadoresRef, where('equipoId', 'array-contains', equipoId));
     return collectionData(jugadoresRef, {idField: 'id'}) as Observable<Jugador[]>;
   }
-}
 
+  async getJugadoresEquipoAsDoc( equipoId : string ): Promise<QuerySnapshot<DocumentData>> {
+    return getDocs( query( this.jugadoresRef, where( 'equipoId', 'array-contains', equipoId ) ) );
+  }
+
+  async getJugadoresEquipoArray( equipoId : string ): Promise<Jugador[]> {
+    return new Promise( (resolve, reject ) => {
+      getDocs( query( this.jugadoresRef, where( 'equipoId', 'array-contains', equipoId ) ) )
+        .then( ( val : QuerySnapshot<DocumentData> ) => {
+          let result : Jugador[] = [];
+          for( let doc of val.docs ){
+            result.push( { id: doc.id, ...doc.data()} as Jugador );
+          }
+          resolve( result );
+        });
+    } );
+  }
+
+}

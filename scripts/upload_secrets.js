@@ -167,9 +167,8 @@ function helpMessage(){
  */
 if( process.argv.length !== 3 ){
   helpMessage();
-}else{
-  // 0, 1, 2: depending on the day of the month (to avoid overwriting the same file over and over)
-  let iterativeDay = (new Date()).getDate() % 3;
+}else{  
+  let iterativeDay = (new Date()).getDate();
   let zipFileName = `secrets_${process.argv[2]}.zip`;
   let uploadFileName = `secrets_${process.argv[2]}_${iterativeDay}.zip`;
   createZip( loadPathsToBackup( CONFIG ), 

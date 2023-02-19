@@ -24,7 +24,7 @@
     <ion-col>
       <ion-button color="primary" expand="block" 
           [disabled]="!selectedEquipo"
-          [routerLink]="['select-jugador','yaveremos']">
+          [routerLink]="[ 'select-jugador', selectedEquipo?.id ]">
         <ion-label>Selecciona jugador</ion-label>
         <ion-icon name="chevron-forward" slot="end"></ion-icon>
       </ion-button>

@@ -1,7 +1,33 @@
+<ng-template #jugadorTemplate let-jugador>
+  <ion-card #resultCard id="{{jugador.id}}">
+      <ion-card-header>
+        <ion-icon name="people" size="large"></ion-icon>
+        <ion-card-title>{{jugador.numero}} - {{jugador.nombre}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="list-elem">{{jugador.portero?"Portero":""}}</p>
+      </ion-card-content>
+    </ion-card>      
+</ng-template>
+
+
 <ion-grid align-items-center="true">
   <ion-row>
     <ion-col>
-      <span>hola</span>
+      <app-selectable-card-list [objectList]="jugadores"
+          [cardTemplate]="jugadorTemplate"
+          (cardSelect)="onSelectedJugador( $event )"></app-selectable-card-list>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button color="primary" expand="block" 
+          [disabled]="!selectedJugador"
+          [routerLink]="[ '../../stats-jugador', selectedJugador?.id ]">
+        <ion-label>{{selectedJugador?"Ver estadísticas de "+ selectedJugador.nombre:"Ver estadísticas"}}</ion-label>
+        <ion-icon name="chevron-forward" slot="end"></ion-icon>
+      </ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>
+
