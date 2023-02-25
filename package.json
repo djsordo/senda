@@ -13,13 +13,13 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "~13.2.2",
-    "@angular/core": "~13.2.2",
+    "@angular/common": "^14.2.12",
+    "@angular/core": "^14.2.12",
     "@angular/fire": "^7.4.1",
-    "@angular/forms": "~13.2.2",
-    "@angular/platform-browser": "~13.2.2",
-    "@angular/platform-browser-dynamic": "~13.2.2",
-    "@angular/router": "~13.2.2",
+    "@angular/forms": "^14.2.12",
+    "@angular/platform-browser": "^14.2.12",
+    "@angular/platform-browser-dynamic": "^14.2.12",
+    "@angular/router": "^14.2.12",
     "@capacitor-community/speech-recognition": "^2.1.0",
     "@capacitor/android": "3.5.1",
     "@capacitor/app": "1.1.1",
@@ -39,15 +39,15 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^13.3.9",
+    "@angular-devkit/build-angular": "^14.2.10",
     "@angular-eslint/builder": "~13.0.1",
     "@angular-eslint/eslint-plugin": "~13.0.1",
     "@angular-eslint/eslint-plugin-template": "~13.0.1",
     "@angular-eslint/template-parser": "~13.0.1",
-    "@angular/cli": "~13.2.3",
-    "@angular/compiler": "~13.2.2",
-    "@angular/compiler-cli": "~13.2.2",
-    "@angular/language-service": "~13.2.2",
+    "@angular/cli": "^14.2.10",
+    "@angular/compiler": "^14.2.12",
+    "@angular/compiler-cli": "^14.2.12",
+    "@angular/language-service": "^14.2.12",
     "@capacitor/cli": "3.5.1",
     "@ionic/angular-toolkit": "^6.0.0",
     "@ionic/lab": "3.2.13",
@@ -68,10 +68,10 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "ng-packagr": "^13.0.0",
+    "ng-packagr": "^14.2.2",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
-    "typescript": "~4.4.4"
+    "typescript": "~4.8.4"
   },
   "description": "An Ionic project"
 }
