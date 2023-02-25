@@ -1,8 +1,14 @@
 <ion-grid>
   <ion-row>
     <ion-col>
-      esto no funciona ni para atrás, ¿qué cojones estoy haciendo mal?
-      <div id="golesMarcados" #golesMarcados></div>
+      <canvas baseChart class="chart"
+            [data]="barCharData"></canvas>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <canvas baseChart class="chart"
+            [data]="barCharData2"></canvas>
     </ion-col>
   </ion-row>
   <ion-row>

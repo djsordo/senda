@@ -13,6 +13,7 @@ import { SelectableCardListModule } from '../../components/selectable-card-list/
 import { SelectJugadorComponent } from '../select-jugador/select-jugador.component';
 import { StatsEquipoComponent } from '../stats-equipo/stats-equipo.component';
 import { StatsJugadorComponent } from '../stats-jugador/stats-jugador.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { StatsJugadorComponent } from '../stats-jugador/stats-jugador.component'
     FormsModule,
     IonicModule,
     RouterModule,
+    NgChartsModule,
     EstadisticasPageRoutingModule, 
     SelectableCardListModule
   ],
