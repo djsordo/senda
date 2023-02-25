@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+
 import { Jugador } from '../../modelo/jugador';
 import { JugadoresService } from '../../services/jugadores.service';
 
@@ -9,7 +11,7 @@ import { JugadoresService } from '../../services/jugadores.service';
   templateUrl: './select-jugador.component.html',
   styleUrls: ['./select-jugador.component.scss'],
 })
-export class SelectJugadorComponent implements OnInit {
+export class SelectJugadorComponent implements OnInit, OnDestroy {
 
   private paramsSubscription : Subscription;
   public equipoId : string;
@@ -26,6 +28,10 @@ export class SelectJugadorComponent implements OnInit {
       console.log(`recibido equipoid: ${this.equipoId}`);
       this.loadJugadores( this.equipoId );
     } );
+  }
+
+  ngOnDestroy(): void {
+    this.paramsSubscription.unsubscribe();
   }
 
   private loadJugadores( equipoId : string ) {

@@ -11,6 +11,8 @@ import { EstadisticasPage } from './home.page';
 import { SelectEquipoComponent } from '../select-equipo/select-equipo.component';
 import { SelectableCardListModule } from '../../components/selectable-card-list/selectable-card-list.module';
 import { SelectJugadorComponent } from '../select-jugador/select-jugador.component';
+import { StatsEquipoComponent } from '../stats-equipo/stats-equipo.component';
+import { StatsJugadorComponent } from '../stats-jugador/stats-jugador.component';
 
 @NgModule({
   imports: [
@@ -24,7 +26,9 @@ import { SelectJugadorComponent } from '../select-jugador/select-jugador.compone
   declarations: [
     EstadisticasPage,
     SelectEquipoComponent, 
-    SelectJugadorComponent
+    SelectJugadorComponent,
+    StatsEquipoComponent,
+    StatsJugadorComponent
   ]
 })
 export class EstadisticasPageModule {}
