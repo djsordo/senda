@@ -1,8 +1,11 @@
 import { EstadJugador } from 'projects/mobile/src/app/modelo/estadJugador';
-import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, 
+        collection, 
+        addDoc, 
+        doc, 
+        setDoc, collectionData, query, where, deleteDoc, WhereFilterOp, QueryFieldFilterConstraint } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EstadPartido } from '../modelo/estadPartido';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +26,14 @@ export class EstadJugadorService {
     return await setDoc(estadJugadorRef, jugador);
   }
 
-  getEstadJugador(partidoId: string): Observable<EstadJugador[]>{
-    const estadJugadoresRef = query(collection(this.firestore, 'estadJugadores'), where('partidoId', '==', partidoId));
+  getEstadJugador(partidoId?: string, 
+                  jugadorId?: string): Observable<EstadJugador[]>{
+    let whereClause : QueryFieldFilterConstraint;
+    if( partidoId )
+      whereClause = where('partidoId', '==', partidoId);
+    if( jugadorId )
+      whereClause = where('datos.id', '==', jugadorId );
+    const estadJugadoresRef = query(collection(this.firestore, 'estadJugadores'), whereClause );
     return collectionData(estadJugadoresRef) as Observable<EstadJugador[]>;
   }
 

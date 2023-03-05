@@ -11,7 +11,7 @@ import { Jugador } from "../modelo/jugador";
 import { JugadoresService } from "./jugadores.service";
 
 
-fdescribe('JugadoresService', () => {
+describe('JugadoresService', () => {
 
   let jugadoresService : JugadoresService;
 
