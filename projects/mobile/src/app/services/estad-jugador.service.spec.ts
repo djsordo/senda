@@ -3,17 +3,12 @@ import { initializeApp,
           provideFirebaseApp } from "@angular/fire/app";
 import { getFirestore, 
           provideFirestore} from "@angular/fire/firestore";
-import { of } from 'rxjs';
-import { concatAll, map, mergeAll, zipAll } from 'rxjs/operators';
-
-
 
 import { environment } from "../../environments/environment";
-import { Partido } from '../modelo/partido';
 import { EstadJugadorService } from './estad-jugador.service';
 import { PartidosService } from './partidos.service';
 
-fdescribe('EstadJugadorService', () => {
+describe('EstadJugadorService', () => {
 
   let partidosService : PartidosService;
   let estadJugadorService: EstadJugadorService;
