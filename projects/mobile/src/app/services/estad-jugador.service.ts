@@ -3,7 +3,12 @@ import { Firestore,
         collection, 
         addDoc, 
         doc, 
-        setDoc, collectionData, query, where, deleteDoc, WhereFilterOp, QueryFieldFilterConstraint } from '@angular/fire/firestore';
+        setDoc, 
+        collectionData, 
+        query, 
+        where, 
+        deleteDoc, 
+        QueryFieldFilterConstraint } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 

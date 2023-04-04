@@ -20,17 +20,6 @@ describe( 'DeportesService', () => {
    */
      beforeAll( ( callMeOnFinish ) => {
 
-      /**
-       * ejemplo usando la libreria 'firebase/firestore'
-       * 
-       * TestBed.configureTestingModule({});
-       * clubesService = new ClubesService( initializeFirestore( 
-       *   initializeApp( environment.firebaseConfig ),
-       *   {
-       *     cacheSizeBytes : 40000000
-       *   } as FirestoreSettings ) );
-       */
-  
       TestBed.configureTestingModule({
         imports: [ provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
           provideFirestore(() => getFirestore()) ]
