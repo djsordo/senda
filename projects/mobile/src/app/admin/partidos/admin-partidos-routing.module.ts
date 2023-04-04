@@ -32,7 +32,7 @@ const routes : Routes = [
     { path : 'nuevo',  
       component : CrearComponent, 
       children : [
-        { path : '', redirectTo: 'equipo' },
+        { path : '', redirectTo: 'equipo', pathMatch: 'full' },
         { path : 'equipo', component : SelectEquipoComponent }, 
         { path : 'rival',  component : SelectRivalComponent },
         { path : 'lugar',  component : SelectLugarComponent },
