@@ -37,17 +37,23 @@ fdescribe('dbService', () => {
   });
 
   it('add a new deporte', (callMeOnFinish) => {
-    db.deporteAdd( { nombre : 'petanca' } )
-      .then( () => callMeOnFinish() );
+    db.addDeporte( { nombre : 'petanca' } )
+      .then( () => {
+        expect( true ).toBeTrue();
+        callMeOnFinish();
+      } );
   });
 
   it('delete a deporte', (callMeOnFinish) => {
-    db.deporteDel( "petanca" )
-      .then( () => callMeOnFinish() );
+    db.delDeporte( "petanca" )
+      .then( () => {
+        expect( true ).toBeTrue();
+        callMeOnFinish();
+      });
   });
 
   it('simple clubs query by id', (callMeOnFinish) => {
-    db.club( '9QXtOxWcsAxYfthcykId' )
+    db.getClub( '9QXtOxWcsAxYfthcykId' )
       .then( club => {
         console.log( club );
         expect( true ).toBeTrue();
@@ -56,7 +62,7 @@ fdescribe('dbService', () => {
   });
 
   it('simple clubs query by filter', (callMeOnFinish) => {
-    db.club( where( 'nombre', '==', 'Club Balonmano Melgar' ) )
+    db.getClub( where( 'nombre', '==', 'Club Balonmano Melgar' ) )
       .then( clubs => {
         for( let club of clubs ){
           console.log( club );
@@ -67,7 +73,7 @@ fdescribe('dbService', () => {
   });
 
   it('equipo by categoria', (callMeOnFinish) => {
-    db.equipo( where( "categoria", "==", "cadete" ) )
+    db.getEquipo( where( "categoria", "==", "cadete" ) )
       .then( equipos => {
         for( let equipo of equipos ){
           console.log( "posible id del equipo: DESCONOCIDO" );
@@ -79,9 +85,9 @@ fdescribe('dbService', () => {
   });
 
   it( 'get the equipos of a concrete club', (callMeOnFinish) => {
-    db.club( where( 'nombre', '==', 'Club Balonmano Melgar' ) )
+    db.getClub( where( 'nombre', '==', 'Club Balonmano Melgar' ) )
     .then( (clubArray) => {
-      db.equipo( where( 'club.clubId', '==', clubArray[0].id ))
+      db.getEquipo( where( 'club.clubId', '==', clubArray[0].id ))
       .then( (equipoArray) => {
         console.log("equipo array");
         console.log( equipoArray );
@@ -92,7 +98,7 @@ fdescribe('dbService', () => {
   });
 
   it('simple clubs query', (callMeOnFinish) => {
-    db.club( '9QXtOxWcsAxYfthcykId' )
+    db.getClub( '9QXtOxWcsAxYfthcykId' )
       .then( clubsArray => {
         console.log( clubsArray );
         expect(true).toBeTrue();
@@ -101,7 +107,7 @@ fdescribe('dbService', () => {
   });
 
   it('query club by name', (callMeOnFinish) => {
-    db.club( where('nombre', "==", 'Club Balonmano Melgar') )
+    db.getClub( where('nombre', "==", 'Club Balonmano Melgar') )
       .then( clubsArray => {
         console.log( clubsArray );
         expect( clubsArray[0].nombre === 'Club Balonmano Melgar' ).toBe( true );
@@ -110,7 +116,7 @@ fdescribe('dbService', () => {
   });
 
   it('equipo by name', (callMeOnFinish) => {
-    db.equipo( where( "categoria", "==", "cadete" ) )
+    db.getEquipo( where( "categoria", "==", "cadete" ) )
       .then( equipoArray => {
         console.log( equipoArray );
         expect( equipoArray.length ).toBeGreaterThan( 0 );

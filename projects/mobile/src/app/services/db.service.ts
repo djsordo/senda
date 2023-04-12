@@ -18,6 +18,13 @@ import {
 import { Observable } from 'rxjs';
 import { Deporte } from '../modelo/deporte';
 import { Club } from '../modelo/club';
+import { EstadPartido } from '../modelo/estadPartido';
+import { EstadJugador } from '../modelo/estadJugador';
+import { Usuario } from '../modelo/usuario';
+import { Temporada } from '../modelo/temporada';
+import { Partido } from '../modelo/partido';
+import { Jugador } from '../modelo/jugador';
+import { Equipo } from '../modelo/equipo';
 
 
 
@@ -33,6 +40,11 @@ export class Db {
   
   private simpleAdd( collectionName: string, obj : object ) {
     let id = this.makeId( obj );
+    return this.simpleUpdate( collectionName, id, obj );
+    return setDoc( doc( collection( this.firestore, collectionName ), id ), obj ); 
+  }
+
+  private simpleUpdate( collectionName: string, id: string, obj: object ) {
     return setDoc( doc( collection( this.firestore, collectionName ), id ), obj ); 
   }
 
@@ -77,7 +89,27 @@ export class Db {
     }
   }
 
-  public deporte(clause?: QueryConstraint | string): Promise<any> {
+  public getConfig(clause?: QueryConstraint | string): Promise<any> {
+    return this.simpleQuery("config", clause);
+  }
+
+  public configSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("config", clause );
+  }
+
+  public addConfig( config : any ) {
+    return this.simpleAdd( "config", config );
+  }
+
+  public updateConfig( config : any ) {
+    return this.simpleUpdate( "config", "config", config );
+  }
+
+  public delConfig( clubId: string ) {
+    return this.simpleDel( "config", clubId );
+  }
+
+  public getDeporte(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("deportes", clause);
   }
 
@@ -85,15 +117,19 @@ export class Db {
     return this.simpleQuerySub("deportes", clause );
   }
 
-  public deporteAdd( deporte : Deporte ) {
+  public addDeporte( deporte : Deporte ) {
     return this.simpleAdd( "deportes", deporte );
   }
 
-  public deporteDel( deporteId: string ) {
+  public updateDeporte( id : string, deporte : Deporte ) {
+    return this.simpleUpdate( "deportes", id, deporte );
+  }
+
+  public delDeporte( deporteId: string ) {
     return this.simpleDel( "deportes", deporteId );
   }
 
-  public club(clause?: QueryConstraint | string): Promise<any> {
+  public getClub(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("clubs", clause);
   }
 
@@ -101,40 +137,156 @@ export class Db {
     return this.simpleQuerySub("clubs", clause );
   }
 
-  public clubAdd( club : Club ) {
+  public addClub( club : Club ) {
     return this.simpleAdd( "clubs", club );
   }
 
-  public clubDel( clubId: string ) {
+  public updateClub( id : string, club : Club ) {
+    return this.simpleUpdate( "clubs", id, club );
+  }
+
+  public delClub( clubId: string ) {
     return this.simpleDel( "clubs", clubId );
   }
 
-  public equipo(clause?: QueryConstraint | string): Promise<any> {
+  public getEquipo(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("equipos", clause);
   }
 
-  public jugador(clause?: QueryConstraint | string): Promise<any> {
+  public equipoSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("equipos", clause );
+  }
+
+  public addEquipo( equipo : Equipo ) {
+    return this.simpleAdd( "equipos", equipo );
+  }
+
+  public updateEquipo( id : string, equipo : Equipo ) {
+    return this.simpleUpdate( "equipos", id, equipo );
+  }
+
+  public delEquipo( equipoId: string ) {
+    return this.simpleDel( "equipos", equipoId );
+  }
+
+  public getJugador(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("jugadores", clause);
   }
 
-  public partido(clause?: QueryConstraint | string): Promise<any> {
+  public jugadorSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("jugadores", clause );
+  }
+
+  public addJugador( jugador : Jugador ) {
+    return this.simpleAdd( "jugadores", jugador );
+  }
+
+  public updateJugador( id : string, jugador : Jugador ) {
+    return this.simpleUpdate( "jugadores", id, jugador );
+  }
+
+  public delJugador( jugadorId: string ) {
+    return this.simpleDel( "jugadores", jugadorId );
+  }
+
+  public getPartido(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("partidos", clause);
   }
 
-  public temporada(clause?: QueryConstraint | string): Promise<any> {
+  public partidoSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("partidos", clause );
+  }
+
+  public addPartido( partido : Partido ) {
+    return this.simpleAdd( "partidos", partido );
+  }
+
+  public updatePartido( id : string, partido : Jugador ) {
+    return this.simpleUpdate( "partidos", id, partido );
+  }
+
+  public delPartido( partidoId: string ) {
+    return this.simpleDel( "partidos", partidoId );
+  }
+
+  public getTemporada(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("temporadas", clause);
   }
 
-  public usuario(clause?: QueryConstraint | string): Promise<any> {
+  public temporadaSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("temporadas", clause );
+  }
+
+  public addTemporada( temporada : Temporada ) {
+    return this.simpleAdd( "temporadas", temporada );
+  }
+
+  public updateTemporada( id : string, temporada : Temporada ) {
+    return this.simpleUpdate( "temporadas", id, temporada );
+  }
+
+  public delTemporada( temporadaId: string ) {
+    return this.simpleDel( "temporadas", temporadaId );
+  }
+
+  public getUsuario(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("usuarios", clause);
   }
 
-  public estadJugador(clause?: QueryConstraint | string): Promise<any> {
+  public usuarioSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("usuarios", clause );
+  }
+
+  public addUsuario( usuario : Usuario ) {
+    return this.simpleAdd( "usuarios", usuario );
+  }
+
+  public updateUsuario( id : string, usuario : Usuario ) {
+    return this.simpleUpdate( "usuarios", id, usuario );
+  }
+
+  public delUsuario( userId: string ) {
+    return this.simpleDel( "usuarios", userId );
+  }
+
+  public getEstadJugador(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("estadJugadores", clause);
   }
 
-  public estadPartidos(clause?: QueryConstraint | string): Promise<any> {
+  public estadJugadorSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("estadJugadores", clause );
+  }
+
+  public addEstadJugador( estadJugador : EstadJugador ) {
+    return this.simpleAdd( "estadJugadores", estadJugador );
+  }
+
+  public updateEstadJugador( id : string, estadJugador : EstadJugador ) {
+    return this.simpleUpdate( "estadJugadores", id, estadJugador );
+  }
+
+  public delEstadJugador( estadJugadorId: string ) {
+    return this.simpleDel( "estadJugadores", estadJugadorId );
+  }
+
+  public getEstadPartidos(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("estadPartidos", clause);
+  }
+
+  public estadPartidosSub( clause?: QueryConstraint | string ) : Observable<any> {
+    return this.simpleQuerySub("estadPartidos", clause );
+  }
+
+  public addEstadPartidos( estadPartido : EstadPartido ) {
+    return this.simpleAdd( "estadPartidos", estadPartido );
+  }
+
+  public updateEstadPartidos( id: string, estadPartido : EstadPartido ) {
+    return this.simpleUpdate( "estadPartidos", id, estadPartido );
+  }
+
+  public delEstadPartidos( estadPartidoId: string ) {
+    return this.simpleDel( "estadPartidos", estadPartidoId );
   }
 
 
