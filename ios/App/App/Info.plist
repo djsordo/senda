@@ -50,10 +50,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-  <key>NSSpeechRecognitionUsageDescription</key>
-  <string>To translate voice into words</string>
-  <key>NSMicrophoneUsageDescription</key>
-  <string>To record your voice</string>
-
 </dict>
 </plist>
