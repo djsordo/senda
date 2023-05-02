@@ -151,7 +151,11 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
       // Aquí llamo a la función que inserta el evento en la base de datos.
       this.eventosService.addEventoBD(evento).then(even => {evento.id = even.id;});
+
     } );
+
+    // Prueba para ver si podemos grabar los datos de los jugadores
+    this.comienzoPartido();
   }
 
   ngDoCheck(){
@@ -269,6 +273,49 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
     // Navegar a la pantalla principal.
     this.router.navigate(['/home']);
+  }
+
+  comienzoPartido(){
+    // Grabamos estadísticas de cada jugador
+    /* console.log('Portero: ', this.portero); */
+    if (this.portero){
+      this.estadJugadorService.addEstadJugador(this.portero).then(estad => {
+        this.portero.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(this.portero);
+      });
+    }
+
+    this.listaInicial.forEach(jug => {
+      /* console.log('Pista: ', jug); */
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
+
+    this.listaBanquillo.forEach(jug => {
+      /* console.log('Banquillo: ', jug); */
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
+
+    this.listaExcluidos.forEach(jug => {
+      /* console.log('Excluidos: ', jug); */
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
+
+    this.listaEliminados.forEach(jug => {
+      /* console.log('Eliminados: ', jug); */
+      this.estadJugadorService.addEstadJugador(jug).then(estad => {
+        jug.id = estad.id;
+        this.estadJugadorService.updateEstadJugador(jug);
+      });
+    });
   }
 
   private construyeMensajeEvento( evento: Evento ){
