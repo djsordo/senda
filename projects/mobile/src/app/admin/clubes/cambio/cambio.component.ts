@@ -4,9 +4,9 @@ import { ToastController } from '@ionic/angular';
 import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 
 
-import { ClubesService } from 'projects/mobile/src/app/services/clubes.service';
-import { DeportesService } from 'projects/mobile/src/app/services/deportes.service';
 import { AdminClubesPage } from '../admin-clubes.page';
+import { Db } from '../../../services/db.service';
+import { Club } from '../../../modelo/club';
 
 
 @Component({
@@ -16,41 +16,41 @@ import { AdminClubesPage } from '../admin-clubes.page';
 })
 export class CambioComponent implements OnInit {
 
-  club : DocumentSnapshot<DocumentData>;
+  club : Club;
   nombre : string; 
   selectedDeporte : any;
   private deportes : QueryDocumentSnapshot<DocumentData>[];
 
   constructor( private mainPage : AdminClubesPage,
-               private clubesService : ClubesService,
-               private deportesService : DeportesService, 
+               private db : Db,
                private toastController : ToastController, 
                private router : Router, 
                private route : ActivatedRoute ) { }
 
   ngOnInit() {
-    this.deportesService.getDeportes()
-      .then( (docList) => {
-          this.deportes = [];
-          for( let docSnap of docList.docs ){
-            this.deportes.push( docSnap );
-          }
-      })
+    this.db.getDeporte()
+      .then( (deporteList) => {
+        this.deportes = deporteList; 
+      });
     if( this.mainPage.getSelectedId() ){
-      this.clubesService.getClubById( this.mainPage.getSelectedId() )
-        .then( ( docSnap : DocumentSnapshot<DocumentData> ) => {
-          this.club = docSnap;
-          this.nombre = docSnap.data().nombre;
-          if( docSnap.data().deporte )
-            this.selectedDeporte = this.deportesService.getDocByRef( docSnap.data().deporte );
+      console.log("the selected id", this.mainPage.getSelectedId() );
+      this.db.getClub( this.mainPage.getSelectedId() )
+        .then( (clubList) => {
+          console.log( "clubList value");
+          console.log( clubList );
+          this.club = clubList[0];
+          this.nombre = clubList[0].nombre;
+          if( clubList[0].deporte ){
+            this.db.getDeporte( clubList[0].deporte )
+              .then( deporte => this.selectedDeporte = deporte.deporte );
+          }
         });
     }
   }
 
 
   onClickCambiar() {
-    this.clubesService.updateClub( this.club,
-                                    this.nombre )
+    this.db.updateClub( this.club.id, this.club )
       .then( (docRef) => {
         this.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
       })

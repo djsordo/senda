@@ -4,13 +4,11 @@ import { Component,
   QueryList, 
   Renderer2,
   ViewChildren} from "@angular/core";
-import { DocumentData } from "@angular/fire/firestore";
 import { AlertController } from "@ionic/angular";
 
-import { ClubesService } from "projects/mobile/src/app/services/clubes.service";
-import { DeportesService } from "projects/mobile/src/app/services/deportes.service";
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { AdminClubesPage } from "../admin-clubes.page";
+import { Db } from "../../../services/db.service";
 
 @Component({
   selector: 'clubes-buscar',
@@ -26,8 +24,7 @@ export class BuscarComponent implements OnInit {
   currentId : string;
 
   constructor( private mainPage : AdminClubesPage, 
-              private clubesService : ClubesService,
-              private deportesService : DeportesService,
+              private db : Db,
               private renderer : Renderer2, 
               private alertController : AlertController,
               private stringUtil : StringUtil ){
@@ -48,15 +45,13 @@ export class BuscarComponent implements OnInit {
 
   private refereshClubList() {
     this.clubes = [];
-    this.clubesService.getClubes( )
-    .then( (clubList) => {
-      for( let docSnap of clubList.docs ){
-        let club = docSnap.data(); 
-        club['id'] = docSnap.id;
+    this.db.getClub()
+      .then( (clubList) => {
+      for( let club of clubList ){
         if( club?.deporte ){
-          this.deportesService.getDocByRef( club.deporte )
-          .then( (doc : DocumentData ) => {
-            club['deporte_name'] = doc.data().nombre;
+          this.db.getDeporte( club.deporte )
+          .then( (deporteList) =>  {
+            club['deporte_name'] = deporteList[0].nombre;
           });
         }
         if( this.searchText ){
@@ -85,7 +80,7 @@ export class BuscarComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.clubesService.deleteClubById( this.mainPage.getSelectedId() );
+            this.db.delClub( this.mainPage.getSelectedId() );
             this.mainPage.onSelectedId.emit( null );
             this.refereshClubList();
           },
