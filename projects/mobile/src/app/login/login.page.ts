@@ -27,19 +27,21 @@ export class LoginPage implements OnInit {
   }
 
   login(){
-    /* this.loginService.comprobarLogin(this.usuario); */
     this.loginService.login(this.usuario)
     .then(response => {
-      console.log(response.user.email);
+      //console.log(response.user.email);
+      console.log(response);
       this.toastCorrecto();
 
       localStorage.setItem('emailUsuario', response.user.email);
-      /*localStorage.setItem('emailUsuario', usuarioEncontrado.email); */
 
       this.activarMenu();
       this.router.navigate(['/home']);
     })
-    .catch(error => alert('No existe el usuario o clave erronea.'));
+    .catch(error => {
+      console.log(error);
+      alert('No existe el usuario o clave erronea. ' + error.code + ' - ' + error.message)
+    });
   }
 
   async toastCorrecto(){
