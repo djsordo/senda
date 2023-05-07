@@ -1,4 +1,5 @@
 import { EstadPartidoService } from './../../services/estad-partido.service';
+import { EstadJugadorService } from '../../services/estad-jugador.service';
 import { Crono } from './../../modelo/crono';
 import { Observable, Subscription } from 'rxjs';
 import { EstadJugador } from './../../modelo/estadJugador';
@@ -58,7 +59,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     private pasoDatos: PasoDatosService,
     private toastController: ToastController,
     private eventosService: EventosService,
-    private estadPartidoService: EstadPartidoService) {}
+    private estadPartidoService: EstadPartidoService,
+    private estadJugadorService: EstadJugadorService) {}
 
   ngOnInit() {
     // divido la lista inicial en portero y jugadores de campo
@@ -201,6 +203,11 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
+
+    // Se actualiza la estadística del jugador en la base de datos
+    console.log(jugador);
+    this.estadJugadorService.updateEstadJugador(jugador);
+
   }
 
   btnRoja(jugador: EstadJugador): void{

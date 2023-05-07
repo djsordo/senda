@@ -90,6 +90,17 @@ export class HomePage implements OnInit, OnDestroy {
 
             //console.log('Id del Equipo: ', partidosEquipo.equipoId);
             partidos.forEach(partido => {
+              // Si el partido no tiene estado, ponemos "programado"
+              try {
+                partido.config.estado;
+                if (typeof partido.config.estado == "undefined"){
+                  partido.config.estado = 'programado';
+                }
+              }
+              catch {
+                partido.config = {partes:2, segsParte:1800, estado:'programado'};
+              }
+
               // Pongo cada partido en la lista adecuada
               if (partido.fecha.toDate() < this.fIniSemana) {
                 // Va a lista de anteriores
