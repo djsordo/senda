@@ -7,6 +7,8 @@ import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { ClubesService } from 'projects/mobile/src/app/services/clubes.service';
 import { DeportesService } from 'projects/mobile/src/app/services/deportes.service';
 import { AdminClubesPage } from '../admin-clubes.page';
+import { Db } from '../../../services/db.service';
+import { Deporte } from '../../../modelo/deporte';
 
 @Component({
   selector: 'clubes-crear',
@@ -17,30 +19,26 @@ export class CrearComponent implements OnInit {
 
   nombre : string; 
   selectedDeporte : any;
-  private deportes : QueryDocumentSnapshot<DocumentData>[];
+  private deportes : Deporte[];
 
-  constructor( private mainPage : AdminClubesPage,
-               private clubesService : ClubesService,
-               private deportesService : DeportesService, 
+  constructor( private db : Db,
                private toastController : ToastController,
                private router : Router, 
                private route : ActivatedRoute ) { }
 
   ngOnInit() {
-    this.deportesService.getDeportes()
-      .then( (docList) => {
-          this.deportes = [];
-          for( let docSnap of docList.docs ){
-            this.deportes.push( docSnap );
-          }
-      })
+    this.db.getDeporte()
+      .then( deportesList => {
+        console.log("hemos recibido: ", deportesList );
+        this.deportes = deportesList;
+      } );
   }
 
   onClickCrear() {
     if( this.deportes.length === 1 )
       this.selectedDeporte = this.deportes[0];
-    this.clubesService.addClub( this.nombre, this.selectedDeporte.ref )
-      .then( (docRef) => {
+    this.db.addClub( { nombre: this.nombre, deporte : this.selectedDeporte.id } )
+      .then( (_) => {
         this.sendToast( `Club ${this.nombre} creado con éxito`);
       })
       .catch( (reason) => {

@@ -7,6 +7,7 @@ import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/
 import { AdminClubesPage } from '../admin-clubes.page';
 import { Db } from '../../../services/db.service';
 import { Club } from '../../../modelo/club';
+import { Deporte } from '../../../modelo/deporte';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class CambioComponent implements OnInit {
   club : Club;
   nombre : string; 
   selectedDeporte : any;
-  private deportes : QueryDocumentSnapshot<DocumentData>[];
+  private deportes : Deporte[];
 
   constructor( private mainPage : AdminClubesPage,
                private db : Db,

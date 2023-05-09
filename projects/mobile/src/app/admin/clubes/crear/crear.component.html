@@ -17,9 +17,9 @@
         <ion-label>Deporte:</ion-label> 
         <ion-select *ngIf="getDeportes()?.length > 1" 
               [(ngModel)]="selectedDeporte">
-          <ion-select-option *ngFor="let deporte of getDeportes(); let deporteIndex=index;" [value]="deporte">{{deporte?.data()['nombre']}}</ion-select-option>
+          <ion-select-option *ngFor="let deporte of getDeportes(); let deporteIndex=index;" [value]="deporte">{{deporte?.nombre}}</ion-select-option>
         </ion-select>
-        <p *ngIf="getDeportes()?.length === 1">{{getDeportes()[0]?.data()['nombre']}}</p>
+        <p *ngIf="getDeportes()?.length === 1">{{getDeportes()[0]?.nombre}}</p>
         <p *ngIf="getDeportes()?.length === 0">No hay deporte definido</p>
       </ion-item>
     </ion-col>
