@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Db } from '../../services/db.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -7,13 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminHomePage implements OnInit {
 
-  constructor() { }
+  totalClubes : number; 
+
+
+  constructor( private db : Db ) { }
 
   ngOnInit() {
-  }
-
-  public getPageTitle(){
-    return "Administración";
+    this.db.getClub()
+      .then( clubList => {
+        this.totalClubes = clubList.length;
+      })
   }
 
 }

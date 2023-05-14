@@ -6,6 +6,7 @@ import {
   doc,
   docData,
   DocumentData,
+  DocumentReference,
   DocumentSnapshot,
   Firestore,
   getDoc,
@@ -37,11 +38,14 @@ export class Db {
 
   constructor(private firestore: Firestore) {
   }
-  
+
+  private asRef( collectionName: string, id: string ): DocumentReference<DocumentData>  {
+    return doc( collection( this.firestore, collectionName ), id );
+  }
+
   private simpleAdd( collectionName: string, obj : object ) {
     let id = this.makeId( obj );
     return this.simpleUpdate( collectionName, id, obj );
-    return setDoc( doc( collection( this.firestore, collectionName ), id ), obj ); 
   }
 
   private simpleUpdate( collectionName: string, id: string, obj: object ) {
@@ -57,7 +61,8 @@ export class Db {
       return new Promise( (resolve, reject) => {
         getDoc( doc(collection(this.firestore, collectionName), clause) )
         .then( (qSnapshot : DocumentSnapshot) => {
-          resolve( {...qSnapshot.data, "id" : qSnapshot.id } );
+          console.log( qSnapshot.data() );
+          resolve( {...qSnapshot.data(), "id" : qSnapshot.id } );
         })
         .catch( reason => reject( reason ) );
       });
@@ -93,6 +98,10 @@ export class Db {
     return this.simpleQuery("config", clause);
   }
 
+  public getConfigRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "config", id );
+  }
+
   public configSub( clause?: QueryConstraint | string ) : Observable<any> {
     return this.simpleQuerySub("config", clause );
   }
@@ -111,6 +120,10 @@ export class Db {
 
   public getDeporte(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("deportes", clause);
+  }
+
+  public getDeporteRef( id : string ): DocumentReference<DocumentData> {
+    return this.asRef( "deportes", id );
   }
 
   public deporteSub( clause?: QueryConstraint | string ) : Observable<any> {
@@ -133,6 +146,10 @@ export class Db {
     return this.simpleQuery("clubs", clause);
   }
 
+  public getClubRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "clubs", id );
+  }
+
   public clubSub( clause?: QueryConstraint | string ) : Observable<any> {
     return this.simpleQuerySub("clubs", clause );
   }
@@ -151,6 +168,10 @@ export class Db {
 
   public getEquipo(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("equipos", clause);
+  }
+
+  public getEquipoRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "equipos", id );
   }
 
   public equipoSub( clause?: QueryConstraint | string ) : Observable<any> {
@@ -173,6 +194,10 @@ export class Db {
     return this.simpleQuery("jugadores", clause);
   }
 
+  public getJugadorRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "jugadores", id );
+  }
+
   public jugadorSub( clause?: QueryConstraint | string ) : Observable<any> {
     return this.simpleQuerySub("jugadores", clause );
   }
@@ -191,6 +216,10 @@ export class Db {
 
   public getPartido(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("partidos", clause);
+  }
+
+  public getPartidoRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "partidos", id );
   }
 
   public partidoSub( clause?: QueryConstraint | string ) : Observable<any> {
@@ -213,6 +242,10 @@ export class Db {
     return this.simpleQuery("temporadas", clause);
   }
 
+  public getTemporadaRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "temporadas", id );
+  }
+
   public temporadaSub( clause?: QueryConstraint | string ) : Observable<any> {
     return this.simpleQuerySub("temporadas", clause );
   }
@@ -231,6 +264,10 @@ export class Db {
 
   public getUsuario(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("usuarios", clause);
+  }
+
+  public getUsuarioRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "usuarios", id );
   }
 
   public usuarioSub( clause?: QueryConstraint | string ) : Observable<any> {
@@ -253,6 +290,10 @@ export class Db {
     return this.simpleQuery("estadJugadores", clause);
   }
 
+  public getEstadJugadorRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "estadJugadores", id );
+  }
+
   public estadJugadorSub( clause?: QueryConstraint | string ) : Observable<any> {
     return this.simpleQuerySub("estadJugadores", clause );
   }
@@ -271,6 +312,10 @@ export class Db {
 
   public getEstadPartidos(clause?: QueryConstraint | string): Promise<any> {
     return this.simpleQuery("estadPartidos", clause);
+  }
+
+  public getEstadPartidosRef( id : string ): DocumentReference<DocumentData>  {
+    return this.asRef( "estadPartidos", id );
   }
 
   public estadPartidosSub( clause?: QueryConstraint | string ) : Observable<any> {

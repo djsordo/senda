@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{getPageTitle()}}</ion-title>
+    <ion-title>Administración</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -19,7 +19,7 @@
             <h3>Clubes</h3>
           </ion-card-header>
           <ion-card-content>
-            1 club
+            {{totalClubes?totalClubes + " clubs":""}}
           </ion-card-content>
         </ion-card>
       </ion-col>

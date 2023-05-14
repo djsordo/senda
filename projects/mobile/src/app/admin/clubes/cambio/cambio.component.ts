@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 
 
 import { AdminClubesPage } from '../admin-clubes.page';
@@ -33,24 +32,26 @@ export class CambioComponent implements OnInit {
       .then( (deporteList) => {
         this.deportes = deporteList; 
       });
-    if( this.mainPage.getSelectedId() ){
-      console.log("the selected id", this.mainPage.getSelectedId() );
-      this.db.getClub( this.mainPage.getSelectedId() )
-        .then( (clubList) => {
+    this.route.params.subscribe( (params) => {
+      this.db.getClub( params.clubId )
+        .then( (club) => {
           console.log( "clubList value");
-          console.log( clubList );
-          this.club = clubList[0];
-          this.nombre = clubList[0].nombre;
-          if( clubList[0].deporte ){
-            this.db.getDeporte( clubList[0].deporte )
+          console.log( club );
+          this.club = club;
+          this.nombre = club.nombre;
+          if( club.deporte ){
+            this.db.getDeporte( club.deporte )
               .then( deporte => this.selectedDeporte = deporte.deporte );
           }
         });
-    }
+    });
   }
 
 
   onClickCambiar() {
+    this.club.nombre = this.nombre;
+    if( this.selectedDeporte )
+      this.club.deporte = this.selectedDeporte;
     this.db.updateClub( this.club.id, this.club )
       .then( (docRef) => {
         this.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
@@ -58,8 +59,7 @@ export class CambioComponent implements OnInit {
       .catch( (reason) => {
         this.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
       });
-      this.mainPage.onSelectedId.emit(null);
-      this.router.navigate( ['..'], { relativeTo : this.route } );
+      this.router.navigate( ['/admin/clubes'] );
   }
 
   async sendToast( message : string ){

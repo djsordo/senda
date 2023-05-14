@@ -1,10 +1,13 @@
-import { Component, 
-  Input, 
-  OnInit, 
-  QueryList, 
+import {
+  Component,
+  Input,
+  OnInit,
+  QueryList,
   Renderer2,
-  ViewChildren} from "@angular/core";
+  ViewChildren
+} from "@angular/core";
 import { AlertController } from "@ionic/angular";
+import { Router } from "@angular/router";
 
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { AdminClubesPage } from "../admin-clubes.page";
@@ -19,49 +22,55 @@ export class BuscarComponent implements OnInit {
 
 
   @ViewChildren('resultCard') resultCards: QueryList<any>;
-  @Input() clubes : any = [];
-  searchText : string = '';
-  currentId : string;
+  @Input() clubes: any = [];
+  searchText: string = '';
+  currentId: string;
 
-  constructor( private mainPage : AdminClubesPage, 
-              private db : Db,
-              private renderer : Renderer2, 
-              private alertController : AlertController,
-              private stringUtil : StringUtil ){
+  constructor(private router : Router, 
+    private mainPage: AdminClubesPage,
+    private db: Db,
+    private renderer: Renderer2,
+    private alertController: AlertController,
+    private stringUtil: StringUtil) {
   }
 
   ngOnInit(): void {
     this.currentId = null;
-    this.refereshClubList();
+    console.log("this.currentid:", this.currentId );
+    this.refreshClubList();
   }
 
   public onClickSearch() {
-    this.refereshClubList();
+    this.refreshClubList();
   }
 
-  getSelectedId(){
-    return this.mainPage.getSelectedId();
+  public onInputChange( event : any ) {
+    this.refreshClubList();
   }
 
-  private refereshClubList() {
+  getSelectedId() {
+    return this.currentId;
+  }
+
+  private refreshClubList() {
     this.clubes = [];
     this.db.getClub()
-      .then( (clubList) => {
-      for( let club of clubList ){
-        if( club?.deporte ){
-          this.db.getDeporte( club.deporte )
-          .then( (deporteList) =>  {
-            club['deporte_name'] = deporteList[0].nombre;
-          });
+      .then((clubList) => {
+        for (let club of clubList) {
+          if (club?.deporte) {
+            this.db.getDeporte(club.deporte)
+              .then((deporteList) => {
+                club['deporte_name'] = deporteList[0].nombre;
+              });
+          }
+          if (this.searchText) {
+            if (this.stringUtil.like(club.nombre, this.searchText))
+              this.clubes.push(club);
+          }
+          else
+            this.clubes.push(club);
         }
-        if( this.searchText ){
-          if( this.stringUtil.like( club.nombre, this.searchText ) )
-            this.clubes.push( club );
-        }
-        else
-          this.clubes.push( club );
-      }
-    });
+      });
   }
 
   async onClickBorrar() {
@@ -80,9 +89,8 @@ export class BuscarComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.db.delClub( this.mainPage.getSelectedId() );
-            this.mainPage.onSelectedId.emit( null );
-            this.refereshClubList();
+            this.db.delClub(this.currentId);
+            this.refreshClubList();
           },
         },
       ],
@@ -93,25 +101,23 @@ export class BuscarComponent implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
 
-  public onCardSelected( elementId : string ) {
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === elementId ){
-        if( card.el.id !== this.currentId ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.mainPage.onSelectedId.emit( elementId );
+  public onCardSelected(elementId: string) {
+    this.resultCards.forEach((card) => {
+      if (card.el.id === elementId) {
+        if (card.el.id !== this.currentId) {
+          this.renderer.setStyle(card.el, "background", "var(--ion-color-primary)");
+          this.renderer.setStyle(card.el, "color", "var(--ion-color-dark)");
           this.currentId = card.el.id;
-        }else{
+        } else {
           // simulamos el efecto de que un click en un elemento 
           // seleccionado, deja la selección sin efecto
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.mainPage.onSelectedId.emit( null ); 
+          this.renderer.setStyle(card.el, "background", "");
+          this.renderer.setStyle(card.el, "color", "rgb( 115, 115, 115)");
           this.currentId = null;
         }
       }
       else
-        this.renderer.setStyle( card.el, "background", "" );
+        this.renderer.setStyle(card.el, "background", "");
     });
   }
 

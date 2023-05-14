@@ -29,7 +29,6 @@ export class CrearComponent implements OnInit {
   ngOnInit() {
     this.db.getDeporte()
       .then( deportesList => {
-        console.log("hemos recibido: ", deportesList );
         this.deportes = deportesList;
       } );
   }
@@ -37,7 +36,8 @@ export class CrearComponent implements OnInit {
   onClickCrear() {
     if( this.deportes.length === 1 )
       this.selectedDeporte = this.deportes[0];
-    this.db.addClub( { nombre: this.nombre, deporte : this.selectedDeporte.id } )
+    
+    this.db.addClub( { nombre: this.nombre, deporte : this.db.getDeporteRef( this.selectedDeporte.id ) } )
       .then( (_) => {
         this.sendToast( `Club ${this.nombre} creado con éxito`);
       })

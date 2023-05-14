@@ -14,9 +14,9 @@ import { CrearComponent } from "./crear/crear.component";
 const routes : Routes = [
   { path : '', component : AdminClubesPage, children : [
     /* componente por defecto que se cargará en la pagina */
-    { path : '',       component : BuscarComponent }, 
+    { path : '',       component : BuscarComponent, pathMatch: 'full' }, 
     { path : 'buscar', component : BuscarComponent },
-    { path : 'cambio', component : CambioComponent }, 
+    { path : 'cambio/:clubId', component : CambioComponent }, 
     { path : 'nuevo',  component : CrearComponent  }
   ] } 
 ];
