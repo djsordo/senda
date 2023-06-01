@@ -206,6 +206,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     // Se actualiza la estadística del jugador en la base de datos
     console.log(jugador);
+    jugador.amarillas += 1;
     this.estadJugadorService.updateEstadJugador(jugador);
 
   }
