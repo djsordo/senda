@@ -26,7 +26,7 @@ export class EstadJugadorService {
   }
 
   async updateEstadJugador(jugador: EstadJugador){
-    //console.log(jugador);
+    console.log(jugador);
     const path = 'estadJugadores/' + jugador.id;
     //console.log(path);
     const estadJugadorRef = doc(this.firestore, path);

@@ -71,6 +71,8 @@ export class ModoVerPage implements OnInit, OnDestroy {
     this.subs.push(this.estadJugadorService.getEstadJugador(localStorage.getItem('partidoId'))
     .subscribe(estadJ => {
       this.estadJugadores = estadJ;
+      // Borramos las listas
+      this.listas = [];
       this.listas.push({tipo: 'goles', tipo2: '', cabecera: 'Goleadores', lista: [...this.estadJugadores]
         .sort((a, b) => (b.goles - a.goles))});
       this.listas.push({tipo: 'lanzFallados', tipo2: 'goles', cabecera: 'Lanzamientos totales', lista: [...this.estadJugadores]
@@ -84,7 +86,9 @@ export class ModoVerPage implements OnInit, OnDestroy {
         .sort((a, b) => (b.perdidas - a.perdidas))});
       this.listas.push({tipo: 'robos', tipo2: '', cabecera: 'recuperaciones', lista: [...this.estadJugadores]
         .sort((a, b) => (b.robos - a.robos))});
-    }));
+      console.log('Listas: ');
+      console.log(this.listas);
+      }));
 
     this.subs.push(this.eventosService.getEventos(localStorage.getItem('partidoId'))
     .subscribe(evento => {
