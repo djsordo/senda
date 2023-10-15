@@ -51,25 +51,23 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fechaActual = new Date();
-    //console.log('Fecha actual: ', this.fechaActual);
-
+    
     this.fIniSemana = new Date();
     this.fIniSemana.setDate(this.fIniSemana.getDate() - (this.fechaActual.getDay() < 1 ? 6 : (this.fechaActual.getDay()-1)));
     this.fIniSemana.setHours(0);
     this.fIniSemana.setMinutes(0);
     this.fIniSemana.setSeconds(0);
-    //console.log('Fecha del primer día de la semana: ', this.fIniSemana);
-
+    
     this.fFinSemana = new Date();
     this.fFinSemana.setDate(this.fFinSemana.getDate() + (this.fechaActual.getDay() < 1 ? 0 : (6 - (this.fechaActual.getDay()-1))));
     this.fFinSemana.setHours(23);
     this.fFinSemana.setMinutes(59);
     this.fFinSemana.setSeconds(59);
-    //console.log('Fecha del último día de la semana: ', this.fFinSemana);
-
+    
     this.subs.push(this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
     .subscribe(usuarios => {
       this.usuario = usuarios[0];
+      console.log( 'this.usuario = ', this.usuario );
       this.usuarioService.setUsuario(this.usuario);
       localStorage.setItem('perfil', this.usuario.perfil);
 
