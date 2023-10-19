@@ -1,13 +1,20 @@
 import { Injectable } from "@angular/core";
 
 
-import { LocalStorage } from "./local.storage.mock";
+export interface LocalStorageProvider {
 
+  setItem(key: string, value: string): void;
+
+  getItem(key: string): string;
+
+  removeItem(key: string): void;
+
+}
 
 @Injectable({
   providedIn : 'root'
 })
-export class LocalStorageService extends LocalStorage {
+export class LocalStorageService implements LocalStorageProvider {
 
   setItem(key: string, value: string): void {
     localStorage.setItem( key, value );

@@ -7,11 +7,9 @@ import { DocumentData,
 import { Temporada } from 'projects/mobile/src/app/modelo/temporada';
 import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
 
-import { properCase } from 'projects/mobile/src/app/services/string-util';
 import { EquipoService } from 'projects/mobile/src/app/services/equipo.service';
 import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
 import { AdminEquiposPage } from '../admin-equipos.page';
-import { Equipo } from 'projects/mobile/src/app/modelo/equipo';
 import { TemporadaService } from 'projects/mobile/src/app/services/temporada.service';
 import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
 

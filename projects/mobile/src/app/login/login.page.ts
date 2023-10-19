@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController, ToastController } from '@ionic/angular';
 
-
-import { LoginService } from './login.service';
 import { environment } from '../../environments/environment';
+import { SecurityService } from '../services/security.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +17,7 @@ export class LoginPage implements OnInit {
   };
 
   constructor(private menu: MenuController,
-    private loginService: LoginService,
+    private securityService: SecurityService,
     private router: Router,
     private toastController: ToastController) { }
 
@@ -27,13 +26,10 @@ export class LoginPage implements OnInit {
   }
 
   login(){
-    this.loginService.login(this.usuario)
+    this.securityService.login(this.usuario)
     .then(response => {
-      //console.log(response.user.email);
-      console.log(response);
-      this.toastCorrecto();
-
-      localStorage.setItem('emailUsuario', response.user.email);
+      
+      this.toast("Login correcto");
 
       this.activarMenu();
       this.router.navigate(['/home']);
@@ -44,9 +40,9 @@ export class LoginPage implements OnInit {
     });
   }
 
-  async toastCorrecto(){
+  async toast( message : string ){
     const toast = await this.toastController.create({
-      message: 'Usuario correcto',
+      message: message,
       duration: 1000,
       position: 'middle'
     });

@@ -13,8 +13,8 @@
   <div slot="fixed" class="contenidoFijo">
     <ion-list>
       <ion-item>
-        <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{usuario?.roles[0].equipo.id}}">
-          <ion-select-option *ngFor="let rol of usuario?.roles" value="{{rol.equipo.id}}">{{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</ion-select-option>
+        <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{getRoles()[0].equipo.id}}">
+          <ion-select-option *ngFor="let rol of getRoles()" value="{{rol.equipo.id}}">{{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>
@@ -27,9 +27,6 @@
   </div>
 
   <div class="contenedor">
-<!--     <div>
-      <ion-item>{{equipoSelec?.equipoId}}</ion-item>
-    </div> -->
     <div>
       <ul *ngIf="cambioFe === 'programados'">
         <div *ngFor="let partido of equipoSelec.partidos.programados">
@@ -80,53 +77,5 @@
       </ul>
     </div>
 
-
-
-<!--     <div  *ngFor="let rol of usuario?.roles">
-      <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'programados'">
-        <div *ngFor="let partido of rol.equipo.partidos">
-          <li *ngIf="partido.fecha.toDate() > fFinSemana">
-            <h3 class="rival">{{partido.fecha.toDate() | date: 'HH:mm'}} {{partido.rival}}</h3>
-            <p class="ubicacion">{{partido.ubicacion}}</p>
-            <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
-            <span class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</span>
-          </li>
-        </div>
-      </ul>
-
-      <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'anteriores'">
-        <div *ngFor="let partido of rol.equipo.partidos">
-          <li *ngIf="partido.fecha.toDate() < fIniSemana">
-            <h3 class="rival">{{partido.fecha.toDate() | date: 'HH:mm'}} {{partido.rival}}</h3>
-            <p class="ubicacion">{{partido.ubicacion}}</p>
-            <ion-button size="small" color="light" class="ver" (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
-              <ion-icon name="eye-outline"></ion-icon>
-            </ion-button>
-            <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
-            <span class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</span>
-          </li>
-        </div>
-      </ul>
-
-      <ul *ngIf="cambioEq === rol.equipo.id && cambioFe === 'proximos'">
-        <div *ngFor="let partido of rol.equipo.partidos">
-          <li *ngIf="partido.fecha.toDate() > fIniSemana && partido.fecha.toDate() < fFinSemana">
-            <h3 class="rival">{{partido.fecha.toDate() | date: 'HH:mm'}} {{partido.rival}}</h3>
-            <p class="ubicacion">{{partido.ubicacion}}</p>
-            <ion-button size="small" color="light" class="generar" (click)="irAModo(rol.equipo, partido, 'generar')" *ngIf="partido.config.estado === 'programado' || partido.config.estado === 'en preparacion'">
-              <ion-icon name="document-outline"></ion-icon>
-            </ion-button>
-            <ion-button size="small" color="light" class="ver" (click)="irAModo(rol.equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
-              <ion-icon name="eye-outline"></ion-icon>
-            </ion-button>
-            <ion-button size="small" color="light" class="reset" (click)="irAModo(rol.equipo, partido, 'reset')" *ngIf="partido.config.estado !== 'finalizado'">
-              <ion-icon name="refresh-outline"></ion-icon>
-            </ion-button>
-            <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>
-            <span class="jornada">{{partido.tipo | titlecase}} {{partido.jornada}}</span>
-          </li>
-        </div>
-      </ul>
-    </div> -->
   </div>
 </ion-content>

@@ -2,16 +2,53 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules,
           RouterModule,
           Routes } from '@angular/router';
+import { permissionsGuard } from './services/security.service';
+
+
+export let appMenu = [
+  { title: 'Home',
+    url: '/home',
+    icon: 'home', 
+    allowedRoles: ['*']
+  },
+  {
+    title: 'Datos', 
+    url: '/estadisticas', 
+    src: 'assets/estadisticas.svg', 
+    allowedRoles: ['admin', 'delegado']
+  },
+  { title: 'Admin',
+    url: '/admin/home',
+    icon: 'cog',
+    allowedRoles : ['admin'],
+    showDetails: false,
+    submenu : [
+      { title : 'Clubes',
+        url: '/admin/clubes',
+        icon: 'folder-open'},
+      { title : 'Equipos',
+        url : '/admin/equipos',
+        icon: 'people'},
+      { title : 'Usuarios',
+        url : '/admin/usuarios',
+        icon : 'person' },
+      { title : 'Partidos',
+        url : '/admin/partidos',
+        src : 'assets/handball.svg' }
+    ]}
+];
+
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'login',

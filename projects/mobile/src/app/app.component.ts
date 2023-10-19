@@ -1,74 +1,41 @@
 import { MenuController } from '@ionic/angular';
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { environment } from 'projects/mobile/src/environments/environment';
 
 import { LocalStorage } from './services/local.storage.mock';
 import { NavegacionService } from './services/navegacion.service';
+import { SecurityService } from './services/security.service';
+import { appMenu } from './app-routing.module';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit, DoCheck {
-
-
-  public appPages = [
-    { title: 'Home',
-      url: '/home',
-      icon: 'home'},
-    {
-      title: 'Datos', 
-      url: '/estadisticas', 
-      src: 'assets/estadisticas.svg'
-    },
-    { title: 'Admin',
-      url: '/admin/home',
-      icon: 'cog',
-      showDetails: false,
-      submenu : [
-        { title : 'Clubes',
-          url: '/admin/clubes',
-          icon: 'folder-open'},
-        { title : 'Equipos',
-          url : '/admin/equipos',
-          icon: 'people'},
-        { title : 'Usuarios',
-          url : '/admin/usuarios',
-          icon : 'person' },
-        { title : 'Partidos',
-          url : '/admin/partidos',
-          src : 'assets/handball.svg' }
-      ]}
-  ];
-
-  usuarioActivo = {
-    nombre: '',
-    email: '',
-  };
-
-  perfil: string;
+export class AppComponent implements OnInit {
 
   public isProduction: boolean;
   public version: string;
+  public appMenu;
 
-  constructor(private menu: MenuController,
+  constructor(private security : SecurityService,
+              private menu: MenuController,
               private navegacion: NavegacionService,
-              private router: Router,
-              private localStorage: LocalStorage ) {
+              private router: Router ) {
     this.isProduction = environment.production;
     this.version = environment.version;
+    this.appMenu = appMenu;
   }
 
   public ngOnInit(): void {
-    this.perfil = this.localStorage.getItem('perfil');
+    this.security.reloadUser();
     this.navegacion.init();
   }
 
-  public ngDoCheck(): void {
-    this.perfil = this.localStorage.getItem('perfil');
+  public usuario( property : string ) {
+    return this.security.getUsuario( property );
   }
 
   public collapseMenu(): void {
@@ -94,11 +61,9 @@ export class AppComponent implements OnInit, DoCheck {
     this.router.navigate( ['./share' ] );
   }
 
-  public escribeUsuario() {
-    this.usuarioActivo = {
-      nombre: this.localStorage.getItem('nombreUsuario'),
-      email: this.localStorage.getItem('emailUsuario'),
-    };
-
+  public onClickLogout(){
+    this.security.logout();
+    this.router.navigate( ['./login'] );
   }
+
 }
