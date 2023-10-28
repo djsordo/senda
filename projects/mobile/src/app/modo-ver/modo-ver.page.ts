@@ -8,7 +8,7 @@ import { Evento } from '../modelo/evento';
 import { EstadPartido } from './../modelo/estadPartido';
 import { EstadJugadorService } from './../services/estad-jugador.service';
 import { EstadPartidoService } from './../services/estad-partido.service';
-import { Jugador } from '../modelo/jugador';
+
 
 @Component({
   selector: 'app-modo-ver',
@@ -119,7 +119,6 @@ export class ModoVerPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('ngOndestroy modo ver');
     this.subs.forEach(sub => sub.unsubscribe());
   }
 

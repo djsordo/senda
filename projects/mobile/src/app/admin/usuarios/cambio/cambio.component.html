@@ -1,65 +1,144 @@
 <ion-grid>
+
+  <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+
   <ion-row>
     <ion-col>
       <ion-item>
         <ion-input name="usuarioName" 
+                [formControlName]="'usuarioName'"
                 placeholder="Nombre"
                 autofocus="true"
                 inputmode="text"
                 autocapitalize="on"
                 autocorrect="off"
-                type="text"
-                [(ngModel)]="nombre"></ion-input>
+                type="text"></ion-input>
       </ion-item>
+      <ion-text 
+            *ngIf="usuarioForm.get('usuarioName').touched 
+                && !usuarioForm.get('usuarioName').valid"
+            color="danger" 
+            class="ion-float-left">Falta el nombre</ion-text>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
       <ion-item>
         <ion-input name="usuarioSurname" 
+                [formControlName]="'usuarioSurname'"
                 placeholder="Apellidos"
                 autofocus="true"
                 inputmode="text"
                 autocapitalize="on"
                 autocorrect="off"
-                type="text"
-                [(ngModel)]="apellidos"></ion-input>
+                type="text"></ion-input>
       </ion-item>
+      <ion-text 
+            *ngIf="usuarioForm.get('usuarioSurname').touched 
+                && !usuarioForm.get('usuarioSurname').valid"
+            color="danger" 
+            class="ion-float-left">Falta el apellido</ion-text>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
       <ion-item>
         <ion-input name="usuarioEmail" 
+                [formControlName]="'usuarioEmail'"
                 placeholder="Correo Electrónico"
                 autofocus="true"
                 inputmode="email"
                 autocapitalize="off"
                 autocorrect="off"
-                pattern="\w+@[\w.]+"
-                type="text"
-                [(ngModel)]="email"></ion-input>
+                pattern="[\w.]+@[\w.]+"
+                type="text"></ion-input>
       </ion-item>
+      <ion-text 
+      *ngIf="usuarioForm.get('usuarioEmail').touched 
+          && !usuarioForm.get('usuarioEmail').valid"
+      color="danger" 
+      class="ion-float-left">Correo electrónico es obligatorio o tiene un formato incorrecto</ion-text>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button color="secondary" type="button">Añadir permiso</ion-button>
+    </ion-col>
+  </ion-row>
+  <ng-container>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-select placeholder="Permisos">
+            <ion-select-option *ngFor="let rol of getAllRoles()" value="rol.rol">{{rol.desc}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-select placeholder="Equipo">
+            <ion-select-option *ngFor="let equipo of getAllEquipos()">yaveremos</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+  <ion-row>
+    <ion-col class="vertical-center">
+      <ion-button color="medium" [routerLink]="['/', 'admin', 'usuarios']">Cancelar</ion-button>
+      <ion-button type="submit" 
+          color="primary"
+          [disabled]="!usuarioForm.valid">{{ editMode?"Cambiar":"Crear usuario" }}</ion-button>
+
+          <ion-modal [isOpen]="errorsWhenSaving.error">
+            <ng-template>
+              <ion-header>
+                <ion-toolbar>
+                  <ion-title>Se produjo un error</ion-title>
+                  <ion-buttons slot="end">
+                    <ion-button (click)="clearError()">Cerrar</ion-button>
+                  </ion-buttons>
+                </ion-toolbar>
+              </ion-header>
+              <ion-content>
+                <ion-row>
+                  <ion-col>
+                    <ion-img 
+                      src="/assets/error.svg"
+                      alt="Algo ha ido mal"
+                      class="bordered-image"></ion-img>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col style="height: 2em;">
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="cool-modal">
+                    <ion-text color="medium">
+                      {{errorsWhenSaving.message}}
+                    </ion-text>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col style="height: 2em;">
+                  </ion-col>
+                </ion-row>
+                <ion-row class="cool-modal">
+                  <ion-col>
+                    <ion-button color="primary" expand="block"
+                    (click)="clearError()">Cerrar</ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
+
     </ion-col>
   </ion-row>
 
-  <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-label>Club:</ion-label>
-        <!-- valorar si aquí debería ir un componente llamado "combo categorias" que recogiese una categoría por defecto -->
-        <ion-select *ngIf="clubes.length > 1" [(ngModel)]="selectedClub">
-          <ion-select-option *ngFor="let club of clubes" value="{{club.id}}">{{club.nombre}}</ion-select-option>
-        </ion-select>
-        <ion-text *ngIf="clubes.length === 1">{{clubes[0]?.nombre}}</ion-text>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-button color="medium" [routerLink]="['..']">Cancelar</ion-button>
-      <ion-button color="primary" (click)="onClickCambiar()">Cambiar</ion-button>
-    </ion-col>
-  </ion-row>
+  </form>
 
 </ion-grid>

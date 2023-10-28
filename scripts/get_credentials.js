@@ -11,6 +11,7 @@ const path = require('path');
 
 const CREDENTIALS_PATH = path.join( __dirname, "..", "PRIVATE", "credentials.json" );
 
+
 function getCredentials( callback, args ){
   fs.readFile(CREDENTIALS_PATH, (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);

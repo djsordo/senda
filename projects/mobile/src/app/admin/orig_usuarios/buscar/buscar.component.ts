@@ -10,7 +10,6 @@ import { DocumentData } from '@angular/fire/firestore';
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { UsuarioService } from "projects/mobile/src/app/services/usuario.service";
 import { AdminUsuariosPage } from "../admin-usuarios.page";
-import { Db } from "../../../services/db.service";
 
 @Component({
   selector: 'usuarios-buscar',
@@ -26,7 +25,7 @@ export class BuscarComponent implements OnInit {
   currentId : string;
 
   constructor( private mainPage : AdminUsuariosPage, 
-              private db : Db,
+              private usuarioService : UsuarioService,
               private renderer : Renderer2, 
               private alertController : AlertController,
               private stringUtil : StringUtil ){
@@ -47,10 +46,12 @@ export class BuscarComponent implements OnInit {
 
   private refreshUsuarioList() {
     this.usuarios = [];
-    this.db.getUsuario( )
+    this.usuarioService.getUsuarios( )
     .then( (usuariosList) => {
-      for( let usuario of usuariosList ){
+      for( let docSnap of usuariosList.docs ){
         try{
+          let usuario = docSnap.data(); 
+          usuario['id'] = docSnap.id;
           if( this.matchesSearch( usuario, this.searchText ) ){
             this.usuarios.push( usuario );
           }
@@ -91,7 +92,7 @@ export class BuscarComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.db.delUsuario( this.mainPage.getSelectedId() );
+            this.usuarioService.deleteUsuarioById( this.mainPage.getSelectedId() );
             this.mainPage.onSelectedId.emit( null );
             this.refreshUsuarioList();
           },

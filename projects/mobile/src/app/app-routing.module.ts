@@ -5,7 +5,17 @@ import { PreloadAllModules,
 import { permissionsGuard } from './services/security.service';
 
 
-export let appMenu = [
+export interface MenuEntry {
+  title: string, 
+  url? : string, 
+  icon? : string, 
+  src? : string,
+  allowedRoles :  string[], 
+  showDetails? : boolean,
+  submenu? : MenuEntry[]
+};
+
+export let appMenu : MenuEntry[] = [
   { title: 'Home',
     url: '/home',
     icon: 'home', 
@@ -25,16 +35,20 @@ export let appMenu = [
     submenu : [
       { title : 'Clubes',
         url: '/admin/clubes',
-        icon: 'folder-open'},
+        icon: 'folder-open', 
+        allowedRoles: ['admin'] },
       { title : 'Equipos',
         url : '/admin/equipos',
-        icon: 'people'},
+        icon: 'people', 
+        allowedRoles: ['admin'] },
       { title : 'Usuarios',
         url : '/admin/usuarios',
-        icon : 'person' },
+        icon : 'person', 
+        allowedRoles: ['admin'] },
       { title : 'Partidos',
         url : '/admin/partidos',
-        src : 'assets/handball.svg' }
+        src : 'assets/handball.svg', 
+        allowedRoles: ['admin'] }
     ]}
 ];
 
@@ -103,7 +117,7 @@ const routes: Routes = [
   },
   {
     path: 'admin/usuarios',
-    loadChildren: () => import('./admin/usuarios/admin-usuarios.module').then( m => m.AdminEquiposPageModule )
+    loadChildren: () => import('./admin/usuarios/admin-usuarios.module').then( m => m.AdminUsuariosModule )
   },
   {
     path: 'admin/partidos',

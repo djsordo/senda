@@ -16,7 +16,7 @@
 
 
           <span *ngFor="let p of appMenu">
-            <ion-item #currentElement lines="none" *ngIf="(p.title === 'Admin' && perfil === 'admin') || p.title !== 'Admin'"
+            <ion-item #currentElement lines="none" *ngIf="userHasRole( p.allowedRoles )"
             routerLinkActive="selected"
             [routerLink]="p.url"
             [detail]="p.submenu"

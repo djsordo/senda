@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { take, takeLast } from 'rxjs/operators';
 
 
 import { PartidosEquipo } from './../modelo/partidosEquipo';
@@ -46,11 +47,11 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private security : SecurityService,
-              private usuarioService: UsuarioService,
               private partidoService: PartidosService,
               private pasoDatosService: PasoDatosService,
               private bdGeneralService: BDGeneralService
-              ) {}
+              ) {
+  }
 
   ngOnInit() {
     this.fechaActual = new Date();
@@ -67,15 +68,14 @@ export class HomePage implements OnInit, OnDestroy {
     this.fFinSemana.setMinutes(59);
     this.fFinSemana.setSeconds(59);
 
-    // AQUI ME QUEDO; RESOLVIENDO LOS PARTIDOS
     // Cargamos los partidos de los equipos a los que pertenece el usuario
-    this.security.getRoles().forEach(rol => {
+    this.getEquiposUsuario().forEach(equipo => {
       // Por cada rol saco los partidos del equipo
-      this.cambioEq = this.security.getRoles()[0].equipo.id;
-      this.subs.push(this.partidoService.getPartidos(rol.equipo.id)
+      this.cambioEq = this.getEquiposUsuario()[0].id;
+      this.subs.push(this.partidoService.getPartidos(equipo.id)
         .subscribe(partidos => {
           const partidosEquipo: PartidosEquipo = {
-            equipoId: rol.equipo.id,
+            equipoId: equipo.id,
             partidos: {
               anteriores: [],
               programados: [],
@@ -144,94 +144,6 @@ export class HomePage implements OnInit, OnDestroy {
         })
       );
     });
-
-
-    /* ------------------------------ */
-    // this.subs.push(this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
-    // .subscribe(usuarios => {
-    //   this.usuario = usuarios[0];
-    //   console.log( 'this.usuario = ', this.usuario );
-    //   this.usuarioService.setUsuario(this.usuario);
-    //   localStorage.setItem('perfil', this.usuario.perfil);
-
-    //   // Cargamos los partidos de los equipos a los que pertenece el usuario
-    //   this.usuario.roles.forEach(rol => {
-    //     // Por cada rol saco los partidos del equipo
-    //     this.cambioEq = this.usuario?.roles[0].equipo.id;
-    //     this.subs.push(this.partidoService.getPartidos(rol.equipo.id)
-    //       .subscribe(partidos => {
-    //         const partidosEquipo: PartidosEquipo = {
-    //           equipoId: rol.equipo.id,
-    //           partidos: {
-    //             anteriores: [],
-    //             programados: [],
-    //             proximos: []
-    //           }
-    //         };
-
-    //         //console.log('Id del Equipo: ', partidosEquipo.equipoId);
-    //         partidos.forEach(partido => {
-    //           // Si el partido no tiene estado, ponemos "programado"
-    //           try {
-    //             partido.config.estado;
-    //             if (typeof partido.config.estado == "undefined"){
-    //               partido.config.estado = 'programado';
-    //             }
-    //           }
-    //           catch {
-    //             partido.config = {partes:2, segsParte:1800, estado:'programado'};
-    //           }
-
-    //           // Pongo cada partido en la lista adecuada
-    //           if (partido.fecha.toDate() < this.fIniSemana) {
-    //             // Va a lista de anteriores
-    //             partidosEquipo.partidos.anteriores.push(partido);
-    //           } else if (partido.fecha.toDate() > this.fFinSemana) {
-    //             // Va a lista de programados
-    //             partidosEquipo.partidos.programados.push(partido);
-    //           } else {
-    //             // Va a la lista de próximos
-    //             partidosEquipo.partidos.proximos.push(partido);
-    //           }
-    //         });
-
-    //         partidosEquipo.partidos.anteriores.sort((a, b) => {
-    //           if (b.fecha.toDate() > a.fecha.toDate()) {
-    //             return 1;
-    //           }
-    //           else {
-    //             return -1;
-    //           }
-    //         });
-
-    //         partidosEquipo.partidos.programados.sort((a, b) => {
-    //           if (b.fecha.toDate() >= a.fecha.toDate()) {
-    //             return -1;
-    //           }
-    //           else {
-    //             return 1;
-    //           }
-    //         });
-
-    //         partidosEquipo.partidos.proximos.sort((a, b) => {
-    //           if (b.fecha.toDate() > a.fecha.toDate()) {
-    //             return 1;
-    //           }
-    //           else {
-    //             return -1;
-    //           }
-    //         });
-
-    //         //console.log('Partidos del equipo: ', partidosEquipo);
-    //         this.partidos.push(partidosEquipo);
-
-    //         /* this.cambioEq = this.usuario?.roles[0].equipo.id; */
-    //         this.equipoSelec = this.seleccionEquipo(this.cambioEq);
-    //       })
-    //     );
-    //   });
-    // }));
-    /* ------------------------------ */
 
   }
 
@@ -302,9 +214,9 @@ export class HomePage implements OnInit, OnDestroy {
       }
     });
 
-    this.security.getRoles().forEach(rol =>{
-      if (rol.equipo.id === equipoId){
-        this.equipo = rol.equipo;
+    this.getEquiposUsuario().forEach(equipo =>{
+      if (equipo.id === equipoId){
+        this.equipo = equipo;
       }
     });
     return partidosEquipo;
@@ -314,8 +226,26 @@ export class HomePage implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  getRoles(){
-    return this.security.getRoles();
+  getEquiposUsuario(){
+    let equipos = [];
+    let roles = this.security.getUsuario('roles');
+    if( roles ){
+      for( let rol of roles )
+      if( 'equipo' in rol ) 
+        equipos.push( rol.equipo );
+    }
+    return equipos;
+  }
+
+  getEquipoIdDefecto(){
+    if( this.getEquiposUsuario().length > 0 ){
+      return this.getEquiposUsuario()[0].id;
+    }
+    return '';
+  }
+
+  userIsAdmin(){
+    return this.security.userHasRole( ['admin'] );
   }
 
 }

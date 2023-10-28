@@ -19,8 +19,6 @@ export function permissionsGuard(route: ActivatedRouteSnapshot,
                           state: RouterStateSnapshot) {
   let securityService = inject(SecurityService);
   let router = inject(Router);
-  console.log( "this is the guard: " ); 
-  console.log( route );
   if( !securityService.isAuthenticated() ) {
     return new Promise( (resolve, reject) => {
       securityService.reloadUser()
@@ -47,6 +45,11 @@ export class SecurityService {
   private userData : User  = null;
   private userDb : Usuario = null;
   private tokenExpiration : Date = null;
+  public allRoles : {rol: string, desc: string}[] = 
+      [{rol: 'delegado', 
+        desc: 'Delegado'},
+       {rol: 'admin', 
+        desc: 'Administrador'}];
 
   constructor(private auth: Auth, 
               private router : Router, 
@@ -80,7 +83,7 @@ export class SecurityService {
         .catch( (error) => reject( { result: false, errorCode: error.code } ) )
       })
       .catch( (error) => {
-        // example of result.code === 'auth/email-already-in-use'
+        // example of result.code: 'auth/email-already-in-use'
         reject( { result: false, errorCode : error.code } );
       })
   
@@ -94,8 +97,6 @@ export class SecurityService {
     let accessToken = (<any> userData).accessToken;
     this.localStorage.setItem( 'accessToken', accessToken );
     this.localStorage.setItem( 'refreshToken', userData.refreshToken );
-    if( userDb.perfil )
-      this.localStorage.setItem( 'perfil', userDb.perfil );
   }
 
   reloadUser(){
@@ -166,13 +167,31 @@ export class SecurityService {
     return signOut(this.auth);
   }
 
-  getRoles(){
-    return this.userDb.roles;
-  }
-
   getUsuario( property : string ){
     if( this.userDb )
-      return this.userDb[property];
+      if( property )
+        return this.userDb[property];
+      else
+        return this.userDb;
+  }
+
+  getClubIdUsuario(){
+    // LO QUE NECESITO HACER AQUI ES ITERAR POR TODOS LOS USUARIOS 
+    // Y CAMBIAR "club.clubId" por "club.id"
+    console.log( this.userDb );
+    if( this.userDb )
+      return this.userDb.club.id;
+  }
+
+  userHasRole( roleList : string[] ){
+    return this.userDb 
+          && this.userDb.roles 
+          && this.userDb.roles.find( userRole => 
+      {
+        let found = roleList.find( roleElement => 
+            roleElement === userRole.nombre || roleElement === '*' );
+        return found;
+      });
   }
 
 }

@@ -13,8 +13,8 @@
   <div slot="fixed" class="contenidoFijo">
     <ion-list>
       <ion-item>
-        <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{getRoles()[0].equipo.id}}">
-          <ion-select-option *ngFor="let rol of getRoles()" value="{{rol.equipo.id}}">{{rol.equipo.nombre + ' ' + rol.equipo.categoria + ' ' + rol.equipo.genero}}</ion-select-option>
+        <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{getEquipoIdDefecto()}}">
+          <ion-select-option *ngFor="let equipo of getEquiposUsuario()" value="{{equipo.id}}">{{equipo.nombre + ' ' + equipo.categoria + ' ' + equipo.genero}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>
@@ -47,7 +47,7 @@
             <ion-button size="small" color="light" class="ver" (click)="irAModo(equipo, partido, 'ver')" *ngIf="partido.config.estado === 'en curso' || partido.config.estado === 'finalizado'">
               <ion-icon name="eye-outline"></ion-icon>
             </ion-button>
-            <ion-button size="small" color="light" class="reset" (click)="irAModo(equipo, partido, 'reset')" *ngIf="usuario.perfil === 'admin'">
+            <ion-button size="small" color="light" class="reset" (click)="irAModo(equipo, partido, 'reset')" *ngIf="userIsAdmin()">
               <ion-icon name="refresh-outline"></ion-icon>
             </ion-button>
             <span class="fecha">{{partido.fecha.toDate() | date: 'dd/MM/yyyy'}}</span>

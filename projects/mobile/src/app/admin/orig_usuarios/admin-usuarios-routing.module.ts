@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminUsuariosPage } from "./admin-usuarios.page";
 import { BuscarComponent } from "./buscar/buscar.component";
 import { CambioComponent } from "./cambio/cambio.component";
+import { CrearComponent } from "./crear/crear.component";
 
 /**
  * Estas son las rutas "hijas" de /admin/usuarios que apuntan a los 
@@ -15,8 +16,8 @@ const routes : Routes = [
     /* componente por defecto que se cargará en la página */
     { path : '',       component : BuscarComponent },
     { path : 'buscar', component : BuscarComponent },
-    { path : 'cambio/:userId', component : CambioComponent },
-    { path : 'nuevo',  component : CambioComponent  }
+    { path : 'cambio', component : CambioComponent },
+    { path : 'nuevo',  component : CrearComponent  }
   ] }
 ];
 

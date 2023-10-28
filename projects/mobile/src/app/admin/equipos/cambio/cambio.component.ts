@@ -12,6 +12,7 @@ import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service
 import { AdminEquiposPage } from '../admin-equipos.page';
 import { TemporadaService } from 'projects/mobile/src/app/services/temporada.service';
 import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
+import { SecurityService } from '../../../services/security.service';
 
 
 @Component({
@@ -23,7 +24,6 @@ export class CambioComponent implements OnInit {
 
   docSnapshot : DocumentSnapshot<DocumentData>; 
 
-  usuario : Usuario;
   nombre : string;
   
   selectedCategoria : string;
@@ -41,16 +41,14 @@ export class CambioComponent implements OnInit {
   temporadas : Set<Temporada>;
 
   constructor( private mainPage : AdminEquiposPage, 
-               private usuarioService : UsuarioService,
+               private security : SecurityService,
                private temporadaService : TemporadaService,
                private equipoService : EquipoService,
                private toastController : ToastController, 
                private router : Router, 
-               private route : ActivatedRoute, 
-               private localStorage : LocalStorage ) { }
+               private route : ActivatedRoute ) { }
 
   ngOnInit() { 
-    this.initCurrentUser();
     this.initThingsToDo();
     this.equipoService.getEquipos()
       .then( ( equipoList : QuerySnapshot<DocumentData>) => {
@@ -71,13 +69,6 @@ export class CambioComponent implements OnInit {
           console.error( reason );
         })
     }
-  }
-
-  private async initCurrentUser(){
-    this.usuarioService.getUsuarioBD(this.localStorage.getItem('emailUsuario'))
-    .subscribe(usuarios => {
-      this.usuario = usuarios[0];
-    });
   }
 
   private initThingsToDo(){
@@ -114,7 +105,7 @@ export class CambioComponent implements OnInit {
   onClickCambiar() {
     let equipo = this.equipoService.newEquipo();
     equipo.nombre = this.nombre; 
-    equipo.club = this.usuario.club; 
+    equipo.club = this.security.getUsuario('club'); 
     if( this.selectedCategoria !== '#otro#' )
       equipo.categoria = this.selectedCategoria;
     else

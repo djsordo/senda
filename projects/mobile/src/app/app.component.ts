@@ -4,10 +4,9 @@ import { Router } from '@angular/router';
 
 import { environment } from 'projects/mobile/src/environments/environment';
 
-import { LocalStorage } from './services/local.storage.mock';
 import { NavegacionService } from './services/navegacion.service';
 import { SecurityService } from './services/security.service';
-import { appMenu } from './app-routing.module';
+import { MenuEntry, appMenu } from './app-routing.module';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +17,7 @@ export class AppComponent implements OnInit {
 
   public isProduction: boolean;
   public version: string;
-  public appMenu;
+  public appMenu : MenuEntry[];
 
   constructor(private security : SecurityService,
               private menu: MenuController,
@@ -36,6 +35,10 @@ export class AppComponent implements OnInit {
 
   public usuario( property : string ) {
     return this.security.getUsuario( property );
+  }
+
+  public userHasRole( roleList : string[] ){
+    return this.security.userHasRole( roleList );
   }
 
   public collapseMenu(): void {
