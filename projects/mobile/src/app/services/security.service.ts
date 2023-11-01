@@ -167,20 +167,12 @@ export class SecurityService {
     return signOut(this.auth);
   }
 
-  getUsuario( property : string ){
+  getUsuario( property?: string ){
     if( this.userDb )
       if( property )
         return this.userDb[property];
       else
         return this.userDb;
-  }
-
-  getClubIdUsuario(){
-    // LO QUE NECESITO HACER AQUI ES ITERAR POR TODOS LOS USUARIOS 
-    // Y CAMBIAR "club.clubId" por "club.id"
-    console.log( this.userDb );
-    if( this.userDb )
-      return this.userDb.club.id;
   }
 
   userHasRole( roleList : string[] ){

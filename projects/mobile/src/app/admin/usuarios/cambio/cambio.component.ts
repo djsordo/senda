@@ -2,10 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
         
 
-import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
 import { AdminUsuariosPage } from '../admin-usuarios.page';
 import { Club } from 'projects/mobile/src/app/modelo/club';
 import { Db } from '../../../services/db.service';
@@ -24,6 +23,7 @@ export class CambioComponent implements OnInit, OnDestroy {
   editMode : boolean;
  
   paramSubscription : Subscription;
+  userSubscription : Subscription;
   usuarioForm : FormGroup;
 
   usuarioId : string;
@@ -48,7 +48,14 @@ export class CambioComponent implements OnInit, OnDestroy {
     this.usuarioId = null;
     this.createForm();
 
-    this.loadEquipos( );
+    if( this.security.getUsuario() ){
+      this.loadEquipos( this.security.getUsuario().club.clubId );
+    }
+    this.userSubscription = this.security.userAuthenticated.subscribe( (userData) => {
+      this.loadEquipos( userData[1].club.clubId );
+    } );
+
+
     this.paramSubscription = this.route.params.subscribe( (params) => {
       if( params.userId ){
         this.editMode = true;
@@ -71,14 +78,11 @@ export class CambioComponent implements OnInit, OnDestroy {
     } );
   }
 
-  private loadEquipos( ){
-    console.log( this.security.getClubIdUsuario() );
-    return new Promise( (resolve, reject) => {
-      this.db.getEquipo( where( "club.clubId", "==", this.security.getUsuario('club.clubId') ))
+  private loadEquipos( clubId : string ){
+    return new Promise( (resolve) => {
+      this.db.getEquipo( where( "club.clubId", "==", clubId ))
       .then( equipoList => {
         this.equipos = Array.from( equipoList );
-        console.log('lista de equipos');
-        console.log( this.equipos );
         resolve( this.equipos );
       });
     });
@@ -110,8 +114,29 @@ export class CambioComponent implements OnInit, OnDestroy {
       'usuarioSurname' : new FormControl( null, Validators.required ), 
       'usuarioEmail' : new FormControl( null, 
                     [ Validators.required, 
-                      Validators.email ] )
+                      Validators.email ] ),
+      'roles' : new FormArray([])
     } );
+  }
+
+  public onAnadirPermiso() {
+    (<FormArray> this.usuarioForm.get('roles')).push(
+      new FormGroup({
+        'permisos' : new FormControl( null, Validators.required ), 
+        'equipo' : new FormControl( null )
+      })
+    );
+    console.log( this.usuarioForm );
+  }
+
+  public getRolesFormArray() : FormGroup[] {
+    return (<FormGroup[]> 
+          (<FormArray> this.usuarioForm.get('roles')).controls
+          );
+  }
+
+  public deleteRol( controlIndex : number ) {
+    (<FormArray> this.usuarioForm.get('roles')).removeAt( controlIndex );
   }
 
 /* xjx 
