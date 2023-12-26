@@ -14,7 +14,7 @@
     <ion-list>
       <ion-item>
         <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{getEquipoIdDefecto()}}">
-          <ion-select-option *ngFor="let equipo of getEquiposUsuario()" value="{{equipo.id}}">{{equipo.nombre + ' ' + equipo.categoria + ' ' + equipo.genero}}</ion-select-option>
+          <ion-select-option *ngFor="let equipo of equiposUsuario" value="{{equipo.id}}">{{equipo.nombre + ' ' + equipo.categoria + ' ' + equipo.genero}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>

@@ -8,7 +8,6 @@ import { AlertController } from "@ionic/angular";
 import { DocumentData } from '@angular/fire/firestore';
 
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
-import { UsuarioService } from "projects/mobile/src/app/services/usuario.service";
 import { AdminUsuariosPage } from "../admin-usuarios.page";
 import { Db } from "../../../services/db.service";
 
@@ -38,6 +37,7 @@ export class BuscarComponent implements OnInit {
   }
 
   public onClickSearch() {
+    console.log( this.searchText );
     this.refreshUsuarioList();
   }
 
@@ -62,8 +62,7 @@ export class BuscarComponent implements OnInit {
     });
   }
 
-
-  private matchesSearch( usuario: DocumentData, searchText : string ){
+  public matchesSearch( usuario: DocumentData, searchText : string ){
     const composedInfo = usuario?.nombre + ' ' 
                   + usuario?.apellidos + ' ' 
                   + usuario?.email + ' ' 

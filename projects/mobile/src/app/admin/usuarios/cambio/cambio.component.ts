@@ -11,6 +11,8 @@ import { Db } from '../../../services/db.service';
 import { SecurityService } from '../../../services/security.service';
 import { Equipo } from '../../../modelo/equipo';
 import { where } from '@angular/fire/firestore';
+import { Usuario } from '../../../modelo/usuario';
+import { properCase } from '../../../services/string-util';
 
 
 @Component({
@@ -69,7 +71,14 @@ export class CambioComponent implements OnInit, OnDestroy {
                                     'usuarioClubId' : user?.perms?.clubes, 
                                     'usuarioEquipoId' : user?.perms?.equipos
                                   });
-          /* xjx this.onChangeClubes(); */
+          for( let rol of user?.roles ){
+            (<FormArray> this.usuarioForm.get('roles')).push(
+              new FormGroup({
+                'permisos' : new FormControl( rol.nombre, Validators.required ), 
+                'equipo' : new FormControl( rol.equipo.id )
+              })
+            );
+          }
         })
         .catch( reason => console.error( reason ) );
       }else{
@@ -82,7 +91,13 @@ export class CambioComponent implements OnInit, OnDestroy {
     return new Promise( (resolve) => {
       this.db.getEquipo( where( "club.clubId", "==", clubId ))
       .then( equipoList => {
-        this.equipos = Array.from( equipoList );
+        this.equipos = equipoList.map(
+            equipo => {
+              equipo.screenName = properCase( equipo.categoria ) 
+                          + " "
+                          + properCase( equipo.genero );
+              return equipo;
+            });
         resolve( this.equipos );
       });
     });
@@ -91,6 +106,17 @@ export class CambioComponent implements OnInit, OnDestroy {
 
   getAllRoles() {
     return this.security.allRoles;
+  }
+
+  onPermisosSelected( event ){
+    if( event.srcElement.value === "admin" ){
+      let rolesArray : FormArray = <FormArray> this.usuarioForm.get("roles");
+      for( let elem of rolesArray.controls ){
+        if( elem.get("permisos").value === "admin" ){
+          elem.get("equipo").setValue("");
+        }
+      }
+    }
   }
 
   getAllEquipos() {
@@ -102,59 +128,18 @@ export class CambioComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log('this is the onsubmit method');
-  }
-
-  clearError() {
-  }
-
-  private createForm(){
-    this.usuarioForm = new FormGroup( {
-      'usuarioName': new FormControl( null, Validators.required ), 
-      'usuarioSurname' : new FormControl( null, Validators.required ), 
-      'usuarioEmail' : new FormControl( null, 
-                    [ Validators.required, 
-                      Validators.email ] ),
-      'roles' : new FormArray([])
-    } );
-  }
-
-  public onAnadirPermiso() {
-    (<FormArray> this.usuarioForm.get('roles')).push(
-      new FormGroup({
-        'permisos' : new FormControl( null, Validators.required ), 
-        'equipo' : new FormControl( null )
-      })
-    );
-    console.log( this.usuarioForm );
-  }
-
-  public getRolesFormArray() : FormGroup[] {
-    return (<FormGroup[]> 
-          (<FormArray> this.usuarioForm.get('roles')).controls
-          );
-  }
-
-  public deleteRol( controlIndex : number ) {
-    (<FormArray> this.usuarioForm.get('roles')).removeAt( controlIndex );
-  }
-
-/* xjx 
-  onSubmit() {
     console.log( this.usuarioForm.value );
     let formVal = this.usuarioForm.value; 
     let usuario = {
       nombre : formVal.usuarioName, 
       apellidos : formVal.usuarioSurname, 
       email : formVal.usuarioEmail, 
-      permsTemplate : formVal.usuarioPermsTemplate
+      /* by default, one user can only create users of its own club */
+      club : this.security.getUsuario('club'),
+      roles : formVal.roles.map( x => { 
+          return {equipo: {id: x.equipo}, nombre: x.permisos} } )
     } as Usuario;
-    if( formVal.usuarioPermsTemplate ){
-      usuario.perms = this.security.convertTemplateIntoPerms( 
-          this.permissionsTemplate[this.usuarioForm.value.usuarioPermsTemplate], 
-          this.usuarioForm.value.usuarioClubId, 
-          this.usuarioForm.value.usuarioEquipoId );
-    }
+
     if( this.editMode ){
       this.db.updateUsuario( this.usuarioId, usuario )
       .then( (docRef) => {
@@ -166,8 +151,9 @@ export class CambioComponent implements OnInit, OnDestroy {
         this.sendToast(`Se ha producido un error al cambiar los datos de ${formVal.usuarioName} ${formVal.usuarioSurname}: ${reason}`);
       });
     }else{
-      let loginPromise = this.login.registro( { email: usuario.email, 
-                      password: '123456' } );
+
+      let loginPromise = this.security.registro( { email: usuario.email, 
+                                                  password: '123456' } );
       let dbPromise = this.db.addUsuario( usuario );
 
       Promise.allSettled([loginPromise, dbPromise])
@@ -188,16 +174,20 @@ export class CambioComponent implements OnInit, OnDestroy {
               intentalo más tarde. El error recibido es: ${dbResult.reason}`;
             }
             if( loginResult.status !== 'fulfilled' ){
-              if( loginResult.reason.errorCode === 'auth/email-already-in-use' ){
-                this.errorsWhenSaving.message = `Se produjo un error al registrar
-                los datos en google porque esta dirección corresponde a un usuario
-                ya registrado`;  
-              }if( loginResult.reason.errorCode === 'auth/invalid-email' ){
-                this.errorsWhenSaving.message = `Se produjo un error al registrar
-                los datos en google porque según google el correo es inválido`;
-              }else{
-                this.errorsWhenSaving.message = `Se produjo un error al registrar
-                los datos en google`;  
+              switch( loginResult.reason.errorCode ){
+                case 'auth/email-already-in-use':
+                  this.errorsWhenSaving.message = `Se produjo un error al registrar
+                  los datos en google porque esta dirección corresponde a un usuario
+                  ya registrado`;
+                  break; 
+                case 'auth/invalid-email':
+                  this.errorsWhenSaving.message = `Se produjo un error al registrar
+                  los datos en google porque según google el correo es inválido`;
+                  break;
+                default: 
+                  this.errorsWhenSaving.message = `Se produjo un error al registrar
+                  los datos en google: ${loginResult.reason.errorCode}`;  
+                  break;
               }
             }
           }
@@ -210,22 +200,36 @@ export class CambioComponent implements OnInit, OnDestroy {
     this.errorsWhenSaving = { error: false, message : '' };
   }
 
-  get permissionsTemplateNames() : string[] {
-    let result : string[] = [];
-    for( let templateName in this.permissionsTemplate ) {
-      if( templateName !== 'id' )
-        result.push( templateName );
-    }
-    return result;
+  private createForm(){
+    this.usuarioForm = new FormGroup( {
+      'usuarioName': new FormControl( null, Validators.required ), 
+      'usuarioSurname' : new FormControl( null, Validators.required ), 
+      'usuarioEmail' : new FormControl( null, 
+                    [ Validators.required, 
+                      Validators.email ] ),
+      'roles' : new FormArray([])
+    } );
   }
 
-  isManyClub(){
-    try{
-      return this.permissionsTemplate[this.usuarioForm.value.usuarioPermsTemplate].clubes === 'pickMany';
-    }catch( err ){
-      return false; 
-    }
+  public onAnadirPermiso() {
+    (<FormArray> this.usuarioForm.get('roles')).push(
+      new FormGroup({
+        'permisos' : new FormControl( null, Validators.required ), 
+        'equipo' : new FormControl( null )
+      })
+    );
   }
+
+  public getRolesFormArray() : FormGroup[] {
+    return (<FormGroup[]> 
+          (<FormArray> this.usuarioForm.get('roles')).controls
+          );
+  }
+
+  public deleteRol( controlIndex : number ) {
+    (<FormArray> this.usuarioForm.get('roles')).removeAt( controlIndex );
+  }
+
   private async sendToast( message : string ){
     return this.toastController.create({
       message: message, 
@@ -235,7 +239,10 @@ export class CambioComponent implements OnInit, OnDestroy {
       val.present();
     })
   }
-*/
+
 }
+
+
+
 
 

@@ -74,8 +74,10 @@
           <ion-row>
             <ion-col>
               <ion-item>
-                <ion-select [formControlName]="'permisos'" placeholder="Permisos">
-                  <ion-select-option *ngFor="let rol of getAllRoles()" value="rol.rol">{{rol.desc}}</ion-select-option>
+                <ion-select [formControlName]="'permisos'" 
+                    placeholder="Permisos"
+                    (ionChange)="onPermisosSelected( $event )">
+                  <ion-select-option *ngFor="let rol of getAllRoles()" [value]="rol.rol">{{rol.desc}}</ion-select-option>
                 </ion-select>
               </ion-item>
             </ion-col>
@@ -83,8 +85,8 @@
           <ion-row>
             <ion-col>
               <ion-item>
-                <ion-select [formControlName]="'equipo'" placeholder="Equipo">
-                  <ion-select-option *ngFor="let equipo of getAllEquipos()">{{equipo.categoria}} {{equipo.genero}}</ion-select-option>
+                <ion-select #equipo [formControlName]="'equipo'" placeholder="Equipo">
+                  <ion-select-option *ngFor="let equipo of getAllEquipos()" [value]="equipo.id">{{equipo.screenName}}</ion-select-option>
                 </ion-select>
               </ion-item>
             </ion-col>
@@ -95,7 +97,7 @@
         <ion-col size="1">
           <ion-icon name="trash-outline" 
             size="large" 
-            color="primary" 
+            color="danger" 
             style="display: unset;"
             (click)="deleteRol( i )"></ion-icon>
         </ion-col>

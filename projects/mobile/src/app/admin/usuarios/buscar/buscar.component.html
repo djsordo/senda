@@ -18,14 +18,16 @@
   <ion-row>
     <ion-col>
       <ion-card #resultCard id="{{p.id}}" *ngFor="let p of usuarios" (click)="onCardSelected( p.id )">
-        <ion-card-header>
-          <ion-icon name="person" size="large"></ion-icon>
-          <ion-card-title>{{p.nombre}} {{p.apellidos}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-text>{{p.email}}</ion-text> <br/>
-          <ion-text>{{p.club?.nombre}}</ion-text>
-        </ion-card-content>
+        <ng-container *ngIf="matchesSearch( p, searchText )">
+          <ion-card-header>
+            <ion-icon name="person" size="large"></ion-icon>
+            <ion-card-title>{{p.nombre}} {{p.apellidos}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-text>{{p.email}}</ion-text> <br/>
+            <ion-text>{{p.club?.nombre}}</ion-text>
+          </ion-card-content>
+        </ng-container>
       </ion-card>
     </ion-col>
   </ion-row>

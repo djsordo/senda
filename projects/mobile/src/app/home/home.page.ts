@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { take, takeLast } from 'rxjs/operators';
 
 
 import { PartidosEquipo } from './../modelo/partidosEquipo';
@@ -10,11 +9,11 @@ import { BDGeneralService } from './../services/bdgeneral.service';
 
 import { Equipo } from './../modelo/equipo';
 import { PasoDatosService } from './../services/paso-datos.service';
-import { UsuarioService } from './../services/usuario.service';
 
 import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
 import { SecurityService } from '../services/security.service';
+import { Db } from '../services/db.service';
 
 
 @Component({
@@ -25,6 +24,7 @@ import { SecurityService } from '../services/security.service';
 export class HomePage implements OnInit, OnDestroy {
   usuario: Usuario;
   equipo: Equipo;
+  equiposUsuario : Equipo[] = [];
   partidos: PartidosEquipo[] = [];
 
   equipoSelec: PartidosEquipo = {
@@ -47,6 +47,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private security : SecurityService,
+              private db : Db, 
               private partidoService: PartidosService,
               private pasoDatosService: PasoDatosService,
               private bdGeneralService: BDGeneralService
@@ -68,82 +69,83 @@ export class HomePage implements OnInit, OnDestroy {
     this.fFinSemana.setMinutes(59);
     this.fFinSemana.setSeconds(59);
 
-    // Cargamos los partidos de los equipos a los que pertenece el usuario
-    this.getEquiposUsuario().forEach(equipo => {
-      // Por cada rol saco los partidos del equipo
-      this.cambioEq = this.getEquiposUsuario()[0].id;
-      this.subs.push(this.partidoService.getPartidos(equipo.id)
-        .subscribe(partidos => {
-          const partidosEquipo: PartidosEquipo = {
-            equipoId: equipo.id,
-            partidos: {
-              anteriores: [],
-              programados: [],
-              proximos: []
-            }
-          };
 
-          //console.log('Id del Equipo: ', partidosEquipo.equipoId);
-          partidos.forEach(partido => {
-            // Si el partido no tiene estado, ponemos "programado"
-            try {
-              partido.config.estado;
-              if (typeof partido.config.estado == "undefined"){
-                partido.config.estado = 'programado';
-              }
-            }
-            catch {
-              partido.config = {partes:2, segsParte:1800, estado:'programado'};
-            }
-
-            // Pongo cada partido en la lista adecuada
-            if (partido.fecha.toDate() < this.fIniSemana) {
-              // Va a lista de anteriores
-              partidosEquipo.partidos.anteriores.push(partido);
-            } else if (partido.fecha.toDate() > this.fFinSemana) {
-              // Va a lista de programados
-              partidosEquipo.partidos.programados.push(partido);
-            } else {
-              // Va a la lista de próximos
-              partidosEquipo.partidos.proximos.push(partido);
-            }
-          });
-
-          partidosEquipo.partidos.anteriores.sort((a, b) => {
-            if (b.fecha.toDate() > a.fecha.toDate()) {
-              return 1;
-            }
-            else {
-              return -1;
-            }
-          });
-
-          partidosEquipo.partidos.programados.sort((a, b) => {
-            if (b.fecha.toDate() >= a.fecha.toDate()) {
-              return -1;
-            }
-            else {
-              return 1;
-            }
-          });
-
-          partidosEquipo.partidos.proximos.sort((a, b) => {
-            if (b.fecha.toDate() > a.fecha.toDate()) {
-              return 1;
-            }
-            else {
-              return -1;
-            }
-          });
-
-          //console.log('Partidos del equipo: ', partidosEquipo);
-          this.partidos.push(partidosEquipo);
-
-          /* this.cambioEq = this.usuario?.roles[0].equipo.id; */
-          this.equipoSelec = this.seleccionEquipo(this.cambioEq);
-        })
-      );
-    });
+    this.loadEquiposUsuario()
+      .then( (allEquipos) => { 
+        this.equiposUsuario = allEquipos; 
+        this.equiposUsuario.forEach(equipo => {
+          // Por cada rol saco los partidos del equipo
+          this.cambioEq = this.getEquipoIdDefecto();
+          this.subs.push(this.partidoService.getPartidos(equipo.id)
+            .subscribe(partidos => {
+              const partidosEquipo: PartidosEquipo = {
+                equipoId: equipo.id,
+                partidos: {
+                  anteriores: [],
+                  programados: [],
+                  proximos: []
+                }
+              };
+    
+              partidos.forEach(partido => {
+                // Si el partido no tiene estado, ponemos "programado"
+                try {
+                  partido.config.estado;
+                  if (typeof partido.config.estado == "undefined"){
+                    partido.config.estado = 'programado';
+                  }
+                }
+                catch {
+                  partido.config = {partes:2, segsParte:1800, estado:'programado'};
+                }
+    
+                // Pongo cada partido en la lista adecuada
+                if (partido.fecha.toDate() < this.fIniSemana) {
+                  // Va a lista de anteriores
+                  partidosEquipo.partidos.anteriores.push(partido);
+                } else if (partido.fecha.toDate() > this.fFinSemana) {
+                  // Va a lista de programados
+                  partidosEquipo.partidos.programados.push(partido);
+                } else {
+                  // Va a la lista de próximos
+                  partidosEquipo.partidos.proximos.push(partido);
+                }
+              });
+    
+              partidosEquipo.partidos.anteriores.sort((a, b) => {
+                if (b.fecha.toDate() > a.fecha.toDate()) {
+                  return 1;
+                }
+                else {
+                  return -1;
+                }
+              });
+    
+              partidosEquipo.partidos.programados.sort((a, b) => {
+                if (b.fecha.toDate() >= a.fecha.toDate()) {
+                  return -1;
+                }
+                else {
+                  return 1;
+                }
+              });
+    
+              partidosEquipo.partidos.proximos.sort((a, b) => {
+                if (b.fecha.toDate() > a.fecha.toDate()) {
+                  return 1;
+                }
+                else {
+                  return -1;
+                }
+              });
+    
+              this.partidos.push(partidosEquipo);
+    
+              this.equipoSelec = this.seleccionEquipo(this.cambioEq);
+            })
+          );
+        });
+      });
 
   }
 
@@ -214,7 +216,7 @@ export class HomePage implements OnInit, OnDestroy {
       }
     });
 
-    this.getEquiposUsuario().forEach(equipo =>{
+    this.equiposUsuario.forEach(equipo =>{
       if (equipo.id === equipoId){
         this.equipo = equipo;
       }
@@ -226,20 +228,20 @@ export class HomePage implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  getEquiposUsuario(){
-    let equipos = [];
+  private loadEquiposUsuario() {
+    let allPromises : Promise<Equipo>[] = [];
     let roles = this.security.getUsuario('roles');
     if( roles ){
       for( let rol of roles )
       if( 'equipo' in rol ) 
-        equipos.push( rol.equipo );
+        allPromises.push( this.db.getEquipo( rol.equipo.id ) );
     }
-    return equipos;
+    return Promise.all(allPromises);
   }
 
   getEquipoIdDefecto(){
-    if( this.getEquiposUsuario().length > 0 ){
-      return this.getEquiposUsuario()[0].id;
+    if( this.equiposUsuario.length > 0 ){
+      return this.equiposUsuario[0].id;
     }
     return '';
   }

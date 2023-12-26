@@ -7,12 +7,14 @@ import { Auth,
   sendPasswordResetEmail,
   signInWithEmailAndPassword, 
   signOut } from '@angular/fire/auth';
+  
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
+import { where } from "@angular/fire/firestore";
+import { Subject } from "rxjs";
+
 import { Db } from "./db.service";
 import { Usuario } from "../modelo/usuario";
-import { where } from "@angular/fire/firestore";
 import { LocalStorageService } from "./local.storage.service";
-import { Subject } from "rxjs";
 
 /* function signature must be of type CanActivateFn */
 export function permissionsGuard(route: ActivatedRouteSnapshot,
@@ -151,6 +153,10 @@ export class SecurityService {
     });
   }
 
+  deleteUser() : void {
+    this.auth.
+  }
+
   isAuthenticated() : boolean {
     if(this.userDb && this.userData)
       return true;
@@ -163,6 +169,7 @@ export class SecurityService {
   }
 
   logout() {
+    console.log("valor de userAuthenticated:", this.userAuthenticated );
     this.userAuthenticated.next( null );
     return signOut(this.auth);
   }
