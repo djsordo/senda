@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuController, ToastController } from '@ionic/angular';
+import { AlertController, MenuController, ToastController } from '@ionic/angular';
 
 import { environment } from '../../environments/environment';
-import { SecurityService } from '../services/security.service';
+import { ErrorInfo, SecurityService } from '../services/security.service';
 
 @Component({
   selector: 'app-login',
@@ -15,11 +15,13 @@ export class LoginPage implements OnInit {
     email: '',
     password: ''
   };
+  error : ErrorInfo = null;
 
   constructor(private menu: MenuController,
     private securityService: SecurityService,
     private router: Router,
-    private toastController: ToastController) { }
+    private toastController: ToastController, 
+    private alertController: AlertController ) { }
 
   ngOnInit() {
     this.menu.enable(false);
@@ -34,10 +36,14 @@ export class LoginPage implements OnInit {
       this.activarMenu();
       this.router.navigate(['/home']);
     })
-    .catch(error => {
+    .catch((error : ErrorInfo) => {
       console.log(error);
-      alert('No existe el usuario o clave erronea. ' + error.code + ' - ' + error.message)
+      this.error = error;
     });
+  }
+
+  clearError() : void {
+    this.error = null;
   }
 
   async toast( message : string ){
@@ -56,6 +62,30 @@ export class LoginPage implements OnInit {
 
   desactivarMenu(){
     this.menu.enable(false);
+  }
+
+  deleteMySelf(){
+    this.alertController.create({
+      header: '¿Seguro?', 
+      buttons: [
+        {
+          text: 'Cancelar', 
+          role: 'cancel'
+        }, 
+        {
+          text: 'Ok', 
+          role: 'confirm', 
+          handler: () => {
+            this.securityService.deleteCurrentLoggedUser()
+              .then( () => {
+                this.toast("Usuario borrado");
+                this.error = null;
+              });
+          }
+        }
+      ]
+    })
+    .then( ( theAlert ) => theAlert.present() );
   }
 
 }

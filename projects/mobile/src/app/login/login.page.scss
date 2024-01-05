@@ -27,3 +27,11 @@ ion-menu-button {
   text-decoration: none;
   font-size: smaller;
 }
+
+
+.cardCloseButton {
+  position: relative; 
+  z-index: 100; 
+  float: right;
+}
+

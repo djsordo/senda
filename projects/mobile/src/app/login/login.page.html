@@ -36,6 +36,35 @@
         </ion-button>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="error">
+      <ion-col>
+        <ion-card style="background-color: #fae16d;">
+          <ion-button fill="clear" class="cardCloseButton" (click)="clearError()">X</ion-button>
+          <ion-card-header>
+            <ion-card-title>{{error?.title}}</ion-card-title>
+          </ion-card-header>
+        
+          <ion-card-content>
+            {{error?.message}}
+          </ion-card-content>
+          <ion-card-content *ngIf="error?.code === 'userNotFound'">Si lo deseas, puedes darte de baja 
+            definitivamente de la aplicación
+          </ion-card-content>
+          <ion-button *ngIf="error?.code === 'userNotFound'"
+              expand="block"
+              size="large"
+              color="warning"
+              style="margin: 20px"
+              (click)="deleteMySelf()">
+            Darme de baja definitivamente 
+            <ion-icon name="trash-outline" 
+            size="large" 
+            color="danger" 
+            style="display: unset; color: #806801;"></ion-icon>
+          </ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
 <!--     <ion-row>
       <ion-col class="ion-text-center">
         <ion-button routerLink="/registro">

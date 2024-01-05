@@ -74,7 +74,6 @@ export class BuscarComponent implements OnInit {
   }
 
   async onClickBorrar() {
-    console.log( this.getSelectedId() );
     const alert = await this.alertController.create({
       header: '¿Seguro?',
       buttons: [

@@ -60,13 +60,14 @@ export class AppComponent implements OnInit {
   }
 
   public onClickShare(){
-    this.menu.toggle();
-    this.router.navigate( ['./share' ] );
+    this.router.navigate( ['./share' ] )
+      .then( () => this.menu.close() );
   }
 
   public onClickLogout(){
     this.security.logout();
-    this.router.navigate( ['./login'] );
+    this.router.navigate( ['./login'] )
+      .then( () => this.menu.close() );
   }
 
 }

@@ -3,6 +3,7 @@ import { Auth,
   User, 
   UserCredential, 
   createUserWithEmailAndPassword, 
+  deleteUser, 
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword, 
@@ -36,7 +37,11 @@ export function permissionsGuard(route: ActivatedRouteSnapshot,
   return true;
 }
 
-
+export class ErrorInfo {
+  constructor( public code : string, 
+               public title : string, 
+               public message : string ) {}
+}
 
 @Injectable({
   providedIn: 'root'
@@ -131,30 +136,40 @@ export class SecurityService {
       signInWithEmailAndPassword(this.auth, email, password)
         .then((userData : UserCredential ) => {
           this.userData = userData.user;
-          console.log('segunda respuesta llamada login'); 
-          console.log( userData );
           this.db.getUsuario( where( 'email', '==', userData.user.email ) )
             .then( usuarios => {
-              this.userDb = usuarios[0];
-              this.storeUserInformation( this.userData, this.userDb );
-              this.userAuthenticated.next( [this.userData, this.userDb ]);
-              resolve( [this.userData, this.userDb] );
+              if( usuarios.length > 0 ){
+                this.userDb = usuarios[0];
+                this.storeUserInformation( this.userData, this.userDb );
+                this.userAuthenticated.next( [this.userData, this.userDb ]);
+                resolve( [this.userData, this.userDb] );
+              }else{
+                reject( new ErrorInfo( "userNotFound", 
+                "Usuario no encontrado", 
+                `Usuario no existente, posiblemente ha sido 
+                borrado: debe ponerse en contacto con su 
+                administrador` ) );
+              }
             })
             .catch((error) => {
-              reject( `Parece que el alta de este usuario 
-              no se ha realizado correctamente, 
-              habla con los administradores 
-              (error de base de datos)` );
+              reject( new ErrorInfo( "databaseError", 
+              "Error de base de datos", 
+              `La verificación de registro de este 
+              usuario no ha funcionado bien, por 
+              favor intentelo más tarde. ${error}` ) );
             });
         })
         .catch( (error) => {
-          reject( `No existe el usuario o clave erronea. ${error.code}` );
+          if( error.code === 'auth/network-request-failed' ){
+            reject( new ErrorInfo(error.code, 
+            "No hay conexión", 
+            `No hay conexión con la base de datos, inténtelo más tarde ${error.code}`));
+          }
+          reject( new ErrorInfo(error.code, 
+            "Usuario no encontrado", 
+            `No existe el usuario o clave erronea. ${error.code}` ) );
         } );
     });
-  }
-
-  deleteUser() : void {
-    this.auth.
   }
 
   isAuthenticated() : boolean {
@@ -169,7 +184,6 @@ export class SecurityService {
   }
 
   logout() {
-    console.log("valor de userAuthenticated:", this.userAuthenticated );
     this.userAuthenticated.next( null );
     return signOut(this.auth);
   }
@@ -191,6 +205,10 @@ export class SecurityService {
             roleElement === userRole.nombre || roleElement === '*' );
         return found;
       });
+  }
+
+  deleteCurrentLoggedUser(){
+    return deleteUser( this.userData );
   }
 
 }
