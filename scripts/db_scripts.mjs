@@ -4,6 +4,7 @@
  */
 'use strict';
 
+import { stdin, stdout } from 'node:process';
 import { deleteApp, initializeApp } from "firebase/app";
 import { getFirestore,
         collection, 
@@ -13,7 +14,7 @@ import { getFirestore,
         deleteDoc} from "firebase/firestore";
 
 
-import { environment } from "../PRIVATE/environment.mjs";
+import { environment } from "../PRIVATE/environment.prod.mjs";
 
 
 function make_id( ...values ){
@@ -53,8 +54,83 @@ function make_id( ...values ){
   return s;
 }
 
+function printHeader( headerInfo ) {
+  for( let [k, v] of Object.entries( headerInfo ) ){
+    stdout.write( "| " );
+    stdout.write( k.padEnd( v, " " ) );
+  }
+  stdout.write("|\n");
+  for( let v of Object.values( headerInfo ) ){
+    stdout.write( "| " );
+    stdout.write( "-".padEnd( v, "-" ) );
+  }
+  stdout.write("|\n");
+}
 
-function main( firebaseConfig ) {
+
+function list( firebaseConfig, collectionName, perRecordCallback, headerInfo ) {
+  let app = initializeApp( firebaseConfig );
+  let db = getFirestore(app);
+
+  printHeader( headerInfo ); 
+  getDocs(collection(db, collectionName))
+  .then( (qSnap) => {
+    Promise.all( qSnap.docs.map( (doc) => perRecordCallback( db, doc.id, doc.data(), headerInfo ) ) )
+    .then( (results) => onFinishApplication( app, results ) );
+    });
+
+}
+
+function listEventos( firebaseConfig ){
+  let headerInfo = { accionPrincipal : 20, 
+                     timestamp : 40 }
+  list( firebaseConfig, 
+      "eventos", 
+      onEvento, 
+      headerInfo );
+}
+
+function listPartidos( firebaseConfig ){
+  let headerInfo = { temporadaId: 10, 
+                    tipo: 10, 
+                    rival : 30, 
+                    ubicacion: 30, 
+                    jornada: 3 };
+  list( firebaseConfig, 
+     "partidos", 
+     onPartido, 
+     headerInfo );
+}
+
+function onPartido( db, docId, docData, headerInfo ){
+  //console.log( `docId: ${docId}` );
+  //console.log( docData );
+  for( let [k,v] of Object.entries(headerInfo) ){
+    stdout.write( "| " ); 
+    if( typeof docData[k] === "string" )
+      stdout.write( docData[k].padEnd(v, " " ) );
+    else if( typeof docData[k] === "number" )
+      stdout.write( docData[k].toString().padEnd(v, " ") );
+    else if( typeof docData[k] === "object" )
+      stdout.write( docData[k].toString() )
+    else 
+      stdout.write( "".padEnd(v, " ") );
+  }
+  stdout.write( "|\n" );
+}
+
+function onEvento( db, docId, docData, headerInfo ){
+  //console.log( `docId: ${docId}` );
+  //console.log( docData );
+  let timestamp = docData.timestamp; 
+  stdout.write( "| " ); 
+  stdout.write( docData.accionPrincipal.padEnd( headerInfo["accionPrincipal"], " ") );
+  stdout.write( "| " ); 
+  stdout.write( docData.timestamp.toDate().toString().padEnd( headerInfo["timestamp"], " ") );
+  stdout.write( "|\n" );
+}
+
+function updateUsers( firebaseConfig ) {
   let app = initializeApp( firebaseConfig );
   let db = getFirestore(app);
   
@@ -102,8 +178,11 @@ function onFinishApplication( app, results ) {
   console.log( 'finished' );
 }
 
-console.log('hello');
-main( environment.firebaseConfig );
+console.log('Scripts for configuring the database');
+listEventos( environment.firebaseConfig );
+
+
+
 
 
 

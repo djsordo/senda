@@ -4,10 +4,12 @@ import { Auth,
   UserCredential, 
   createUserWithEmailAndPassword, 
   deleteUser, 
+  getAuth, 
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword, 
-  signOut } from '@angular/fire/auth';
+  signOut, 
+  updatePassword} from '@angular/fire/auth';
   
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import { where } from "@angular/fire/firestore";
@@ -16,6 +18,7 @@ import { Subject } from "rxjs";
 import { Db } from "./db.service";
 import { Usuario } from "../modelo/usuario";
 import { LocalStorageService } from "./local.storage.service";
+import { ErrorInfo } from "../common/error-info";
 
 /* function signature must be of type CanActivateFn */
 export function permissionsGuard(route: ActivatedRouteSnapshot,
@@ -37,11 +40,6 @@ export function permissionsGuard(route: ActivatedRouteSnapshot,
   return true;
 }
 
-export class ErrorInfo {
-  constructor( public code : string, 
-               public title : string, 
-               public message : string ) {}
-}
 
 @Injectable({
   providedIn: 'root'
@@ -95,7 +93,10 @@ export class SecurityService {
       })
   
     });
+  }
 
+  async cambiarContrasenia( newPassword : string ) {
+    return updatePassword( this.userData, newPassword );
   }
 
   private storeUserInformation( userData: User, userDb: Usuario ){

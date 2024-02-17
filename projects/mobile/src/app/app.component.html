@@ -29,10 +29,12 @@
             </ion-item>
             <div style="margin-left: 1.7em;" *ngIf="p.submenu && p.showDetails">
               <ion-list>
-                <ion-item #currentSubmenu *ngFor="let subp of p.submenu"
-                    routerLinkActive="selected"
-                    [routerLink]="subp.url"
-                    (click)="onClickElement( subp, currentSubmenu )">
+                <span *ngFor="let subp of p.submenu">
+                  <ion-item #currentSubmenu 
+                  *ngIf="userHasRole( subp.allowedRoles )"
+                  routerLinkActive="selected"
+                  [routerLink]="subp.url"
+                  (click)="onClickElement( subp, currentSubmenu )">
                   <ion-icon slot="start" *ngIf="subp.icon"
                             name="subp.icon"
                             [ios]="subp.icon + '-outline'"
@@ -41,6 +43,7 @@
                             src="{{subp.src}}"></ion-icon>
                   <ion-label>{{ subp.title }}</ion-label>
                 </ion-item>
+                </span>
               </ion-list>
             </div>
           </span>
@@ -49,6 +52,10 @@
         </ion-list>
       </ion-content>
       <ion-footer>
+        <ion-item (click)="onClickConfig()" style="cursor: pointer;" routerLinkActive="selected">
+          <ion-icon slot="start" src="assets/user-settings.svg"></ion-icon>
+          <ion-label>Configuración</ion-label>
+        </ion-item>
         <ion-item (click)="onClickShare()" style="cursor: pointer;" routerLinkActive="selected">
           <ion-icon slot="start" src="assets/speaker.svg"></ion-icon>
           <ion-label>Compartir</ion-label>

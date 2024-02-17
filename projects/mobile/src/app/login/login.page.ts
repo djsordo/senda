@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, MenuController, ToastController } from '@ionic/angular';
 
-import { environment } from '../../environments/environment';
-import { ErrorInfo, SecurityService } from '../services/security.service';
+import { SecurityService } from '../services/security.service';
+import { ErrorInfo } from '../common/error-info';
 
 @Component({
   selector: 'app-login',
@@ -89,4 +89,6 @@ export class LoginPage implements OnInit {
   }
 
 }
+
+
 

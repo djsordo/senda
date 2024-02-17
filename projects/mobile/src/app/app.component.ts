@@ -59,6 +59,11 @@ export class AppComponent implements OnInit {
     }
   }
 
+  public onClickConfig(){
+    this.router.navigate( [ './user-settings' ] )
+      .then( () => this.menu.close() );
+  }
+
   public onClickShare(){
     this.router.navigate( ['./share' ] )
       .then( () => this.menu.close() );

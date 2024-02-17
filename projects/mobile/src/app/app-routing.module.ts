@@ -132,6 +132,10 @@ const routes: Routes = [
     loadChildren: () => import('./privacy/privacy.module').then( m => m.PrivacyModule )
   },
   {
+    path: 'user-settings', 
+    loadChildren: () => import('./user-settings/user-settings.module').then( m => m.UserSettingsModule )
+  },
+  {
     path: 'share',
     loadChildren: () => import('./share/share.module').then( m => m.SharePageModule )
   },

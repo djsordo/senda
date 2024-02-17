@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+<form (ngSubmit)="onSubmit( currentForm )" #currentForm="ngForm">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Contraseña</ion-card-title>
+      <ion-card-subtitle>Puedes cambiar tu contraseña aquí</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Nueva contraseña:</ion-label>
+        <ion-input type="password"
+          id="newPassword1"
+          name="newPassword1"
+          ngModel
+          required
+          #newPassword1="ngModel"></ion-input>
+      </ion-item>
+      <ion-text color="danger" 
+        style="text-align: end; display: block;" 
+        *ngIf="!newPassword1.valid && newPassword1.touched">Nueva contraseña es obligatoria</ion-text>
+      <ion-item>
+        <ion-label>Repita:</ion-label>
+        <ion-input type="password"
+          id="newPassword2"
+          name="newPassword2"
+          ngModel
+          required="true"
+          #newPassword2="ngModel"></ion-input>
+      </ion-item>
+      <ion-text color="danger" 
+        style="text-align: end; display: block;" 
+        *ngIf="!newPassword2.valid && newPassword2.touched">Debe repetir la nueva contraseña</ion-text>
+      <ion-card color="warning" *ngIf="newPassword1.touched && newPassword2.touched && newPassword1.value !== newPassword2.value">
+        <ion-card-content>
+          <ion-text style="color: #6a3907; ">Ambas contraseñas deben coincidir</ion-text>
+        </ion-card-content>
+      </ion-card>
+      <ion-card color="success" *ngIf="passwordChangeResult === 'success'">
+        <ion-card-content>
+          <ion-text>Contraseña cambiada satisafctoriamente</ion-text>
+        </ion-card-content>
+      </ion-card>
+      <ion-card color="danger" *ngIf="passwordChangeResult === 'failure'">
+        <ion-card-content>
+          <ion-text>Se ha producido un error al cambiar la contraseña</ion-text>
+        </ion-card-content>
+      </ion-card>
+      <ion-button slot="right"  style="float: right;"
+        type="submit"
+        [disabled]="!currentForm.valid || newPassword1.value !== newPassword2.value">
+        Cambiar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</form>
+
+<form (ngSubmit)="onDeleteAccount()">
+
+  <ion-card style="border: 4px solid red;">
+    <ion-card-header >
+      <ion-card-title>Borrar mi cuenta</ion-card-title>
+      <ion-card-subtitle>OJO!!! esta operación no se podrá deshacer</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button color="danger" expand="block" type="submit">
+        Borrar mi cuenta
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+    
+</form>
+
+</ion-content>
+
+

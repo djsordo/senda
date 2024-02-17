@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -13,6 +13,7 @@ import { Equipo } from '../../../modelo/equipo';
 import { where } from '@angular/fire/firestore';
 import { Usuario } from '../../../modelo/usuario';
 import { properCase } from '../../../services/string-util';
+import { ErrorInfo } from '../../../common/error-info';
 
 
 @Component({
@@ -33,9 +34,7 @@ export class CambioComponent implements OnInit, OnDestroy {
   clubes : Club[];
   equipos : Equipo[];
 
-  errorsWhenSaving = 
-      { error : false, 
-        message : 'ESTO ES UNA PRUEBA' };
+  errorsWhenSaving : ErrorInfo = null;
 
   constructor( private mainPage : AdminUsuariosPage, 
                private db : Db,
@@ -162,42 +161,59 @@ export class CambioComponent implements OnInit, OnDestroy {
           let dbResult = results[1];
           if( loginResult.status === 'fulfilled' && dbResult.status === 'fulfilled' ){
             this.mainPage.onSelectedId.emit( null );
-            this.router.navigate( ['/','admin','usuarios'] );        
+            this.router.navigate( ['/','admin','usuarios'] );
             this.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha creado con contraseña "123456"`);
           }else{
-            this.errorsWhenSaving.error = true;
+            this.errorsWhenSaving = new ErrorInfo( 'unknownError', 
+                      "Error desconocido", 
+                      "Se ha producido un error desconocido al guardar usuario" );
             if( dbResult.status !== 'fulfilled' ){
-              this.errorsWhenSaving.message = `Se produjo un error al guardar 
-              el usuario en base de datos. Es posible que el 
-              usuario no haya quedado bien guardado y haya que 
-              volver a crearlo. Puede que sea un problema temporal, 
-              intentalo más tarde. El error recibido es: ${dbResult.reason}`;
+              this.errorsWhenSaving = {
+                code : dbResult.reason,
+                title : 'Error de base de datos', 
+                message : `Se produjo un error al guardar 
+                el usuario en base de datos. Es posible que el 
+                usuario no haya quedado bien guardado y haya que 
+                volver a crearlo. Puede que sea un problema temporal, 
+                intentalo más tarde. El error recibido es: ${dbResult.reason}`
+              };
             }
             if( loginResult.status !== 'fulfilled' ){
               switch( loginResult.reason.errorCode ){
                 case 'auth/email-already-in-use':
-                  this.errorsWhenSaving.message = `Se produjo un error al registrar
-                  los datos en google porque esta dirección corresponde a un usuario
-                  ya registrado`;
+                  this.errorsWhenSaving = {
+                    code : loginResult.reason.errorCode, 
+                    title : 'Usuario ya registrado', 
+                    message : `Se produjo un error al registrar
+                    los datos en google porque esta dirección corresponde a un usuario
+                    ya registrado`
+                  };
                   break; 
                 case 'auth/invalid-email':
-                  this.errorsWhenSaving.message = `Se produjo un error al registrar
-                  los datos en google porque según google el correo es inválido`;
+                  this.errorsWhenSaving = {
+                    code : loginResult.reason.errorCode,
+                    title : 'Correo inválido', 
+                    message : `Se produjo un error al registrar
+                    los datos en google porque el correo es inválido`
+                  };
                   break;
                 default: 
-                  this.errorsWhenSaving.message = `Se produjo un error al registrar
-                  los datos en google: ${loginResult.reason.errorCode}`;  
+                  this.errorsWhenSaving = {
+                    code : loginResult.reason.errorCode, 
+                    title : 'Error', 
+                    message : `Se produjo un error al registrar
+                    los datos en google: ${loginResult.reason.errorCode}`
+                  };  
                   break;
               }
             }
           }
-
         });
     }
   }
 
   clearError() {
-    this.errorsWhenSaving = { error: false, message : '' };
+    this.errorsWhenSaving = null;
   }
 
   private createForm(){
