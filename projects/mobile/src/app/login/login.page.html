@@ -16,7 +16,10 @@
       <ion-col>
         <ion-item>
           <ion-label position="floating">Correo electrónico</ion-label>
-          <ion-input type="email" [(ngModel)]="usuario.email" required></ion-input>
+          <ion-input type="email" 
+            [(ngModel)]="usuario.email" 
+            required
+            #email="ngModel"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -76,15 +79,15 @@
     <ion-row>
       <ion-col class="ion-text-center">
         <ion-button routerLink="/add-to-home">
-          <ion-icon slot="start" icon="home"></ion-icon>
+          <ion-icon slot="start" icon="home" aria-hidden="true"></ion-icon>
           <ion-label>Añadir a la pantalla de inicio</ion-label>
         </ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col class="ion-text-center">
-        <ion-button>
-          <ion-icon slot="start" src="assets/forgot_password.svg" aria-hidden="true"></ion-icon>
+        <ion-button [disabled]="email.value === ''" (click)="forgotPassword( email )">
+          <ion-icon slot="start" src="assets/forgot_password_white.svg" aria-hidden="true"></ion-icon>
           <ion-label>He olvidado mi contraseña</ion-label>
         </ion-button>
       </ion-col>

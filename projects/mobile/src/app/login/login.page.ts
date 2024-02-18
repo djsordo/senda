@@ -4,6 +4,7 @@ import { AlertController, MenuController, ToastController } from '@ionic/angular
 
 import { SecurityService } from '../services/security.service';
 import { ErrorInfo } from '../common/error-info';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -86,6 +87,26 @@ export class LoginPage implements OnInit {
       ]
     })
     .then( ( theAlert ) => theAlert.present() );
+  }
+
+  forgotPassword( email: NgModel ){
+    this.alertController.create({
+      header: 'Contraseña olvidada',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Enviar correo',
+          role: 'confirm', 
+          handler: () => {
+            this.securityService.iForgotMyPassword( email.value );
+          }
+        }
+      ]
+    })
+    .then( alert => alert.present() );
   }
 
 }

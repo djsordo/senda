@@ -126,7 +126,7 @@ export class SecurityService {
             (error de base de datos)` );
           });
         }else{
-          reject('No se ha encontrado información de autenticación');
+          reject('No se ha encontrado información de autenticación, ¿estás en la pantalla de login?');
         }
       });
     });
