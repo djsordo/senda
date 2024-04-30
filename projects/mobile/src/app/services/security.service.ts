@@ -209,7 +209,19 @@ export class SecurityService {
   }
 
   deleteCurrentLoggedUser(){
-    return deleteUser( this.userData );
+    return new Promise( (resolve, reject) => {
+      this.db.delUsuario( this.userDb.id )
+      .then( () => {
+        deleteUser( this.userData )
+        .then( () => {
+          this.logout();
+          resolve( true );
+         } )
+      })
+      .catch( (error) => {
+        reject( error );
+      });
+    });
   }
 
 }

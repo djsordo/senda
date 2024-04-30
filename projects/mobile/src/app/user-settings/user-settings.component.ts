@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 
 import { SecurityService } from '../services/security.service';
 import { Router } from '@angular/router';
+import { Db } from '../services/db.service';
 
 @Component({
   selector: 'app-user-settings', 
@@ -15,6 +16,7 @@ export class UserSettingsComponent {
   public passwordChangeResult : string = null;
 
   constructor( private security : SecurityService, 
+               private db : Db,
                private alertController : AlertController, 
                private router : Router ) {}
 
@@ -39,7 +41,6 @@ export class UserSettingsComponent {
           role: 'confirm', 
           handler: () => {
             this.security.deleteCurrentLoggedUser();
-            this.security.logout();
             this.router.navigate( ['/'] );
           }
         }

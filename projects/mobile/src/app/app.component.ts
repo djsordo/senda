@@ -72,7 +72,10 @@ export class AppComponent implements OnInit {
   public onClickLogout(){
     this.security.logout();
     this.router.navigate( ['./login'] )
-      .then( () => this.menu.close() );
+      .then( () => {
+        console.log("estoy cerrando el menu");  
+        this.menu.close();
+      } );
   }
 
 }

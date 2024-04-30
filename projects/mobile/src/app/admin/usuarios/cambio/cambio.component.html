@@ -111,7 +111,7 @@
           color="primary"
           [disabled]="!usuarioForm.valid">{{ editMode?"Cambiar":"Crear usuario" }}</ion-button>
 
-          <ion-modal [isOpen]="errorsWhenSaving">
+          <ion-modal [isOpen]="errorsWhenSaving !== null">
             <ng-template>
               <ion-header>
                 <ion-toolbar>

@@ -179,6 +179,8 @@ export class CambioComponent implements OnInit, OnDestroy {
               };
             }
             if( loginResult.status !== 'fulfilled' ){
+              console.log(loginResult.reason.errorCode);
+              console.log('auth/email-already-in-use');
               switch( loginResult.reason.errorCode ){
                 case 'auth/email-already-in-use':
                   this.errorsWhenSaving = {
