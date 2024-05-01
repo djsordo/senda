@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { where } from '@angular/fire/firestore';
         
 
 import { AdminUsuariosPage } from '../admin-usuarios.page';
@@ -10,7 +11,6 @@ import { Club } from 'projects/mobile/src/app/modelo/club';
 import { Db } from '../../../services/db.service';
 import { SecurityService } from '../../../services/security.service';
 import { Equipo } from '../../../modelo/equipo';
-import { where } from '@angular/fire/firestore';
 import { Usuario } from '../../../modelo/usuario';
 import { properCase } from '../../../services/string-util';
 import { ErrorInfo } from '../../../common/error-info';
@@ -142,6 +142,16 @@ export class CambioComponent implements OnInit, OnDestroy {
     if( this.editMode ){
       this.db.updateUsuario( this.usuarioId, usuario )
       .then( (docRef) => {
+        // si el correo electrónico del usuario no existe
+        // habrá que crearlo (el viejo quedará en nuestro
+        // sistema en un limbo legal)
+        this.security.emailExists( usuario.email )
+        .then( (emailExists) => {
+          if( !emailExists ) {
+            this.security.registro( { email: usuario.email, 
+              password: '123456' } );
+          }
+        });
         this.mainPage.onSelectedId.emit( null );
         this.router.navigate( ['/','admin','usuarios'] );        
         this.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha cambiado`);
@@ -179,8 +189,6 @@ export class CambioComponent implements OnInit, OnDestroy {
               };
             }
             if( loginResult.status !== 'fulfilled' ){
-              console.log(loginResult.reason.errorCode);
-              console.log('auth/email-already-in-use');
               switch( loginResult.reason.errorCode ){
                 case 'auth/email-already-in-use':
                   this.errorsWhenSaving = {
@@ -224,9 +232,47 @@ export class CambioComponent implements OnInit, OnDestroy {
       'usuarioSurname' : new FormControl( null, Validators.required ), 
       'usuarioEmail' : new FormControl( null, 
                     [ Validators.required, 
-                      Validators.email ] ),
+                      Validators.email ], 
+                      this.alreadyTakenEmail.bind(this) ),
       'roles' : new FormArray([])
     } );
+  }
+
+  private alreadyTakenEmail( control : FormControl ) : Promise<any> | Observable<any> {
+    return new Promise( (resolve,reject) => {
+      this.db.getUsuario( where( "email", "==", control.value ) )
+      .then( (userList) => {
+        if( userList.length > 1 ){
+          resolve( {"emailAlreadyExists": true });
+        }
+        if( userList.length == 1 ){
+          if( this.usuarioId === userList[0].id )
+            // we are editing, and the email is our email, so the value is correct
+            resolve( null ); 
+          else
+            // we are editing, but the email isn't ours, so error 
+            resolve( {"emailAlreadyExists": true });
+        }
+        // any other case is correct
+        resolve( null );
+      })
+      .catch( _ => resolve( null ) ); // in the case of an error, return OK
+    });
+    
+  }
+
+  public DEPRECATEDalreadyTakenEmail( control : FormControl ) : Promise<any> | Observable<any>  {
+    return new Promise( (resolve, reject) => {
+      this.security.emailExists( control.value ) 
+        .then( emailExists => {
+          if( emailExists ) 
+            resolve( {"emailExists" : true } );
+          else
+            resolve( null ); // ok
+          }
+        )
+        .catch( error => resolve( null ) );
+    });
   }
 
   public onAnadirPermiso() {
