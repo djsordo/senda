@@ -142,16 +142,8 @@ export class CambioComponent implements OnInit, OnDestroy {
     if( this.editMode ){
       this.db.updateUsuario( this.usuarioId, usuario )
       .then( (docRef) => {
-        // si el correo electrónico del usuario no existe
-        // habrá que crearlo (el viejo quedará en nuestro
-        // sistema en un limbo legal)
-        this.security.emailExists( usuario.email )
-        .then( (emailExists) => {
-          if( !emailExists ) {
-            this.security.registro( { email: usuario.email, 
-              password: '123456' } );
-          }
-        });
+        this.security.registro( { email: usuario.email, 
+                                  password: '123456' } );
         this.mainPage.onSelectedId.emit( null );
         this.router.navigate( ['/','admin','usuarios'] );        
         this.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha cambiado`);
@@ -233,17 +225,33 @@ export class CambioComponent implements OnInit, OnDestroy {
       'usuarioEmail' : new FormControl( null, 
                     [ Validators.required, 
                       Validators.email ], 
-                      this.alreadyTakenEmail.bind(this) ),
+                      this.alreadyTakenEmailValidator.bind(this) ),
       'roles' : new FormArray([])
     } );
   }
 
-  private alreadyTakenEmail( control : FormControl ) : Promise<any> | Observable<any> {
+  private alreadyTakenEmailValidator( control : FormControl ): Promise<any> | Observable<any> {
+    return new Promise( (resolve, reject) => {
+      this.alreadyTakenEmail( control.value )
+        .then( (result) => {
+          if( result )
+            resolve({"emailAlreadyTaken": true});
+          else
+            resolve( null ); // email not taken
+        })
+        .catch( _ => resolve( null ) ); // ignore the error, the email is not taken 
+    } );
+    
+    
+    this.alreadyTakenEmail( control.value );
+  }
+
+  private alreadyTakenEmail( email : string ) : Promise<any> {
     return new Promise( (resolve,reject) => {
-      this.db.getUsuario( where( "email", "==", control.value ) )
+      this.db.getUsuario( where( "email", "==", email ) )
       .then( (userList) => {
         if( userList.length > 1 ){
-          resolve( {"emailAlreadyExists": true });
+          resolve( true );
         }
         if( userList.length == 1 ){
           if( this.usuarioId === userList[0].id )
@@ -251,29 +259,17 @@ export class CambioComponent implements OnInit, OnDestroy {
             resolve( null ); 
           else
             // we are editing, but the email isn't ours, so error 
-            resolve( {"emailAlreadyExists": true });
+            resolve( true );
         }
         // any other case is correct
-        resolve( null );
+        resolve( false );
       })
-      .catch( _ => resolve( null ) ); // in the case of an error, return OK
+      .catch( (error) => reject( error ) ); // in the case of an error, return OK
     });
-    
   }
 
-  public DEPRECATEDalreadyTakenEmail( control : FormControl ) : Promise<any> | Observable<any>  {
-    return new Promise( (resolve, reject) => {
-      this.security.emailExists( control.value ) 
-        .then( emailExists => {
-          if( emailExists ) 
-            resolve( {"emailExists" : true } );
-          else
-            resolve( null ); // ok
-          }
-        )
-        .catch( error => resolve( null ) );
-    });
-  }
+
+
 
   public onAnadirPermiso() {
     (<FormArray> this.usuarioForm.get('roles')).push(

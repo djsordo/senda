@@ -108,19 +108,6 @@ export class SecurityService {
     this.localStorage.setItem( 'refreshToken', userData.refreshToken );
   }
 
-  emailExists( email : string ){
-    // if the result of this query 
-    // returns an empty list, the 
-    // email is not registered yet
-    return new Promise( (resolve, reject) => {
-      fetchSignInMethodsForEmail( this.auth, email )
-        .then( ( authenticationValues : string[] ) => {
-          resolve( authenticationValues.length != 0 );
-        })
-        .catch( error => reject(error) );
-    });
-  }
-
   reloadUser(){
     return new Promise( (resolve, reject) => {
       this.auth.onAuthStateChanged( (user) => {
