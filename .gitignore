@@ -2,6 +2,7 @@
 # http://git-scm.com/docs/gitignore
 
 
+
 package-lock.json
 
 src/batch/dist
@@ -48,9 +49,7 @@ npm-debug.log*
 /ios
 /coverage
 /dist
-/node_modules
-/scripts/node_modules
-/src/batch/node_modules
+node_modules/
 /platforms
 /plugins
 /www
