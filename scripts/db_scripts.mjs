@@ -4,7 +4,7 @@
  */
 'use strict';
 
-import { stdin, stdout } from 'node:process';
+import { stdout } from 'node:process';
 import { deleteApp, initializeApp } from "firebase/app";
 import { getFirestore,
         collection, 
@@ -120,8 +120,6 @@ function onPartido( db, docId, docData, headerInfo ){
 }
 
 function onEvento( db, docId, docData, headerInfo ){
-  //console.log( `docId: ${docId}` );
-  //console.log( docData );
   let timestamp = docData.timestamp; 
   stdout.write( "| " ); 
   stdout.write( docData.accionPrincipal.padEnd( headerInfo["accionPrincipal"], " ") );
@@ -179,8 +177,8 @@ function onFinishApplication( app, results ) {
 }
 
 console.log('Scripts for configuring the database');
-listEventos( environment.firebaseConfig );
-
+// listEventos( environment.firebaseConfig );
+updateUsers( environment.firebaseConfig );
 
 
 
