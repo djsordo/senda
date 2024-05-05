@@ -204,10 +204,6 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
 
-    // Se actualiza la estadística del jugador en la base de datos
-    console.log(jugador);
-    this.estadJugadorService.updateEstadJugador(jugador);
-
   }
 
   btnRoja(jugador: EstadJugador): void{
@@ -436,59 +432,77 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   }
 
    sumaEstad(accion: Acciones, jugadorId: string){
+    let jugActivo: EstadJugador; // Esadísticas del jugador para ser grabadas en BD
+
     if (accion === 'accion.gol' || accion === 'accion.lanzamiento'){
       const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
       if (accion === Acciones.gol){
         this.jugCampo[indice].goles++;
+        jugActivo = this.jugCampo[indice];
       } else {
         this.jugCampo[indice].lanzFallados++;
+        jugActivo = this.jugCampo[indice];
       }
     } else if (accion === Acciones.parada){
       // Parada del portero
       this.portero[0].paradas++;
+      jugActivo = this.portero[0];
     } else if (accion === Acciones.golRival && this.portero[0]){
       // Gol del rival. Sólo contará si existe un portero.
         this.portero[0].golesRival++;
+        jugActivo = this.portero[0];
     } else if (accion === Acciones.robo){
       if (this.portero[0]?.datos.id === jugadorId){
         // Es un robo del portero
         this.portero[0].robos++;
+        jugActivo = this.portero[0];
       } else {
         // Es un robo de un jugador de campo
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
         this.jugCampo[indice].robos++;
+        jugActivo = this.jugCampo[indice];
       }
     } else if (accion === Acciones.perdida){
       if (this.portero[0]?.datos.id === jugadorId){
         // Es una pérdida del portero
         this.portero[0].perdidas++;
+        jugActivo = this.portero[0];
       } else {
         // Es una pérdida de un jugador de campo
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
         this.jugCampo[indice].perdidas++;
+        jugActivo = this.jugCampo[indice];
       }
     } else if (accion === Acciones.dosMinutos){
       // 2 minutos de cualquier jugador
       const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
       this.listaExcluidos[indice].exclusiones++;
+      jugActivo = this.listaExcluidos[indice];
     } else if (accion === Acciones.tarjetaAmarilla){
       if (this.portero[0].datos.id === jugadorId){
         // Amarilla del portero
         this.portero[0].amarillas++;
+        jugActivo = this.portero[0];
       } else {
         // Amarilla de un jugador de campo
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
         this.jugCampo[indice].amarillas++;
+        jugActivo = this.jugCampo[indice];
       }
     } else if (accion === Acciones.tarjetaRoja){
       // Roja de cualquier jugador
       const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
       this.listaExcluidos[indice].rojas++;
+      jugActivo = this.listaExcluidos[indice];
     } else if (accion === Acciones.tarjetaAzul){
       // Azul de cualquier jugador
       const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
       this.listaExcluidos[indice].azules++;
+      jugActivo = this.listaExcluidos[indice];
     }
+
+    // Aquí grabamos la estadística del jugador
+    this.estadJugadorService.updateEstadJugador(jugActivo);
    }
 
   async toastOk(mensaje: string){
