@@ -10,7 +10,8 @@ import { initializeApp } from "firebase/app";
 import { collection, 
         doc, 
         getFirestore, 
-        setDoc} from 'firebase/firestore';
+        setDoc,
+        terminate} from 'firebase/firestore';
 
 import { environment } from '../mobile/src/environments/environment.js';
 
@@ -25,7 +26,11 @@ let user = JSON.parse(
     readFileSync( "cadete-femenino.json", { encoding: 'utf-8' } ) );
 
 console.log("a punto de subir el fichero");
-// setDoc( doc( firestore, 'usuarios', user.id ), user );
+let promiseSet = setDoc( doc( firestore, 'usuarios', user.id ), user );
+
+promiseSet.then( () => {
+  terminate( firestore );
+});
 
 
 

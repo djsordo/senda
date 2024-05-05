@@ -53,3 +53,5 @@ node_modules/
 /platforms
 /plugins
 /www
+/projects/batch/dist/
+
