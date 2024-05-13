@@ -14,7 +14,7 @@ import { getFirestore,
         deleteDoc} from "firebase/firestore";
 
 
-import { environment } from "../../PRIVATE/environment.mjs";
+import { environment } from "../../PRIVATE/environment.prod.mjs";
 
 
 function make_id( ...values ){

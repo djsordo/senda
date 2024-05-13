@@ -61,7 +61,6 @@ export class Db {
       return new Promise( (resolve, reject) => {
         getDoc( doc(collection(this.firestore, collectionName), clause) )
         .then( (qSnapshot : DocumentSnapshot) => {
-          console.log( qSnapshot.data() );
           resolve( {...qSnapshot.data(), "id" : qSnapshot.id } );
         })
         .catch( reason => reject( reason ) );
