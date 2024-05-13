@@ -178,8 +178,8 @@ function onFinishApplication( app, results ) {
 
 console.log('Scripts for configuring the database');
 // listEventos( environment.firebaseConfig );
-updateUsers( environment.firebaseConfig );
-
+// updateUsers( environment.firebaseConfig );
+console.log('Run on PRODUCTION on 13/05/2024');
 
 
 
