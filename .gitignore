@@ -3,9 +3,7 @@
 
 
 
-package-lock.json
 
-src/batch/dist
 **/environments/*.ts
 SECRETS.md
 PRIVATE/
@@ -49,7 +47,12 @@ npm-debug.log*
 /ios
 /coverage
 /dist
+
+# npm specific
 node_modules/
+package-lock.json
+.nx/
+
 /platforms
 /plugins
 /www
