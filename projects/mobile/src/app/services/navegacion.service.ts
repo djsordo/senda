@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
 /**
