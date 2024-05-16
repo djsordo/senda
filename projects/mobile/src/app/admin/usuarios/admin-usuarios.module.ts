@@ -7,16 +7,16 @@ import { IonicModule } from "@ionic/angular";
 import { BuscarComponent } from "./buscar/buscar.component";
 import { CambioComponent } from "./cambio/cambio.component";
 import { AdminUsuariosPage } from "./admin-usuarios.page";
-import { AdminUsuariosPageRoutingModule } from "./admin-usuarios-routing.module";
+import { AdminUsuariosRoutingModule } from "./admin-usuarios-routing.module";
 
 
 @NgModule({
   imports : [ 
     CommonModule, 
+    IonicModule,
     FormsModule, 
     ReactiveFormsModule,
-    IonicModule,
-    AdminUsuariosPageRoutingModule],
+    AdminUsuariosRoutingModule],
   declarations : [
     AdminUsuariosPage, 
     BuscarComponent,

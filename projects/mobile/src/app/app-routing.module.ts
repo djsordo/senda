@@ -39,6 +39,10 @@ export let appMenu : MenuEntry[] = [
         allowedRoles: ['admin'] },
       { title : 'Equipos',
         url : '/admin/equipos',
+        src : 'assets/team.svg', 
+        allowedRoles: ['admin'] },
+      { title: 'Jugadores', 
+        url: '/admin/jugadores', 
         icon: 'people', 
         allowedRoles: ['admin'] },
       { title : 'Usuarios',
@@ -118,6 +122,10 @@ const routes: Routes = [
   {
     path: 'admin/usuarios',
     loadChildren: () => import('./admin/usuarios/admin-usuarios.module').then( m => m.AdminUsuariosModule )
+  },
+  {
+    path: 'admin/jugadores', 
+    loadChildren: () => import('./admin/jugadores/admin-jugadores.module').then( m => m.AdminJugadoresModule )
   },
   {
     path: 'admin/partidos',

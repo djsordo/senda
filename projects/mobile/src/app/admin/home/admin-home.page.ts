@@ -13,6 +13,7 @@ export class AdminHomePage implements OnInit {
   totalUsers : number;
   totalEquipos : number;
   totalPartidos : number;
+  totalJugadores : number; 
 
 
   constructor( private db : Db ) { }
@@ -21,18 +22,18 @@ export class AdminHomePage implements OnInit {
     this.totalClubes = 0; 
     this.totalUsers = 0; 
     this.totalEquipos = 0;
+    this.totalPartidos = 0;
+    this.totalJugadores = 0; 
     this.db.getClub()
-      .then( clubList => {
-        this.totalClubes = clubList.length;
-      });
+      .then( clubList => this.totalClubes = clubList.length );
     this.db.getUsuario()
-      .then( userList => {
-        this.totalUsers = userList.length;
-      }); 
+      .then( userList => this.totalUsers = userList.length ); 
     this.db.getEquipo()
       .then( equipoList => this.totalEquipos = equipoList.length );
     this.db.getPartido()
       .then( partidoList => this.totalPartidos = partidoList.length );
+    this.db.getJugador()
+      .then( jugadorList => this.totalJugadores = jugadorList.length );
   }
 
 

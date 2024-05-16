@@ -26,7 +26,7 @@
       <ion-col>
         <ion-card [routerLink]="['../equipos']" style="height: 100%;">
           <ion-card-header>
-            <ion-icon name="people" size="large"></ion-icon>
+            <ion-icon src="assets/team.svg" size="large"></ion-icon>
             <h3>Equipos</h3>
           </ion-card-header>
           <ion-card-content>
@@ -38,6 +38,17 @@
 
     <ion-row>
       <ion-col>
+        <ion-card [routerLink]="['../jugadores']" style="height: 100%;">
+          <ion-card-header>
+            <ion-icon name="people" size="large"></ion-icon>
+            <h3>Jugadores</h3>
+          </ion-card-header>
+          <ion-card-content>
+            {{totalJugadores}} jugadores registrados
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
         <ion-card [routerLink]="['../usuarios']" style="height: 100%;">
           <ion-card-header>
             <ion-icon name="person" size="large"></ion-icon>
@@ -48,6 +59,9 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col>
         <ion-card [routerLink]="['../partidos']" style="height: 100%;">
           <ion-card-header>
