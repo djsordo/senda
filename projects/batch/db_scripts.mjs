@@ -14,7 +14,7 @@ import { getFirestore,
         deleteDoc} from "firebase/firestore";
 
 
-import { environment } from "../../PRIVATE/environment.prod.mjs";
+import { environment } from "../../private/environment.mjs";
 
 
 function make_id( ...values ){
@@ -76,7 +76,7 @@ function list( firebaseConfig, collectionName, perRecordCallback, headerInfo ) {
   getDocs(collection(db, collectionName))
   .then( (qSnap) => {
     Promise.all( qSnap.docs.map( (doc) => perRecordCallback( db, doc.id, doc.data(), headerInfo ) ) )
-    .then( (results) => onFinishApplication( app, results ) );
+    .then( (results) => onFinishApplication( app ) );
     });
 
 }
@@ -135,7 +135,7 @@ function updateUsers( firebaseConfig ) {
   getDocs(collection(db, "usuarios"))
   .then( (qSnap) => {
     Promise.all( qSnap.docs.map( (doc) => onUser( db, doc.id, doc.data() ) ) )
-      .then( (results) => onFinishApplication(app, results) );
+      .then( (results) => onFinishApplication(app) );
   });
 }
 
@@ -169,17 +169,44 @@ function onUser( db, userId, userData ){
   });
 }
 
-function onFinishApplication( app, results ) {
+function onFinishApplication( app ) {
   // release the connection to the backend
   deleteApp( app );
-        
   console.log( 'finished' );
 }
+
+
+function updateJugadores( firebaseConfig ){
+  let app = initializeApp( firebaseConfig ); 
+  let db = getFirestore( app );
+
+  getDocs( collection( db, "jugadores" ) )
+  .then( (qSnap) => 
+      Promise.all( qSnap.docs.map( 
+            (doc) => onJugador( db, doc.id, doc.data() )
+              ))
+      .then( (results) => onFinishApplication( app ) )
+  );
+}
+
+
+function onJugador( db, jugadorId, jugadorData ){
+  let newJugadorId = make_id( jugadorData.numero, jugadorData.nombre );
+  return new Promise( (resolve,reject) =>  {
+    setDoc( doc( db, "jugadores", newJugadorId ), jugadorData )
+      .then( (value) => {
+        return deleteDoc( doc( db, "jugadores", jugadorId ) );
+      })
+  } );
+}
+
+
+
 
 console.log('Scripts for configuring the database');
 // listEventos( environment.firebaseConfig );
 // updateUsers( environment.firebaseConfig );
-console.log('Run on PRODUCTION on 13/05/2024');
+updateJugadores( environment.firebaseConfig );
 
 
 
