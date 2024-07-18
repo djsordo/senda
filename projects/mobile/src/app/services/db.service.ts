@@ -56,6 +56,13 @@ export class Db {
     return deleteDoc( doc( this.firestore, collectionName, docId ) );
   }
 
+  /**
+   * Returns the requested information as a promise.
+   * 
+   * @param collectionName 
+   * @param clause 
+   * @returns 
+   */
   private simpleQuery(collectionName: string, clause?: QueryConstraint | string) {
     if (typeof clause === 'string')
       return new Promise( (resolve, reject) => {

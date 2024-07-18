@@ -5,6 +5,9 @@ import { IonicModule } from "@ionic/angular";
 
 import { AdminJugadoresRoutingModule } from "./admin-jugadores-routing.module";
 import { AdminJugadoresPage } from "./admin-jugadores.page";
+import { BuscarComponent } from "./buscar/buscar.component";
+import { EquipoPipe } from "../../pipes/equipo.pipe";
+import { EditarComponent } from "./editar/editar.component";
 
 
 @NgModule({
@@ -15,7 +18,10 @@ import { AdminJugadoresPage } from "./admin-jugadores.page";
     ReactiveFormsModule,
     AdminJugadoresRoutingModule],
   declarations: [
-    AdminJugadoresPage
+    EquipoPipe, 
+    AdminJugadoresPage, 
+    BuscarComponent, 
+    EditarComponent
   ]
 })
 export class AdminJugadoresModule{ }

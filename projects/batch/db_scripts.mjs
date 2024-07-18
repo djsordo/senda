@@ -191,6 +191,32 @@ function updateJugadores( firebaseConfig ){
 
 
 function onJugador( db, jugadorId, jugadorData ){
+  return new Promise( (resolve,reject) => {
+    if( !jugadorData["equipoId"] || jugadorData["equipoId"].length == 0 ){
+      // locate the first team 
+      getDocs( collection( db, "equipos" ) ) 
+      .then( (qSnap) => {
+        let firstEquipo = qSnap.docs[0];
+        // and set it to the current player
+        jugadorData["equipoId"] = [ firstEquipo.id ];
+        setDoc( doc( db, "jugadores", jugadorId ), jugadorData )
+          .then( _ => resolve() );
+      });
+    }else {
+      resolve();
+    }
+  });
+}
+
+/**
+ * Set a more readable player id, already executed on production 
+ * 
+ * @param {*} db 
+ * @param {*} jugadorId 
+ * @param {*} jugadorData 
+ * @returns 
+ */
+function DEPRECATEDonJugador( db, jugadorId, jugadorData ){
   let newJugadorId = make_id( jugadorData.numero, jugadorData.nombre );
   return new Promise( (resolve,reject) =>  {
     setDoc( doc( db, "jugadores", newJugadorId ), jugadorData )

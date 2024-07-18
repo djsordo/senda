@@ -39,7 +39,7 @@ export class MicrofonoPage implements OnInit {
       .then( value => { this.isAvailable = value['available'];
                         if( this.isAvailable )
                           // only required for android
-                          SpeechRecognition.requestPermission();
+                          SpeechRecognition.requestPermissions();
                           this.startRecognition();
                        } )
       .catch( value => { this.isAvailable = false; } );
