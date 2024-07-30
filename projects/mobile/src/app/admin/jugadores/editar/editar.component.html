@@ -1,56 +1,173 @@
 <ion-grid align-items-center="true">
   <ion-row>
+    <ion-col size="12" size-sm="6">
+      <!-- 
+        here goes the picture
+      -->
+      <ion-img
+      src="assets/noimage.jpg"
+      alt="Perico Pérez"></ion-img>  
+      <ion-button color="primary">Hacer foto</ion-button>
+    </ion-col>
     <ion-col>
+      <!-- begin rest of the fields -->
+      <form #datosJugador="ngForm" (ngSubmit)="onSubmit( datosJugador )">
       <ion-row>
         <ion-col>
-          <ion-img
-          src="assets/noimage.jpg"
-          alt="Perico Pérez"></ion-img>  
+          <ion-img src="assets/tee-shirt.svg" aria-hidden="true"></ion-img>
+          <ion-text id="numberTee" class="number-tee">{{numero.value}}</ion-text>
+        </ion-col>
+        <ion-col>
+          <ion-input name="numero"
+          id="numero"
+          #numero="ngModel"
+          placeHolder="Número"
+          autofocus="true"
+          inputmode="text"
+          autocorrect="off"
+          type="number"
+          ngModel></ion-input>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-button color="primary">Hacer foto</ion-button>
+         <ion-input name="nombre"
+         id="nombre"
+         #nombre="ngModel"
+         placeholder="Nombre"
+         inputmode="text"
+         autocorrect="off"
+         type="text" 
+         ngModel
+         required></ion-input>
+         <ion-label for="nombre"
+          class="validation-helper"
+          *ngIf="nombre.touched && nombre.invalid">
+          Nombre es obligatorio</ion-label>
+        </ion-col> 
+       </ion-row>
+       <ion-row>
+         <ion-col>
+           <ion-select name="genero"
+              label="Género" ngModel>
+             <ion-select-option>Masculino</ion-select-option>
+             <ion-select-option>Femenino</ion-select-option>
+             <ion-select-option>N/a</ion-select-option>
+           </ion-select>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+         <ion-col>
+           <ion-input name="edad"
+           id="edad"
+           #edad="ngModel"
+           placeholder="Edad"
+           inputmode="number"
+           autocorrect="off" 
+           ngModel
+           pattern="[0-9]+"
+           min="4"
+           max="99"
+           required></ion-input>
+           <ion-label for="edad"
+           class="validation-helper"
+           *ngIf="edad.touched && edad.invalid">
+           Edad del jugador es un dato obligatorio</ion-label>
+         </ion-col>
+       </ion-row>
+       <ion-row>
+        <ion-col>
+          <ion-checkbox name="portero"
+            id="portero"
+            #portero="ngModel"
+            labelPlacement="end"
+            ngModel>
+            <span *ngIf="portero.value" style="color: red;">Si</span>
+            <span *ngIf="!portero.value" style="color: gray;">No</span> juega como portero
+          </ion-checkbox>
         </ion-col>
-      </ion-row>
+       </ion-row>
+       <ion-row>
+        <ion-col>
+          <ion-select name="equipos"
+            label="Equipos" 
+            [multiple]="true" 
+            ngModel>
+            <ion-select-option>equipo1</ion-select-option>
+            <ion-select-option>equipo2</ion-select-option>
+          </ion-select>
+        </ion-col>
+       </ion-row>
+       <ion-row>
+        <ion-col>
+          <ion-input name="telefono"
+            id="telefono"
+            #telefono="ngModel"
+            placeholder="Teléfono"
+            inputmode="text"
+            autocapitalize="off"
+            autocorrect="off"
+            pattern="[\d\s]+"
+            type="text" 
+            ngModel></ion-input>
+          <ion-select name="tipoTelefono"
+            label="Tipo de teléfono"
+            ngModel>
+            @for( tipoTel of tiposTelefono; track tipoTel.id ){
+              <ion-select-option value="{{tipoTel.id}}">{{tipoTel.name}}</ion-select-option>
+            }
+          </ion-select>
+        </ion-col>
+       </ion-row>
+       <ion-row>
+        <ion-col>
+          <ion-input name="email"
+            placeholder="Email"
+            inputmode="email"
+            type="email" 
+            ngModel></ion-input>
+        </ion-col>
+       </ion-row>
+       <ion-row>
+        <ion-col>
+          <ion-textarea name="notas"
+            placeholder="Notas"
+            inputmode="text" 
+            ngModel></ion-textarea>
+        </ion-col>
+       </ion-row>
+       <ion-row>
+        <ion-col>
+          <ion-button id="btnSave" type="submit" 
+            color="primary"
+            [disabled]="!datosJugador.valid">Guardar</ion-button>
+          <ion-button color="secondary" [routerLink]="['/', 'admin', 'jugadores']">Cancelar</ion-button>
+        </ion-col>
+       </ion-row>
+       @if(datosJugador.touched && !datosJugador.valid) {
+        <ion-row>
+          <ion-col>
+            <label for="btnSave" class="validation-helper">Algunos datos no son correctos o faltan</label>
+          </ion-col>
+         </ion-row>
+       }
+       @if( datosJugador.touched && nombre.invalid ){
+        <ion-row>
+          <ion-col>
+            <label class="validation-helper">El nombre del jugador es un dato obligatorio</label>
+          </ion-col>
+         </ion-row>  
+       }
+       @if( datosJugador.touched && edad.invalid ){
+        <ion-row>
+          <ion-col>
+            <label class="validation-helper">La edad del jugador es un dato obligatorio</label>
+          </ion-col>
+         </ion-row>  
+       }
+      </form>
+      <!-- end rest of the fields -->
     </ion-col>
-    <ion-col>
-      <ion-row>
-        <ion-input name="jugadorName"
-              placeholder="Nombre"
-              autofocus="true"
-              inputmode="text"
-              autocorrect="off"
-              type="text"></ion-input>
-      </ion-row>
-      <ion-row>
-        <ion-input name="jugadorSurname"
-              placeholder="Apellidos"
-              inputmode="text"
-              autocorrect="off"
-              type="text"></ion-input>
-      </ion-row>
-      <ion-row>
-        <ion-select label="Género">
-          <ion-select-option>Masculino</ion-select-option>
-          <ion-select-option>Femenino</ion-select-option>
-          <ion-select-option>N/a</ion-select-option>
-        </ion-select>
-        <ion-text color="dark" style="font-size: smaller;">
-          Esta información es sólo para poner al jugador 
-          en un equipo
-        </ion-text>
-      </ion-row>
-      <ion-row>
-        <ion-input name="jugadorEdad"
-            placeholder="Edad"
-            inputmode="number"
-            autocorrect="off"></ion-input>
-      </ion-row>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-
   </ion-row>
 </ion-grid>
 
