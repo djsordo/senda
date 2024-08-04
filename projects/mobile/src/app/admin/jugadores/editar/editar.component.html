@@ -1,26 +1,40 @@
 <ion-grid align-items-center="true">
   <ion-row>
     <ion-col size="12" size-sm="6">
-      <!-- 
-        here goes the picture
-      -->
-      <ion-img
-      src="assets/noimage.jpg"
-      alt="Perico Pérez"></ion-img>  
-      <ion-button color="primary">Hacer foto</ion-button>
+      <!-- zona foto y camiseta -->
+      <ion-row> <!-- fila foto -->
+        <ion-col>
+
+          <!-- 
+            here goes the picture
+          -->
+          <ion-img
+          src="assets/noimage.jpg"
+          alt="Perico Pérez"></ion-img>  
+          <ion-button color="primary">Hacer foto</ion-button>
+
+
+        </ion-col>
+      </ion-row>
+      <ion-row class="d-md-none" *ngIf="windowWidth > 570"> <!-- fila camiseta -->
+        <ion-col class="tee-parent">
+          <ion-img class="tee-image" src="assets/tee-shirt.svg" aria-hidden="true"></ion-img>
+          <div class="tee-number">
+            <ion-text id="numberTee" class="tee-number-number">
+              {{numero.value}}</ion-text>  
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-col>
     <ion-col>
       <!-- begin rest of the fields -->
-      <form #datosJugador="ngForm" (ngSubmit)="onSubmit( datosJugador )">
+      <form #datosJugador="ngForm" (ngSubmit)="onSubmit( datosJugador.value )">
       <ion-row>
-        <ion-col>
-          <ion-img src="assets/tee-shirt.svg" aria-hidden="true"></ion-img>
-          <ion-text id="numberTee" class="number-tee">{{numero.value}}</ion-text>
-        </ion-col>
         <ion-col>
           <ion-input name="numero"
           id="numero"
           #numero="ngModel"
+          label="Número"
           placeHolder="Número"
           autofocus="true"
           inputmode="text"
@@ -93,8 +107,9 @@
             label="Equipos" 
             [multiple]="true" 
             ngModel>
-            <ion-select-option>equipo1</ion-select-option>
-            <ion-select-option>equipo2</ion-select-option>
+            @for( equipo of equipos; track equipo.id ) {
+              <ion-select-option value="{{equipo.id}}">{{equipo.categoria}} {{equipo.genero}}</ion-select-option>
+            }
           </ion-select>
         </ion-col>
        </ion-row>
@@ -136,14 +151,6 @@
             ngModel></ion-textarea>
         </ion-col>
        </ion-row>
-       <ion-row>
-        <ion-col>
-          <ion-button id="btnSave" type="submit" 
-            color="primary"
-            [disabled]="!datosJugador.valid">Guardar</ion-button>
-          <ion-button color="secondary" [routerLink]="['/', 'admin', 'jugadores']">Cancelar</ion-button>
-        </ion-col>
-       </ion-row>
        @if(datosJugador.touched && !datosJugador.valid) {
         <ion-row>
           <ion-col>
@@ -165,6 +172,14 @@
           </ion-col>
          </ion-row>  
        }
+       <ion-row>
+        <ion-col>
+          <ion-button id="btnSave" type="submit" 
+            color="primary"
+            [disabled]="!datosJugador.valid">Guardar</ion-button>
+          <ion-button color="secondary" [routerLink]="['/', 'admin', 'jugadores']">Cancelar</ion-button>
+        </ion-col>
+       </ion-row>
       </form>
       <!-- end rest of the fields -->
     </ion-col>
