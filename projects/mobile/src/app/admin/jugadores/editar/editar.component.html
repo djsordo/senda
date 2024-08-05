@@ -30,6 +30,23 @@
       <!-- begin rest of the fields -->
       <form #datosJugador="ngForm" (ngSubmit)="onSubmit( datosJugador.value )">
       <ion-row>
+        @if( isEditMode() ){
+          <ion-col size="2">
+            @if( numberIsLocked ){
+              <ion-icon src="assets/lock.svg" 
+                size="large" 
+                style="display: unset;"
+                (click)="unlockNumber()"></ion-icon>
+            }
+            @if( !numberIsLocked ){
+              <ion-icon src="assets/unlock.svg" 
+                size="large" 
+                color="danger" 
+                style="display: unset;"
+                (click)="lockNumber()"></ion-icon>
+            }
+          </ion-col>
+        }
         <ion-col>
           <ion-input name="numero"
           id="numero"
@@ -41,6 +58,13 @@
           autocorrect="off"
           type="number"
           ngModel></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          @if( isEditMode() && !numero.touched && numberIsLocked ){
+            <ion-text class="validation-helper">Si quieres modificar el número debes desbloquearlo primero</ion-text>
+          }
         </ion-col>
       </ion-row>
       <ion-row>

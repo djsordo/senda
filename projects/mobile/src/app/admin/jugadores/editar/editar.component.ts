@@ -32,6 +32,7 @@ export class EditarComponent implements OnInit, OnDestroy {
   private datosJugador = viewChild<NgForm>('datosJugador');
   public equipos : Equipo[];
   public windowWidth : number; 
+  public numberIsLocked : boolean = true;
 
   constructor( private db: Db,
                private security: SecurityService, 
@@ -73,6 +74,7 @@ export class EditarComponent implements OnInit, OnDestroy {
     this.db.getJugador( jugadorId )
     .then((jugadorData) => {
       console.log( jugadorData );
+      this.numberIsLocked = true;
       this.jugadorId = jugadorData.id;
       this.datosJugador().setValue({
         "numero": jugadorData.numero, 
@@ -92,6 +94,9 @@ export class EditarComponent implements OnInit, OnDestroy {
     console.log( datosJugador );
     if( this.isEditMode() ){
       datosJugador["fechaEdad"] = new Date();
+      // change the name of the equipos list for "equipoId"
+      datosJugador["equipoId"] = [...datosJugador["equipos"]];
+      delete datosJugador["equipos"];
       console.log( datosJugador );
       this.db.updateJugador( this.jugadorId, <Jugador> datosJugador );
     }else{
@@ -99,8 +104,16 @@ export class EditarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private isEditMode() : boolean{
+  public isEditMode() : boolean{
     return this.jugadorId != null;
+  }
+
+  public unlockNumber() {
+    this.numberIsLocked = false;
+  }
+
+  public lockNumber() {
+    this.numberIsLocked = true;
   }
 
   public onCancel(){
