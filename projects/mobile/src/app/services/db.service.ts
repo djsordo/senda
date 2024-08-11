@@ -367,6 +367,9 @@ export class Db {
         s += ' ' + obj[property];
     }
   
+    // if there aren't enough properties, add a random number at the end of the identifier
+    s += ' ' + Math.floor(Math.random() * 100000).toString();
+    
     s = s.trim().toLowerCase();
     s = s.replaceAll( /\s+/g, '_' );
     for( let repl of replacements ){

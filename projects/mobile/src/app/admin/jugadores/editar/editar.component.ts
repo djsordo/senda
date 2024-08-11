@@ -38,7 +38,7 @@ export class EditarComponent implements OnInit, OnDestroy {
   private datosJugador = viewChild<NgForm>('datosJugador');
   public equipos : Equipo[];
   public windowWidth : number; 
-  public numberIsLocked : boolean = true;
+  public numberIsLocked : boolean = false;
 
   constructor( private db: Db,
                private toastService : ToastService,
@@ -89,7 +89,7 @@ export class EditarComponent implements OnInit, OnDestroy {
         "numero": jugadorData.numero, 
         "nombre": jugadorData.nombre,
         "genero": jugadorData.genero?jugadorData.genero:this.generos.at(-1).id, 
-        "edad": jugadorData.edad?jugadorData.eddat:null,
+        "edad": jugadorData.edad?jugadorData.edad:null,
         "portero": jugadorData.portero, 
         "equipos": jugadorData.equipoId,
         "telefono": jugadorData.telefono?jugadorData.telefono:"", 
@@ -101,12 +101,12 @@ export class EditarComponent implements OnInit, OnDestroy {
 
   public onSubmit( datosJugador: Object ){
     console.log( datosJugador );
+    datosJugador["fechaEdad"] = new Date();
+    // change the name of the equipos list for "equipoId"
+    datosJugador["equipoId"] = [...datosJugador["equipos"]];
+    delete datosJugador["equipos"];
+    console.log( datosJugador );
     if( this.isEditMode() ){
-      datosJugador["fechaEdad"] = new Date();
-      // change the name of the equipos list for "equipoId"
-      datosJugador["equipoId"] = [...datosJugador["equipos"]];
-      delete datosJugador["equipos"];
-      console.log( datosJugador );
       this.db.updateJugador( this.jugadorId, <Jugador> datosJugador )
         .then( _ => 
           this.toastService.sendToast("Datos del jugador guardados con éxito")
@@ -120,7 +120,17 @@ export class EditarComponent implements OnInit, OnDestroy {
         }
         );
     }else{
-      // creation of a new player
+      this.db.addJugador( <Jugador> datosJugador )
+        .then( _ => 
+          this.toastService.sendToast("Datos del jugador guardados con éxito" )
+        )
+        .then( _ => 
+          this.router.navigate(['/', 'admin', 'jugadores'])
+        )
+        .catch( error => {
+          console.log( "error adding jugador: ", datosJugador );
+          this.toastService.sendToast("Se ha producido un error al guardar los datos del jugador, vuelva a intentarlo");
+        })
     }
   }
 
