@@ -32,20 +32,19 @@ export class BuscarComponent  implements OnInit {
       } );
   }
 
-  public onCardSelected( elementId : string ) {
+  public onCardSelected( element : {id: string} ) {
+    console.log( element );
     this.resultCards.forEach( (card) => {
-      if( card.el.id === elementId ){
+      if( card.el.id === element.id ){
         if( card.el.id !== this.currentId ){
           this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
           this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          // this.mainPage.onSelectedId.emit( elementId );
           this.currentId = card.el.id;
         }else{
           // simulamos el efecto de que un click en un elemento 
           // seleccionado, deja la selección sin efecto
           this.renderer.setStyle( card.el, "background", "" );
           this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          // this.mainPage.onSelectedId.emit( null ); 
           this.currentId = null;
         }
       }

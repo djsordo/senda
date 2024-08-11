@@ -1,3 +1,17 @@
+
+<ng-template #jugadorTemplate let-jugador>
+  <ion-card #resultCard id="{{jugador.id}}">
+    <ion-card-header>
+      <ion-icon name="person" size="large"></ion-icon>
+      <ion-card-title>{{jugador.numero}} {{jugador.nombre}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text>{{jugador?.equipoId[0] | equipoPipe | async }}</ion-text><br/>
+      <ion-text *ngIf="jugador.portero">Portero</ion-text>
+    </ion-card-content>
+  </ion-card>
+</ng-template>
+
 <ion-grid align-items-center="true">
   <ion-row>
     <ion-col>
@@ -8,17 +22,11 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-card #resultCard id="{{j.id}}" *ngFor="let j of jugadorList" 
-        (click)="onCardSelected( j.id )">
-        <ion-card-header>
-          <ion-icon name="person" size="large"></ion-icon>
-          <ion-card-title>{{j.numero}} {{j.nombre}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-text>{{j?.equipoId[0] | equipoPipe | async }}</ion-text><br/>
-          <ion-text *ngIf="j.portero">Portero</ion-text>
-        </ion-card-content>
-      </ion-card>
+      <app-selectable-card-list 
+        [objectList]="jugadorList"
+        [cardTemplate]="jugadorTemplate"
+        (cardSelect)="onCardSelected( $event )"
+      ></app-selectable-card-list>
     </ion-col>
   </ion-row>
   <ion-row>

@@ -8,15 +8,18 @@ import { AdminJugadoresPage } from "./admin-jugadores.page";
 import { BuscarComponent } from "./buscar/buscar.component";
 import { EquipoPipe } from "../../pipes/equipo.pipe";
 import { EditarComponent } from "./editar/editar.component";
+import { SelectableCardListModule } from "../../components/selectable-card-list/selectable-card-list.module";
 
 
 @NgModule({
   imports: [
-    CommonModule, 
+    CommonModule,
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminJugadoresRoutingModule],
+    AdminJugadoresRoutingModule,
+    SelectableCardListModule
+],
   declarations: [
     EquipoPipe, 
     AdminJugadoresPage, 
