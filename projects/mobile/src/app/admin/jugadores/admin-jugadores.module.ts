@@ -8,6 +8,7 @@ import { AdminJugadoresPage } from "./admin-jugadores.page";
 import { BuscarComponent } from "./buscar/buscar.component";
 import { EquipoPipe } from "../../pipes/equipo.pipe";
 import { EditarComponent } from "./editar/editar.component";
+import { NumeroJugadorExisteValidatorDirective } from "./numero-jugador-existe.directive";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { EditarComponent } from "./editar/editar.component";
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminJugadoresRoutingModule],
+    AdminJugadoresRoutingModule,
+    NumeroJugadorExisteValidatorDirective],
   declarations: [
     EquipoPipe, 
     AdminJugadoresPage, 

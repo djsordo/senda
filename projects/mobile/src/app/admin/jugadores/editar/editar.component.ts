@@ -4,7 +4,7 @@ import { Component,
         OnInit, 
         viewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SecurityService } from "../../../services/security.service";
 import { Subscription } from "rxjs";
 
@@ -12,6 +12,7 @@ import { Subscription } from "rxjs";
 import { Db } from "../../../services/db.service";
 import { Equipo } from "../../../modelo/equipo";
 import { Jugador } from "../../../modelo/jugador";
+import { ToastService } from "../../../services/toast.service";
 
 
 @Component({
@@ -27,6 +28,11 @@ export class EditarComponent implements OnInit, OnDestroy {
     {id: 'relatives', name: 'De un familiar'},
     {id: 'other', name: 'Otro'}
   ];
+  public generos = [
+    {id: 'male', name: 'Masculino'},
+    {id: 'female', name: 'Femenino'},
+    {id: 'not-specified', name: 'N/A'}
+  ];
   private paramSubscription: Subscription;
   private jugadorId: string = null;
   private datosJugador = viewChild<NgForm>('datosJugador');
@@ -35,8 +41,10 @@ export class EditarComponent implements OnInit, OnDestroy {
   public numberIsLocked : boolean = true;
 
   constructor( private db: Db,
+               private toastService : ToastService,
                private security: SecurityService, 
-               private route : ActivatedRoute ){ }
+               private route : ActivatedRoute,
+               private router : Router ){ }
 
   public ngOnInit(): void {
     this.db.getEquipo()
@@ -76,17 +84,18 @@ export class EditarComponent implements OnInit, OnDestroy {
       console.log( jugadorData );
       this.numberIsLocked = true;
       this.jugadorId = jugadorData.id;
+
       this.datosJugador().setValue({
         "numero": jugadorData.numero, 
         "nombre": jugadorData.nombre,
-        "genero": "", // jugadorData?.genero, 
-        "edad": "", //jugadorData?.edad,
+        "genero": jugadorData.genero?jugadorData.genero:this.generos.at(-1).id, 
+        "edad": jugadorData.edad?jugadorData.eddat:null,
         "portero": jugadorData.portero, 
         "equipos": jugadorData.equipoId,
-        "telefono": "", // jugadorData?.telefono, 
-        "tipoTelefono": "", // jugadorData?.tipoTelefono, 
-        "email": null, 
-        "notas": null });
+        "telefono": jugadorData.telefono?jugadorData.telefono:"", 
+        "tipoTelefono": jugadorData.tipoTelefono?jugadorData.tipoTelefono:null, 
+        "email": jugadorData.email?jugadorData.email:null, 
+        "notas": jugadorData.notas?jugadorData.notas:null });
     });
   }
 
@@ -98,7 +107,18 @@ export class EditarComponent implements OnInit, OnDestroy {
       datosJugador["equipoId"] = [...datosJugador["equipos"]];
       delete datosJugador["equipos"];
       console.log( datosJugador );
-      this.db.updateJugador( this.jugadorId, <Jugador> datosJugador );
+      this.db.updateJugador( this.jugadorId, <Jugador> datosJugador )
+        .then( _ => 
+          this.toastService.sendToast("Datos del jugador guardados con éxito")
+        )
+        .then( _ => 
+          this.router.navigate(['/', 'admin', 'jugadores'])
+        )
+        .catch( error => {
+          console.log( "error saving jugador: ", error ); 
+          this.toastService.sendToast("Se ha producido un error al guardar los datos del jugador, vuelva a intentarlo");
+        }
+        );
     }else{
       // creation of a new player
     }
@@ -120,6 +140,9 @@ export class EditarComponent implements OnInit, OnDestroy {
     
   }
 
+  public getJugadorId() {
+    return this.jugadorId;
+  }
 
 }
 

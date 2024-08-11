@@ -57,13 +57,18 @@
           inputmode="text"
           autocorrect="off"
           type="number"
-          ngModel></ion-input>
+          ngModel
+          [readonly]="numberIsLocked"
+          numeroJugadorExiste></ion-input>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           @if( isEditMode() && !numero.touched && numberIsLocked ){
             <ion-text class="validation-helper">Si quieres modificar el número debes desbloquearlo primero</ion-text>
+          }
+          @if( !numero.valid ){
+            <ion-text class="validation-helper">Ese numero de jugador ya existe</ion-text>
           }
         </ion-col>
       </ion-row>
@@ -88,9 +93,9 @@
          <ion-col>
            <ion-select name="genero"
               label="Género" ngModel>
-             <ion-select-option>Masculino</ion-select-option>
-             <ion-select-option>Femenino</ion-select-option>
-             <ion-select-option>N/a</ion-select-option>
+            @for( genero of generos; track genero.id ){
+              <ion-select-option value="{{genero.id}}">{{genero.name}}</ion-select-option>
+            }
            </ion-select>
          </ion-col>
        </ion-row>

@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
-import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
-
-import { ClubesService } from 'projects/mobile/src/app/services/clubes.service';
-import { DeportesService } from 'projects/mobile/src/app/services/deportes.service';
-import { AdminClubesPage } from '../admin-clubes.page';
 import { Db } from '../../../services/db.service';
 import { Deporte } from '../../../modelo/deporte';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'clubes-crear',
@@ -22,7 +17,7 @@ export class CrearComponent implements OnInit {
   private deportes : Deporte[];
 
   constructor( private db : Db,
-               private toastController : ToastController,
+               private toastService: ToastService,
                private router : Router, 
                private route : ActivatedRoute ) { }
 
@@ -38,23 +33,14 @@ export class CrearComponent implements OnInit {
       this.selectedDeporte = this.deportes[0];
     
     this.db.addClub( { nombre: this.nombre, deporte : this.db.getDeporteRef( this.selectedDeporte.id ) } )
-      .then( (_) => {
-        this.sendToast( `Club ${this.nombre} creado con éxito`);
+      .then( _ => {
+        this.toastService.sendToast( `Club ${this.nombre} creado con éxito`);
       })
+      .then( _ => this.router.navigate( ['..'], { relativeTo : this.route } ) )
       .catch( (reason) => {
-        this.sendToast(`Se ha producido un error al crear el club ${this.nombre}: ${reason}`);
+        this.toastService.sendToast(`Se ha producido un error al crear el club ${this.nombre}: ${reason}`);
       });
-    this.router.navigate( ['..'], { relativeTo : this.route } );
-  }
-
-  async sendToast( message : string ){
-    return this.toastController.create({
-      message: message, 
-      duration: 2000, 
-      position: 'middle'
-    }).then( (val : HTMLIonToastElement) => {
-      val.present();
-    })
+;
   }
 
   getDeportes() {

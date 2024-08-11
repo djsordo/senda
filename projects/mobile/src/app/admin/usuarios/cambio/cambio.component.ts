@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, 
+          FormControl, 
+          FormGroup, 
+          Validators } from '@angular/forms';
 import { where } from '@angular/fire/firestore';
         
 
@@ -14,6 +16,7 @@ import { Equipo } from '../../../modelo/equipo';
 import { Usuario } from '../../../modelo/usuario';
 import { properCase } from '../../../services/string-util';
 import { ErrorInfo } from '../../../common/error-info';
+import { ToastService } from '../../../services/toast.service';
 
 
 @Component({
@@ -39,7 +42,7 @@ export class CambioComponent implements OnInit, OnDestroy {
   constructor( private mainPage : AdminUsuariosPage, 
                private db : Db,
                private security : SecurityService,
-               private toastController : ToastController, 
+               private toastService : ToastService, 
                private router : Router, 
                private route : ActivatedRoute ) { }
 
@@ -146,10 +149,10 @@ export class CambioComponent implements OnInit, OnDestroy {
                                   password: '123456' } );
         this.mainPage.onSelectedId.emit( null );
         this.router.navigate( ['/','admin','usuarios'] );        
-        this.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha cambiado`);
+        this.toastService.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha cambiado`);
       })
       .catch( (reason) => {
-        this.sendToast(`Se ha producido un error al cambiar los datos de ${formVal.usuarioName} ${formVal.usuarioSurname}: ${reason}`);
+        this.toastService.sendToast(`Se ha producido un error al cambiar los datos de ${formVal.usuarioName} ${formVal.usuarioSurname}: ${reason}`);
       });
     }else{
 
@@ -164,7 +167,7 @@ export class CambioComponent implements OnInit, OnDestroy {
           if( loginResult.status === 'fulfilled' && dbResult.status === 'fulfilled' ){
             this.mainPage.onSelectedId.emit( null );
             this.router.navigate( ['/','admin','usuarios'] );
-            this.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha creado con contraseña "123456"`);
+            this.toastService.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha creado con contraseña "123456"`);
           }else{
             this.errorsWhenSaving = new ErrorInfo( 'unknownError', 
                       "Error desconocido", 
@@ -288,16 +291,6 @@ export class CambioComponent implements OnInit, OnDestroy {
 
   public deleteRol( controlIndex : number ) {
     (<FormArray> this.usuarioForm.get('roles')).removeAt( controlIndex );
-  }
-
-  private async sendToast( message : string ){
-    return this.toastController.create({
-      message: message, 
-      duration: 2000, 
-      position: 'middle'
-    }).then( (val : HTMLIonToastElement) => {
-      val.present();
-    })
   }
 
 }

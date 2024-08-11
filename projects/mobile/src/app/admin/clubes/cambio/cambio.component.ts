@@ -7,6 +7,7 @@ import { AdminClubesPage } from '../admin-clubes.page';
 import { Db } from '../../../services/db.service';
 import { Club } from '../../../modelo/club';
 import { Deporte } from '../../../modelo/deporte';
+import { ToastService } from '../../../services/toast.service';
 
 
 @Component({
@@ -21,9 +22,8 @@ export class CambioComponent implements OnInit {
   selectedDeporte : any;
   private deportes : Deporte[];
 
-  constructor( private mainPage : AdminClubesPage,
+  constructor( private toastService : ToastService,
                private db : Db,
-               private toastController : ToastController, 
                private router : Router, 
                private route : ActivatedRoute ) { }
 
@@ -54,22 +54,13 @@ export class CambioComponent implements OnInit {
       this.club.deporte = this.selectedDeporte;
     this.db.updateClub( this.club.id, this.club )
       .then( (docRef) => {
-        this.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
+        this.toastService.sendToast( `Club ${this.nombre} se ha cambiado con éxito` )
       })
+      .then( _ => this.router.navigate( ['/admin/clubes'] ) )
       .catch( (reason) => {
-        this.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
+        this.toastService.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
       });
-      this.router.navigate( ['/admin/clubes'] );
-  }
-
-  async sendToast( message : string ){
-    return this.toastController.create({
-      message: message, 
-      duration: 2000, 
-      position: 'middle'
-    }).then( (val : HTMLIonToastElement) => {
-      val.present();
-    })
+      ;
   }
 
   getDeportes() {

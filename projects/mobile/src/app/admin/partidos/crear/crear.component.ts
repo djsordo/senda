@@ -12,6 +12,7 @@ import { Partido } from 'projects/mobile/src/app/modelo/partido';
 import { fromStringToDate,
          fromDateToString } from 'projects/mobile/src/app/services/string-util';
 import { PartidosService } from 'projects/mobile/src/app/services/partidos.service';
+import { ToastService } from '../../../services/toast.service';
 
 
 interface Validation{
@@ -42,7 +43,7 @@ export class CrearComponent implements OnInit, OnDestroy {
   constructor( private usuarioService : UsuarioService,
                private equipoService : EquipoService, 
                private partidoService : PartidosService, 
-               private toastController : ToastController, 
+               private toastService : ToastService, 
                private alertController : AlertController,
                private router : Router, 
                private route : ActivatedRoute,
@@ -169,17 +170,17 @@ export class CrearComponent implements OnInit, OnDestroy {
   private createPartido( partido: any ){
     this.partidoService.addPartido( partido )
       .then( docRef =>
-          this.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} guardado` ) )
+          this.toastService.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} guardado` ) )
       .catch( reason => 
-          this.sendToast( `Se ha producido un error al crear el partido entre ${this.equipoName} y ${this.rivalName}`));
+          this.toastService.sendToast( `Se ha producido un error al crear el partido entre ${this.equipoName} y ${this.rivalName}`));
   }
 
   private updatePartido( partido : any ){
     this.partidoService.updatePartido( partido, this.partidoId )
      .then( docRef =>
-        this.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} modificado` ) )
+        this.toastService.sendToast( `Partido entre ${this.equipoName} y ${this.rivalName} modificado` ) )
     .catch( reason => 
-        this.sendToast( `Se ha producido un error al modificar el partido entre ${this.equipoName} y ${this.rivalName}`));
+        this.toastService.sendToast( `Se ha producido un error al modificar el partido entre ${this.equipoName} y ${this.rivalName}`));
   }
 
   async showAlertValidationFailed() {
@@ -222,16 +223,6 @@ export class CrearComponent implements OnInit, OnDestroy {
       return this.validation.messages[0] + " y "
           + (this.validation.messages.length - 1)
           + " errores más"; 
-  }
-
-  async sendToast( message : string ){
-    return this.toastController.create({
-      message: message, 
-      duration: 2000, 
-      position: 'middle'
-    }).then( (val : HTMLIonToastElement) => {
-      val.present();
-    })
   }
 
 }

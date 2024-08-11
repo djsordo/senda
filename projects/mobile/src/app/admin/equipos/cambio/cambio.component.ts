@@ -1,18 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { DocumentData, 
         DocumentSnapshot, 
         QuerySnapshot } from '@angular/fire/firestore';
 import { Temporada } from 'projects/mobile/src/app/modelo/temporada';
-import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
 
 import { EquipoService } from 'projects/mobile/src/app/services/equipo.service';
-import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
 import { AdminEquiposPage } from '../admin-equipos.page';
 import { TemporadaService } from 'projects/mobile/src/app/services/temporada.service';
-import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
 import { SecurityService } from '../../../services/security.service';
+import { ToastService } from '../../../services/toast.service';
 
 
 @Component({
@@ -41,10 +38,10 @@ export class CambioComponent implements OnInit {
   temporadas : Set<Temporada>;
 
   constructor( private mainPage : AdminEquiposPage, 
+               private toastService : ToastService,
                private security : SecurityService,
                private temporadaService : TemporadaService,
                private equipoService : EquipoService,
-               private toastController : ToastController, 
                private router : Router, 
                private route : ActivatedRoute ) { }
 
@@ -132,23 +129,15 @@ export class CambioComponent implements OnInit {
     this.equipoService.updateEquipo( this.docSnapshot, 
                           equipo )
       .then( (docRef) => {
-        this.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
+        this.toastService.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
+      })
+      .then( _ => {
+        this.mainPage.onSelectedId.emit( null );
+        this.router.navigate( ['..'], { relativeTo : this.route } );    
       })
       .catch( (reason) => {
-        this.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
+        this.toastService.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
       });
-    this.mainPage.onSelectedId.emit( null );
-    this.router.navigate( ['..'], { relativeTo : this.route } );
-  }
-
-  async sendToast( message : string ){
-    return this.toastController.create({
-      message: message, 
-      duration: 2000, 
-      position: 'middle'
-    }).then( (val : HTMLIonToastElement) => {
-      val.present();
-    })
   }
 
 }

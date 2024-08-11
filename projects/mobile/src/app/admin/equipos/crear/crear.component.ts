@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { DocumentData, 
           QuerySnapshot } from '@angular/fire/firestore';
 
@@ -11,6 +10,7 @@ import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
 import { Temporada } from 'projects/mobile/src/app/modelo/temporada';
 import { TemporadaService } from 'projects/mobile/src/app/services/temporada.service';
 import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'equipos-crear',
@@ -38,7 +38,7 @@ export class CrearComponent implements OnInit {
   constructor( private usuarioService : UsuarioService,
                private temporadaService : TemporadaService,
                private equipoService : EquipoService,
-               private toastController : ToastController, 
+               private toastService : ToastService, 
                private router : Router, 
                private route : ActivatedRoute,
                private localStorage : LocalStorage ) { }
@@ -120,22 +120,12 @@ export class CrearComponent implements OnInit {
     }
     this.equipoService.addEquipo( newEquipo )
       .then( (docRef) => {
-        this.sendToast( `Equipo ${this.nombre} creado con éxito` );
+        this.toastService.sendToast( `Equipo ${this.nombre} creado con éxito` );
       })
+      .then( _ => this.router.navigate( ['..'], { relativeTo : this.route } ) )
       .catch( (reason) => {
-        this.sendToast( `Se ha producido un error al crear el equipo ${this.nombre}: ${reason}`);
+        this.toastService.sendToast( `Se ha producido un error al crear el equipo ${this.nombre}: ${reason}`);
       });
-    this.router.navigate( ['..'], { relativeTo : this.route } );
-  }
-
-  async sendToast( message : string ){
-    return this.toastController.create({
-      message: message, 
-      duration: 2000, 
-      position: 'middle'
-    }).then( (val : HTMLIonToastElement) => {
-      val.present();
-    })
   }
 
 }
