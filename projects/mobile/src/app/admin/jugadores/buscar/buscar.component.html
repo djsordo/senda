@@ -16,7 +16,15 @@
   <ion-row>
     <ion-col>
       <ion-item>
-        aquí irá formulario de busqueda
+        <ion-input name="searchText"
+        placeholder="Buscar por..." 
+        autofocus="true" 
+        inputmode="text" 
+        type="text"
+        [(ngModel)]="searchText"
+        (ionInput)="onClickSearch()"></ion-input>
+        <ion-icon name="search"
+          (click)="onClickSearch()"></ion-icon>
       </ion-item>
     </ion-col>
   </ion-row>

@@ -37,7 +37,6 @@ export class BuscarComponent implements OnInit {
   }
 
   public onClickSearch() {
-    console.log( this.searchText );
     this.refreshUsuarioList();
   }
 
@@ -46,9 +45,9 @@ export class BuscarComponent implements OnInit {
   }
 
   private refreshUsuarioList() {
-    this.usuarios = [];
     this.db.getUsuario( )
     .then( (usuariosList) => {
+      this.usuarios = [];
       for( let usuario of usuariosList ){
         try{
           if( this.matchesSearch( usuario, this.searchText ) ){
