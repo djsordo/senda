@@ -13,9 +13,9 @@ const JsZip = require('jszip');
 
 
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
-const CONFIG = path.join( __dirname, "..", "PRIVATE", "config.json" );
-const CREDENTIALS_PATH = path.join( __dirname, "..", "PRIVATE", "credentials.json" );
-const TOKEN_PATH = path.join( __dirname, "..", "PRIVATE", "token.json" );
+const CONFIG = path.join( __dirname, "..", "private", "config.json" );
+const CREDENTIALS_PATH = path.join( __dirname, "..", "private", "credentials.json" );
+const TOKEN_PATH = path.join( __dirname, "..", "private", "token.json" );
 
 function getAuthorizationAndPerformDriveOperation( callback, args ){
   fs.readFile(CREDENTIALS_PATH, (err, content) => {
