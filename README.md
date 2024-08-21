@@ -2,7 +2,8 @@
 
 # Sistema de Estadísticas y Notificaciones Deportivas Asociativas
 
-Se trata de un conjunto de app móvil, aplicación web y base de datos para almacenar estadísticas para equipos aficionados o profesionales en distintos deportes
+Aplicación móvil para registro de estadísticas de equipos de Balonmano. 
+
 
 # características
 
@@ -33,8 +34,5 @@ Los perfiles de directivo y director deportivo pueden tener una visión general 
 
 Orientada a responsables (director deportivo y directiva principalmente). Tendrá una visión de conjunto de todos los datos estadísticos del club. Tendrá la posibilidad de elegir qué tipo de datos se utilizarán para cada categoría del club. Podrá crear notificaciones y avisos para el resto de perfiles.
 
-# Base de datos
-
-Atesorará el conjunto de datos estadísticos para su explotación, así como la configuración de los equipos y los calendarios de competición de las distintas categorías.
 
 
