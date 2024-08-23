@@ -11,7 +11,7 @@ const readline = require('readline');
 const { spawn } = require('child_process');
 const { config } = require('process');
 
-const CONFIG = path.join( __dirname, "..", "PRIVATE", "config.json" );
+const CONFIG = path.join( __dirname, "..", "private", "config.json" );
 
 
 

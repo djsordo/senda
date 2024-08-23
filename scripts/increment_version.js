@@ -10,7 +10,7 @@ const path = require('path');
 const readline = require('readline');
 const { spawn } = require('child_process');
 
-const CONFIG = path.join( __dirname, "..", "PRIVATE", "config.json" );
+const CONFIG = path.join( __dirname, "..", "private", "config.json" );
 
 
 function main(){
