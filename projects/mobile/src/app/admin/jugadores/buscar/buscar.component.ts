@@ -5,7 +5,6 @@ import { Component,
   ViewChildren } from '@angular/core';
 import { Db } from '../../../services/db.service';
 import { Jugador } from '../../../modelo/jugador';
-import { AdminJugadoresPage } from '../admin-jugadores.page';
 import { ToastService } from '../../../services/toast.service';
 import { StringUtil } from '../../../services/string-util';
 

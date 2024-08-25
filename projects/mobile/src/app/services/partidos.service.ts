@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 import { make_id } from '../services/string-util';
 import { Partido } from '../modelo/partido';
 import { getDoc, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { Db } from './db.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class PartidosService {
 
   partidoRef: CollectionReference<DocumentData>;
 
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore ) {
     this.partidoRef = collection( this.firestore, 'partidos' );
   }
 
@@ -32,7 +33,7 @@ export class PartidosService {
     return {} as Partido;
   }
 
-  async getPartido( id: string ) {
+  getPartido( id: string ) {
     const docRef = doc( this.partidoRef, id );
     return getDoc( docRef );
   }
@@ -72,6 +73,7 @@ export class PartidosService {
   }
 
   setEstado(id: string, estado: string){
+
     this.getPartido(id)
     .then(part => {
       const partido = part.data();
@@ -94,11 +96,6 @@ export class PartidosService {
     return make_id( partido.temporadaId,
                     partido.equipoId,
                     partido.rival );
-  }
-
-  async deletePartidoById( partidoId : string ){
-    let docRef = doc( this.partidoRef, partidoId );
-    deleteDoc( docRef );
   }
 
 }

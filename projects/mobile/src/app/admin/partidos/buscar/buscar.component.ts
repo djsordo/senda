@@ -12,6 +12,8 @@ import { AdminPartidosPage } from "../admin-partidos.page";
 import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
 import { TemporadaService } from "projects/mobile/src/app/services/temporada.service";
+import { Db } from "../../../services/db.service";
+import { Partido } from "../../../modelo/partido";
 
 @Component({
   selector: 'usuarios-buscar',
@@ -25,10 +27,9 @@ export class BuscarComponent implements OnInit {
   searchText : string = '';
   currentId : string;
 
-  constructor( private mainPage : AdminPartidosPage, 
+  constructor( private db : Db,
+              private mainPage : AdminPartidosPage, 
               private partidoService : PartidosService,
-              private equipoService : EquipoService,
-              private temporadaService : TemporadaService,
               private renderer : Renderer2, 
               private alertController : AlertController,
               private stringUtil : StringUtil ){
@@ -44,7 +45,7 @@ export class BuscarComponent implements OnInit {
   }
 
   getSelectedId(){
-    return this.mainPage.getSelectedId();
+    return this.currentId;
   }
 
   private refreshEquipoList( qSnapshot : QuerySnapshot<DocumentData> ) {
@@ -54,12 +55,12 @@ export class BuscarComponent implements OnInit {
           let partido = docSnap.data(); 
           partido['id'] = docSnap.id;
           if( 'equipoId' in partido && partido['equipoId'] )
-            this.equipoService.getEquipoById( partido['equipoId'] )
-              .then( (equipoDocSnap) => {
+            this.db.getEquipo( partido['equipoId'] )
+              .then( (equipo) => {
                 try{
-                  partido['equipoText'] = equipoDocSnap.data().nombre;
-                  partido['categoria'] = equipoDocSnap.data().categoria;
-                  partido['genero'] = equipoDocSnap.data().genero;
+                  partido['equipoText'] = equipo.nombre;
+                  partido['categoria'] = equipo.categoria;
+                  partido['genero'] = equipo.genero;
                 }catch( error ){
                   partido['equipoText'] = partido['equipoId'];
                   console.error('error getting equipo by id: ', partido['equipoId'] );
@@ -68,16 +69,16 @@ export class BuscarComponent implements OnInit {
               })
               .then( () => {
                 if( 'temporadaId' in partido && partido['temporadaId'] )
-                this.temporadaService.getTemporadaById( partido['temporadaId'] )
-                  .then( (temporadaDocSnap) => {
-                    try{
-                      partido['temporadaText'] = temporadaDocSnap.data().alias;
-                    }catch( error ){
-                      partido['temporadaText'] = partido['temporadaId'];
-                      console.error( 'error getting temporada by id', partido['temporadaId']);
-                      console.error( error );
-                    }
-                  });
+                  this.db.getTemporada( partido['temporadaId'] )
+                    .then( (temporada) => {
+                      try{
+                        partido['temporadaText'] = temporada.alias;
+                      }catch( error ){
+                        partido['temporadaText'] = partido['temporadaId'];
+                        console.error( 'error getting temporada by id', partido['temporadaId']);
+                        console.error( error );
+                      }
+                    });
               })
               .then( () => {
                 partido.hora = this.getHour( partido.fecha );
@@ -93,10 +94,15 @@ export class BuscarComponent implements OnInit {
   }
 
   private getHour( fecha : Timestamp ){
-    let d = fecha.toDate();
-    let hour = d.getHours().toString().padStart(2, '0');
-    let minute = d.getMinutes().toString().padStart(2, '0');
-    return `${hour}:${minute}`;  
+    try{
+      let d = fecha.toDate();
+      let hour = d.getHours().toString().padStart(2, '0');
+      let minute = d.getMinutes().toString().padStart(2, '0');
+      return `${hour}:${minute}`;    
+    }catch( err ){
+      // this error can be safely be ignored
+      return "";
+    }
   }
 
   private matchesSearch( partido: DocumentData, searchText : string ){
@@ -108,9 +114,8 @@ export class BuscarComponent implements OnInit {
   }
 
   async onClickBorrar() {
-    console.log( this.getSelectedId() );
     const alert = await this.alertController.create({
-      header: '¿Seguro?',
+      header: '¿Seguro? Se borrarán también las estadísticas y eventos',
       buttons: [
         {
           text: 'Cancelar',
@@ -124,9 +129,25 @@ export class BuscarComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            // this.usuarioService.deleteUsuarioById( this.mainPage.getSelectedId() );
-            this.partidoService.deletePartidoById( this.currentId );
-            this.mainPage.onSelectedId.emit( null );
+            //25/08/2024 - ya no es necesario actualizar el id de partido seleccionado
+            //this.mainPage.onSelectedId.emit( null );
+            this.db.getEstadJugador(null)
+              .then( (estadList) => {
+                for( let estad of estadList ){
+                  if( estad.partidoId === this.currentId ){
+                    this.db.delEstadJugador( estad.id );
+                  }
+                }
+              });
+            this.db.getEstadPartidos(null)
+              .then( (estadPartidoList) => {
+                for( let estad of estadPartidoList ){
+                  if( estad.partidoId == this.currentId ){
+                    this.db.delEstadPartidos( estad.id );
+                  }
+                }
+              });
+            this.db.delPartido( this.getSelectedId() );
             this.partidoService.getPartidosCallback( ( qSnapshot ) => this.refreshEquipoList.apply( this, [ qSnapshot ] ) );
           },
         },
@@ -138,20 +159,22 @@ export class BuscarComponent implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
 
-  public onCardSelected( elementId : string ) {
+  public onCardSelected( partido : Partido ) {
     this.resultCards.forEach( (card) => {
-      if( card.el.id === elementId ){
+      if( card.el.id === partido.id ){
         if( card.el.id !== this.currentId ){
           this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
           this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.mainPage.onSelectedId.emit( elementId );
+          //25/08/2024 - ya no es necesario actualizar el id de partido seleccionado          
+          //this.mainPage.onSelectedId.emit( partido.id );
           this.currentId = card.el.id;
         }else{
           // simulamos el efecto de que un click en un elemento 
           // seleccionado, deja la selección sin efecto
           this.renderer.setStyle( card.el, "background", "" );
           this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.mainPage.onSelectedId.emit( null ); 
+          //25/08/2024 - ya no es necesario actualizar el id de partido seleccionado
+          // this.mainPage.onSelectedId.emit( null ); 
           this.currentId = null;
         }
       }
@@ -160,4 +183,8 @@ export class BuscarComponent implements OnInit {
     });
   }
 
+
 }
+
+
+

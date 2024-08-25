@@ -13,6 +13,7 @@ import { fromStringToDate,
          fromDateToString } from 'projects/mobile/src/app/services/string-util';
 import { PartidosService } from 'projects/mobile/src/app/services/partidos.service';
 import { ToastService } from '../../../services/toast.service';
+import { Db } from '../../../services/db.service';
 
 
 interface Validation{
@@ -41,7 +42,7 @@ export class CrearComponent implements OnInit, OnDestroy {
   validation : Validation;
 
   constructor( private usuarioService : UsuarioService,
-               private equipoService : EquipoService, 
+               private db : Db,
                private partidoService : PartidosService, 
                private toastService : ToastService, 
                private alertController : AlertController,
@@ -95,9 +96,9 @@ export class CrearComponent implements OnInit, OnDestroy {
   public setEquipoId( equipoId : string ){
     this.equipoId = equipoId;
     this.equipoIdChanged.emit( this.equipoId );
-    this.equipoService.getEquipoById( this.equipoId )
-      .then( (equipoSnap) => {
-        let equipoData = equipoSnap.data();
+    this.db.getEquipo( this.equipoId )
+      .then( (equipo) => {
+        let equipoData = equipo;
         this.equipoName = equipoData.categoria + ' ' +
                           equipoData.genero + ' ' +
                           equipoData.temporada.alias;

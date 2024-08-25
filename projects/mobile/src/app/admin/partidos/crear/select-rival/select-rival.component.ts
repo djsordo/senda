@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 import { CrearComponent } from "../crear.component";
+import { StringUtil } from "projects/mobile/src/app/services/string-util";
 
 @Component({
   selector: 'select-rival', 
@@ -28,6 +29,7 @@ export class SelectRivalComponent implements OnInit {
 
   constructor( private partidoService : PartidosService,
                private crearComponent : CrearComponent,
+               private stringUtil : StringUtil,
                private renderer : Renderer2, 
                private router : Router,
                private route : ActivatedRoute ){
@@ -35,7 +37,12 @@ export class SelectRivalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadRivales()
+    this.refreshCardList();
+  }
+
+
+  public refreshCardList(){
+    this.loadRivales( this.crearComponent.rivalName )
     .then( () => {
       this.resultCards.changes.subscribe( () => { 
         this.markAsSelected( this.crearComponent.rivalName ); 
@@ -66,13 +73,15 @@ export class SelectRivalComponent implements OnInit {
     return this.crearComponent.equipoName;
   }
 
-  private async loadRivales(){
-    return new Promise( (resolve, reject) => {
+  private loadRivales( filter: string ){
+    return new Promise( (resolve) => {
       this.partidoService.getPartidosAsDoc()
       .then( (docList : QuerySnapshot<DocumentData>) => {
         this.rivales = new Set<string>();
         for( let docSnap of docList.docs ){
-          this.rivales.add( docSnap.data().rival );
+          if( !filter 
+            || this.stringUtil.like( docSnap.data().rival, filter ) )
+            this.rivales.add( docSnap.data().rival );
         }
         resolve( null );
       });

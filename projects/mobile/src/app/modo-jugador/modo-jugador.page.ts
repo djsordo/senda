@@ -197,14 +197,16 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       this.mostrarAlerta().then( resp => {
         /* console.log(resp); */
         if (resp === 'confirm'){
-          this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
+          // xjx this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
+          this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
           this.router.navigate(['/home']);
         };
       });
 
     } else if (this.estadoPartido === 'en preparacion'){
       // Hacemos reset de estadísticas
-      this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
+      // xjx this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
+      this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
       this.router.navigate(['/inicio-sel-jugadores']);
     }
   }

@@ -70,6 +70,21 @@
                 }
               ]
             },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/mobile/src/environments/environment.ts",
+                  "with": "projects/mobile/src/environments/environment.test.ts"
+                }
+              ],
+              "localize": false,
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "development": {
               "localize": false,
               "buildOptimizer": false,
@@ -93,6 +108,9 @@
           "configurations": {
             "production": {
               "buildTarget": "mobile:build:production"
+            },
+            "test":{
+              "buildTarget": "mobile:build:test"
             },
             "development": {
               "buildTarget": "mobile:build:development"
@@ -207,7 +225,7 @@
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
                 }
-              ],              
+              ],
               "fileReplacements": [
                 {
                   "replace": "projects/desktop/src/environments/environment.ts",
@@ -215,6 +233,20 @@
                 }
               ],
               "outputHashing": "all"
+            },
+            "test": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/desktop/src/environments/environment.ts",
+                  "with": "projects/desktop/src/environments/environment.test.ts"
+                }
+              ]
             },
             "development": {
               "buildOptimizer": false,

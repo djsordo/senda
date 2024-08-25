@@ -58,9 +58,6 @@ export class CronoComponent implements OnInit, OnDestroy {
       this.partidoService.setEstado(localStorage.getItem('partidoId'), 'en curso');
       localStorage.setItem('estadoPartido', 'en curso');
 
-      /* this.usuarioService.setEstadoPartido(localStorage.getItem('partidoId'), 'en curso');
-      this.usuarioService.updateUsuario(this.usuarioService.getUsuario()); */
-
       // Evento de comienzo de partido
       const evento = this.eventosService.newEvento();
       evento.accionPrincipal = Acciones.comienzoPartido;

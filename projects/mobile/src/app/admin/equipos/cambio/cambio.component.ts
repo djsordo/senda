@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentData, 
-        DocumentSnapshot, 
         QuerySnapshot } from '@angular/fire/firestore';
 import { Temporada } from 'projects/mobile/src/app/modelo/temporada';
 
@@ -10,6 +9,8 @@ import { AdminEquiposPage } from '../admin-equipos.page';
 import { TemporadaService } from 'projects/mobile/src/app/services/temporada.service';
 import { SecurityService } from '../../../services/security.service';
 import { ToastService } from '../../../services/toast.service';
+import { Db } from '../../../services/db.service';
+import { Equipo } from '../../../modelo/equipo';
 
 
 @Component({
@@ -18,8 +19,6 @@ import { ToastService } from '../../../services/toast.service';
   styleUrls: ['./cambio.component.scss'],
 })
 export class CambioComponent implements OnInit {
-
-  docSnapshot : DocumentSnapshot<DocumentData>; 
 
   nombre : string;
   
@@ -38,6 +37,7 @@ export class CambioComponent implements OnInit {
   temporadas : Set<Temporada>;
 
   constructor( private mainPage : AdminEquiposPage, 
+               private db : Db,
                private toastService : ToastService,
                private security : SecurityService,
                private temporadaService : TemporadaService,
@@ -54,13 +54,12 @@ export class CambioComponent implements OnInit {
         }
       });
     if( this.mainPage.getSelectedId() ){
-      this.equipoService.getEquipoById( this.mainPage.getSelectedId() )
-        .then( ( val : DocumentSnapshot<DocumentData>) => {
-          this.docSnapshot = val;
-          this.nombre = val.data().nombre; 
-          this.selectedCategoria = val.data().categoria;
-          this.selectedGenero = val.data().genero;
-          this.selectedTemporada = val.data().temporada.alias;
+      this.db.getEquipo( this.mainPage.getSelectedId() )
+        .then( ( equipo: Equipo ) => {
+          this.nombre = equipo.nombre; 
+          this.selectedCategoria = equipo.categoria;
+          this.selectedGenero = equipo.genero;
+          this.selectedTemporada = equipo.temporada.alias;
         })
         .catch( (reason) => {
           console.error( reason );
@@ -126,18 +125,18 @@ export class CambioComponent implements OnInit {
       equipo.temporada = temporada;
     }
     console.log( equipo );
-    this.equipoService.updateEquipo( this.docSnapshot, 
-                          equipo )
-      .then( (docRef) => {
-        this.toastService.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
-      })
-      .then( _ => {
-        this.mainPage.onSelectedId.emit( null );
-        this.router.navigate( ['..'], { relativeTo : this.route } );    
-      })
-      .catch( (reason) => {
-        this.toastService.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
-      });
+    // TODO: arreglar esto
+    // this.db.updateEquipo( equipo )
+    //   .then( (docRef) => {
+    //     this.toastService.sendToast( `Club ${this.nombre} se ha cambiado con éxito`);
+    //   })
+    //   .then( _ => {
+    //     this.mainPage.onSelectedId.emit( null );
+    //     this.router.navigate( ['..'], { relativeTo : this.route } );    
+    //   })
+    //   .catch( (reason) => {
+    //     this.toastService.sendToast(`Se ha producido un error al cambiar el club ${this.nombre}: ${reason}`);
+    //   });
   }
 
 }

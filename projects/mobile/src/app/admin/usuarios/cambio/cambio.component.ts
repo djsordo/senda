@@ -158,7 +158,7 @@ export class CambioComponent implements OnInit, OnDestroy {
 
       let loginPromise = this.security.registro( { email: usuario.email, 
                                                   password: '123456' } );
-      let dbPromise = this.db.addUsuario( usuario );
+      let dbPromise = this.db.addUsuario( usuario, usuario.email );
 
       Promise.allSettled([loginPromise, dbPromise])
         .then( results => {

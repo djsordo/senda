@@ -15,7 +15,8 @@
                   #home
                   value="Polideportivo Laguna"
                   [checked]="lugarSelected" 
-                  (click)="onSelectedHome()"></ion-checkbox>
+                  (click)="onSelectedHome()"
+                  (ionInput)="refreshCardList()"></ion-checkbox>
               <ion-card-header>En casa (Polideportivo Laguna)</ion-card-header>
               <ion-icon src="assets/home.svg" size="large" class="move_right"></ion-icon>
             </ion-item>

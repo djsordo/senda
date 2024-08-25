@@ -44,12 +44,6 @@ export class UsuarioService {
     return addDoc(this.usuarioRef, usuario);
   }
 
-  async updateUsuario(usuario: Usuario){
-    const path = 'usuarios/' + usuario.id;
-    const usuarioRef = doc(this.firestore, path);
-    return await setDoc(usuarioRef, usuario);
-  }
-
   getUsuarioBD(email: string): Observable<Usuario[]>{
     const usuarioRef = query(this.usuarioRef, where('email', '==', email));
     return collectionData(usuarioRef, {idField: 'id'}) as Observable<Usuario[]>;
@@ -94,13 +88,4 @@ export class UsuarioService {
     return estado;
   }
 
-  setEstadoPartido(partidoId: string, estado: string){
-    // Esta función establece el estado de un partido en el documento de usuario.
-    this.usuario.roles.forEach(rol => {
-      const pEncontrado = rol.equipo.partidos?.find(partido => partido.id === partidoId);
-      if (pEncontrado) {
-        pEncontrado.config.estado = estado;
-      }
-    });
-  }
 }

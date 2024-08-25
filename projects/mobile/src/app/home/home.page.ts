@@ -14,6 +14,7 @@ import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
 import { SecurityService } from '../services/security.service';
 import { Db } from '../services/db.service';
+import { where } from '@angular/fire/firestore';
 
 
 @Component({
@@ -72,10 +73,11 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.loadEquiposUsuario()
       .then( (allEquipos) => { 
-        this.equiposUsuario = allEquipos; 
+        this.equiposUsuario = allEquipos;
         this.equiposUsuario.forEach(equipo => {
           // Por cada rol saco los partidos del equipo
           this.cambioEq = this.getEquipoIdDefecto();
+
           this.subs.push(this.partidoService.getPartidos(equipo.id)
             .subscribe(partidos => {
               const partidosEquipo: PartidosEquipo = {
@@ -187,7 +189,10 @@ export class HomePage implements OnInit, OnDestroy {
       /* this.usuarioService.updateUsuario(this.usuario);*/
       localStorage.setItem('estadoPartido', partido.config.estado);
 
-      this.subs = this.bdGeneralService.resetPartido(partido.id);
+      // TODO: AQUI ME QUEDO, PROBANDO A VER SI ME FUNCIONA MI 
+      // IMPLEMENTACION DE RESETEAR UN PARTIDO
+      // xjx this.subs = this.bdGeneralService.resetPartido(partido.id);
+      this.bdGeneralService.resetPartido(partido.id);
     }
   }
 
@@ -228,16 +233,43 @@ export class HomePage implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  private loadEquiposUsuario() {
+  private loadEquiposUsuario( ) {
+    let roles = this.security.getUsuario('roles');
+    if( this.security.userHasRole(["admin"])){
+      return this.db.getEquipo( null );
+    }else{
+      if( roles ){
+        let equiposUsuario = [];
+        for( let rol of roles ){
+          if( 'equipo' in rol )
+            equiposUsuario.push( rol.equipo.id );
+        }
+        return new Promise( (resolve) => { resolve( equiposUsuario ) } );
+      }
+    }
+  }
+
+
+  private DEPRECATEDloadEquiposUsuario() {
+    // TODO: REPLANTEA ESTO, QUE CUANDO EL USUARIO ES ADMINISTRADOR
+    // ESTAMOS DEVOLVIENDO LA LISTA DE EQUIPOS EN UN ARRAY DE ARRAYS
     let allPromises : Promise<Equipo>[] = [];
     let roles = this.security.getUsuario('roles');
-    if( roles ){
-      for( let rol of roles )
-      if( 'equipo' in rol ) 
-        allPromises.push( this.db.getEquipo( rol.equipo.id ) );
+    if( this.security.userHasRole(["admin"])){
+      // if the user is admin, it has access to all the equipos
+      allPromises.push( this.db.getEquipo( null ) );
+    }else{
+      if( roles ){
+        for( let rol of roles ){
+          if( 'equipo' in rol ) 
+            allPromises.push( this.db.getEquipo( rol.equipo.id ) );
+        }
+      }  
     }
     return Promise.all(allPromises);
   }
+
+
 
   getEquipoIdDefecto(){
     if( this.equiposUsuario.length > 0 ){

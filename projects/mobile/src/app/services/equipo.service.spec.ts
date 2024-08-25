@@ -62,36 +62,36 @@ describe( 'EquipoService', () => {
       });
   });
 
-  it('guardamos un equipo', ( callMeOnFinish )=>{
-    let equipo = equipoService.newEquipo();
-    equipo.nombre = 'raul.luna.equipo';
-    equipoService.addEquipo( equipo )
-      .then((equipoId) =>  {
-          let check = equipoService.getEquipoByName( 'raul.luna.equipo' );
-          console.log("que es equipo ref");
-          equipoService.getEquipoById( equipoId )
-            .then( value => {
-              expect( value ).toBeTruthy();
-              expect( value.data ).toBeTruthy();
-              expect( value.data().nombre == 'raul.luna.equipo' ).toBeTrue();
-              check.then( checkRef => {
-                    /* AQUI ME QUEDO: getEquipoByName y getEquipoByRef no 
-                    devuelven los mismos valores: el uno devuelve una
-                    referencia a un documento, el otro devuelve 
-                    ¿una referencia a una colección de documentos??? 
-                    Tengo que plantearme qué es lo que realmente necesito
-                    en el API antes de seguir con el test, ya que no 
-                    acierto con el diseño del API que quiero */
-                    console.log( "ahora vamos con el check" );
-                    console.log( checkRef );
-                    callMeOnFinish();
-                   });
-            } );
-       } )
-      .catch((value) => {
-          console.log( 'esto es lo que se lanza cuando falla la creación del equipo', value );
-      })
-  });
+  // it('guardamos un equipo', ( callMeOnFinish )=>{
+  //   let equipo = equipoService.newEquipo();
+  //   equipo.nombre = 'raul.luna.equipo';
+  //   equipoService.addEquipo( equipo )
+  //     .then((equipoId) =>  {
+  //         let check = equipoService.getEquipoByName( 'raul.luna.equipo' );
+  //         console.log("que es equipo ref");
+  //         equipoService.getEquipoById( equipoId )
+  //           .then( value => {
+  //             expect( value ).toBeTruthy();
+  //             expect( value.data ).toBeTruthy();
+  //             expect( value.data().nombre == 'raul.luna.equipo' ).toBeTrue();
+  //             check.then( checkRef => {
+  //                   /* AQUI ME QUEDO: getEquipoByName y getEquipoByRef no 
+  //                   devuelven los mismos valores: el uno devuelve una
+  //                   referencia a un documento, el otro devuelve 
+  //                   ¿una referencia a una colección de documentos??? 
+  //                   Tengo que plantearme qué es lo que realmente necesito
+  //                   en el API antes de seguir con el test, ya que no 
+  //                   acierto con el diseño del API que quiero */
+  //                   console.log( "ahora vamos con el check" );
+  //                   console.log( checkRef );
+  //                   callMeOnFinish();
+  //                  });
+  //           } );
+  //      } )
+  //     .catch((value) => {
+  //         console.log( 'esto es lo que se lanza cuando falla la creación del equipo', value );
+  //     })
+  // });
 
   it('recuperamos todos los equipos', ( callMeOnFinish ) => {
     let equipo = equipoService.newEquipo();

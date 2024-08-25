@@ -24,6 +24,7 @@ const routes : Routes = [
       component : CrearComponent,
       children : [
         /*{ path : '', redirectTo: 'equipo' },*/
+        { path : 'salir',  redirectTo: '/admin/partidos' },
         { path : 'equipo', component : SelectEquipoComponent }, 
         { path : 'rival',  component : SelectRivalComponent },
         { path : 'lugar',  component : SelectLugarComponent },
@@ -33,6 +34,7 @@ const routes : Routes = [
       component : CrearComponent, 
       children : [
         { path : '', redirectTo: 'equipo', pathMatch: 'full' },
+        { path : 'salir',  redirectTo: '/admin/partidos' },
         { path : 'equipo', component : SelectEquipoComponent }, 
         { path : 'rival',  component : SelectRivalComponent },
         { path : 'lugar',  component : SelectLugarComponent },

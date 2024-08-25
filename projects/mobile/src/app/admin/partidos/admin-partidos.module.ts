@@ -12,6 +12,7 @@ import { SelectRivalComponent } from "./crear/select-rival/select-rival.componen
 import { PartidoInfoComponent } from "./crear/partido-info/partido-info.component";
 import { SelectLugarComponent } from "./crear/select-lugar/select-lugar.component";
 import { TimestampPipe } from "projects/mobile/src/app/services/timestamp-pipe";
+import { SelectableCardListModule } from "../../components/selectable-card-list/selectable-card-list.module";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { TimestampPipe } from "projects/mobile/src/app/services/timestamp-pipe";
     CommonModule, 
     FormsModule, 
     IonicModule,
-    AdminPartidosPageRoutingModule],
+    AdminPartidosPageRoutingModule,
+    SelectableCardListModule],
   declarations : [
     AdminPartidosPage, 
     BuscarComponent,

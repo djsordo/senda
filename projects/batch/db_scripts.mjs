@@ -11,7 +11,8 @@ import { getFirestore,
         getDocs, 
         setDoc,
         doc,
-        deleteDoc} from "firebase/firestore";
+        deleteDoc,
+        getDoc} from "firebase/firestore";
 
 
 import { environment } from "../../private/environment.mjs";
@@ -103,8 +104,6 @@ function listPartidos( firebaseConfig ){
 }
 
 function onPartido( db, docId, docData, headerInfo ){
-  //console.log( `docId: ${docId}` );
-  //console.log( docData );
   for( let [k,v] of Object.entries(headerInfo) ){
     stdout.write( "| " ); 
     if( typeof docData[k] === "string" )
@@ -185,13 +184,13 @@ function updateJugadores( firebaseConfig ){
       Promise.all( qSnap.docs.map( 
             (doc) => onJugador( db, doc.id, doc.data() )
               ))
-      .then( (results) => onFinishApplication( app ) )
+      .then( () => onFinishApplication( app ) )
   );
 }
 
 
 function onJugador( db, jugadorId, jugadorData ){
-  return new Promise( (resolve,reject) => {
+  return new Promise( (resolve) => {
     if( !jugadorData["equipoId"] || jugadorData["equipoId"].length == 0 ){
       // locate the first team 
       getDocs( collection( db, "equipos" ) ) 
@@ -208,31 +207,57 @@ function onJugador( db, jugadorId, jugadorData ){
   });
 }
 
-/**
- * Set a more readable player id, already executed on production 
- * 
- * @param {*} db 
- * @param {*} jugadorId 
- * @param {*} jugadorData 
- * @returns 
- */
-function DEPRECATEDonJugador( db, jugadorId, jugadorData ){
-  let newJugadorId = make_id( jugadorData.numero, jugadorData.nombre );
-  return new Promise( (resolve,reject) =>  {
-    setDoc( doc( db, "jugadores", newJugadorId ), jugadorData )
-      .then( (value) => {
-        return deleteDoc( doc( db, "jugadores", jugadorId ) );
-      })
-  } );
+
+function updatePartidos( firebaseConfig ){
+  const app = initializeApp( firebaseConfig ); 
+  const db = getFirestore( app ); 
+
+  getDocs( collection( db, "partidos" ) )
+  .then( qSnap => {
+    return qSnap.docs;
+  })
+  .then( docs => {
+    let allDocs = [];
+    for( let doc of docs ){
+      allDocs.push( doc.data() );
+    }
+    return allDocs;
+  })
+  .then( allDocs => {
+    for( let docData of allDocs ){
+      console.log( docData );
+      let temporadaId = docData.temporadaId; 
+      getDoc( doc(db, "temporadas", docData.temporadaId ) )
+        .then( tSnap => {
+          console.log( tSnap );
+          if( tSnap.exists() ){
+            docData.temporadaData = tSnap.data();
+          }else{
+            console.error( `Temporada no existe en partido`, docData );
+          }
+        });
+    }
+    return allDocs;
+  })
+  .then( () => { console.log("paso por on finish"); onFinishApplication( app ); } );
 }
-
-
 
 
 console.log('Scripts for configuring the database');
 // listEventos( environment.firebaseConfig );
+// ejecutado en todos los entornos en 04/2024
 // updateUsers( environment.firebaseConfig );
-updateJugadores( environment.firebaseConfig );
+// ejecutado en todos los entornos en 03/2024
+// updateJugadores( environment.firebaseConfig );
+//
+// desa: 
+// test: 
+// pro:
+// 24/08/2024: DE MOMENTO NO SE VA A ACTUALIZAR LISTA DE PARTIDOS 
+// updatePartidos( environment.firebaseConfig );
+
+
+
 
 
 

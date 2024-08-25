@@ -13,6 +13,7 @@ import { IonCheckbox } from "@ionic/angular";
 
 import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 import { CrearComponent } from "../crear.component";
+import { StringUtil } from "projects/mobile/src/app/services/string-util";
 
 
 @Component({
@@ -30,6 +31,7 @@ export class SelectLugarComponent implements OnInit {
   lugarSelected : string;
 
   public constructor( private partidoService : PartidosService, 
+                      private stringUtil : StringUtil,
                       private renderer : Renderer2, 
                       private router : Router, 
                       private route : ActivatedRoute,
@@ -38,7 +40,11 @@ export class SelectLugarComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.loadLugares()
+    this.refreshCardList();
+  }
+
+  public refreshCardList(){
+    this.loadLugares( this.lugarSelected )
       .then( () => {
         this.resultCards.changes.subscribe( () => {
           if( this.crearComponent.lugarName === 'Polideportivo Laguna' )
@@ -52,6 +58,7 @@ export class SelectLugarComponent implements OnInit {
     this.crearComponent.lugarChanged.subscribe( (lugarName:string) => {
       this.markAsSelected( lugarName );
     });
+
   }
 
   private markAsSelected( lugarName : string ){
@@ -67,7 +74,7 @@ export class SelectLugarComponent implements OnInit {
     });
   }
 
-  private async loadLugares(){
+  private async loadLugares( filter : string ){
     return new Promise( (resolve) => {
       this.partidoService.getPartidosAsDoc()
       .then( (docList : QuerySnapshot<DocumentData>) => {
@@ -76,6 +83,7 @@ export class SelectLugarComponent implements OnInit {
           // skip "Polideportivo Laguna" manually
           if( docSnap.data().ubicacion &&
               docSnap.data().ubicacion !== "Polideportivo Laguna" )
+            if( !filter || this )
             this.lugares.add( docSnap.data().ubicacion );
         }
         resolve( null );

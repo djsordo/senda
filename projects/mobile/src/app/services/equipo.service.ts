@@ -80,11 +80,6 @@ export class EquipoService {
     return getDoc( equipoRef );
   }
 
-  async getEquipoById( equipoId: string ){
-    let docRef = doc( this.equipoRef, equipoId );
-    return getDoc( docRef );
-  }
-
   async getEquipoByName( nombre: string ){
     const q = query( this.equipoRef, where( 'nombre', '==', nombre ) );
     return getDocs(q);
