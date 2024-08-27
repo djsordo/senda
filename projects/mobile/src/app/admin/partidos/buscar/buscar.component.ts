@@ -10,8 +10,6 @@ import { DocumentData, QuerySnapshot, Timestamp } from '@angular/fire/firestore'
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { AdminPartidosPage } from "../admin-partidos.page";
 import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
-import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
-import { TemporadaService } from "projects/mobile/src/app/services/temporada.service";
 import { Db } from "../../../services/db.service";
 import { Partido } from "../../../modelo/partido";
 
@@ -160,27 +158,10 @@ export class BuscarComponent implements OnInit {
   }
 
   public onCardSelected( partido : Partido ) {
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === partido.id ){
-        if( card.el.id !== this.currentId ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          //25/08/2024 - ya no es necesario actualizar el id de partido seleccionado          
-          //this.mainPage.onSelectedId.emit( partido.id );
-          this.currentId = card.el.id;
-        }else{
-          // simulamos el efecto de que un click en un elemento 
-          // seleccionado, deja la selección sin efecto
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          //25/08/2024 - ya no es necesario actualizar el id de partido seleccionado
-          // this.mainPage.onSelectedId.emit( null ); 
-          this.currentId = null;
-        }
-      }
-      else
-        this.renderer.setStyle( card.el, "background", "" );
-    });
+    if( partido ) 
+      this.currentId = partido.id; 
+    else
+      this.currentId = null; 
   }
 
 

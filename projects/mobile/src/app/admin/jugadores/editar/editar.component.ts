@@ -29,8 +29,8 @@ export class EditarComponent implements OnInit, OnDestroy {
     {id: 'other', name: 'Otro'}
   ];
   public generos = [
-    {id: 'male', name: 'Masculino'},
-    {id: 'female', name: 'Femenino'},
+    {id: 'masculino', name: 'Masculino'},
+    {id: 'femenino', name: 'Femenino'},
     {id: 'not-specified', name: 'N/A'}
   ];
   private paramSubscription: Subscription;

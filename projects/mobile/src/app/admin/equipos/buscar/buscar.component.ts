@@ -9,6 +9,13 @@ import { AlertController } from "@ionic/angular";
 import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { AdminEquiposPage } from "../admin-equipos.page";
+import { Db } from "../../../services/db.service";
+import { Equipo } from "../../../modelo/equipo";
+import { Evento } from "../../../modelo/evento";
+import { Partido } from "../../../modelo/partido";
+import { EstadPartido } from "../../../modelo/estadPartido";
+import { Jugador } from "../../../modelo/jugador";
+import { EstadJugador } from "../../../modelo/estadJugador";
 
 @Component({
   selector: 'equipos-buscar',
@@ -24,6 +31,7 @@ export class BuscarComponent implements OnInit {
   currentId : string;
 
   constructor( private mainPage : AdminEquiposPage, 
+              private db : Db,
               private equipoService : EquipoService,
               private renderer : Renderer2, 
               private alertController : AlertController,
@@ -40,21 +48,17 @@ export class BuscarComponent implements OnInit {
   }
 
   getSelectedId(){
-    return this.mainPage.getSelectedId();
+    return this.currentId;
   }
 
   private refreshEquipoList() {
-    this.equipos = [];
-    this.equipoService.getEquipos( )
-    .then( (equipoList) => {
-      for( let docSnap of equipoList.docs ){
-        let equipo = docSnap.data(); 
-        equipo['id'] = docSnap.id;
-        if( this.matchesSearch( equipo, this.searchText ) ){
-          this.equipos.push( equipo );
-        }
-      }
-    });
+    this.db.getEquipo()
+      .then( equipoList => {
+        this.equipos = [];
+        for( let equipo of equipoList )
+          if( this.matchesSearch( equipo, this.searchText ) )
+            this.equipos.push( equipo );
+      });
   }
 
 
@@ -69,9 +73,8 @@ export class BuscarComponent implements OnInit {
   }
 
   async onClickBorrar() {
-    console.log( this.getSelectedId() );
     const alert = await this.alertController.create({
-      header: '¿Seguro?',
+      header: '¿Seguro? Borraremos las estadísticas y partidos que haya de este equipo',
       buttons: [
         {
           text: 'Cancelar',
@@ -85,7 +88,37 @@ export class BuscarComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.equipoService.deleteEquipoById( this.mainPage.getSelectedId() );
+            Promise.all([
+              this.db.getEvento(null)
+                .then( (evtList : Evento[] ) => {
+                  for( let evento of evtList ){
+                    if( evento.equipoId === this.currentId )
+                      this.db.delEvento( evento.id );
+                  }
+                }), 
+              this.db.getPartido(null)
+                .then( (partidoList : Partido[] ) => {
+                  for( let partido of partidoList ){
+                    if( partido.equipoId === this.currentId )
+                      this.db.delPartido( partido.id ); 
+                      this.db.getEstadPartidos( null ) 
+                        .then( (estadPartidosList : EstadPartido[]) => {
+                          for( let estadPartido of estadPartidosList ){
+                            if( estadPartido.partidoId === partido.id )
+                              this.db.delEstadPartidos( estadPartido.id );
+                          }
+                        } );
+                  }
+                }), 
+                this.db.getEstadJugador(null)
+                  .then( (estadJugadorList: EstadJugador[]) => {
+                    for( let estadJugador of estadJugadorList ){
+                      if( estadJugador.partidoId === this.currentId )
+                        this.db.delEstadJugador( estadJugador.id );
+                    }
+                  })
+             ]);
+            this.equipoService.deleteEquipoById( this.currentId );
             this.mainPage.onSelectedId.emit( null );
             this.refreshEquipoList();
           },
@@ -98,26 +131,11 @@ export class BuscarComponent implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
 
-  public onCardSelected( elementId : string ) {
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === elementId ){
-        if( card.el.id !== this.currentId ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.mainPage.onSelectedId.emit( elementId );
-          this.currentId = card.el.id;
-        }else{
-          // simulamos el efecto de que un click en un elemento 
-          // seleccionado, deja la selección sin efecto
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.mainPage.onSelectedId.emit( null ); 
-          this.currentId = null;
-        }
-      }
-      else
-        this.renderer.setStyle( card.el, "background", "" );
-    });
+  public onCardSelected( equipo : Equipo | null ) {
+    if( equipo )
+      this.currentId = equipo.id;
+    else
+      this.currentId = null;
   }
 
 }

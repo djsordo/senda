@@ -13,10 +13,10 @@ import { getFirestore,
         doc,
         deleteDoc,
         getDoc} from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 import { environment } from "../../private/environment.mjs";
-
 
 function make_id( ...values ){
 
@@ -239,9 +239,46 @@ function updatePartidos( firebaseConfig ){
     }
     return allDocs;
   })
-  .then( () => { console.log("paso por on finish"); onFinishApplication( app ); } );
+  .then( () => onFinishApplication( app ) );
 }
 
+
+function onStartApplication( firebaseConfig ){
+  const app = initializeApp( firebaseConfig );
+  const auth = getAuth();
+
+  return signInWithEmailAndPassword( auth, "rlunaro@gmail.com", "123456" );
+}
+
+function populateConfig( firebaseConfig ){
+  const app = initializeApp( firebaseConfig );
+  const db = getFirestore( app );
+
+  let listaCategoriasRef = doc( db, "config", "config" );
+  setDoc( listaCategoriasRef,  {"categorias": [ 
+                                  { id: "benjamin", name: "Benjamin" },
+                                  { id: "alevin", name: "Alevin" },
+                                  { id: "infantil", name: "Infantil" },
+                                  { id: "cadete", name: "Cadete" }, 
+                                  { id: "juvenil", name: "Juvenil" },
+                                  { id: "senior", name: "Senior" } ], 
+                                "generos" : [
+                                  { id: "masculino", name: "Masculino" }, 
+                                  { id: "femenino", name: "Femenino" }, 
+                                  { id: "not-specified", name: "N/A" } ], 
+                                "tipos_partido": [
+                                  { id: "liga", name: "Liga" }, 
+                                  { id: "amistoso", name: "Amistoso" } ],
+                                "tipos_telefono": [
+                                  {id: 'personal', name: 'Personal'}, 
+                                  {id: 'parents', name: 'De sus padres'}, 
+                                  {id: 'relatives', name: 'De un familiar'},
+                                  {id: 'other', name: 'Otro'} ]
+                               } )
+  .then( () => { console.log("paso por on finish"); onFinishApplication( app ); } );
+
+  
+}
 
 console.log('Scripts for configuring the database');
 // listEventos( environment.firebaseConfig );
@@ -257,6 +294,17 @@ console.log('Scripts for configuring the database');
 // updatePartidos( environment.firebaseConfig );
 
 
+/**
+ * Crear una colección "config" para guardar datos genéricos de configuración
+ * 
+ * desa: 2024-08-26 00:59
+ * test: 
+ * pro: 
+ */
+onStartApplication( environment.firebaseConfig )
+  .then( (userCredential) => {
+    populateConfig( environment.firebaseConfig, userCredential );
+  });
 
 
 

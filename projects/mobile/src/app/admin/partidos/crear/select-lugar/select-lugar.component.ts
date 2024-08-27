@@ -44,7 +44,7 @@ export class SelectLugarComponent implements OnInit {
   }
 
   public refreshCardList(){
-    this.loadLugares( this.lugarSelected )
+    this.loadLugares( this.crearComponent.lugarName )
       .then( () => {
         this.resultCards.changes.subscribe( () => {
           if( this.crearComponent.lugarName === 'Polideportivo Laguna' )
@@ -83,8 +83,9 @@ export class SelectLugarComponent implements OnInit {
           // skip "Polideportivo Laguna" manually
           if( docSnap.data().ubicacion &&
               docSnap.data().ubicacion !== "Polideportivo Laguna" )
-            if( !filter || this )
-            this.lugares.add( docSnap.data().ubicacion );
+            if( !filter 
+              || this.stringUtil.like( docSnap.data().ubicacion, this.crearComponent.lugarName ) )
+              this.lugares.add( docSnap.data().ubicacion );
         }
         resolve( null );
       });

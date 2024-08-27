@@ -1,14 +1,13 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-
 import { IonicModule } from "@ionic/angular";
 
 import { BuscarComponent } from "./buscar/buscar.component";
-import { CambioComponent } from "./cambio/cambio.component";
-import { CrearComponent } from "./crear/crear.component";
+import { EditarComponent } from "./editar/editar.component";
 import { AdminEquiposPage } from "./admin-equipos.page";
 import { AdminEquiposPageRoutingModule } from "./admin-equipos-routing.module";
+import { SelectableCardListModule } from "../../components/selectable-card-list/selectable-card-list.module";
 
 
 @NgModule({
@@ -16,12 +15,13 @@ import { AdminEquiposPageRoutingModule } from "./admin-equipos-routing.module";
     CommonModule, 
     FormsModule, 
     IonicModule,
-    AdminEquiposPageRoutingModule],
+    AdminEquiposPageRoutingModule,
+    SelectableCardListModule
+  ],
   declarations : [
     AdminEquiposPage, 
     BuscarComponent,
-    CrearComponent,
-    CambioComponent
+    EditarComponent
   ]
 })
 export class AdminEquiposPageModule { }

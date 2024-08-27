@@ -3,14 +3,13 @@ import { Component,
         QueryList, 
         Renderer2, 
         ViewChildren } from "@angular/core";
-import { DocumentData, 
-        QueryDocumentSnapshot, 
-        QuerySnapshot } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from "@angular/router";
 
 
 import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
 import { CrearComponent } from "../crear.component";
+import { Db } from "projects/mobile/src/app/services/db.service";
+import { Equipo } from "projects/mobile/src/app/modelo/equipo";
 
 @Component({
   selector: 'select-equipo', 
@@ -22,9 +21,9 @@ import { CrearComponent } from "../crear.component";
 export class SelectEquipoComponent implements OnInit {
 
   @ViewChildren('resultCard') resultCards: QueryList<any>;
-  equipos: QueryDocumentSnapshot<DocumentData>[];
+  equipos: Equipo[];
 
-  constructor( private equipoService : EquipoService, 
+  constructor( private db : Db,
                private crearComponent : CrearComponent,
                private renderer : Renderer2, 
                private router : Router, 
@@ -34,7 +33,6 @@ export class SelectEquipoComponent implements OnInit {
   ngOnInit() {
     this.loadEquipos()
       .then( () => {
-        console.log( "equipo es: ", this.crearComponent.equipoId );
         this.resultCards.changes.subscribe(() => { this.markAsSelected( this.crearComponent.equipoId ); });
       } );
     // la subscripción es necesaria para 
@@ -57,17 +55,14 @@ export class SelectEquipoComponent implements OnInit {
     });
   }
 
-  private async loadEquipos(){
-    return new Promise( (resolve, reject) => {
-      this.equipoService.getEquipos()
-      .then( (docList: QuerySnapshot<DocumentData>) => {
-        this.equipos = [];
-        for( let docSnap of docList.docs ){
-          this.equipos.push( docSnap );
-        }
-        resolve( null );
-      });
-    });
+  private loadEquipos(){
+    return new Promise( (resolve) => {
+      this.db.getEquipo( null )
+        .then( equipoList => {
+          this.equipos = equipoList;
+          resolve( null );
+        });
+    }); 
   }
 
   public onEquipoSelected( equipoId : string ){

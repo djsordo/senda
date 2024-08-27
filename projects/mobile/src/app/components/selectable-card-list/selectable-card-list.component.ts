@@ -41,6 +41,7 @@ export class SelectableCardListComponent implements OnInit {
           this.renderer.setStyle( card.el.children[0], "background", "" );
           this.renderer.setStyle( card.el.children[0], "color", "rgb( 115, 115, 115)" );
           this.selectedId = null;
+          this.cardSelect.emit( null );
         }
       }
       else

@@ -15,8 +15,7 @@
                   #home
                   value="Polideportivo Laguna"
                   [checked]="lugarSelected" 
-                  (click)="onSelectedHome()"
-                  (ionInput)="refreshCardList()"></ion-checkbox>
+                  (click)="onSelectedHome()"></ion-checkbox>
               <ion-card-header>En casa (Polideportivo Laguna)</ion-card-header>
               <ion-icon src="assets/home.svg" size="large" class="move_right"></ion-icon>
             </ion-item>
@@ -29,7 +28,9 @@
         <ion-item>
           <ion-label position="floating">Escribe el lugar:</ion-label>
           <ion-input id="lugar-name" type="text"
-            pattern="text" [(ngModel)]="crearComponent.lugarName"></ion-input>
+            pattern="text" 
+            [(ngModel)]="crearComponent.lugarName"
+            (ionInput)="refreshCardList()"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>

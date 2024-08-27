@@ -15,9 +15,12 @@
     <ion-col>
       <ion-item>
         <ion-label>Categoría:</ion-label>
-        <!-- valorar si aquí debería ir un componente llamado "combo categorias" que recogiese una categoría por defecto -->
+        <!-- valorar si aquí debería ir un componente llamado 
+         "combo categorias" que recogiese una categoría por defecto -->
         <ion-select [(ngModel)]="selectedCategoria">
-          <ion-select-option *ngFor="let cat of categorias">{{cat}}</ion-select-option>
+          @for( cat of categorias; track cat.id ){
+            <ion-select-option value="{{cat.id}}">{{cat.name}}</ion-select-option>
+          }
           <ion-select-option value="#otro#">Otros (especificar)</ion-select-option>
         </ion-select>
       </ion-item>
@@ -26,7 +29,8 @@
   <ion-row *ngIf="selectedCategoria === '#otro#'">
     <ion-col>
       <ion-input type="text"
-            autocapitalize="on"
+            placeholder="Introduce categoría"
+            autocapitalize="off"
             autocomplete="on"
             inputmode="text"
             [(ngModel)]="typedCategoria"></ion-input>
@@ -37,8 +41,10 @@
       <ion-item>
         <ion-label>Género:</ion-label>
         <ion-select [(ngModel)]="selectedGenero">
-          <ion-select-option *ngFor="let gen of generos"
-                  [value]="gen">{{gen}}</ion-select-option>
+          @for( genero of generos; track genero.id ){
+            <ion-select-option value="{{genero.id}}">{{genero.name}}</ion-select-option>
+
+          }
           <ion-select-option value="#otro#">Otro (especificar)</ion-select-option>
         </ion-select>
       </ion-item>
@@ -60,8 +66,10 @@
       <ion-item>
         <ion-label>Temporada:</ion-label>
         <ion-select [(ngModel)]="selectedTemporada">
-          <ion-select-option *ngFor="let t of temporadas"
-                        [value]="t.alias">{{t.alias}}</ion-select-option>
+          @for( temporada of temporadas; track temporada.id ){
+            <ion-select-option *ngFor="let t of temporadas"
+            [value]="temporada.id">{{temporada.nombre}}</ion-select-option>
+          }
           <ion-select-option value="#otro#">Otra (especificar)</ion-select-option>
         </ion-select>  
       </ion-item>
@@ -80,7 +88,7 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-button color="medium" [routerLink]="['..']">Cancelar</ion-button>
+      <ion-button color="medium" [routerLink]="['/', 'admin', 'equipos']">Cancelar</ion-button>
       <ion-button color="primary" (click)="onClickCambiar()">Cambiar</ion-button>
     </ion-col>
   </ion-row>

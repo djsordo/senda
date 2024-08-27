@@ -129,14 +129,19 @@ export function fromStringToDate( fecha: string, hora = "00:00" ){
  * @param fecha 
  */
 export function fromDateToString( fecha : Timestamp ){
-  let d = fecha.toDate();
-  let year = d.getFullYear().toString();
-  let month = (d.getMonth() + 1).toString().padStart(2, '0');
-  let day = d.getDate().toString().padStart(2, '0');
-  let hour = d.getHours().toString().padStart(2, '0');
-  let minute = d.getMinutes().toString().padStart(2, '0');
-  return { "date" : `${year}-${month}-${day}`,
-          "hour" : `${hour}:${minute}` };
+  try{
+    let d = fecha.toDate();
+    let year = d.getFullYear().toString();
+    let month = (d.getMonth() + 1).toString().padStart(2, '0');
+    let day = d.getDate().toString().padStart(2, '0');
+    let hour = d.getHours().toString().padStart(2, '0');
+    let minute = d.getMinutes().toString().padStart(2, '0');
+    return { "date" : `${year}-${month}-${day}`,
+            "hour" : `${hour}:${minute}` };  
+  }catch( error ){
+    console.error( error ); 
+    return { "date" : "1970-01-01", hour: "00:00" };
+  }
 }
 
 /**

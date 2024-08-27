@@ -4,7 +4,6 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { DocumentData, DocumentSnapshot, QuerySnapshot, Timestamp} from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 
-import { UsuarioService } from 'projects/mobile/src/app/services/usuario.service';
 import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
 import { LocalStorage } from 'projects/mobile/src/app/services/local.storage.mock';
 import { EquipoService } from 'projects/mobile/src/app/services/equipo.service';
@@ -30,7 +29,6 @@ export class CrearComponent implements OnInit, OnDestroy {
 
   paramSubscription : Subscription;
   partidoId : string;
-  usuario : Usuario;
   equipoId : string; 
   equipoIdChanged = new EventEmitter<string>();
   rivalNameChanged = new EventEmitter<string>();
@@ -41,8 +39,7 @@ export class CrearComponent implements OnInit, OnDestroy {
   partidoInfo : any;
   validation : Validation;
 
-  constructor( private usuarioService : UsuarioService,
-               private db : Db,
+  constructor( private db : Db,
                private partidoService : PartidosService, 
                private toastService : ToastService, 
                private alertController : AlertController,
@@ -51,7 +48,6 @@ export class CrearComponent implements OnInit, OnDestroy {
                private localStorage : LocalStorage ) { }
 
   ngOnInit() {
-    this.initCurrentUser();
     this.equipoName = null; 
     this.rivalName = null;
     this.lugarName = null;
@@ -72,7 +68,8 @@ export class CrearComponent implements OnInit, OnDestroy {
                 temporadaId : partidoData.temporadaId, 
                 tipo : partidoData.tipo, 
                 jornada : partidoData.jornada, 
-                config : partidoData.config };
+                numPartes : partidoData.config.partes, 
+                minutosParte : partidoData.config.segsParte / 60 };
               this.router.navigate( ['equipo'], { relativeTo: this.route } );
             });
       }else{
@@ -85,14 +82,6 @@ export class CrearComponent implements OnInit, OnDestroy {
     this.paramSubscription.unsubscribe(); 
   }
 
-  private async initCurrentUser(){
-    this.usuarioService.getUsuarioBD( this.localStorage.getItem('emailUsuario') )
-    .subscribe(usuarios => {
-      this.usuario = usuarios[0];
-      console.log('usuario: ', usuarios);
-    });
-  }
-  
   public setEquipoId( equipoId : string ){
     this.equipoId = equipoId;
     this.equipoIdChanged.emit( this.equipoId );

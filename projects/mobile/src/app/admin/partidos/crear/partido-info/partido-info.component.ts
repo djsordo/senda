@@ -7,6 +7,9 @@ import { PartidosService } from "projects/mobile/src/app/services/partidos.servi
 
 import { TemporadaService } from "projects/mobile/src/app/services/temporada.service";
 import { CrearComponent } from "../crear.component";
+import { Db } from "projects/mobile/src/app/services/db.service";
+import { Temporada } from "projects/mobile/src/app/modelo/temporada";
+import { ListItem } from "projects/mobile/src/app/modelo/config";
 
 @Component({
   selector: 'partido-info', 
@@ -15,8 +18,7 @@ import { CrearComponent } from "../crear.component";
 export class PartidoInfoComponent implements OnInit {
 
   temporadas : Set<string>;
-  tipos : Set<string>;
-  configs : Map<string,any>;
+  tipos : ListItem[];
   // fecha must be in ISO format (yyyy-mm-dd)
   fecha : string;
   // hora must be in format HH:MM or HH:MM:SS
@@ -25,9 +27,11 @@ export class PartidoInfoComponent implements OnInit {
   selectedTipo : string;
   maxJornada : number;
   jornada : number;
-  selectedConfig : string;
+  numPartes: number; 
+  minutosParte: number; 
 
-  constructor( private temporadaService : TemporadaService,
+  constructor( private db : Db,
+               private temporadaService : TemporadaService,
                private partidoService : PartidosService,
                private crearComponent : CrearComponent ){
   }
@@ -35,27 +39,27 @@ export class PartidoInfoComponent implements OnInit {
   ngOnInit(): void {
     Promise.all( [
       this.loadTemporadas(),
-      this.loadAdditionalData()  
+      this.loadTiposPartidos(),
+      this.loadNumJornada()  
     ] )
     .then( ( _ ) => {
+      console.log("todo lo demas");
       if( this.crearComponent.isCreation() ){
-        if( this.tipos.size > 0 )
-          this.selectedTipo = this.tipos[0];
-        if( this.configs.size > 0 )
-          this.selectedConfig = this.configs.get( this.configs.keys[0] );
-          this.selectedTemporada = this.selectSuitableTemporada();
+        if( this.tipos.length > 0 )
+          this.selectedTipo = this.tipos[0].id;
+        this.selectedTemporada = this.selectSuitableTemporada();
         this.jornada = this.maxJornada+1;
-  
       }else{
         this.fecha = this.crearComponent.partidoInfo.fecha;  
         this.hora = this.crearComponent.partidoInfo.hora;
-        this.temporadaService.getTemporadaById( this.crearComponent.partidoInfo.temporadaId )
-          .then( ( temporadaSnap : DocumentSnapshot<DocumentData> ) => {
-            this.selectedTemporada = temporadaSnap.data().alias;
+        this.db.getTemporada( this.crearComponent.partidoInfo.temporadaId )
+          .then( ( temporada : Temporada ) => {
+            this.selectedTemporada = temporada.alias;
           });
         this.selectedTipo = this.crearComponent.partidoInfo.tipo; 
         this.jornada = this.crearComponent.partidoInfo.jornada;
-        this.selectedConfig = this.convertConfigToString( this.crearComponent.partidoInfo.config );
+        this.numPartes = this.crearComponent.partidoInfo.numPartes; 
+        this.minutosParte = this.crearComponent.partidoInfo.minutosParte;
       }
     } );
   }
@@ -70,60 +74,37 @@ export class PartidoInfoComponent implements OnInit {
     return this.temporadas[0];
   }
 
-  private async loadAdditionalData(){
-    return new Promise( (resolve, reject ) => {
-      this.partidoService.getPartidosAsDoc()
+  private loadTemporadas() {
+    return this.db.getTemporada(null)
+        .then( (temporadaList : Temporada[] ) => {
+          console.log( "paso por loadTemporadas ");
+          this.temporadas = new Set<any>();
+          for( let temporada of temporadaList ){
+            this.temporadas.add( temporada.alias );
+          }
+        }); 
+  }
+
+  private loadTiposPartidos(){
+    return this.db.getConfig("config")
+      .then( (config) => {
+        console.log( "load tipos partidos" );
+        this.tipos = config.tipos_partido; 
+      } );
+  }
+
+  private loadNumJornada(){
+    return this.partidoService.getPartidosAsDoc()
       .then( (partidosList : QuerySnapshot<DocumentData>) => {
-        this.tipos = new Set<string>();
-        this.configs = new Map<string,any>();
+        console.log("load num jornadas");
         this.maxJornada = 0;
         for( let partidoSnap of partidosList.docs ){
           let partido = partidoSnap.data();
-          this.tipos.add( partido.tipo );
-          let partidoConfig = this.convertConfigToString( partido.config );
-          if( partidoConfig && !this.configs.has( partidoConfig ) ){
-            this.configs.set( partidoConfig, partido.config );
-          }
           if( partido.jornada > this.maxJornada ){
             this.maxJornada = partido.jornada;
           }
         }
-        resolve( null );
       });
-
-    } );
-  }
-
-  public getConfigKeys() : string[] {
-    if( this.configs )
-      return Array.from( this.configs.keys() );
-    else
-      return [];
-  }
-
-  private convertConfigToString( partidoConfig : any, template = "#partes partes de #minutos minutos" ) : string {
-    if( partidoConfig ){
-      template = template.replace( '#partes', partidoConfig.partes );
-      template = template.replace( '#minutos', (partidoConfig.segsParte / 60).toString() );
-      return template;
-    }else{
-      return null;
-    }
-  }
-
-  private async loadTemporadas() {
-    return new Promise( (resolve,reject) => { 
-      this.temporadaService.getTemporadas()
-      .then( (temporadaList : QuerySnapshot<DocumentData>) => {
-        this.temporadas = new Set<any>();
-        for( let temporadaSnap of temporadaList.docs ){
-          let temporada = temporadaSnap.data();
-          temporada.id = temporadaSnap.id;
-          this.temporadas.add( temporada.alias );
-        }
-        resolve( null );
-      } );  
-    } );
   }
 
   public isCreation(){
@@ -166,7 +147,10 @@ export class PartidoInfoComponent implements OnInit {
           "temporadaId": temporadaId, 
           "tipo" : this.selectedTipo,
           "jornada" : this.jornada, 
-          "config" : this.configs.get( this.selectedConfig ) });
+          "config" : {
+            "partes": this.numPartes, 
+            "segsParte": this.minutosParte * 60 }
+        });
         this.crearComponent.verifyAndUpdatePartido();
       }
     });

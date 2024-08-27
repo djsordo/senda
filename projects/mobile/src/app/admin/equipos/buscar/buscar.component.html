@@ -1,3 +1,17 @@
+
+<ng-template #equipoTemplate let-equipo>
+  <ion-card #resultCard id="{{equipo.id}}">
+    <ion-card-header>
+      <ion-icon name="people" size="large"></ion-icon>
+      <ion-card-title>{{equipo.nombre}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text>{{equipo.categoria}} {{equipo.genero}}</ion-text> <br/>
+      <ion-text>Temporada {{equipo?.temporada.nombre}}</ion-text>
+    </ion-card-content>
+  </ion-card>
+</ng-template>
+
 <ion-grid align-items-center="true">
   <ion-row>
     <ion-col>
@@ -8,7 +22,8 @@
           autofocus="true" 
           inputmode="text" 
           type="text"
-          [(ngModel)]="searchText"></ion-input>
+          [(ngModel)]="searchText"
+          (ionInput)="onClickSearch()"></ion-input>
           <ion-icon name="search"
             (click)="onClickSearch()"></ion-icon>
         </form>
@@ -17,16 +32,11 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of equipos" (click)="onCardSelected( p.id )">
-        <ion-card-header>
-          <ion-icon name="people" size="large"></ion-icon>
-          <ion-card-title>{{p.nombre}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-text>{{p.categoria}} {{p.genero}}</ion-text> <br/>
-          <ion-text>Temporada {{p?.temporada.nombre}}</ion-text>
-        </ion-card-content>
-      </ion-card>
+      <app-selectable-card-list
+        [objectList]="equipos"
+        [cardTemplate]="equipoTemplate"
+        (cardSelect)="onCardSelected( $event )"
+      ></app-selectable-card-list>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -34,7 +44,7 @@
       <ion-button color="primary"
             [routerLink]="['nuevo']">Nuevo</ion-button>
       <ion-button color="secondary" [disabled]="!getSelectedId()"
-            [routerLink]="['cambio']">Cambiar</ion-button>
+            [routerLink]="['cambio', currentId]">Cambiar</ion-button>
       <ion-button color="danger" [disabled]="!getSelectedId()"
             (click)="onClickBorrar()">Borrar</ion-button>
     </ion-col>
