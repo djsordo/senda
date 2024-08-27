@@ -1,3 +1,16 @@
+
+<ng-template #clubTemplate let-club>
+
+  <ion-card #resultCard id="{{club.id}}">
+    <ion-card-header>
+      <ion-icon name="football" size="large"></ion-icon>
+      <ion-card-title>{{club.nombre}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+</ng-template>
+
+
 <ion-grid align-items-center="true">
   <ion-row>
     <ion-col>
@@ -18,15 +31,11 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of clubes" (click)="onCardSelected( p.id )">
-        <ion-card-header>
-          <ion-icon name="football" size="large"></ion-icon>
-          <ion-card-title>{{p.nombre}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p class="list-elem">Deporte: {{ p.deporte_name }}</p>
-        </ion-card-content>
-      </ion-card>
+      <app-selectable-card-list
+        [objectList]="clubes"
+        [cardTemplate]="clubTemplate"
+        (cardSelect)="onCardSelected( $event )">
+      </app-selectable-card-list>
     </ion-col>
   </ion-row>
   <ion-row>

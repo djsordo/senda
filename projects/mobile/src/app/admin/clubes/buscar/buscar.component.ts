@@ -12,6 +12,9 @@ import { Router } from "@angular/router";
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
 import { AdminClubesPage } from "../admin-clubes.page";
 import { Db } from "../../../services/db.service";
+import { Club } from "../../../modelo/club";
+import { Partido } from "../../../modelo/partido";
+import { Equipo } from "../../../modelo/equipo";
 
 @Component({
   selector: 'clubes-buscar',
@@ -27,7 +30,6 @@ export class BuscarComponent implements OnInit {
   currentId: string;
 
   constructor(private router : Router, 
-    private mainPage: AdminClubesPage,
     private db: Db,
     private renderer: Renderer2,
     private alertController: AlertController,
@@ -36,7 +38,6 @@ export class BuscarComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentId = null;
-    console.log("this.currentid:", this.currentId );
     this.refreshClubList();
   }
 
@@ -101,24 +102,11 @@ export class BuscarComponent implements OnInit {
     const { role } = await alert.onDidDismiss();
   }
 
-  public onCardSelected(elementId: string) {
-    this.resultCards.forEach((card) => {
-      if (card.el.id === elementId) {
-        if (card.el.id !== this.currentId) {
-          this.renderer.setStyle(card.el, "background", "var(--ion-color-primary)");
-          this.renderer.setStyle(card.el, "color", "var(--ion-color-dark)");
-          this.currentId = card.el.id;
-        } else {
-          // simulamos el efecto de que un click en un elemento 
-          // seleccionado, deja la selección sin efecto
-          this.renderer.setStyle(card.el, "background", "");
-          this.renderer.setStyle(card.el, "color", "rgb( 115, 115, 115)");
-          this.currentId = null;
-        }
-      }
-      else
-        this.renderer.setStyle(card.el, "background", "");
-    });
+  public onCardSelected(element: Club) {
+    if( element )
+      this.currentId = element.id; 
+    else
+      this.currentId = null;
   }
 
 }

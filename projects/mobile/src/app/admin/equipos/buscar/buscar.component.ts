@@ -14,7 +14,6 @@ import { Equipo } from "../../../modelo/equipo";
 import { Evento } from "../../../modelo/evento";
 import { Partido } from "../../../modelo/partido";
 import { EstadPartido } from "../../../modelo/estadPartido";
-import { Jugador } from "../../../modelo/jugador";
 import { EstadJugador } from "../../../modelo/estadJugador";
 
 @Component({

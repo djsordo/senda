@@ -9,6 +9,7 @@ import { AdminClubesPage } from "./admin-clubes.page";
 import { BuscarComponent } from "./buscar/buscar.component";
 import { CambioComponent } from "./cambio/cambio.component";
 import { CrearComponent } from "./crear/crear.component";
+import { SelectableCardListModule } from "../../components/selectable-card-list/selectable-card-list.module";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { CrearComponent } from "./crear/crear.component";
     CommonModule, 
     FormsModule, 
     IonicModule,
-    AdminClubesPageRoutingModule],
+    AdminClubesPageRoutingModule,
+    SelectableCardListModule],
   declarations : [
     AdminClubesPage, 
     BuscarComponent,

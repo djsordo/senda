@@ -34,25 +34,11 @@ export class BuscarComponent  implements OnInit {
       } );
   }
 
-  public onCardSelected( element : {id: string} ) {
-    console.log( element );
-    this.resultCards.forEach( (card) => {
-      if( card.el.id === element.id ){
-        if( card.el.id !== this.currentId ){
-          this.renderer.setStyle( card.el, "background", "var(--ion-color-primary)" );
-          this.renderer.setStyle( card.el, "color", "var(--ion-color-dark)" );
-          this.currentId = card.el.id;
-        }else{
-          // simulamos el efecto de que un click en un elemento 
-          // seleccionado, deja la selección sin efecto
-          this.renderer.setStyle( card.el, "background", "" );
-          this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
-          this.currentId = null;
-        }
-      }
-      else
-        this.renderer.setStyle( card.el, "background", "" );
-    });
+  public onCardSelected( jugador: Jugador ) {
+    if( jugador )
+      this.currentId = jugador.id; 
+    else
+      this.currentId = null;
   }
 
   public onKeyPress( event: any ){

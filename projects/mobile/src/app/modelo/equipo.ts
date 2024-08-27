@@ -1,4 +1,3 @@
-import { Club } from './club';
 import { Partido } from './partido';
 import { Temporada } from './temporada';
 
@@ -7,7 +6,7 @@ export interface Equipo {
   nombre: string;
   nombreCorto?: string;
   screenName?: string;
-  club: Club;
+  club: { clubId: string, nombre: string };
   categoria: string;
   genero: string;
   temporada: Temporada;
