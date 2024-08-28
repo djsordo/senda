@@ -14,6 +14,18 @@
   <ion-row>
     <ion-col>
       <ion-item>
+        <ion-label>Club:</ion-label>
+        <ion-select [(ngModel)]="selectedClub">
+          @for( club of clubes; track club.id ){
+            <ion-select-option value="{{club.id}}">{{club.nombre}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
         <ion-label>Categoría:</ion-label>
         <!-- valorar si aquí debería ir un componente llamado 
          "combo categorias" que recogiese una categoría por defecto -->
@@ -89,7 +101,7 @@
   <ion-row>
     <ion-col>
       <ion-button color="medium" [routerLink]="['/', 'admin', 'equipos']">Cancelar</ion-button>
-      <ion-button color="primary" (click)="onClickCambiar()">Cambiar</ion-button>
+      <ion-button color="primary" (click)="onClickCambiar()">Guardar</ion-button>
     </ion-col>
   </ion-row>
 

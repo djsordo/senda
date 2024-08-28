@@ -11,6 +11,7 @@ import { Db } from '../../../services/db.service';
 import { Equipo } from '../../../modelo/equipo';
 import { Subscription } from 'rxjs';
 import { ListItem } from '../../../modelo/config';
+import { Club } from '../../../modelo/club';
 
 
 @Component({
@@ -22,18 +23,17 @@ export class EditarComponent implements OnInit, OnDestroy {
 
   paramSubscription: Subscription = null;
 
-
+  clubes : Club[];
   categorias : ListItem[];
   generos : ListItem[];
   temporadas : Temporada[];
 
   equipoId : string = null;
 
-  // MODELO DE DATOS NO REVISADO AUN 
-
-
   nombre : string;
   
+  selectedClub : string; 
+
   selectedCategoria : string;
   typedCategoria : string;
   
@@ -66,12 +66,14 @@ export class EditarComponent implements OnInit, OnDestroy {
             .then( (equipo) => {
               this.equipoId = equipo.id;
               this.nombre = equipo.nombre; 
+              this.selectedClub = equipo.club.clubId;
               this.selectedCategoria = equipo.categoria; 
               this.selectedGenero = equipo.genero; 
               this.selectedTemporada = equipo.temporada.alias;
             })
       });
     this.loadConfig();
+    console.log(this.equipoId);
   }
 
   ngOnDestroy(): void {
@@ -79,6 +81,16 @@ export class EditarComponent implements OnInit, OnDestroy {
   }
 
   private loadConfig(){
+    this.db.getClub(null)
+      .then( (clubList : Club[] ) => {
+        this.clubes = [];
+        for( let club of clubList ){
+          if( club.id === this.security.getUsuario("club").clubId )
+            this.clubes.push( club );
+        }
+        if( !this.editMode() && this.clubes.length === 1 )
+          this.selectedClub = this.clubes[0].id;
+      });
     this.db.getConfig( "config" )
       .then( (configObj) => {
         this.categorias = configObj.categorias;
@@ -96,14 +108,15 @@ export class EditarComponent implements OnInit, OnDestroy {
    * 
    * @returns true if we are editing a Team, false otherwise 
    */
-  private editMode(){
-    return this.equipoId;
+  public editMode(){
+    return !!this.equipoId;
   }
 
   onClickCambiar() {
     let equipo = this.equipoService.newEquipo();
     equipo.nombre = this.nombre; 
-    equipo.club = this.security.getUsuario('club'); 
+    let selectedClub = this.clubes.find( c => c.id === this.selectedClub ); 
+    equipo.club = { clubId: selectedClub.id, nombre: selectedClub.nombre };
     if( this.selectedCategoria !== '#otro#' )
       equipo.categoria = this.selectedCategoria;
     else

@@ -71,65 +71,80 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    /* login debe ser pública; aquí no hay permissionsGuard */
   },
   {
     path: 'modo-jugador',
-    loadChildren: () => import('./modo-jugador/modo-jugador.module').then( m => m.ModoJugadorPageModule)
+    loadChildren: () => import('./modo-jugador/modo-jugador.module').then( m => m.ModoJugadorPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'modo-accion',
-    loadChildren: () => import('./modo-accion/modo-accion.module').then( m => m.ModoAccionPageModule)
+    loadChildren: () => import('./modo-accion/modo-accion.module').then( m => m.ModoAccionPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'detalle-jugador',
-    loadChildren: () => import('./detalle-jugador/detalle-jugador.module').then( m => m.DetalleJugadorPageModule)
+    loadChildren: () => import('./detalle-jugador/detalle-jugador.module').then( m => m.DetalleJugadorPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'inicio-sel-jugadores',
-    loadChildren: () => import('./inicio-sel-jugadores/inicio-sel-jugadores.module').then( m => m.InicioSelJugadoresPageModule)
+    loadChildren: () => import('./inicio-sel-jugadores/inicio-sel-jugadores.module').then( m => m.InicioSelJugadoresPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'microfono',
-    loadChildren: () => import('./microfono/microfono.module').then( m => m.MicrofonoPageModule)
+    loadChildren: () => import('./microfono/microfono.module').then( m => m.MicrofonoPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'modo-ver',
-    loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule)
+    loadChildren: () => import('./modo-ver/modo-ver.module').then( m => m.ModoVerPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'listas-estad',
-    loadChildren: () => import('./listas-estad/listas-estad.module').then( m => m.ListasEstadPageModule)
+    loadChildren: () => import('./listas-estad/listas-estad.module').then( m => m.ListasEstadPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'admin', redirectTo: 'admin/home', pathMatch: 'full'
   },
   {
     path: 'admin/home',
-    loadChildren: () => import('./admin/home/admin-home.module').then( m => m.AdminHomePageModule)
+    loadChildren: () => import('./admin/home/admin-home.module').then( m => m.AdminHomePageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'estadisticas',
-    loadChildren: () => import('./estadisticas/home/home.module').then( m => m.EstadisticasPageModule)
+    loadChildren: () => import('./estadisticas/home/home.module').then( m => m.EstadisticasPageModule),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'admin/clubes',
-    loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule )
+    loadChildren: () => import('./admin/clubes/admin-clubes.module').then( m => m.AdminClubesPageModule ),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'admin/equipos',
-    loadChildren: () => import('./admin/equipos/admin-equipos.module').then( m => m.AdminEquiposPageModule )
+    loadChildren: () => import('./admin/equipos/admin-equipos.module').then( m => m.AdminEquiposPageModule ),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'admin/usuarios',
-    loadChildren: () => import('./admin/usuarios/admin-usuarios.module').then( m => m.AdminUsuariosModule )
+    loadChildren: () => import('./admin/usuarios/admin-usuarios.module').then( m => m.AdminUsuariosModule ),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'admin/jugadores', 
-    loadChildren: () => import('./admin/jugadores/admin-jugadores.module').then( m => m.AdminJugadoresModule )
+    loadChildren: () => import('./admin/jugadores/admin-jugadores.module').then( m => m.AdminJugadoresModule ),
+    canActivate: [ permissionsGuard ]
   },
   {
     path: 'admin/partidos',
-    loadChildren: () => import('./admin/partidos/admin-partidos.module').then( m => m.AdminPartidosPageModule )
+    loadChildren: () => import('./admin/partidos/admin-partidos.module').then( m => m.AdminPartidosPageModule ),
+    canActivate: [ permissionsGuard ]
   },
   /*
    * Requisitos legales y del regulador
@@ -138,6 +153,7 @@ const routes: Routes = [
   {
     path : 'privacy',
     loadChildren: () => import('./privacy/privacy.module').then( m => m.PrivacyModule )
+    /* ruta pública; aquí no hay permissionsGuard */
   },
   {
     path: 'user-settings', 
@@ -146,6 +162,7 @@ const routes: Routes = [
   {
     path: 'share',
     loadChildren: () => import('./share/share.module').then( m => m.SharePageModule )
+    /* ruta pública; aquí no hay permissionsGuard */
   },
   {
     path: 'estad-jugador',
@@ -154,10 +171,12 @@ const routes: Routes = [
   {
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+    /* ruta pública; aquí no hay permissionsGuard */
   },
   {
     path: 'add-to-home',
     loadChildren: () => import('./add-to-home/add-to-home.module').then( m => m.AddToHomePageModule)
+    /* ruta pública; aquí no hay permissionsGuard */
   }
 
 
