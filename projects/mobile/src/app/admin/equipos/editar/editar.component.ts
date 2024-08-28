@@ -61,17 +61,16 @@ export class EditarComponent implements OnInit, OnDestroy {
     this.equipoId = null; 
     this.paramSubscription = 
       this.route.paramMap.subscribe( (paramMap) => {
-        this.db.getEquipo( paramMap.get('equipoId') )
-          .then( (equipo) => {
-            console.log( equipo); 
-            this.equipoId = equipo.id;
-            this.nombre = equipo.nombre; 
-            this.selectedCategoria = equipo.categoria; 
-            this.selectedGenero = equipo.genero; 
-            this.selectedTemporada = equipo.temporada.alias;
-          })
+        if( paramMap.get('equipoId') )
+          this.db.getEquipo( paramMap.get('equipoId') )
+            .then( (equipo) => {
+              this.equipoId = equipo.id;
+              this.nombre = equipo.nombre; 
+              this.selectedCategoria = equipo.categoria; 
+              this.selectedGenero = equipo.genero; 
+              this.selectedTemporada = equipo.temporada.alias;
+            })
       });
-
     this.loadConfig();
   }
 

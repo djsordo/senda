@@ -67,7 +67,7 @@
         <ion-label>Temporada:</ion-label>
         <ion-select [(ngModel)]="selectedTemporada">
           @for( temporada of temporadas; track temporada.id ){
-            <ion-select-option *ngFor="let t of temporadas"
+            <ion-select-option
             [value]="temporada.id">{{temporada.nombre}}</ion-select-option>
           }
           <ion-select-option value="#otro#">Otra (especificar)</ion-select-option>
