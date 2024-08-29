@@ -42,7 +42,7 @@ export class BuscarComponent implements OnInit {
   }
 
   getSelectedId(){
-    return this.mainPage.getSelectedId();
+    return this.currentId;
   }
 
   private refreshUsuarioList() {
@@ -89,8 +89,7 @@ export class BuscarComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.db.delUsuario( this.mainPage.getSelectedId() );
-            this.mainPage.onSelectedId.emit( null );
+            this.db.delUsuario( this.currentId );
             this.refreshUsuarioList();
           },
         },

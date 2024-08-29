@@ -1,7 +1,4 @@
-import { Component, 
-          EventEmitter, 
-          OnInit,
-          Output} from "@angular/core";
+import { Component } from "@angular/core";
 
 
 @Component({
@@ -9,22 +6,9 @@ import { Component,
   templateUrl: './admin-usuarios.page.html', 
   styleUrls : ['./admin-usuarios.page.scss']
 })
-export class AdminUsuariosPage implements OnInit {
-
-  private selectedId : string; 
-  @Output() onSelectedId = new EventEmitter<string>();
+export class AdminUsuariosPage {
 
   constructor( ){
-    this.onSelectedId.subscribe( (clubId : string) => {
-      this.selectedId = clubId;
-    });
-  }
-
-  ngOnInit() {
-  }
-
-  getSelectedId( ) {
-    return this.selectedId;
   }
 
 }

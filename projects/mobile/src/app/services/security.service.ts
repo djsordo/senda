@@ -24,17 +24,23 @@ export function permissionsGuard(route: ActivatedRouteSnapshot,
                           state: RouterStateSnapshot) {
   let securityService = inject(SecurityService);
   let router = inject(Router);
+  console.log( 'is authenticated: ', securityService.isAuthenticated() );
   if( !securityService.isAuthenticated() ) {
     return new Promise( (resolve, reject) => {
       securityService.reloadUser()
         .then( (user) => {
+          console.log('recargamos y resolvemos cierto');
           resolve( true );
         })
         .catch( error => {
+          console.log('resolvemos con error y vamos a login');
           console.error( 'Error trying to authenticate user, redirecting to login screen' );
           resolve( router.parseUrl( '/login' ) );
         })
     });
+  }
+  if( securityService.isTokenExpired() ){
+    return router.parseUrl( '/login' );
   }
   return true;
 }
@@ -78,7 +84,6 @@ export class SecurityService {
       createUserWithEmailAndPassword(this.auth, email, password)
       .then( (userCredential : any ) => {
         console.log( "user credential:", userCredential );
-        this.setTokenExpiration( parseInt( userCredential._tokenResponse.expiresIn ) );
         sendEmailVerification( userCredential.user )
         .then( (emailSent) => {
           console.log( "email verification response:", emailSent );
@@ -110,6 +115,7 @@ export class SecurityService {
     return new Promise( (resolve, reject) => {
       this.auth.onAuthStateChanged( (user) => {
         if( user ) {
+          console.log("onauthstatechanged");
           this.userData = user; 
           this.db.getUsuario( where( 'email', '==', this.userData.email ) )
           .then( usuarios => {
@@ -135,6 +141,7 @@ export class SecurityService {
     return new Promise( (resolve, reject) => {
       signInWithEmailAndPassword(this.auth, email, password)
         .then((userData : UserCredential ) => {
+          console.log( userData );
           this.userData = userData.user;
           this.db.getUsuario( where( 'email', '==', userData.user.email ) )
             .then( usuarios => {
@@ -177,6 +184,15 @@ export class SecurityService {
       return true;
     else
       return false;
+  }
+
+  isTokenExpired() : boolean {
+    if( this.tokenExpiration < new Date() )
+      console.log( "token is expired", this.tokenExpiration );
+    else
+      console.log( "token expires on: ", this.tokenExpiration );
+    console.log( this.tokenExpiration ); 
+    return this.tokenExpiration < new Date();
   }
 
   iForgotMyPassword( email : string ) {

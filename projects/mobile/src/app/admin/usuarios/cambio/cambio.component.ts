@@ -156,7 +156,6 @@ export class CambioComponent implements OnInit, OnDestroy {
       .then( (docRef) => {
         this.security.registro( { email: usuario.email, 
                                   password: '123456' } );
-        this.mainPage.onSelectedId.emit( null );
         this.router.navigate( ['/','admin','usuarios'] );        
         this.toastService.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha cambiado`);
       })
@@ -174,7 +173,6 @@ export class CambioComponent implements OnInit, OnDestroy {
           let loginResult = results[0];
           let dbResult = results[1];
           if( loginResult.status === 'fulfilled' && dbResult.status === 'fulfilled' ){
-            this.mainPage.onSelectedId.emit( null );
             this.router.navigate( ['/','admin','usuarios'] );
             this.toastService.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha creado con contraseña "123456"`);
           }else{
@@ -253,9 +251,6 @@ export class CambioComponent implements OnInit, OnDestroy {
         })
         .catch( _ => resolve( null ) ); // ignore the error, the email is not taken 
     } );
-    
-    
-    this.alreadyTakenEmail( control.value );
   }
 
   private alreadyTakenEmail( email : string ) : Promise<any> {
@@ -279,9 +274,6 @@ export class CambioComponent implements OnInit, OnDestroy {
       .catch( (error) => reject( error ) ); // in the case of an error, return OK
     });
   }
-
-
-
 
   public onAnadirPermiso() {
     (<FormArray> this.usuarioForm.get('roles')).push(
