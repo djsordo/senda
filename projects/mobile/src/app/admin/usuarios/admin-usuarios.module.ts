@@ -8,15 +8,18 @@ import { BuscarComponent } from "./buscar/buscar.component";
 import { CambioComponent } from "./cambio/cambio.component";
 import { AdminUsuariosPage } from "./admin-usuarios.page";
 import { AdminUsuariosRoutingModule } from "./admin-usuarios-routing.module";
+import { SelectableCardListModule } from "../../components/selectable-card-list/selectable-card-list.module";
 
 
 @NgModule({
-  imports : [ 
-    CommonModule, 
+  imports: [
+    CommonModule,
     IonicModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
-    AdminUsuariosRoutingModule],
+    AdminUsuariosRoutingModule,
+    SelectableCardListModule
+],
   declarations : [
     AdminUsuariosPage, 
     BuscarComponent,

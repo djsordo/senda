@@ -89,15 +89,28 @@ export class CambioComponent implements OnInit, OnDestroy {
     } );
   }
 
+
+  ngOnDestroy() {
+    this.paramSubscription && this.paramSubscription.unsubscribe();
+    this.userSubscription && this.userSubscription.unsubscribe();
+  }
+
   private loadEquipos( clubId : string ){
     return new Promise( (resolve) => {
       this.db.getEquipo( where( "club.clubId", "==", clubId ))
       .then( equipoList => {
         this.equipos = equipoList.map(
             equipo => {
-              equipo.screenName = properCase( equipo.categoria ) 
-                          + " "
-                          + properCase( equipo.genero );
+              if( equipo.nombreCorto )
+                equipo.screenName = properCase( equipo.categoria ) 
+                            + " "
+                            + properCase( equipo.genero )
+                            + " "
+                            + properCase( equipo.nombreCorto );
+              else 
+                equipo.screenName = properCase( equipo.categoria ) 
+                            + " "
+                            + properCase( equipo.genero );
               return equipo;
             });
         resolve( this.equipos );
@@ -123,10 +136,6 @@ export class CambioComponent implements OnInit, OnDestroy {
 
   getAllEquipos() {
     return this.equipos;
-  }
-
-  ngOnDestroy() {
-    this.paramSubscription.unsubscribe();
   }
 
   onSubmit() {

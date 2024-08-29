@@ -7,20 +7,28 @@ export class EquipoPipe implements PipeTransform {
 
   constructor( private db : Db ) {}
 
-  transform( equipoId : any, value: string = "categoria+genero" ) {
-    return new Promise( (resolve, reject) => {
+  transform( equipoId : any, value: string = "categoria+genero+nombre_corto" ) {
+    return new Promise( (resolve) => {
        this.db.getEquipo( equipoId )
         .then( (equipo) => {
-          switch( value ) {
-            default:
-            case "categoria+genero": 
-              resolve( `${equipo.categoria} ${equipo.genero}` );
-              break; 
-            case "nombre": 
-              resolve( equipo.nombre ); 
-              break; 
+          if( equipo.categoria ){
+            switch( value ) {
+              case "categoria+genero": 
+                resolve( `${equipo.categoria} ${equipo.genero}` );
+                break; 
+              default:
+              case "categoria+genero+nombre_corto": 
+                resolve( `${equipo.categoria} ${equipo.genero} ${equipo.nombreCorto?equipo.nombreCorto:''}` );
+                break; 
+              case "nombre": 
+                resolve( equipo.nombre ); 
+                break; 
+            }
+          }else{
+            resolve('')
           }
-        });
+        })
+        .catch( () => resolve('') );
     });
   }
   

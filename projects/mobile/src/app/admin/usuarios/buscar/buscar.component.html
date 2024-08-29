@@ -1,3 +1,19 @@
+
+
+<ng-template #usuarioTemplate let-usuario>
+  <ion-card #resultCard id="{{usuario.id}}">
+    <ion-card-header>
+      <ion-icon name="person" size="large"></ion-icon>
+      <ion-card-title>{{usuario.nombre}} {{usuario.apellidos}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text>{{usuario.email}}</ion-text> <br/>
+      <ion-text>{{usuario.club?.nombre}}</ion-text>
+    </ion-card-content>
+  </ion-card>
+</ng-template>
+
+
 <ion-grid align-items-center="true">
   <ion-row>
     <ion-col>
@@ -16,18 +32,11 @@
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-card #resultCard id="{{p.id}}" *ngFor="let p of usuarios" (click)="onCardSelected( p.id )">
-        <ng-container *ngIf="matchesSearch( p, searchText )">
-          <ion-card-header>
-            <ion-icon name="person" size="large"></ion-icon>
-            <ion-card-title>{{p.nombre}} {{p.apellidos}}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-text>{{p.email}}</ion-text> <br/>
-            <ion-text>{{p.club?.nombre}}</ion-text>
-          </ion-card-content>
-        </ng-container>
-      </ion-card>
+      <app-selectable-card-list
+        [objectList]="usuarios"
+        [cardTemplate]="usuarioTemplate"
+        (cardSelect)="onCardSelected( $event )">
+      </app-selectable-card-list>
     </ion-col>
   </ion-row>
   <ion-row>

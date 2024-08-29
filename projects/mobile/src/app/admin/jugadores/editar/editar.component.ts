@@ -78,10 +78,8 @@ export class EditarComponent implements OnInit, OnDestroy {
   }
 
   private loadJugador( jugadorId : string ){
-    console.log( "jugadorid", jugadorId );
     this.db.getJugador( jugadorId )
     .then((jugadorData) => {
-      console.log( jugadorData );
       this.numberIsLocked = true;
       this.jugadorId = jugadorData.id;
 
@@ -100,12 +98,10 @@ export class EditarComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit( datosJugador: Object ){
-    console.log( datosJugador );
     datosJugador["fechaEdad"] = new Date();
     // change the name of the equipos list for "equipoId"
     datosJugador["equipoId"] = [...datosJugador["equipos"]];
     delete datosJugador["equipos"];
-    console.log( datosJugador );
     if( this.isEditMode() ){
       this.db.updateJugador( this.jugadorId, <Jugador> datosJugador )
         .then( _ => 
@@ -115,7 +111,7 @@ export class EditarComponent implements OnInit, OnDestroy {
           this.router.navigate(['/', 'admin', 'jugadores'])
         )
         .catch( error => {
-          console.log( "error saving jugador: ", error ); 
+          console.error( "error saving jugador: ", error ); 
           this.toastService.sendToast("Se ha producido un error al guardar los datos del jugador, vuelva a intentarlo");
         }
         );
@@ -128,7 +124,7 @@ export class EditarComponent implements OnInit, OnDestroy {
           this.router.navigate(['/', 'admin', 'jugadores'])
         )
         .catch( error => {
-          console.log( "error adding jugador: ", datosJugador );
+          console.error( "error adding jugador: ", datosJugador );
           this.toastService.sendToast("Se ha producido un error al guardar los datos del jugador, vuelva a intentarlo");
         })
     }

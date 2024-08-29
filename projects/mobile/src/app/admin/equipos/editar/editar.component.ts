@@ -31,6 +31,7 @@ export class EditarComponent implements OnInit, OnDestroy {
   equipoId : string = null;
 
   nombre : string;
+  nombreCorto : string;
   
   selectedClub : string; 
 
@@ -66,6 +67,7 @@ export class EditarComponent implements OnInit, OnDestroy {
             .then( (equipo) => {
               this.equipoId = equipo.id;
               this.nombre = equipo.nombre; 
+              this.nombreCorto = equipo?.nombreCorto;
               this.selectedClub = equipo.club.clubId;
               this.selectedCategoria = equipo.categoria; 
               this.selectedGenero = equipo.genero; 
@@ -115,6 +117,7 @@ export class EditarComponent implements OnInit, OnDestroy {
   onClickCambiar() {
     let equipo = this.equipoService.newEquipo();
     equipo.nombre = this.nombre; 
+    equipo.nombreCorto = this.nombreCorto;
     let selectedClub = this.clubes.find( c => c.id === this.selectedClub ); 
     equipo.club = { clubId: selectedClub.id, nombre: selectedClub.nombre };
     if( this.selectedCategoria !== '#otro#' )

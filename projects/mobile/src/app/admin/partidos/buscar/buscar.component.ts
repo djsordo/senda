@@ -26,9 +26,7 @@ export class BuscarComponent implements OnInit {
   currentId : string;
 
   constructor( private db : Db,
-              private mainPage : AdminPartidosPage, 
               private partidoService : PartidosService,
-              private renderer : Renderer2, 
               private alertController : AlertController,
               private stringUtil : StringUtil ){
   }
@@ -59,6 +57,10 @@ export class BuscarComponent implements OnInit {
                   partido['equipoText'] = equipo.nombre;
                   partido['categoria'] = equipo.categoria;
                   partido['genero'] = equipo.genero;
+                  if( equipo.nombreCorto )
+                    partido['nombreCortoEquipo'] = equipo.nombreCorto;
+                  else
+                    partido['nombreCortoEquipo'] = '';
                 }catch( error ){
                   partido['equipoText'] = partido['equipoId'];
                   console.error('error getting equipo by id: ', partido['equipoId'] );

@@ -3,7 +3,7 @@
   <ion-card #resultCard id="{{partido.id}}">
     <ion-card-header>
       <ion-icon src="assets/handball.svg" size="large"></ion-icon>
-      <ion-card-title>{{partido.categoria}} {{partido.genero}} vs. {{partido.rival}}</ion-card-title>
+      <ion-card-title>{{partido.categoria}} {{partido.genero}} {{partido.nombreCortoEquipo}} vs. {{partido.rival}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-text>{{partido.equipo?.categoria}} {{partido.equipo?.genero}}</ion-text><br/>

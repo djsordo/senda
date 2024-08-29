@@ -133,7 +133,7 @@
             [multiple]="true" 
             ngModel>
             @for( equipo of equipos; track equipo.id ) {
-              <ion-select-option value="{{equipo.id}}">{{equipo.categoria}} {{equipo.genero}}</ion-select-option>
+              <ion-select-option value="{{equipo.id}}">{{equipo.categoria}} {{equipo.genero}} {{equipo.nombreCorto}}</ion-select-option>
             }
           </ion-select>
         </ion-col>
@@ -199,10 +199,10 @@
        }
        <ion-row>
         <ion-col>
+          <ion-button color="secondary" [routerLink]="['/', 'admin', 'jugadores']">Cancelar</ion-button>
           <ion-button id="btnSave" type="submit" 
             color="primary"
             [disabled]="!datosJugador.valid">Guardar</ion-button>
-          <ion-button color="secondary" [routerLink]="['/', 'admin', 'jugadores']">Cancelar</ion-button>
         </ion-col>
        </ion-row>
       </form>

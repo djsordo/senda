@@ -6,8 +6,22 @@
                 placeholder="Nombre del equipo"
                 autofocus="true"
                 inputmode="text"
+                autocomplete="true"
                 type="text"
                 [(ngModel)]="nombre"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Nombre corto:</ion-label>
+        <ion-input name="equipoShortName"
+        placeholder="Nombre corto"
+        inputmode="text"
+        autocomplete="true"
+        type="text"
+        [(ngModel)]="nombreCorto"></ion-input>
       </ion-item>
     </ion-col>
   </ion-row>
