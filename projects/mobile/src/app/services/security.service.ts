@@ -39,9 +39,6 @@ export function permissionsGuard(route: ActivatedRouteSnapshot,
         })
     });
   }
-  if( securityService.isTokenExpired() ){
-    return router.parseUrl( '/login' );
-  }
   return true;
 }
 
@@ -54,7 +51,6 @@ export class SecurityService {
   public userAuthenticated = new Subject<any>();
   private userData : User  = null;
   private userDb : Usuario = null;
-  private tokenExpiration : Date = null;
   public allRoles : {rol: string, desc: string}[] = 
       [{rol: 'delegado', 
         desc: 'Delegado'},
@@ -70,14 +66,7 @@ export class SecurityService {
     //updateEmail( )
   }
 
-  private setTokenExpiration( expirationInSeconds : number ): void {
-    setTimeout(() => {
-      this.router.navigate( ['/login' ] );
-      
-    }, expirationInSeconds );
-    this.tokenExpiration = new Date( Date.now() + ( expirationInSeconds * 1000 ) );
-  }
-
+  
   // esta función registra en firebase auth un usuario con email y password
   registro({ email, password}: any){
     return new Promise( (resolve, reject) => {
@@ -184,15 +173,6 @@ export class SecurityService {
       return true;
     else
       return false;
-  }
-
-  isTokenExpired() : boolean {
-    if( this.tokenExpiration < new Date() )
-      console.log( "token is expired", this.tokenExpiration );
-    else
-      console.log( "token expires on: ", this.tokenExpiration );
-    console.log( this.tokenExpiration ); 
-    return this.tokenExpiration < new Date();
   }
 
   iForgotMyPassword( email : string ) {
