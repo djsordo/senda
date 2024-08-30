@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.security.reloadUser();
     this.navegacion.init();
   }
 

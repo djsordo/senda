@@ -8,39 +8,110 @@ import { Auth,
   sendPasswordResetEmail,
   signInWithEmailAndPassword, 
   signOut, 
+  updateEmail, 
   updatePassword} from '@angular/fire/auth';
   
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { where } from "@angular/fire/firestore";
-import { Subject } from "rxjs";
+import { Observable, of, Subject } from "rxjs";
 
 import { Db } from "./db.service";
 import { Usuario } from "../modelo/usuario";
 import { LocalStorageService } from "./local.storage.service";
 import { ErrorInfo } from "../common/error-info";
 
-/* function signature must be of type CanActivateFn */
-export function permissionsGuard(route: ActivatedRouteSnapshot,
-                          state: RouterStateSnapshot) {
+
+
+export const permissionsGuard = permissionsGuardSync;
+
+/**
+ * Synchronous guard function for check permissions. 
+ * 
+ * This function must match the type CanActivateFn. 
+ * This version of the funcion is synchronous: I've
+ * discovered that the more correct asynchronous function 
+ * DOES NOT WORK, and I think it's a failure of the 
+ * Angular framework. 
+ * 
+ * @param route 
+ * @param state 
+ * @returns 
+ */
+function permissionsGuardSync(route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot) {
   let securityService = inject(SecurityService);
   let router = inject(Router);
-  console.log( 'is authenticated: ', securityService.isAuthenticated() );
   if( !securityService.isAuthenticated() ) {
-    return new Promise( (resolve, reject) => {
-      securityService.reloadUser()
-        .then( (user) => {
-          console.log('recargamos y resolvemos cierto');
-          resolve( true );
-        })
-        .catch( error => {
-          console.log('resolvemos con error y vamos a login');
-          console.error( 'Error trying to authenticate user, redirecting to login screen' );
-          resolve( router.parseUrl( '/login' ) );
+    return router.parseUrl( '/login' );
+  }
+  return true;
+}
+
+
+/**
+ * Asynchronous guard function for check permissions. 
+ * 
+ * This function must match the type CanActivateFn. 
+ * This version of the funcion is asynchronous: 
+ * it's more correct than the synchronous version, but 
+ * unfortunately it throws an error every thime we try 
+ * to change routes, so by now it's deactivated.
+ * 
+ * @param route 
+ * @param state 
+ * @returns 
+ */
+export function permissionsGuardAsync(route: ActivatedRouteSnapshot,
+                          state: RouterStateSnapshot) {
+  let securityService = inject(SecurityService);
+  let auth = inject(Auth);
+  let router = inject(Router);
+  if( !securityService.isAuthenticated() ) {
+    return new Promise( (resolve) => {
+      auth.authStateReady()
+        .then( () => {
+          if( auth.currentUser )
+            resolve( true );
+          else
+            resolve( router.parseUrl( '/login' ) );
         })
     });
   }
   return true;
 }
+
+
+/**
+ * Implementation of guard function with observables. Doesn't work, either. 
+ * 
+ * @param route 
+ * @param state 
+ * @returns 
+ */
+function permissionsGuardObservables(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+  let securityService = inject(SecurityService);
+  let auth = inject(Auth);
+  let router = inject(Router);
+
+  if (securityService.isAuthenticated()) {
+    return of(true);
+  } else {
+    return new Observable( subscriber => {
+      auth.authStateReady()
+        .then( () => {
+          if( auth.currentUser ){
+            subscriber.next( true );
+          }else{
+            subscriber.next( router.parseUrl('/login') );
+          }
+          subscriber.complete();
+        });
+    });
+    
+  }
+}
+
+
 
 
 @Injectable({
@@ -50,7 +121,7 @@ export class SecurityService {
 
   public userAuthenticated = new Subject<any>();
   private userData : User  = null;
-  private userDb : Usuario = null;
+  public userDb : Usuario = null;
   public allRoles : {rol: string, desc: string}[] = 
       [{rol: 'delegado', 
         desc: 'Delegado'},
@@ -60,22 +131,45 @@ export class SecurityService {
   constructor(private auth: Auth, 
               private router : Router, 
               private db : Db, 
-              private localStorage : LocalStorageService ) { }
-
-  cambioCuentaCorreo( oldEmailAccount : string, newEmailAccount : string ){
-    //updateEmail( )
+              private localStorage : LocalStorageService ) { 
+    // firebase auth gestiona la re-autenticación del 
+    // usuario si se dan las condiciones. Para avisar
+    // a la aplicación tiene el método onAuthStateChanged
+    // que se dispara cuando el usuario es autenticado
+    this.auth.onAuthStateChanged( (user) => {
+      if( user ) {
+        console.log("onauthstatechanged:", user );
+        this.userData = user; 
+        this.db.getUsuario( where( 'email', '==', this.userData.email ) )
+        .then( usuarios => {
+          this.userDb = usuarios[0];
+          this.storeUserInformation( this.userData, this.userDb );
+          this.userAuthenticated.next( [this.userData, this.userDb ]);
+        })
+        .catch((error) => {
+          console.error( `Parece que el alta de este usuario 
+          no se ha realizado correctamente, 
+          habla con los administradores 
+          (error de base de datos: ${error})` );
+        });
+      }
+    });
   }
 
-  
+  cambioCuentaCorreo( newEmailAccount : string ){
+    return updateEmail( this.userData, newEmailAccount );
+  }
+
   // esta función registra en firebase auth un usuario con email y password
   registro({ email, password}: any){
     return new Promise( (resolve, reject) => {
+      // TODO: AQUI HAY UN ERROR: CUANDO SE REGISTRA UN USUARIO, 
+      // LAS CREDENCIALES SE CAMBIAN AL USUARIO QUE ACABAMOS 
+      // DE REGISTRAR
       createUserWithEmailAndPassword(this.auth, email, password)
       .then( (userCredential : any ) => {
-        console.log( "user credential:", userCredential );
         sendEmailVerification( userCredential.user )
         .then( (emailSent) => {
-          console.log( "email verification response:", emailSent );
           resolve( { result: true } );
         })
         .catch( (error) => reject( { result: false, errorCode: error.code } ) )
@@ -100,37 +194,10 @@ export class SecurityService {
     this.localStorage.setItem( 'refreshToken', userData.refreshToken );
   }
 
-  reloadUser(){
-    return new Promise( (resolve, reject) => {
-      this.auth.onAuthStateChanged( (user) => {
-        if( user ) {
-          console.log("onauthstatechanged");
-          this.userData = user; 
-          this.db.getUsuario( where( 'email', '==', this.userData.email ) )
-          .then( usuarios => {
-            this.userDb = usuarios[0];
-            this.storeUserInformation( this.userData, this.userDb );
-            this.userAuthenticated.next( [this.userData, this.userDb ]);
-            resolve( [this.userData, this.userDb] );
-          })
-          .catch((error) => {
-            reject( `Parece que el alta de este usuario 
-            no se ha realizado correctamente, 
-            habla con los administradores 
-            (error de base de datos)` );
-          });
-        }else{
-          reject('No se ha encontrado información de autenticación, ¿estás en la pantalla de login?');
-        }
-      });
-    });
-  }
-
   login({ email, password }: any){
     return new Promise( (resolve, reject) => {
       signInWithEmailAndPassword(this.auth, email, password)
         .then((userData : UserCredential ) => {
-          console.log( userData );
           this.userData = userData.user;
           this.db.getUsuario( where( 'email', '==', userData.user.email ) )
             .then( usuarios => {
