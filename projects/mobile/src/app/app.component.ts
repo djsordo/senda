@@ -1,12 +1,17 @@
 import { MenuController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { register } from 'swiper/element/bundle';
 
 import { environment } from 'projects/mobile/src/environments/environment';
 
 import { NavegacionService } from './services/navegacion.service';
 import { SecurityService } from './services/security.service';
 import { MenuEntry, appMenu } from './app-routing.module';
+
+
+/* necesario para los componentes de swiper */
+register();
 
 @Component({
   selector: 'app-root',

@@ -10,8 +10,9 @@
 
 <ion-content [scrollY]="contentScrollActive">
   <!-- <div class="ion-text-center"><h5>{{partes}} partes de {{segsParte*1000 | date: 'mm:ss'}} minutos</h5></div> -->
-  <ion-slides pager="true" slot="fixed" class="pagina">
-    <ion-slide>
+  <swiper-container>
+    <swiper-slide>
+
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -37,8 +38,11 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-slide>
-    <ion-slide>
+
+    </swiper-slide>
+
+    <swiper-slide>
+
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -59,8 +63,11 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-slide>
-    <ion-slide>
+
+    </swiper-slide>
+
+    <swiper-slide>
+
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -86,8 +93,11 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-slide>
-  </ion-slides>
+
+    </swiper-slide>
+
+
+  </swiper-container>
 
   <div class="contenedorTarjetas">
     <div class="tarjeta" #cards *ngFor="let jugador of jugadores">
