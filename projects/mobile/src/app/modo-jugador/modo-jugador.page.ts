@@ -197,7 +197,6 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       this.mostrarAlerta().then( resp => {
         /* console.log(resp); */
         if (resp === 'confirm'){
-          // xjx this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
           this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
           this.router.navigate(['/home']);
         };
@@ -205,7 +204,6 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
     } else if (this.estadoPartido === 'en preparacion'){
       // Hacemos reset de estadísticas
-      // xjx this.subs = this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
       this.bdGeneralService.resetPartido(localStorage.getItem('partidoId'));
       this.router.navigate(['/inicio-sel-jugadores']);
     }

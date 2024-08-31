@@ -94,7 +94,6 @@ export class InicioSelJugadoresPage implements OnInit {
 
         },
         onEnd: (ev) => {
-          console.log('i: ',i);
           this.contentScrollActive = true;
           this.handleDrop(oneItem, ev.currentX, ev.currentY, i);
 

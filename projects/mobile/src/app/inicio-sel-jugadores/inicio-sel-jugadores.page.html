@@ -26,7 +26,7 @@
                 <div class="fondo">{{posicion.desc}}</div>
                 <div *ngFor="let jugador of listaInicial">
                   <div *ngIf="jugador.posicion === posicion.clave" class="tarjeta">
-                    <ion-img src="../../assets/fotos/{{jugador.foto}}" class="imagen"></ion-img>
+                    <ion-img src="../../assets/noimage.jpg" class="imagen"></ion-img>
                     <!-- <ion-img src="../../assets/portero.png" *ngIf="jugador.portero" class="portero"></ion-img> -->
                     <span *ngIf="jugador.portero" class="portero">P</span>
                     <span class="numero">{{jugador.numero}}</span>
@@ -54,7 +54,7 @@
             <div class="drop-area" #dropBanquillo>
               <div class="fondo"><h2>Banquillo</h2></div>
               <div *ngFor="let jugador of listaBanquillo" class="tarjeta" (click)="borraNum(listaBanquillo, jugador.numero)">
-                <ion-img src="../../assets/fotos/{{jugador.foto}}" class="imagen"></ion-img>
+                <ion-img src="../../assets/noimage.jpg" class="imagen"></ion-img>
                 <span *ngIf="jugador.portero" class="portero">P</span>
                 <span class="numero">{{jugador.numero}}</span>
                 <span class="nombre">{{jugador.nombre}}</span>
@@ -79,7 +79,7 @@
             <div class="drop-area" #dropNoConvocado>
               <div class="fondo"><h2>No Convocados</h2></div>
               <div *ngFor="let jugador of listaNoConvocados" class="tarjeta" (click)="borraNum(listaNoConvocados, jugador.numero)">
-                <ion-img src="../../assets/fotos/{{jugador.foto}}" class="imagen"></ion-img>
+                <ion-img src="../../assets/noimage.jpg" class="imagen"></ion-img>
                 <span *ngIf="jugador.portero" class="portero">P</span>
                 <span class="numero">{{jugador.numero}}</span>
                 <span class="nombre">{{jugador.nombre}}</span>
@@ -101,7 +101,7 @@
 
   <div class="contenedorTarjetas">
     <div class="tarjeta" #cards *ngFor="let jugador of jugadores">
-      <ion-img src="../../assets/fotos/{{jugador.foto}}" class="imagen"></ion-img>
+      <ion-img src="../../assets/noimage.jpg" class="imagen"></ion-img>
       <!-- <ion-img src="../../assets/portero.png" *ngIf="jugador.portero" class="portero"></ion-img> -->
       <span *ngIf="jugador.portero" class="portero">P</span>
       <span class="numero">{{jugador.numero}}</span>

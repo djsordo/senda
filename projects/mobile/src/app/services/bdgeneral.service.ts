@@ -54,32 +54,4 @@ export class BDGeneralService {
       });
   }
 
-  // Borra todas las estadísticas de un partido
-  DEPRECATEDresetPartido(partidoId: string){
-    const subs: Subscription[] = [];
-
-    // Borrar eventos relacionados con el partido
-    subs.push(this.eventosService.getEventos(partidoId).subscribe(evento => {
-      evento.forEach(evBorrar => this.eventosService.deleteEvento(evBorrar.id));
-    }));
-
-    // Reset del servicio estadPartido
-    this.estadPartidoService.reset();
-
-    // Borrar EstadPartidos relacionados con el partido
-    subs.push(this.estadPartidoService.getEstadPartido(partidoId)
-    .subscribe(estadP => {
-      console.log(estadP);
-      estadP.forEach(epBorrar => this.estadPartidoService.deleteEstadPartido(epBorrar.id));
-    }));
-
-    // Borrar EstadJugadores relacionados con el partido
-    subs.push(this.estadJugadorService.getEstadJugador(partidoId)
-    .subscribe(estadJ => {
-      console.log(estadJ);
-      estadJ.forEach(ejBorrar => this.estadJugadorService.deleteEstadJugador(ejBorrar.id));
-    }));
-
-    return subs;
-  }
 }

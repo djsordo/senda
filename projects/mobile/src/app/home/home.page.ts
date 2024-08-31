@@ -242,34 +242,12 @@ export class HomePage implements OnInit, OnDestroy {
         let equiposUsuario = [];
         for( let rol of roles ){
           if( 'equipo' in rol )
-            equiposUsuario.push( rol.equipo );
+            equiposUsuario.push( this.db.getEquipo( rol.equipo.id ) );
         }
-        return new Promise( (resolve) => { resolve( equiposUsuario ) } );
+        return Promise.all( equiposUsuario );
       }
     }
   }
-
-
-  private DEPRECATEDloadEquiposUsuario() {
-    // TODO: REPLANTEA ESTO, QUE CUANDO EL USUARIO ES ADMINISTRADOR
-    // ESTAMOS DEVOLVIENDO LA LISTA DE EQUIPOS EN UN ARRAY DE ARRAYS
-    let allPromises : Promise<Equipo>[] = [];
-    let roles = this.security.getUsuario('roles');
-    if( this.security.userHasRole(["admin"])){
-      // if the user is admin, it has access to all the equipos
-      allPromises.push( this.db.getEquipo( null ) );
-    }else{
-      if( roles ){
-        for( let rol of roles ){
-          if( 'equipo' in rol ) 
-            allPromises.push( this.db.getEquipo( rol.equipo.id ) );
-        }
-      }  
-    }
-    return Promise.all(allPromises);
-  }
-
-
 
   getEquipoIdDefecto(){
     if( this.equiposUsuario.length > 0 ){

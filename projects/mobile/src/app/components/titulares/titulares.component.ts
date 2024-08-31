@@ -27,10 +27,6 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores') acordeonJugadores: IonAccordionGroup;
 
-  /* listaExcluidos: Array<EstadJugador> = []; */
-  /* listaEliminados: Array<EstadJugador> = []; */
-  /* portero: Array<EstadJugador> = []; */
-
   listaRobos= [{nombre: 'Provocado'},
                {nombre: 'Falta en ataque'},
                {nombre: 'Intercepción'},
@@ -138,7 +134,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   ngOnDestroy(): void {
-    this.subTick.unsubscribe();
+    this.subTick && this.subTick.unsubscribe();
   }
 
   btnGol(jugador: EstadJugador): void{
