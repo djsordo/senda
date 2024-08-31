@@ -3,35 +3,40 @@
  * Taken from: https://gist.github.com/Alhamou/10d5dcfc338c4e5a33485029b6d23b9d
  * 
  */
-'use strict';
+import * as fs from 'node:fs';
+import path from 'node:path';
+import readline from 'readline'; 
+import {google} from 'googleapis';
+import JsZip from 'jszip';
+import yaml from 'yaml';
 
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-const { google } = require('googleapis');
-const JsZip = require('jszip');
+function readConfig(){
+  const config_path = path.join( import.meta.dirname, "..", "private", "config.yaml" );
 
+  const values = yaml.parse( fs.readFileSync(config_path, 'utf8') );
+  values.scopes = ['https://www.googleapis.com/auth/drive.file'];
+  values.token_path = path.join( import.meta.dirname, "..", "private", "token.json" );
 
-const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
-const CONFIG = path.join( __dirname, "..", "private", "config.json" );
-const CREDENTIALS_PATH = path.join( __dirname, "..", "private", "credentials.json" );
-const TOKEN_PATH = path.join( __dirname, "..", "private", "token.json" );
-
-function getAuthorizationAndPerformDriveOperation( callback, args ){
-  fs.readFile(CREDENTIALS_PATH, (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Drive API.
-    authorize(JSON.parse(content), 
-                  callback, args );
-  });  
+  return values;
 }
 
 
-function loadPathsToBackup( configPath ){
-  const config = JSON.parse( fs.readFileSync( configPath ) );
+function getAuthorizationAndPerformDriveOperation( credentials, 
+                                                  token_path,
+                                                  callback, 
+                                                  args ){
+    // Authorize a client with credentials, then call the Google Drive API.
+    authorize(credentials, 
+              token_path,
+              callback, 
+              args );
+}
+
+
+function loadPathsToBackup( pathsToBackupList ){
   let result = [];
-  for( let singlePath of config.secrets ){
-    result.push( path.join( __dirname, "..", singlePath ) );
+  for( let singlePath of pathsToBackupList ){
+    result.push( path.join( import.meta.dirname, "..", singlePath ) );
   }
   return result;
 }
@@ -42,13 +47,13 @@ function loadPathsToBackup( configPath ){
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
- function authorize(credentials, callback, args ) {
-  const { client_secret, client_id, redirect_uris } = credentials.installed;
+ function authorize(credentials, token_path, callback, args ) {
+  const { client_secret, client_id, redirect_uris } = credentials;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
 
   // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
+  fs.readFile(token_path, (err, token) => {
       if (err) return getAccessToken(oAuth2Client, callback, args );
       oAuth2Client.setCredentials(JSON.parse(token));
       callback(oAuth2Client, args ); // uploadFilename
@@ -165,20 +170,25 @@ function helpMessage(){
 /**
  * main program 
  */
+const config = readConfig();
+
 if( process.argv.length !== 3 ){
   helpMessage();
 }else{  
   let iterativeDay = (new Date()).getDate();
   let zipFileName = `secrets_${process.argv[2]}.zip`;
   let uploadFileName = `secrets_${process.argv[2]}_${iterativeDay}.zip`;
-  createZip( loadPathsToBackup( CONFIG ), 
+  createZip( loadPathsToBackup( config.upload_secrets.secrets ), 
               zipFileName );
-  getAuthorizationAndPerformDriveOperation( uploadFilename, 
-  {
-    sourceFilename : zipFileName, 
-    destFilename : uploadFileName, 
-    destContentType : 'application/octet-stream'
-  } );
+  getAuthorizationAndPerformDriveOperation( 
+    config.oauth_config, 
+    config.token_path,
+    uploadFilename, 
+    {
+      sourceFilename : zipFileName, 
+      destFilename : uploadFileName, 
+      destContentType : 'application/octet-stream'
+    } );
 }
 
 

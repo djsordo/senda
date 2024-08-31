@@ -4,9 +4,8 @@
   "description": "Aplicación de mantenimiento de senda",
   "private": true,
   "type": "module",
-  "scripts": {
-  },
-  "devDependencies": {
-    "typescript": "^4.8.4"
+  "scripts": {},
+  "dependencies": {
+    "yaml": "^2.5.0"
   }
 }

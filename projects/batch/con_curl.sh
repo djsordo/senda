@@ -5,9 +5,9 @@
 
 
 endpoint="https://firestore.googleapis.com"
-client_id=$(node get_credentials.js client_id)
-client_secret=$(node get_credentials.js client_secret)
-authorization_server=$(node get_credentials.js auth_uri)
+client_id=$(node get_config.mjs oauth_config.client_id)
+client_secret=$(node get_config.mjs oauth_config.client_secret)
+authorization_server=$(node get_config.mjs oauth_config.auth_uri)
 project="projects/sendaestadisticas-com-desa"
 database="databases/(default)"
 collection="documents/clubs"

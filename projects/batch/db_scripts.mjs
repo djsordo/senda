@@ -2,8 +2,8 @@
  * db_script.js - run update commands into the database
  * 
  */
-'use strict';
-
+import * as fs from 'node:fs';
+import path from 'node:path';
 import { stdout } from 'node:process';
 import { deleteApp, initializeApp } from "firebase/app";
 import { getFirestore,
@@ -14,9 +14,13 @@ import { getFirestore,
         deleteDoc,
         getDoc} from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import yaml from 'yaml';
 
+function readConfig(){
+  const config_path = path.join( import.meta.dirname, "..", "..", "private", "config.yaml" );
 
-import { environment } from "../../private/environment.mjs";
+  return yaml.parse( fs.readFileSync(config_path, 'utf8') );
+}
 
 function make_id( ...values ){
 
@@ -243,15 +247,15 @@ function updatePartidos( firebaseConfig ){
 }
 
 
-function onStartApplication( firebaseConfig ){
-  const app = initializeApp( firebaseConfig );
+function onStartApplication( config ){
+  const app = initializeApp( config.firebaseConfig );
   const auth = getAuth();
 
-  return signInWithEmailAndPassword( auth, "rlunaro@gmail.com", "123456" );
+  return signInWithEmailAndPassword( auth, config.batch.username, config.batch.password );
 }
 
-function populateConfig( firebaseConfig ){
-  const app = initializeApp( firebaseConfig );
+function populateConfig( config ){
+  const app = initializeApp( config.firebaseConfig );
   const db = getFirestore( app );
 
   let listaCategoriasRef = doc( db, "config", "config" );
@@ -275,7 +279,7 @@ function populateConfig( firebaseConfig ){
                                   {id: 'relatives', name: 'De un familiar'},
                                   {id: 'other', name: 'Otro'} ]
                                } )
-  .then( () => { console.log("paso por on finish"); onFinishApplication( app ); } );
+  .then( () => { console.log("closing...."); onFinishApplication( app ); } );
 
   
 }
@@ -301,10 +305,14 @@ console.log('Scripts for configuring the database');
  * test: 
  * pro: 
  */
-onStartApplication( environment.firebaseConfig )
+onStartApplication( readConfig() )
   .then( (userCredential) => {
-    populateConfig( environment.firebaseConfig, userCredential );
+    populateConfig( readConfig(), userCredential );
   });
+
+
+
+
 
 
 
