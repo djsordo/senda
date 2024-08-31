@@ -139,7 +139,6 @@ export class CambioComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log( this.usuarioForm.value );
     let formVal = this.usuarioForm.value; 
     let usuario = {
       nombre : formVal.usuarioName, 
@@ -152,75 +151,36 @@ export class CambioComponent implements OnInit, OnDestroy {
     } as Usuario;
 
     if( this.editMode ){
+      
       this.db.updateUsuario( this.usuarioId, usuario )
       .then( (docRef) => {
-        this.security.registro( { email: usuario.email, 
-                                  password: '123456' } );
         this.router.navigate( ['/','admin','usuarios'] );        
         this.toastService.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha cambiado`);
       })
       .catch( (reason) => {
         this.toastService.sendToast(`Se ha producido un error al cambiar los datos de ${formVal.usuarioName} ${formVal.usuarioSurname}: ${reason}`);
       });
+
     }else{
 
-      let loginPromise = this.security.registro( { email: usuario.email, 
-                                                  password: '123456' } );
-      let dbPromise = this.db.addUsuario( usuario, usuario.email );
+      this.db.addUsuario( usuario, usuario.email )
+      .then( () => {
+        this.router.navigate( ['/','admin','usuarios'] );
+        this.toastService.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha creado: ahora el usuario deberá registrarse en la aplicación`);
+      })
+      .catch( error => {
+        this.errorsWhenSaving = {
+          code : error,
+          title : 'Error de base de datos', 
+          message : `Se produjo un error al guardar 
+          el usuario en base de datos. Es posible que el 
+          usuario no haya quedado bien guardado y haya que 
+          volver a crearlo. Puede que sea un problema temporal, 
+          intentalo más tarde. El error recibido es: ${error}`
+        };
 
-      Promise.allSettled([loginPromise, dbPromise])
-        .then( results => {
-          let loginResult = results[0];
-          let dbResult = results[1];
-          if( loginResult.status === 'fulfilled' && dbResult.status === 'fulfilled' ){
-            this.router.navigate( ['/','admin','usuarios'] );
-            this.toastService.sendToast( `${formVal.usuarioName} ${formVal.usuarioSurname} se ha creado con contraseña "123456"`);
-          }else{
-            this.errorsWhenSaving = new ErrorInfo( 'unknownError', 
-                      "Error desconocido", 
-                      "Se ha producido un error desconocido al guardar usuario" );
-            if( dbResult.status !== 'fulfilled' ){
-              this.errorsWhenSaving = {
-                code : dbResult.reason,
-                title : 'Error de base de datos', 
-                message : `Se produjo un error al guardar 
-                el usuario en base de datos. Es posible que el 
-                usuario no haya quedado bien guardado y haya que 
-                volver a crearlo. Puede que sea un problema temporal, 
-                intentalo más tarde. El error recibido es: ${dbResult.reason}`
-              };
-            }
-            if( loginResult.status !== 'fulfilled' ){
-              switch( loginResult.reason.errorCode ){
-                case 'auth/email-already-in-use':
-                  this.errorsWhenSaving = {
-                    code : loginResult.reason.errorCode, 
-                    title : 'Usuario ya registrado', 
-                    message : `Se produjo un error al registrar
-                    los datos en google porque esta dirección corresponde a un usuario
-                    ya registrado`
-                  };
-                  break; 
-                case 'auth/invalid-email':
-                  this.errorsWhenSaving = {
-                    code : loginResult.reason.errorCode,
-                    title : 'Correo inválido', 
-                    message : `Se produjo un error al registrar
-                    los datos en google porque el correo es inválido`
-                  };
-                  break;
-                default: 
-                  this.errorsWhenSaving = {
-                    code : loginResult.reason.errorCode, 
-                    title : 'Error', 
-                    message : `Se produjo un error al registrar
-                    los datos en google: ${loginResult.reason.errorCode}`
-                  };  
-                  break;
-              }
-            }
-          }
-        });
+      })
+
     }
   }
 
@@ -234,7 +194,7 @@ export class CambioComponent implements OnInit, OnDestroy {
       'usuarioSurname' : new FormControl( null, Validators.required ), 
       'usuarioEmail' : new FormControl( null, 
                     [ Validators.required, 
-                      Validators.email ], 
+                      Validators.email ],  
                       this.alreadyTakenEmailValidator.bind(this) ),
       'roles' : new FormArray([])
     } );

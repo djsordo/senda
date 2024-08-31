@@ -143,7 +143,7 @@ export class SecurityService {
         this.db.getUsuario( where( 'email', '==', this.userData.email ) )
         .then( usuarios => {
           this.userDb = usuarios[0];
-          this.storeUserInformation( this.userData, this.userDb );
+          this.storeUserInformation( this.userData );
           this.userAuthenticated.next( [this.userData, this.userDb ]);
         })
         .catch((error) => {
@@ -160,12 +160,18 @@ export class SecurityService {
     return updateEmail( this.userData, newEmailAccount );
   }
 
-  // esta función registra en firebase auth un usuario con email y password
+  /**
+   * registramos en firebase auth un usuario con usuario y contraseña. 
+   * 
+   * Además, el usuario y contraseña creado se convertirá en el 
+   * nuevo usuario registrado. 
+   * 
+   * @param email: el correo electrónico del usuario
+   * @param password: la contraseña que el usuario desea poner 
+   * @returns 
+   */
   registro({ email, password}: any){
     return new Promise( (resolve, reject) => {
-      // TODO: AQUI HAY UN ERROR: CUANDO SE REGISTRA UN USUARIO, 
-      // LAS CREDENCIALES SE CAMBIAN AL USUARIO QUE ACABAMOS 
-      // DE REGISTRAR
       createUserWithEmailAndPassword(this.auth, email, password)
       .then( (userCredential : any ) => {
         sendEmailVerification( userCredential.user )
@@ -186,7 +192,7 @@ export class SecurityService {
     return updatePassword( this.userData, newPassword );
   }
 
-  private storeUserInformation( userData: User, userDb: Usuario ){
+  private storeUserInformation( userData: User ){
     this.localStorage.setItem( 'email', userData.email );
     this.localStorage.setItem( 'uid', userData.uid );
     let accessToken = (<any> userData).accessToken;
@@ -203,7 +209,7 @@ export class SecurityService {
             .then( usuarios => {
               if( usuarios.length > 0 ){
                 this.userDb = usuarios[0];
-                this.storeUserInformation( this.userData, this.userDb );
+                this.storeUserInformation( this.userData );
                 this.userAuthenticated.next( [this.userData, this.userDb ]);
                 resolve( [this.userData, this.userDb] );
               }else{

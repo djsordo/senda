@@ -151,10 +151,6 @@ export class HomePage implements OnInit, OnDestroy {
 
   }
 
-  test(){
-    console.log( this.security.userDb );
-  }
-
   irAModo(equipo: Equipo, partido: Partido, modo){
     // Meto el partidoId y el equipoId en el localStorage, porque los usaré más tarde.
     localStorage.setItem('partidoId', partido.id);

@@ -13,7 +13,6 @@
 
   <div slot="fixed" class="contenidoFijo">
     <ion-list>
-      <ion-button (click)="test()">Test</ion-button>
       <ion-item>
         <ion-select interface="action-sheet" placeholder="Selecciona Equipo" (ionChange)="cambioEquipo($event)" value="{{getEquipoIdDefecto()}}">
           <ion-select-option *ngFor="let equipo of equiposUsuario" value="{{equipo.id}}">{{equipo.nombre + ' ' + equipo.categoria + ' ' + equipo.genero}}</ion-select-option>
