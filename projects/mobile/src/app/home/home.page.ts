@@ -242,7 +242,7 @@ export class HomePage implements OnInit, OnDestroy {
         let equiposUsuario = [];
         for( let rol of roles ){
           if( 'equipo' in rol )
-            equiposUsuario.push( rol.equipo.id );
+            equiposUsuario.push( rol.equipo );
         }
         return new Promise( (resolve) => { resolve( equiposUsuario ) } );
       }

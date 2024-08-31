@@ -138,7 +138,6 @@ export class SecurityService {
     // que se dispara cuando el usuario es autenticado
     this.auth.onAuthStateChanged( (user) => {
       if( user ) {
-        console.log("onauthstatechanged:", user );
         this.userData = user; 
         this.db.getUsuario( where( 'email', '==', this.userData.email ) )
         .then( usuarios => {
