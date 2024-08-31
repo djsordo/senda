@@ -1,23 +1,25 @@
 /**
- * deploy_web.js - for deploy the web hosting
+ * deploy_web.mjs - for deploy the web hosting
  * 
  * 
  */
-'use strict'; 
-
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-const { spawn } = require('child_process');
-const { config } = require('process');
-
-const CONFIG = path.join( __dirname, "..", "private", "config.json" );
+import * as fs from 'node:fs';
+import path from 'node:path';
+import { spawn } from 'node:child_process';
+import yaml from 'yaml';
 
 
+function readConfig(){
+  const config_path = path.join( import.meta.dirname, "..", "private", "config.yaml" );
 
-function main( args ){
+  const config = yaml.parse( fs.readFileSync(config_path, 'utf8') );
 
-  const config = JSON.parse( fs.readFileSync( CONFIG ) );
+  config.project_home = path.normalize( path.join( config_path, '..', '..' ) );
+
+  return config; 
+}
+
+function main( config, args ){
 
   if( args[0] !== 'desa' 
     && args[0] !== 'pre'
@@ -35,37 +37,37 @@ function main( args ){
     return;
   }
 
-  runCommand( ['firebase', 'login:use', config['gmail_account']] )
+  runCommand( ['firebase', 'login:use', config.gmail_account] )
   .then( (_) => {
     if( args[0] === 'desa' ){
       console.log("Building and deploying for development");
       runCommand( ['ionic', 'build', '--configuration=development', '--project=mobile'] )
       .then( (_) => {
-        runCommand( ['firebase', 'deploy', '--project', config['dev_project'], '--only', `hosting:${config['dev_hosting']}` ] );
+        runCommand( ['firebase', 'deploy', '--project', config.desa.project, '--only', `hosting:${config.desa.hosting}` ] );
       });
     }else if( args[0] === 'pre' ){
       console.log("Building and deploying for PREproduction");
       runCommand( ['ionic', 'build', '--configuration=production', '--project=mobile'] )
       .then((_) => {
-        runCommand( ['firebase', 'deploy', '--project', config['pre_project'], '--only', `hosting:${config['pre_hosting']}`] );
+        runCommand( ['firebase', 'deploy', '--project', config.pre.project, '--only', `hosting:${config.pre.hosting}`] );
       });
     }else if( args[0] === 'prod' ){
       console.log("Building and deploying for PRODUCTION");
       runCommand( ['ionic', 'build', '--configuration=production'] )
       .then((_) => {
-        runCommand( ['firebase', 'deploy', '--project', config['prod_project'], '--only', `hosting:${config['prod_hosting']}`] );
+        runCommand( ['firebase', 'deploy', '--project', config.prod.project, '--only', `hosting:${config.prod.hosting}`] );
       });
     }else if( args[0] === 'serve_desa' ){
       console.log("Serving locally development");
       runCommand( ['ionic', 'build', '--project=mobile', '--configuration=development'] )
       .then( (_) => {
-        runCommand( ['firebase', 'serve', '--project', config['dev_project'], '--only', `hosting:${config['dev_hosting']}` ] );
+        runCommand( ['firebase', 'serve', '--project', config.desa.project, '--only', `hosting:${config.desa.hosting}` ] );
       });
     }else /* serve_prod */ {
       console.log("Serving locally production");
       runCommand( ['ionic', 'build', '--project=mobile', '--configuration=production'] )
       .then((_) => {
-        runCommand( ['firebase', 'serve', '--project', config['prod_project'], '--only', `hosting:${config['prod_hosting']}`] );
+        runCommand( ['firebase', 'serve', '--project', config.prod.project, '--only', `hosting:${config.prod.hosting}`] );
       });
     }
   } )
@@ -86,6 +88,6 @@ async function runCommand( cmd ){
 }
 
 
-main( process.argv.slice(2) ); 
+main( readConfig(), process.argv.slice(2) ); 
 
 

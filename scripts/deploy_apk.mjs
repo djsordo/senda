@@ -1,16 +1,24 @@
 /**
- * deploy_apk.js - for deploy the apk
+ * deploy_apk.mjs - for deploy the apk
  * 
  * 
  */
-'use strict'; 
+import * as fs from 'node:fs';
+import path from 'node:path'; 
+import { spawn } from 'node:child_process';
+import readline from 'readline';
+import yaml from 'yaml';
 
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-const { spawn } = require('child_process');
 
-const CONFIG = path.join( __dirname, "..", "private", "config.json" );
+function readConfig(){
+  const config_path = path.join( import.meta.dirname, "..", "private", "config.yaml" );
+
+  const config = yaml.parse( fs.readFileSync(config_path, 'utf8') );
+
+  config.project_home = path.normalize( path.join( config_path, '..', '..' ) );
+
+  return config; 
+}
 
 let msgDevel = `
 ------------------------------------
@@ -25,7 +33,7 @@ compilar la solución, y generar un fichero *.apk.
 
 Cuando hayas terminado, lo subimos a internet (s/n)? `;
 
-function main( args ){
+function main( config, args ){
 
   if( args[0] !== 'desa' && args[0] !== 'prod' && args[0] != 'produccion' ){
     console.log( "debe indicarse uno de estos valores:" );
@@ -34,7 +42,6 @@ function main( args ){
     return;
   }
 
-  const config = JSON.parse( fs.readFileSync( CONFIG ) );
   const rl = readline.createInterface({
     input : process.stdin, 
     output : process.stdout
@@ -52,7 +59,8 @@ function main( args ){
   }
   if( args[0] === 'prod' || args[0] === 'produccion' ){
     console.log( 'Subiendo código de versión....' );
-    setCodeVersionGradle( config.environment_prod, config.build_gradle );
+    setCodeVersionGradle( path.join( config.project_home, config.environment_prod ), 
+                          path.join( config.project_home, config.build_gradle ) );
 
     let capacitorCommand = ["ionic", "capacitor", "sync", "--project=mobile", "--configuration=production"];
     console.log( 'Ejecutamos ', capacitorCommand );
@@ -61,19 +69,14 @@ function main( args ){
       rl.question( msgProd, 
         (value) => {
           if( value.toLowerCase() === 's' ){
-            moveFile( config["move_rename"]["from"],
-                      config["move_rename"]["to"] )
-            .then( (_) => {
-              runCommand( config["deploy_apk"] )
-              .then( () => {
-                rl.close();
-              })
-            })
-            .catch( (error) => {
-              console.error("se ha producido un error:");
-              console.error( error );
+            for( let renameOperation of config.renames ){
+              fs.renameSync( path.join( config.project_home, renameOperation.from ), 
+                             path.join( config.project_home, renameOperation.to ) );
+            }
+            runCommand( config.deploy_apk_cmd )
+            .then( () => {
               rl.close();
-            });
+            })
           }else{
             rl.close();
           }
@@ -95,29 +98,6 @@ async function runCommand( cmd ){
     cmdHandler.on('exit', (code) =>  resolve( code ) );
     cmdHandler.on('error', (errorCode) => reject(errorCode) );
   });
-}
-
-
-async function moveFile( sourcePath, destPath ){
-
-  let is = fs.createReadStream(sourcePath);
-  let os = fs.createWriteStream(destPath);
-
-  return new Promise( (resolve, reject) => {
-    is.pipe(os);
-    is.on('end', () => {
-      is.close();
-      fs.unlinkSync(sourcePath);
-      os.close();
-      resolve( "file_copied" );
-    });
-    is.on('error', () => {
-      is.close();
-      os.close();
-      reject( "file not found" );
-    })
-  });
-
 }
 
 
@@ -158,7 +138,5 @@ function incrementCodeVersionGradle( filename, line ){
 
 
 
-main( process.argv.slice(2) ); 
-
-
+main( readConfig(), process.argv.slice(2) ); 
 

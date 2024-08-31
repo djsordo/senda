@@ -6,5 +6,5 @@
 $script = $MyInvocation.MyCommand.Path
 $scriptPath = Split-Path $script -Parent
 
-node ($scriptPath + "\deploy_web.js") $args
+node ($scriptPath + "\deploy_web.mjs") $args
 

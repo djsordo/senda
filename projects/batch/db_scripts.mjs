@@ -17,9 +17,13 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import yaml from 'yaml';
 
 function readConfig(){
-  const config_path = path.join( import.meta.dirname, "..", "..", "private", "config.yaml" );
+  const config_path = path.join( import.meta.dirname, "..", "private", "config.yaml" );
 
-  return yaml.parse( fs.readFileSync(config_path, 'utf8') );
+  const config = yaml.parse( fs.readFileSync(config_path, 'utf8') );
+
+  config.project_home = path.normalize( path.join( config_path, '..', '..' ) );
+
+  return config; 
 }
 
 function make_id( ...values ){
