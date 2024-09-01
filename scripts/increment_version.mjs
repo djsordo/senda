@@ -1,26 +1,30 @@
 /**
- * increment_version.js - for deploy the apk
+ * increment_version.js - the version number must be set in various files, so this script helps to keep version numbers aligned
  * 
  * 
  */
-'use strict'; 
+import * as fs from 'node:fs';
+import path from 'node:path';
+import readline from 'readline';
+import yaml from 'yaml';
 
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-const { spawn } = require('child_process');
+function readConfig(){
+  const config_path = path.join( import.meta.dirname, "..", "private", "config.yaml" );
 
-const CONFIG = path.join( __dirname, "..", "private", "config.json" );
+  const config = yaml.parse( fs.readFileSync(config_path, 'utf8') );
 
+  config.project_home = path.normalize( path.join( config_path, '..', '..' ) );
 
-function main(){
+  return config; 
+}
 
-  const config_all = JSON.parse( fs.readFileSync( CONFIG ) );
-  const config = config_all['deploy_apk.js'];
+function main( config ){
 
   console.log( 'Subiendo código de versión....' );
-  incrementVersionMinor( config.environment_prod );
-  setVersionGradle( config.environment_prod, config.build_gradle );
+  let environment_prod = path.join( config.project_home, config.environment_prod );
+  let build_gradle = path.join( config.project_home, config.build_gradle );
+  incrementVersionMinor( environment_prod );
+  setVersionGradle( environment_prod, build_gradle );
 
 }
 
@@ -111,7 +115,7 @@ function replaceVersionNumberGradle( fileToReport, line, currentVersionNumber ) 
   }
 }
 
-main(); 
+main( readConfig() ); 
 
 
 
