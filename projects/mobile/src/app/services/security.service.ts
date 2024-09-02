@@ -13,7 +13,7 @@ import { Auth,
   
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { where } from "@angular/fire/firestore";
-import { Observable, of, Subject } from "rxjs";
+import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 
 import { Db } from "./db.service";
 import { Usuario } from "../modelo/usuario";
@@ -22,7 +22,7 @@ import { ErrorInfo } from "../common/error-info";
 
 
 
-export const permissionsGuard = permissionsGuardSync;
+export const permissionsGuard = permissionsGuardAsync;
 
 /**
  * Synchronous guard function for check permissions. 
@@ -69,12 +69,44 @@ export function permissionsGuardAsync(route: ActivatedRouteSnapshot,
   if( !securityService.isAuthenticated() ) {
     return new Promise( (resolve) => {
       auth.authStateReady()
-        .then( () => {
-          if( auth.currentUser )
-            resolve( true );
+      .then( () => {
+        securityService.userAuthenticated.subscribe( (authData) => {
+          if( authData ) 
+            // se ha disparado la autenticación del usuario 
+            // pero le ha dado tiempo a finalizar el observable
+            // del constructor del servicio de seguridad, 
+            // podemos retornar "true"
+            resolve(true);
           else
+            // se ha disparado la autenticación del usuario pero
+            // por algún motivo ha devuelto null (¿hemos hecho logut?)
+            // así que a la pantalla de login, majete
             resolve( router.parseUrl( '/login' ) );
         })
+      })
+      // auth.authStateReady()
+      //   .then( () => {
+      //     if( auth.currentUser ){
+      //       if( securityService.userDb ){
+      //         // recuperar la información del usuario ha tenido 
+      //         // éxito, así que puede continuar 
+      //         resolve(true);
+      //       }else{
+      //         // aún no hemos recuperado información de 
+      //         // autenticación, nos suscribimos al 
+      //         // Subect userAuthenticated
+      //         securityService.userAuthenticated.subscribe( (authData) => {
+      //           if( authData ) 
+      //             resolve( true );
+      //           else
+      //             resolve( router.parseUrl( '/login' ) );      
+      //         });
+      //       }
+      //     }
+      //     else{
+      //       resolve( router.parseUrl( '/login' ) );
+      //     }
+      //   })
     });
   }
   return true;
@@ -121,7 +153,7 @@ export class SecurityService {
 
   public userAuthenticated = new Subject<any>();
   private userData : User  = null;
-  public userDb : Usuario = null;
+  private userDb : Usuario = null;
   public allRoles : {rol: string, desc: string}[] = 
       [{rol: 'delegado', 
         desc: 'Delegado'},
