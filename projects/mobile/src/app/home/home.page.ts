@@ -163,6 +163,7 @@ export class HomePage implements OnInit, OnDestroy {
         // A ver si puedo desde aquí cambiar el estado del partido.
         partido.config.estado = 'en preparacion';
         this.db.updatePartido( partido.id, partido );
+        localStorage.setItem('estadoPartido', partido.config.estado);
         
         this.router.navigate(['/inicio-sel-jugadores', partido.id]);
 
@@ -172,7 +173,9 @@ export class HomePage implements OnInit, OnDestroy {
     } else if (modo === 'reset'){
       // A ver si puedo desde aquí cambiar el estado del partido.
       partido.config.estado = 'programado';
-      this.db.updatePartido( partido.id, partido );
+      this.db.updatePartido( partido.id, 
+                              { config: { estado: 'programado' }} as Partido, 
+                              {merge: true} );
       localStorage.setItem('estadoPartido', partido.config.estado);
 
       // TODO: AQUI ME QUEDO, PROBANDO A VER SI ME FUNCIONA MI 

@@ -37,7 +37,6 @@ export class CronoComponent implements OnInit, OnDestroy {
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
               private securityService: SecurityService,
-              private partidoService: PartidosService,
               private alertController: AlertController) {}
 
   ngOnInit() {
@@ -53,7 +52,6 @@ export class CronoComponent implements OnInit, OnDestroy {
     // Si es la primera vez que se pulsa (comienzo de partido) cambiamos el estado
     if (this.tiempo.segundos === 0 && this.tiempo.parte === 1){
       this.db.updatePartido( this.partidoId, { config: { estado: 'en curso' } } as Partido, {merge:true} );
-      //this.partidoService.setEstado(localStorage.getItem('partidoId'), 'en curso');
       localStorage.setItem('estadoPartido', 'en curso');
 
       // Evento de comienzo de partido
@@ -128,7 +126,7 @@ export class CronoComponent implements OnInit, OnDestroy {
     this.pasoDatos.onEventoJugador( evento );
 
     // Dejamos el estado del partido como 'finalizado'
-    this.partidoService.setEstado(localStorage.getItem('partidoId'), 'finalizado');
+    this.db.updatePartido( this.partidoId, { config: { estado: 'finalizado' } } as Partido, {merge:true} );
     localStorage.setItem('estadoPartido', 'finalizado');
   }
 

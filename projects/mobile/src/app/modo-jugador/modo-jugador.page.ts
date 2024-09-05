@@ -1,6 +1,6 @@
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { Component, OnInit, OnDestroy, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, DoCheck } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ToastController, Platform } from '@ionic/angular';
 
@@ -27,7 +27,7 @@ import { Jugador } from '../modelo/jugador';
   templateUrl: './modo-jugador.page.html',
   styleUrls: ['./modo-jugador.page.scss'],
 })
-export class ModoJugadorPage implements OnInit, OnDestroy {
+export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   
   partido: Partido;
   usuario: Usuario;
@@ -73,6 +73,7 @@ export class ModoJugadorPage implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
+    this.estadoPartido = localStorage.getItem('estadoPartido');
     this.listaInicial$ = new BehaviorSubject<EstadJugador[]>([]);
     this.listaBanquillo$ = new BehaviorSubject<EstadJugador[]>([]);
     this.listaEliminados = [];
@@ -153,6 +154,10 @@ export class ModoJugadorPage implements OnInit, OnDestroy {
       this.listaBanquillo.push(estadJugador);
     });
     this.listaBanquillo$.next( this.listaBanquillo );
+  }
+
+  ngDoCheck(){
+    this.estadoPartido = localStorage.getItem('estadoPartido');
   }
 
   cambioPortero(portero: EstadJugador){
