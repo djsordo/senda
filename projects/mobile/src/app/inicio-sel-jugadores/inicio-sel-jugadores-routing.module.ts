@@ -5,7 +5,7 @@ import { InicioSelJugadoresPage } from './inicio-sel-jugadores.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':partidoId',
     component: InicioSelJugadoresPage
   }
 ];

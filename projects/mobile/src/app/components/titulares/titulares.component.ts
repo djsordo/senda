@@ -1,12 +1,12 @@
-import { EstadPartidoService } from './../../services/estad-partido.service';
-import { EstadJugadorService } from '../../services/estad-jugador.service';
-import { Crono } from './../../modelo/crono';
-import { Observable, Subscription } from 'rxjs';
-import { EstadJugador } from './../../modelo/estadJugador';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Component, Input, OnInit, Output, ViewChild, EventEmitter, OnDestroy, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
+import { EstadPartidoService } from './../../services/estad-partido.service';
+import { EstadJugadorService } from '../../services/estad-jugador.service';
+import { Crono } from './../../modelo/crono';
+import { EstadJugador } from './../../modelo/estadJugador';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { CronoService, Tick } from './../crono/crono.service';
 import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
@@ -17,16 +17,20 @@ import { Acciones, EventosService } from 'projects/mobile/src/app/services/event
   styleUrls: ['./titulares.component.scss'],
 })
 export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
-  @Input() jugCampo: Array<EstadJugador>;
-  @Input() listaBanquillo: Array<EstadJugador>;
+  @Input() partidoId: string;
+  @Input() equipoId: string;
+  @Input() jugCampo$: Subject<Array<EstadJugador>>;
+  @Input() listaBanquillo$: Subject<Array<EstadJugador>>;
   @Input() listaExcluidos: Array<EstadJugador>;
   @Input() listaEliminados: Array<EstadJugador>;
-  @Input() portero: Array<EstadJugador>;
+  @Input() portero: EstadJugador = null;
   @Output() porteroEmisor = new EventEmitter<EstadJugador>();
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores') acordeonJugadores: IonAccordionGroup;
 
+  jugCampo: Array<EstadJugador> = [];
+  listaBanquillo: Array<EstadJugador> = [];
   listaRobos= [{nombre: 'Provocado'},
                {nombre: 'Falta en ataque'},
                {nombre: 'Intercepción'},
@@ -59,23 +63,48 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     private estadJugadorService: EstadJugadorService) {}
 
   ngOnInit() {
-    // divido la lista inicial en portero y jugadores de campo
-    const indicePortero = this.jugCampo?.indexOf(this.jugCampo.find(po => po.datos.posicion === 'PO'));
 
-    if (indicePortero >= 0 ){
-      this.portero = this.jugCampo.splice(indicePortero, 1);
-      this.portero[0].exclusion = false;
-      this.porteroEmisor.emit(this.portero[0]);
-    } else {
-      this.portero = [];
-    }
+    this.jugCampo$.subscribe( (jugCampo) => {
+      if( jugCampo.length > 0 ){
+        // divido la lista inicial en portero y jugadores de campo
+        let porteroEncontrado = jugCampo.find( x => x.datos.posicion === 'PO' );
+        if( porteroEncontrado ){
+          this.portero = porteroEncontrado;
+          this.portero.exclusion = false; 
+          this.porteroEmisor.emit( this.portero );
+        }
 
-    this.jugCampo = this.jugCampo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
-    for (let i = 0; i < this.jugCampo?.length; i++){
-     this.jugCampo[i].exclusion = false;
-    }
+        jugCampo.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
+        this.jugCampo = [];
+        for(let jugador of jugCampo){
+          if( jugador.datos.posicion !== 'PO' ){
+            jugador.exclusion = false;
+            this.jugCampo.push( jugador );
+          }
+        }
+      }
+    });
 
-    this.listaBanquillo = this.listaBanquillo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
+    this.listaBanquillo$.subscribe( (banquillo) => {
+      if( banquillo.length > 0 )
+        this.listaBanquillo = banquillo.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
+    })
+
+    // // divido la lista inicial en portero y jugadores de campo
+    // let porteroEncontrado = this.jugCampo.find( x => x.datos.posicion === 'PO' );
+    // if( porteroEncontrado ){
+    //   this.portero = porteroEncontrado;
+    //   this.portero.exclusion = false; 
+    //   this.porteroEmisor.emit( this.portero[0] );
+    // }else{
+    //   this.portero = null;
+    // }
+
+    // this.jugCampo = this.jugCampo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
+    // for (let i = 0; i < this.jugCampo?.length; i++){
+    //  this.jugCampo[i].exclusion = false;
+    // }
+
 
     localStorage.setItem('accion', '');
     localStorage.setItem('jugadorId', '');
@@ -86,7 +115,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     this.subTick = this.tick$.subscribe(res => {
       if (res.segundos !== 0){
-        this.portero.forEach(jug => jug.segJugados++);
+        this.portero.segJugados++;
         this.jugCampo.forEach(jug => jug.segJugados++);
         this.listaExcluidos.forEach(jug => {
           jug.segJugados++;
@@ -100,7 +129,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
     if (this.listaExcluidos !== undefined){
-      for (let i = 0; i < this.listaExcluidos?.length; i++){
+      for (let i = 0; i < this.listaExcluidos.length; i++){
 
         if (this.listaExcluidos[i].segExclusion <= 0) {
           this.listaExcluidos[i].exclusion = false;
@@ -117,8 +146,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // Emitimos el portero
-    if (this.portero !== undefined){
-      this.porteroEmisor.emit(this.portero[0]);
+    if (this.portero){
+      this.porteroEmisor.emit(this.portero);
     }
 
     if (localStorage.getItem('accion') !== ''){
@@ -137,9 +166,14 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     this.subTick && this.subTick.unsubscribe();
   }
 
+  onTest() {
+    console.log( "jugadores: ", this.jugCampo );
+    console.log( "portero", this.portero );
+  }
+
   btnGol(jugador: EstadJugador): void{
     const detalle = { accion: Acciones.gol,
-                      accionS: (this.portero.length === 0)? Acciones.sinPortero : '',
+                      accionS: this.portero ? Acciones.sinPortero : '',
                       jugador,
                       marcaTiempo: this.crono.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
@@ -161,7 +195,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnLanzamiento(jugador: EstadJugador): void{
     const detalle = { accion: Acciones.lanzamiento,
-      accionS: (this.portero.length === 0)? Acciones.sinPortero : '',
+      accionS: this.portero ? Acciones.sinPortero : '',
       jugador,
       marcaTiempo: this.crono.marcaTiempo()};
 
@@ -193,8 +227,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     eventoJugador.accionPrincipal = Acciones.tarjetaAmarilla;
     eventoJugador.creadorEvento = jugador.datos.nombre;
     eventoJugador.jugadorId = jugador.datos.id;
-    eventoJugador.partidoId = localStorage.getItem('partidoId');
-    eventoJugador.equipoId = localStorage.getItem('equipoId');
+    eventoJugador.partidoId = this.partidoId;
+    eventoJugador.equipoId = this.equipoId;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
     // Cerramos el acordeón de jugadores
@@ -215,8 +249,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     eventoJugador.accionPrincipal = Acciones.tarjetaRoja;
     eventoJugador.jugadorId = jugador.datos.id;
-    eventoJugador.partidoId = localStorage.getItem('partidoId');
-    eventoJugador.equipoId = localStorage.getItem('equipoId');
+    eventoJugador.partidoId = this.partidoId;
+    eventoJugador.equipoId = this.equipoId;
     eventoJugador.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -237,8 +271,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     eventoJugador.accionPrincipal = Acciones.tarjetaAzul;
     eventoJugador.jugadorId = jugador.datos.id;
-    eventoJugador.partidoId = localStorage.getItem('partidoId');
-    eventoJugador.equipoId = localStorage.getItem('equipoId');
+    eventoJugador.partidoId = this.partidoId;
+    eventoJugador.equipoId = this.equipoId;
     eventoJugador.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -260,8 +294,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     eventoJugador.accionPrincipal = Acciones.dosMinutos;
     eventoJugador.jugadorId = jugador.datos.id;
-    eventoJugador.partidoId = localStorage.getItem('partidoId');
-    eventoJugador.equipoId = localStorage.getItem('equipoId');
+    eventoJugador.partidoId = this.partidoId;
+    eventoJugador.equipoId = this.equipoId;
     eventoJugador.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoJugador );
 
@@ -283,13 +317,13 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     // Si no está en la lista, lo añadimos
     if (!salir){
-      if (this.portero[0]?.datos.id === jugador.datos.id){
-        this.portero[0].exclusion = true;
-        this.portero[0].segExclusion = 120;
+      if (this.portero?.datos.id === jugador.datos.id){
+        this.portero.exclusion = true;
+        this.portero.segExclusion = 120;
 
         // Mandamos al portero a la lista de excluidos
-        excluido = this.portero.splice(0,1);
-        this.listaExcluidos.push(excluido[0]);
+        this.listaExcluidos.push(this.portero);
+        this.portero = null;
       } else {
         // Jugadores de campo
         for (let i = 0; i < this.jugCampo?.length; i++){
@@ -307,7 +341,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
       }
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
+    this.porteroEmisor.emit(this.portero);
   }
 
   btnCambioMarca(){
@@ -319,7 +353,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     let jugSale: EstadJugador[];
 
     if (esPortero){
-      jugSale = this.portero.splice(0,1);
+      jugSale = [this.portero];
+      this.portero = null;
 
     } else {
       const sale = this.jugCampo.findIndex(res => res.datos.id === titular.datos.id);
@@ -331,7 +366,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     const jugEntra = this.listaBanquillo.splice(entra, 1);
 
     if (esPortero){
-      this.portero.push(jugEntra[0]);
+      this.portero = jugEntra[0];
     } else {
       this.jugCampo.push(jugEntra[0]);
     }
@@ -339,7 +374,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     this.listaBanquillo.push(jugSale[0]);
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
+    this.porteroEmisor.emit(this.portero);
 
     // Se crean los eventos para la base de datos
     // Jugador que sale del campo
@@ -348,8 +383,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     eventoSale.accionPrincipal = Acciones.cambio;
     eventoSale.accionSecundaria = Acciones.sale;
     eventoSale.jugadorId = jugSale[0].datos.id;
-    eventoSale.partidoId = localStorage.getItem('partidoId');
-    eventoSale.equipoId = localStorage.getItem('equipoId');
+    eventoSale.partidoId = this.partidoId;
+    eventoSale.equipoId = this.equipoId;
     eventoSale.creadorEvento = jugSale[0].datos.nombre;
     this.pasoDatos.onEventoJugador( eventoSale );
     // Jugador que entra al campo
@@ -358,8 +393,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     eventoEntra.accionPrincipal = Acciones.cambio;
     eventoEntra.accionSecundaria = Acciones.entra;
     eventoEntra.jugadorId = jugEntra[0].datos.id;
-    eventoEntra.partidoId = localStorage.getItem('partidoId');
-    eventoEntra.equipoId = localStorage.getItem('equipoId');
+    eventoEntra.partidoId = this.partidoId;
+    eventoEntra.equipoId = this.equipoId;
 
     eventoEntra.creadorEvento = jugEntra[0].datos.nombre;
     this.pasoDatos.onEventoJugador( eventoEntra );
@@ -370,8 +405,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnEntra(jugador: EstadJugador){
     // Entra al campo
-    if (jugador.datos.portero && this.portero.length === 0){
-      this.portero.push(jugador);
+    if (jugador.datos.portero && !this.portero){
+      this.portero = jugador;
     } else {
       this.jugCampo.push(jugador);
     }
@@ -381,15 +416,15 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     this.listaBanquillo.splice(entra, 1);
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
+    this.porteroEmisor.emit(this.portero);
 
     // Jugador que entra al campo
     const eventoEntra = this.eventosService.newEvento();
     eventoEntra.accionPrincipal = Acciones.cambio;
     eventoEntra.accionSecundaria = Acciones.entra;
     eventoEntra.jugadorId = jugador.datos.id;
-    eventoEntra.partidoId = localStorage.getItem('partidoId');
-    eventoEntra.equipoId = localStorage.getItem('equipoId');
+    eventoEntra.partidoId = this.partidoId;
+    eventoEntra.equipoId = this.equipoId;
     eventoEntra.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoEntra );
 
@@ -403,7 +438,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     // Sale de la lista de portero o de jugCampo
     if (esPortero){
-      this.portero.splice(0,1);
+      this.portero = null;
 
     } else {
       const sale = this.jugCampo.findIndex(res => res.datos.id === jugador.datos.id);
@@ -411,15 +446,15 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero[0]);
+    this.porteroEmisor.emit(this.portero);
 
     // Jugador que sale del campo
     const eventoSale = this.eventosService.newEvento();
     eventoSale.accionPrincipal = Acciones.cambio;
     eventoSale.accionSecundaria = Acciones.sale;
     eventoSale.jugadorId = jugador.datos.id;
-    eventoSale.partidoId = localStorage.getItem('partidoId');
-    eventoSale.equipoId = localStorage.getItem('equipoId');
+    eventoSale.partidoId = this.partidoId;
+    eventoSale.equipoId = this.equipoId;
     eventoSale.creadorEvento = jugador.datos.nombre;
     this.pasoDatos.onEventoJugador( eventoSale );
 
@@ -441,17 +476,17 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
       }
     } else if (accion === Acciones.parada){
       // Parada del portero
-      this.portero[0].paradas++;
-      jugActivo = this.portero[0];
-    } else if (accion === Acciones.golRival && this.portero[0]){
+      this.portero.paradas++;
+      jugActivo = this.portero;
+    } else if (accion === Acciones.golRival && this.portero){
       // Gol del rival. Sólo contará si existe un portero.
-        this.portero[0].golesRival++;
-        jugActivo = this.portero[0];
+        this.portero.golesRival++;
+        jugActivo = this.portero;
     } else if (accion === Acciones.robo){
-      if (this.portero[0]?.datos.id === jugadorId){
+      if (this.portero?.datos.id === jugadorId){
         // Es un robo del portero
-        this.portero[0].robos++;
-        jugActivo = this.portero[0];
+        this.portero.robos++;
+        jugActivo = this.portero;
       } else {
         // Es un robo de un jugador de campo
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
@@ -459,10 +494,10 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
         jugActivo = this.jugCampo[indice];
       }
     } else if (accion === Acciones.perdida){
-      if (this.portero[0]?.datos.id === jugadorId){
+      if (this.portero?.datos.id === jugadorId){
         // Es una pérdida del portero
-        this.portero[0].perdidas++;
-        jugActivo = this.portero[0];
+        this.portero.perdidas++;
+        jugActivo = this.portero;
       } else {
         // Es una pérdida de un jugador de campo
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
@@ -475,10 +510,10 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
       this.listaExcluidos[indice].exclusiones++;
       jugActivo = this.listaExcluidos[indice];
     } else if (accion === Acciones.tarjetaAmarilla){
-      if (this.portero[0].datos.id === jugadorId){
+      if (this.portero.datos.id === jugadorId){
         // Amarilla del portero
-        this.portero[0].amarillas++;
-        jugActivo = this.portero[0];
+        this.portero.amarillas++;
+        jugActivo = this.portero;
       } else {
         // Amarilla de un jugador de campo
         const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);

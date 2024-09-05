@@ -274,7 +274,7 @@ export class Db {
     return this.simpleAdd( "partidos", partido, id );
   }
 
-  public updatePartido( id : string, partido : Jugador ) {
+  public updatePartido( id : string, partido : Partido ) {
     return this.simpleUpdate( "partidos", id, partido );
   }
 

@@ -151,42 +151,28 @@ export class HomePage implements OnInit, OnDestroy {
 
   }
 
-  irAModo(equipo: Equipo, partido: Partido, modo){
-    // Meto el partidoId y el equipoId en el localStorage, porque los usaré más tarde.
-    localStorage.setItem('partidoId', partido.id);
-    localStorage.setItem('partes', partido.config.partes.toString());
-    localStorage.setItem('segsParte', partido.config.segsParte.toString());
-    localStorage.setItem('equipoId', equipo.id);
-
-    // Probablemente pueda quitar esto, ya que el dato está ya en localStorage
-    this.pasoDatosService.setEquipoId(equipo.id);
+  irAModo(equipo: Equipo, partido: Partido, modo: string){
 
     const nombresEquipos = {casa: '', fuera: ''};
 
     nombresEquipos.casa = equipo.nombreCorto !== undefined ? equipo.nombreCorto : equipo.nombre;
     nombresEquipos.fuera = partido.rival;
     this.pasoDatosService.setNombresEquipos(nombresEquipos);
-
+    console.log( "partido recibido: ", partido );
     if (modo === 'generar'){
-        this.subs.forEach(sub => sub.unsubscribe());
         // A ver si puedo desde aquí cambiar el estado del partido.
         partido.config.estado = 'en preparacion';
-        this.partidoService.setEstado(partido.id, partido.config.estado);
-        /* this.usuarioService.updateUsuario(this.usuario); */
-        localStorage.setItem('estadoPartido', partido.config.estado);
-
-        this.subs.forEach(sub => sub.unsubscribe());
-        this.router.navigate(['/inicio-sel-jugadores']);
+        this.db.updatePartido( partido.id, partido );
+        
+        this.router.navigate(['/inicio-sel-jugadores', partido.id]);
 
     } else if (modo === 'ver'){
-      this.subs.forEach(sub => sub.unsubscribe());
-      this.router.navigate(['/modo-ver']);
+      this.router.navigate(['/modo-ver', partido.id]);
 
     } else if (modo === 'reset'){
       // A ver si puedo desde aquí cambiar el estado del partido.
       partido.config.estado = 'programado';
-      this.partidoService.setEstado(partido.id, partido.config.estado);
-      /* this.usuarioService.updateUsuario(this.usuario);*/
+      this.db.updatePartido( partido.id, partido );
       localStorage.setItem('estadoPartido', partido.config.estado);
 
       // TODO: AQUI ME QUEDO, PROBANDO A VER SI ME FUNCIONA MI 

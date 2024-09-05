@@ -284,8 +284,12 @@ export class SecurityService {
   }
 
   logout() {
-    this.userAuthenticated.next( null );
-    return signOut(this.auth);
+    return signOut(this.auth)
+      .then( () => {
+        this.userDb = null;
+        this.userData = null; 
+        this.userAuthenticated.next( null );
+      });
   }
 
   getUsuario( property?: string ){

@@ -16,7 +16,7 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <div class="pasos">1. Selecciona el 7 inicial arrastrando a los jugadores a su posición</div>
+            <ion-text class="pasos">1. Selecciona el 7 inicial arrastrando a los jugadores a su posición</ion-text>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -27,7 +27,6 @@
                 <div *ngFor="let jugador of listaInicial">
                   <div *ngIf="jugador.posicion === posicion.clave" class="tarjeta">
                     <ion-img src="../../assets/noimage.jpg" class="imagen"></ion-img>
-                    <!-- <ion-img src="../../assets/portero.png" *ngIf="jugador.portero" class="portero"></ion-img> -->
                     <span *ngIf="jugador.portero" class="portero">P</span>
                     <span class="numero">{{jugador.numero}}</span>
                     <span class="nombre">{{jugador.nombre}}</span>
@@ -37,6 +36,23 @@
             </div>
           </ion-col>
         </ion-row>
+        <!--
+        Idea de momento abandonada: además de ser un swipe, estaría
+        bien que hubiera un botón para pasar a la siguiente pantalla: 
+        esto se hace necesario porque no queda claro al usuario cómo
+        puede avanzar en el registro del partido ¿donde se puede 
+        ver que lo siguiente es hacer un gesto de desplazamiento?
+        <ion-row>
+          <ion-col>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="block">
+              <ion-label>Siguiente</ion-label>
+              <ion-icon name="chevron-forward"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        -->
       </ion-grid>
 
     </swiper-slide>
@@ -88,8 +104,12 @@
           </ion-col>
         </ion-row>
         <ion-row>
+          <ion-col></ion-col>
           <ion-col>
-            <ion-button (click)="irAModo()" color="primary">Empezar</ion-button>
+            <ion-button (click)="irAModo()" expand="block" color="primary">
+              <ion-label>Empezar</ion-label>
+              <ion-icon name="chevron-forward"></ion-icon>
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -98,6 +118,7 @@
 
 
   </swiper-container>
+
 
   <div class="contenedorTarjetas">
     <div class="tarjeta" #cards *ngFor="let jugador of jugadores">
@@ -108,4 +129,8 @@
       <span class="nombre">{{jugador.nombre}}</span>
     </div>
   </div>
+
+
+
+
 </ion-content>

@@ -1,10 +1,12 @@
 import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { Gesture, GestureController } from '@ionic/angular';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PasoDatosService } from './../services/paso-datos.service';
 import { Jugador } from '../modelo/jugador';
-import { JugadoresService } from '../services/jugadores.service';
+import { Db } from '../services/db.service';
+import { where } from '@angular/fire/firestore';
+import { Partido } from '../modelo/partido';
 
 @Component({
   selector: 'app-inicio-sel-jugadores',
@@ -20,7 +22,7 @@ export class InicioSelJugadoresPage implements OnInit {
 
   jugadores: Array<Jugador> = [];
 
-  equipoId: string;
+  partido: Partido;
   listaInicial: Array<Jugador> = [];
   listaBanquillo: Array<Jugador> = [];
   listaNoConvocados: Array<Jugador> = [];
@@ -38,31 +40,32 @@ export class InicioSelJugadoresPage implements OnInit {
 
   contentScrollActive = true;
   gestureArray: Gesture[] = [];
-  partes: number;
-  segsParte: number;
 
-  constructor(private router: Router,
+  constructor(
+    private db : Db,
+    private router: Router,
     private gestureCtrl: GestureController,
     private changeDetectorRef: ChangeDetectorRef,
     private pasoDatos: PasoDatosService,
-    private jugadoresService: JugadoresService,
-    private eventosService: EventosService) {
+    private eventosService: EventosService,
+    private activatedRoute : ActivatedRoute ) {
     }
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterViewInit() {
     this.updateGestures();
   }
 
   ngOnInit() {
-    this.equipoId = this.pasoDatos.getEquipoId();
-    // Operador unario + sirve para convertir strings a numbers
-    this.partes = +localStorage.getItem('partes');
-    this.segsParte = +localStorage.getItem('segsParte');
-
-    this.jugadoresService.getJugadoresEquipo(this.equipoId)
-    .subscribe(jugadores => {
-      this.jugadores = jugadores;
+    this.activatedRoute.params.subscribe( (paramData: Params) => {
+      this.db.getPartido( paramData.partidoId )
+        .then( (partido) => {
+          this.partido = partido;
+          return( partido.equipoId );
+        })
+        .then( (equipoId) => {
+          this.db.getJugador( where( "equipoId", "array-contains", equipoId ) )
+          .then( listaJugadores => this.jugadores = listaJugadores );
+        });
     });
   }
 
@@ -248,8 +251,8 @@ export class InicioSelJugadoresPage implements OnInit {
       eventoJugador.accionPrincipal = Acciones.titular;
       eventoJugador.creadorEvento = jug.nombre;
       eventoJugador.jugadorId = jug.id;
-      eventoJugador.partidoId = localStorage.getItem('partidoId');
-      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      eventoJugador.partidoId = this.partido.id;
+      eventoJugador.equipoId = this.partido.equipoId;
       this.pasoDatos.onEventoJugador( eventoJugador );
 
       this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
@@ -261,8 +264,8 @@ export class InicioSelJugadoresPage implements OnInit {
       eventoJugador.accionPrincipal = Acciones.banquillo;
       eventoJugador.creadorEvento = jug.nombre;
       eventoJugador.jugadorId = jug.id;
-      eventoJugador.partidoId = localStorage.getItem('partidoId');
-      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      eventoJugador.partidoId = this.partido.id;
+      eventoJugador.equipoId = this.partido.equipoId;
       this.pasoDatos.onEventoJugador( eventoJugador );
 
       this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
@@ -274,16 +277,17 @@ export class InicioSelJugadoresPage implements OnInit {
       eventoJugador.accionPrincipal = Acciones.noConvocado;
       eventoJugador.creadorEvento = jug.nombre;
       eventoJugador.jugadorId = jug.id;
-      eventoJugador.partidoId = localStorage.getItem('partidoId');
-      eventoJugador.equipoId = localStorage.getItem('equipoId');
+      eventoJugador.partidoId = this.partido.id;
+      eventoJugador.equipoId = this.partido.equipoId;
       this.pasoDatos.onEventoJugador( eventoJugador );
 
       this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
-
+    console.log( "lista inicial:", this.listaInicial ); 
+    console.log( "lista banquillo: ", this.listaBanquillo );
     this.pasoDatos.setListaInicial(this.listaInicial);
     this.pasoDatos.setListaBanquillo(this.listaBanquillo);
 
-    this.router.navigate(['/modo-jugador']);
+    this.router.navigate(['/modo-jugador', this.partido.id]);
   }
 }

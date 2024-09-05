@@ -17,7 +17,6 @@ export class PasoDatosService {
   };
 
   private datosPantalla: any = {};
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   public eventoJugador = new Subject<Evento>();
 
   constructor() {}

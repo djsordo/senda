@@ -6,7 +6,6 @@ import { Component,
 import { ActivatedRoute, Router } from "@angular/router";
 
 
-import { EquipoService } from "projects/mobile/src/app/services/equipo.service";
 import { CrearComponent } from "../crear.component";
 import { Db } from "projects/mobile/src/app/services/db.service";
 import { Equipo } from "projects/mobile/src/app/modelo/equipo";

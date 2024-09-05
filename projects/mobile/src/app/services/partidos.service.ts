@@ -72,6 +72,12 @@ export class PartidosService {
     return await setDoc(partidoRef, partido);
   }
 
+  /**
+   * 
+   * @deprecated Use db.updatePartido() instead
+   * @param id 
+   * @param estado 
+   */
   setEstado(id: string, estado: string){
 
     this.getPartido(id)

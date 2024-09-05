@@ -98,6 +98,7 @@ export class EditarComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit( datosJugador: Object ){
+    datosJugador["numero"] = datosJugador["numero"].toString();
     datosJugador["fechaEdad"] = new Date();
     // change the name of the equipos list for "equipoId"
     datosJugador["equipoId"] = [...datosJugador["equipos"]];

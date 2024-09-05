@@ -2,8 +2,7 @@ import { EquipoService } from './../services/equipo.service';
 import { ClubesService } from './../services/clubes.service';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { UsuarioService } from '../services/usuario.service';
-import { Club } from '../modelo/club';
+import { Usuario } from '../modelo/usuario';
 
 @Component({
   selector: 'app-registro',
@@ -11,7 +10,7 @@ import { Club } from '../modelo/club';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-  usuario = this.usuarioService.newUsuario();
+  usuario = {} as Usuario;
   clubes: Promise<any>;
   equiposClub: any[] = [];
   password = '';
@@ -20,7 +19,6 @@ export class RegistroPage implements OnInit {
   clubIdElegido: string;
 
   constructor(private location: Location,
-    private usuarioService: UsuarioService,
     private clubesService: ClubesService,
     private equipoService: EquipoService) { }
 

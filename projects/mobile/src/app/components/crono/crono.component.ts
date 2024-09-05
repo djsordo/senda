@@ -1,14 +1,12 @@
 import { AlertController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
 import { PartidosService } from './../../services/partidos.service';
-import { UsuarioService } from './../../services/usuario.service';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from './../../services/eventos.service';
 import { Crono } from './../../modelo/crono';
 import { CronoService } from './crono.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
-import { Partido } from 'projects/mobile/src/app/modelo/partido';
+import { SecurityService } from '../../services/security.service';
 
 @Component({
   selector: 'app-crono',
@@ -16,6 +14,12 @@ import { Partido } from 'projects/mobile/src/app/modelo/partido';
   styleUrls: ['./crono.component.scss'],
 })
 export class CronoComponent implements OnInit, OnDestroy {
+
+  @Input() partidoId: string; 
+  @Input() equipoId: string;
+  @Input() partes: number;
+  @Input() segsParte: number;
+
   tiempo: Crono = {
     encendido: false,
     finParte: false,
@@ -24,31 +28,21 @@ export class CronoComponent implements OnInit, OnDestroy {
     segundos: 0
   };
 
-  partes: number;
-  segsParte: number;
   usuario: Usuario;
-  subUsuario: Subscription;
 
   constructor(private cronoService: CronoService,
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
-              private usuarioService: UsuarioService,
+              private securityService: SecurityService,
               private partidoService: PartidosService,
               private alertController: AlertController) {}
 
   ngOnInit() {
     this.tiempo = this.cronoService.tiempo;
-    this.partes = +localStorage.getItem('partes');
-    this.segsParte = +localStorage.getItem('segsParte');
-
-    this.subUsuario = this.usuarioService.getUsuarioBD(localStorage.getItem('emailUsuario'))
-    .subscribe(usuarios => {
-      this.usuario = usuarios[0];
-    });
+    this.usuario = this.securityService.getUsuario();
   }
 
   ngOnDestroy(){
-    this.subUsuario?.unsubscribe();
     this.cronoService.reset();
   }
 
@@ -61,8 +55,8 @@ export class CronoComponent implements OnInit, OnDestroy {
       // Evento de comienzo de partido
       const evento = this.eventosService.newEvento();
       evento.accionPrincipal = Acciones.comienzoPartido;
-      evento.partidoId = localStorage.getItem('partidoId');
-      evento.equipoId = localStorage.getItem('equipoId');
+      evento.partidoId = this.partidoId;
+      evento.equipoId = this.equipoId;
       this.pasoDatos.onEventoJugador( evento );
     }
 
@@ -71,8 +65,8 @@ export class CronoComponent implements OnInit, OnDestroy {
       // Evento de comienzo de periodo
       const evento = this.eventosService.newEvento();
       evento.accionPrincipal = Acciones.comienzoPeriodo;
-      evento.partidoId = localStorage.getItem('partidoId');
-      evento.equipoId = localStorage.getItem('equipoId');
+      evento.partidoId = this.partidoId;
+      evento.equipoId = this.equipoId;
       this.pasoDatos.onEventoJugador( evento );
     }
 
@@ -89,8 +83,8 @@ export class CronoComponent implements OnInit, OnDestroy {
         // Evento de fin de parte
         const evento = this.eventosService.newEvento();
         evento.accionPrincipal = Acciones.finPeriodo;
-        evento.partidoId = localStorage.getItem('partidoId');
-        evento.equipoId = localStorage.getItem('equipoId');
+        evento.partidoId = this.partidoId;
+        evento.equipoId = this.equipoId;
         this.pasoDatos.onEventoJugador( evento );
 
         if (this.tiempo.parte === this.partes) {
@@ -114,8 +108,8 @@ export class CronoComponent implements OnInit, OnDestroy {
     // Evento de fin de parte
     const evento = this.eventosService.newEvento();
     evento.accionPrincipal = Acciones.finPeriodo;
-    evento.partidoId = localStorage.getItem('partidoId');
-    evento.equipoId = localStorage.getItem('equipoId');
+    evento.partidoId = this.partidoId;
+    evento.equipoId = this.equipoId;
     this.pasoDatos.onEventoJugador( evento );
   }
 
@@ -125,8 +119,8 @@ export class CronoComponent implements OnInit, OnDestroy {
     // Evento de fin de partido
     const evento = this.eventosService.newEvento();
     evento.accionPrincipal = Acciones.finPartido;
-    evento.partidoId = localStorage.getItem('partidoId');
-    evento.equipoId = localStorage.getItem('equipoId');
+    evento.partidoId = this.partidoId;
+    evento.equipoId = this.equipoId;
     this.pasoDatos.onEventoJugador( evento );
 
     // Dejamos el estado del partido como 'finalizado'

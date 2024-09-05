@@ -1,3 +1,12 @@
+
+.pasos {
+  font-size: 2rem;
+  color: gray;
+  text-align: center;
+  margin: 0.2rem;
+}
+
+
 .cancha {
   position: relative;
   padding: 10px;
@@ -6,11 +15,6 @@
   background-color: var(--ion-segment-background);
   height: 320px;
   width: 100%;
-}
-
-.pasos {
-  font-size: 14px;
-  color: gray;
 }
 
 .pagina {
@@ -27,6 +31,10 @@
   border-radius: 5%;
 }
 
+/*
+  Estilos para las tarjetas de destino de los 
+  jugadores
+ */
 .drop-inicial:nth-child(1){
   left: 0;
   right: 0;

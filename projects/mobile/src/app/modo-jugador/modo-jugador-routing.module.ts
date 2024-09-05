@@ -5,7 +5,7 @@ import { ModoJugadorPage } from './modo-jugador.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':partidoId',
     component: ModoJugadorPage
   }
 ];
