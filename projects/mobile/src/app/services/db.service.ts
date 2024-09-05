@@ -14,7 +14,8 @@ import {
   query,
   QueryConstraint,
   QuerySnapshot,
-  setDoc
+  setDoc,
+  SetOptions
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Deporte } from '../modelo/deporte';
@@ -50,8 +51,8 @@ export class Db {
     return this.simpleUpdate( collectionName, id, obj );
   }
 
-  private simpleUpdate( collectionName: string, id: string, obj: object ) {
-    return setDoc( doc( collection( this.firestore, collectionName ), id ), obj ); 
+  private simpleUpdate( collectionName: string, id: string, obj: object, options?: SetOptions ) {
+    return setDoc( doc( collection( this.firestore, collectionName ), id ), obj, options ); 
   }
 
   private simpleDel( collectionName: string, docId : string ) {
@@ -274,8 +275,8 @@ export class Db {
     return this.simpleAdd( "partidos", partido, id );
   }
 
-  public updatePartido( id : string, partido : Partido ) {
-    return this.simpleUpdate( "partidos", id, partido );
+  public updatePartido( id : string, partido : Partido, options?: SetOptions ) {
+    return this.simpleUpdate( "partidos", id, partido, options );
   }
 
   public delPartido( partidoId: string ) {

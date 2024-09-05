@@ -7,6 +7,8 @@ import { CronoService } from './crono.service';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
 import { SecurityService } from '../../services/security.service';
+import { Db } from '../../services/db.service';
+import { Partido } from '../../modelo/partido';
 
 @Component({
   selector: 'app-crono',
@@ -30,7 +32,8 @@ export class CronoComponent implements OnInit, OnDestroy {
 
   usuario: Usuario;
 
-  constructor(private cronoService: CronoService,
+  constructor(private db: Db,
+              private cronoService: CronoService,
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
               private securityService: SecurityService,
@@ -49,7 +52,8 @@ export class CronoComponent implements OnInit, OnDestroy {
   pulsaCrono(){
     // Si es la primera vez que se pulsa (comienzo de partido) cambiamos el estado
     if (this.tiempo.segundos === 0 && this.tiempo.parte === 1){
-      this.partidoService.setEstado(localStorage.getItem('partidoId'), 'en curso');
+      this.db.updatePartido( this.partidoId, { config: { estado: 'en curso' } } as Partido, {merge:true} );
+      //this.partidoService.setEstado(localStorage.getItem('partidoId'), 'en curso');
       localStorage.setItem('estadoPartido', 'en curso');
 
       // Evento de comienzo de partido
