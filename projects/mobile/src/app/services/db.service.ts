@@ -131,8 +131,8 @@ export class Db {
     return this.simpleAdd( "config", config, "config" );
   }
 
-  public updateConfig( config : any ) {
-    return this.simpleUpdate( "config", "config", config );
+  public updateConfig( config : any, options?: SetOptions ) {
+    return this.simpleUpdate( "config", "config", config, options );
   }
 
   public delConfig( id: string ) {
@@ -155,8 +155,8 @@ export class Db {
     return this.simpleAdd( "deportes", deporte, id );
   }
 
-  public updateDeporte( id : string, deporte : Deporte ) {
-    return this.simpleUpdate( "deportes", id, deporte );
+  public updateDeporte( id : string, deporte : Deporte, options?: SetOptions ) {
+    return this.simpleUpdate( "deportes", id, deporte, options );
   }
 
   public delDeporte( deporteId: string ) {
@@ -179,8 +179,8 @@ export class Db {
     return this.simpleAdd( "eventos", evento, id );
   }
 
-  public updateEvento( id : string, evento : Evento ) {
-    return this.simpleUpdate( "eventos", id, evento );
+  public updateEvento( id : string, evento : Evento, options?: SetOptions ) {
+    return this.simpleUpdate( "eventos", id, evento, options );
   }
 
   public delEvento( id: string ) {
@@ -203,8 +203,8 @@ export class Db {
     return this.simpleAdd( "clubs", club, id );
   }
 
-  public updateClub( id : string, club : Club ) {
-    return this.simpleUpdate( "clubs", id, club );
+  public updateClub( id : string, club : Club, options?: SetOptions ) {
+    return this.simpleUpdate( "clubs", id, club, options );
   }
 
   public delClub( id: string ) {
@@ -227,8 +227,8 @@ export class Db {
     return this.simpleAdd( "equipos", equipo, id );
   }
 
-  public updateEquipo( id : string, equipo : Equipo ) {
-    return this.simpleUpdate( "equipos", id, equipo );
+  public updateEquipo( id : string, equipo : Equipo, options?: SetOptions ) {
+    return this.simpleUpdate( "equipos", id, equipo, options );
   }
 
   public delEquipo( equipoId: string ) {
@@ -251,8 +251,8 @@ export class Db {
     return this.simpleAdd( "jugadores", jugador, id );
   }
 
-  public updateJugador( id : string, jugador : Jugador ) {
-    return this.simpleUpdate( "jugadores", id, jugador );
+  public updateJugador( id : string, jugador : Jugador, options?: SetOptions ) {
+    return this.simpleUpdate( "jugadores", id, jugador, options );
   }
 
   public delJugador( jugadorId: string ) {
@@ -299,8 +299,8 @@ export class Db {
     return this.simpleAdd( "temporadas", temporada, id );
   }
 
-  public updateTemporada( id : string, temporada : Temporada ) {
-    return this.simpleUpdate( "temporadas", id, temporada );
+  public updateTemporada( id : string, temporada : Temporada, options?: SetOptions ) {
+    return this.simpleUpdate( "temporadas", id, temporada, options );
   }
 
   public delTemporada( temporadaId: string ) {
@@ -323,8 +323,8 @@ export class Db {
     return this.simpleAdd( "usuarios", usuario, id );
   }
 
-  public updateUsuario( id : string, usuario : Usuario ) {
-    return this.simpleUpdate( "usuarios", id, usuario );
+  public updateUsuario( id : string, usuario : Usuario, options?: SetOptions ) {
+    return this.simpleUpdate( "usuarios", id, usuario, options );
   }
 
   public delUsuario( userId: string ) {
@@ -347,8 +347,8 @@ export class Db {
     return this.simpleAdd( "estadJugadores", estadJugador, id );
   }
 
-  public updateEstadJugador( id : string, estadJugador : EstadJugador ) {
-    return this.simpleUpdate( "estadJugadores", id, estadJugador );
+  public updateEstadJugador( id : string, estadJugador : EstadJugador, options?: SetOptions ) {
+    return this.simpleUpdate( "estadJugadores", id, estadJugador, options );
   }
 
   public delEstadJugador( estadJugadorId: string ) {
@@ -371,8 +371,8 @@ export class Db {
     return this.simpleAdd( "estadPartidos", estadPartido, id );
   }
 
-  public updateEstadPartidos( id: string, estadPartido : EstadPartido ) {
-    return this.simpleUpdate( "estadPartidos", id, estadPartido );
+  public updateEstadPartidos( id: string, estadPartido : EstadPartido, options?: SetOptions ) {
+    return this.simpleUpdate( "estadPartidos", id, estadPartido, options );
   }
 
   public delEstadPartidos( estadPartidoId: string ) {

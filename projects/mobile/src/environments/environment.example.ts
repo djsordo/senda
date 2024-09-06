@@ -4,10 +4,6 @@
 
 export const environment = {
   production: false,
-  // actualizaciones de la versión deben trasladarse a
-  // android/app/build.gradle para que sea coherente 
-  // con el bundle que generemos para google
-  version: "0.0.0", 
   firebaseConfig: {
     apiKey: "PUT-HERE-YOUR-API-KEY",
     authDomain: "PUT-HERE-YOUR-AUTH-DOMAIN",

@@ -21,17 +21,17 @@ function readConfig(){
 function main( config ){
 
   console.log( 'Subiendo código de versión....' );
-  let environment_prod = path.join( config.project_home, config.environment_prod );
+  let version_file = path.join( config.project_home, config.version_file );
   let build_gradle = path.join( config.project_home, config.build_gradle );
-  incrementVersionMinor( environment_prod );
-  setVersionGradle( environment_prod, build_gradle );
+  incrementVersionMinor( version_file );
+  setVersionGradle( version_file, build_gradle );
 
 }
 
 
 
 function incrementVersionMinor( filePath ){
-  const versionRegexp = /(\s*version\s*:\s*['"][0-9]+\.[0-9]+\.)([0-9]+)(['"],?)/;
+  const versionRegexp = /(export\s*const\s*version\s*:\s*string\s*=\s*['"][0-9]+\.[0-9]+\.)([0-9]+)(['"],?)/;
   
   const backupFilePath = path.join( path.dirname( filePath ), path.basename( filePath ) + '~' );
   const tempFilePath = path.join( path.dirname( filePath ), path.basename( filePath ) + '.tmp' );

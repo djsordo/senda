@@ -11,9 +11,12 @@ import { Auth,
   updateEmail, 
   updatePassword} from '@angular/fire/auth';
   
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
+import { ActivatedRouteSnapshot, 
+        Router, 
+        RouterStateSnapshot, 
+        UrlTree } from "@angular/router";
 import { where } from "@angular/fire/firestore";
-import { BehaviorSubject, Observable, of, Subject } from "rxjs";
+import { Observable, of, Subject } from "rxjs";
 
 import { Db } from "./db.service";
 import { Usuario } from "../modelo/usuario";
@@ -84,29 +87,6 @@ export function permissionsGuardAsync(route: ActivatedRouteSnapshot,
             resolve( router.parseUrl( '/login' ) );
         })
       })
-      // auth.authStateReady()
-      //   .then( () => {
-      //     if( auth.currentUser ){
-      //       if( securityService.userDb ){
-      //         // recuperar la información del usuario ha tenido 
-      //         // éxito, así que puede continuar 
-      //         resolve(true);
-      //       }else{
-      //         // aún no hemos recuperado información de 
-      //         // autenticación, nos suscribimos al 
-      //         // Subect userAuthenticated
-      //         securityService.userAuthenticated.subscribe( (authData) => {
-      //           if( authData ) 
-      //             resolve( true );
-      //           else
-      //             resolve( router.parseUrl( '/login' ) );      
-      //         });
-      //       }
-      //     }
-      //     else{
-      //       resolve( router.parseUrl( '/login' ) );
-      //     }
-      //   })
     });
   }
   return true;
@@ -183,6 +163,8 @@ export class SecurityService {
           habla con los administradores 
           (error de base de datos: ${error})` );
         });
+      }else{
+        router.navigate( ['/login'] );
       }
     });
   }

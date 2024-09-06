@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { register } from 'swiper/element/bundle';
 
-import { environment } from 'projects/mobile/src/environments/environment';
+import { environment } from '../environments/environment';
+import { version } from 'projects/mobile/src/environments/version';
 
 import { NavegacionService } from './services/navegacion.service';
 import { SecurityService } from './services/security.service';
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
               private navegacion: NavegacionService,
               private router: Router ) {
     this.isProduction = environment.production;
-    this.version = environment.version;
+    this.version = version;
     this.appMenu = appMenu;
   }
 
