@@ -5,7 +5,7 @@ import { ModoVerPage } from './modo-ver.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':partidoId',
     component: ModoVerPage
   }
 ];

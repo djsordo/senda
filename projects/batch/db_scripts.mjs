@@ -12,12 +12,19 @@ import { getFirestore,
         setDoc,
         doc,
         deleteDoc,
-        getDoc} from "firebase/firestore";
+        getDoc,
+        where,
+        query} from "firebase/firestore";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import yaml from 'yaml';
 
+
+
+
+
+
 function readConfig(){
-  const config_path = path.join( import.meta.dirname, "..", "private", "config.yaml" );
+  const config_path = path.join( import.meta.dirname, "..", "..", "private", "config.yaml" );
 
   const config = yaml.parse( fs.readFileSync(config_path, 'utf8') );
 
@@ -77,36 +84,30 @@ function printHeader( headerInfo ) {
 }
 
 
-function list( firebaseConfig, collectionName, perRecordCallback, headerInfo ) {
-  let app = initializeApp( firebaseConfig );
-  let db = getFirestore(app);
+function list( collectionName, perRecordCallback, headerInfo ) {
 
   printHeader( headerInfo ); 
-  getDocs(collection(db, collectionName))
+  return getDocs(collection(db, collectionName))
   .then( (qSnap) => {
-    Promise.all( qSnap.docs.map( (doc) => perRecordCallback( db, doc.id, doc.data(), headerInfo ) ) )
-    .then( (results) => onFinishApplication( app ) );
+    qSnap.docs.map( (doc) => perRecordCallback( db, doc.id, doc.data(), headerInfo ) );
     });
-
 }
 
-function listEventos( firebaseConfig ){
+function listEventos( ){
   let headerInfo = { accionPrincipal : 20, 
                      timestamp : 40 }
-  list( firebaseConfig, 
-      "eventos", 
+  return list( "eventos", 
       onEvento, 
       headerInfo );
 }
 
-function listPartidos( firebaseConfig ){
+function listPartidos( ){
   let headerInfo = { temporadaId: 10, 
                     tipo: 10, 
                     rival : 30, 
                     ubicacion: 30, 
                     jornada: 3 };
-  list( firebaseConfig, 
-     "partidos", 
+  return list( "partidos", 
      onPartido, 
      headerInfo );
 }
@@ -123,7 +124,9 @@ function onPartido( db, docId, docData, headerInfo ){
     else 
       stdout.write( "".padEnd(v, " ") );
   }
-  stdout.write( "|\n" );
+  stdout.write( "|" );
+  stdout.write( docId ); 
+  stdout.write( "\n" );
 }
 
 function onEvento( db, docId, docData, headerInfo ){
@@ -250,9 +253,10 @@ function updatePartidos( firebaseConfig ){
   .then( () => onFinishApplication( app ) );
 }
 
-
 function onStartApplication( config ){
-  const app = initializeApp( config.firebaseConfig );
+  app = initializeApp( config.firebaseConfig );
+  db = getFirestore( app );
+
   const auth = getAuth();
 
   return signInWithEmailAndPassword( auth, config.batch.username, config.batch.password );
@@ -283,9 +287,23 @@ function populateConfig( config ){
                                   {id: 'relatives', name: 'De un familiar'},
                                   {id: 'other', name: 'Otro'} ]
                                } )
-  .then( () => { console.log("closing...."); onFinishApplication( app ); } );
+  .then( () => { console.log("closing...."); 
+                  onFinishApplication( app ); } );
 
   
+}
+
+
+
+function listEventosPartido( partidoId ){
+  let q = query( collection( db, "eventos" ), where( "partidoId", "==", partidoId ) );
+  //let q = collection( db, "eventos" );
+  return getDocs( q )
+    .then( (qSnap) => {
+      for( let doc of qSnap.docs ){
+        console.log( doc.data() );
+      }
+    });
 }
 
 console.log('Scripts for configuring the database');
@@ -306,15 +324,26 @@ console.log('Scripts for configuring the database');
  * Crear una colección "config" para guardar datos genéricos de configuración
  * 
  * desa: 2024-08-26 00:59
- * test: 
- * pro: 
+ * test: 2024-08-26 00:59
+ * pro: 2024-08-26 00:59
  */
-onStartApplication( readConfig() )
-  .then( (userCredential) => {
-    populateConfig( readConfig(), userCredential );
-  });
+// onStartApplication( readConfig() )
+//   .then( (userCredential) => {
+//     populateConfig( readConfig(), userCredential );
+//   });
 
-
+let app = null;
+let db = null;
+let config = readConfig();
+onStartApplication( config )
+  /* .then( ( ) => {
+    return listPartidos();
+  }) */
+  .then( () => {
+    let partidoId = '2024_25_equipo_a_alevin_masculino_57190_atl_valladolid_serigrafia_castellana';
+    return listEventosPartido( partidoId );
+  })
+  .then( ( ) => onFinishApplication( app ) );
 
 
 

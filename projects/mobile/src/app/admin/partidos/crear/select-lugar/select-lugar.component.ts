@@ -107,12 +107,16 @@ export class SelectLugarComponent implements OnInit {
       this.renderer.setStyle( card.el, "background", "" );
       this.renderer.setStyle( card.el, "color", "rgb( 115, 115, 115)" );
     });
+    setTimeout( () => {
+      this.router.navigate( ['..', 'info'], { relativeTo: this.route } );
+    }, 1000 );
   }
 
   public onLugarSelected( lugar : string ) {
     this.crearComponent.setLugar( lugar );
     this.router.navigate( ['..', 'info'], { relativeTo: this.route } );
   }
+
 
 }
 

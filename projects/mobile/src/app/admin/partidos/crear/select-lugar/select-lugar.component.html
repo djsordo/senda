@@ -10,12 +10,11 @@
       <ion-col>
         <ion-card>
           <ion-card-header>
-            <ion-item>
+            <ion-item (click)="onSelectedHome()">
               <ion-checkbox slot="start" 
                   #home
                   value="Polideportivo Laguna"
-                  [checked]="lugarSelected" 
-                  (click)="onSelectedHome()"></ion-checkbox>
+                  [checked]="lugarSelected"></ion-checkbox>
               <ion-card-header>En casa (Polideportivo Laguna)</ion-card-header>
               <ion-icon src="assets/home.svg" size="large" class="move_right"></ion-icon>
             </ion-item>

@@ -158,7 +158,6 @@ export class HomePage implements OnInit, OnDestroy {
     nombresEquipos.casa = equipo.nombreCorto !== undefined ? equipo.nombreCorto : equipo.nombre;
     nombresEquipos.fuera = partido.rival;
     this.pasoDatosService.setNombresEquipos(nombresEquipos);
-    console.log( "partido recibido: ", partido );
     if (modo === 'generar'){
         // A ver si puedo desde aquí cambiar el estado del partido.
         partido.config.estado = 'en preparacion';

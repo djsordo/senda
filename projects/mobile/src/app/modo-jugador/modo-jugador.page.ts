@@ -206,6 +206,10 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     }
   }
 
+  onTest(){
+    console.log("de momento nada");
+  }
+
   async mostrarAlerta(){
     let respuesta: string;
     const alert = await this.alertController.create({

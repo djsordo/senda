@@ -148,6 +148,8 @@ export class CrearComponent implements OnInit, OnDestroy {
     this.check( this.validation, this.partidoInfo.fecha, "no se ha puesto una fecha al partido" );
     this.check( this.validation, this.partidoInfo.temporadaId, "no se ha seleccionado una temporada" );
     this.check( this.validation, this.partidoInfo.tipo, "no se ha seleccionado un tipo de partido: elige entre partido de liga o amistoso" );
+    this.check( this.validation, this.partidoInfo.config.partes > 0, "no se ha especificado un número de partes correcto" );
+    this.check( this.validation, this.partidoInfo.config.segsParte > 0, "la duración de cada parte es incorrecta");
     return this.validation.result;
   }
 

@@ -166,11 +166,6 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     this.subTick && this.subTick.unsubscribe();
   }
 
-  onTest() {
-    console.log( "jugadores: ", this.jugCampo );
-    console.log( "portero", this.portero );
-  }
-
   btnGol(jugador: EstadJugador): void{
     const detalle = { accion: Acciones.gol,
                       accionS: this.portero ? Acciones.sinPortero : '',

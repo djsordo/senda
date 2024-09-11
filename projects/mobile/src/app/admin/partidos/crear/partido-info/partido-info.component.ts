@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { DocumentData, 
         DocumentSnapshot, 
-        QuerySnapshot} from '@angular/fire/firestore';
+        QuerySnapshot,
+        where} from '@angular/fire/firestore';
 import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 
 
@@ -31,7 +32,6 @@ export class PartidoInfoComponent implements OnInit {
   minutosParte: number; 
 
   constructor( private db : Db,
-               private temporadaService : TemporadaService,
                private partidoService : PartidosService,
                private crearComponent : CrearComponent ){
   }
@@ -43,7 +43,6 @@ export class PartidoInfoComponent implements OnInit {
       this.loadNumJornada()  
     ] )
     .then( ( _ ) => {
-      console.log("todo lo demas");
       if( this.crearComponent.isCreation() ){
         if( this.tipos.length > 0 )
           this.selectedTipo = this.tipos[0].id;
@@ -77,7 +76,6 @@ export class PartidoInfoComponent implements OnInit {
   private loadTemporadas() {
     return this.db.getTemporada(null)
         .then( (temporadaList : Temporada[] ) => {
-          console.log( "paso por loadTemporadas ");
           this.temporadas = new Set<any>();
           for( let temporada of temporadaList ){
             this.temporadas.add( temporada.alias );
@@ -88,7 +86,6 @@ export class PartidoInfoComponent implements OnInit {
   private loadTiposPartidos(){
     return this.db.getConfig("config")
       .then( (config) => {
-        console.log( "load tipos partidos" );
         this.tipos = config.tipos_partido; 
       } );
   }
@@ -96,7 +93,6 @@ export class PartidoInfoComponent implements OnInit {
   private loadNumJornada(){
     return this.partidoService.getPartidosAsDoc()
       .then( (partidosList : QuerySnapshot<DocumentData>) => {
-        console.log("load num jornadas");
         this.maxJornada = 0;
         for( let partidoSnap of partidosList.docs ){
           let partido = partidoSnap.data();
@@ -135,16 +131,12 @@ export class PartidoInfoComponent implements OnInit {
   }
 
   public onCreatePartido(){
-    let temporadaId : string = null; 
-    this.temporadaService.getTemporadas( this.selectedTemporada )
-    .then( (qSnap : QuerySnapshot<DocumentData>) => {
-      if( qSnap.docs.length > 0 ){
-        let doc = qSnap.docs[0]; 
-        temporadaId = doc.id;
+    this.db.getTemporada( where( "alias", "==", this.selectedTemporada ) )
+      .then( (temporadaList) => {
         this.crearComponent.setInfo({ 
           "fecha" : this.fecha, 
           "hora" : this.hora, 
-          "temporadaId": temporadaId, 
+          "temporadaId": temporadaList[0].id, 
           "tipo" : this.selectedTipo,
           "jornada" : this.jornada, 
           "config" : {
@@ -152,8 +144,7 @@ export class PartidoInfoComponent implements OnInit {
             "segsParte": this.minutosParte * 60 }
         });
         this.crearComponent.verifyAndUpdatePartido();
-      }
-    });
+      })
   }
 
 }

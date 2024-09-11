@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, Renderer2, ViewChildren } from "@angular/core";
 import { DocumentData, 
         QuerySnapshot} from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from "@angular/router";
@@ -7,16 +7,18 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { PartidosService } from "projects/mobile/src/app/services/partidos.service";
 import { CrearComponent } from "../crear.component";
 import { StringUtil } from "projects/mobile/src/app/services/string-util";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'select-rival', 
   templateUrl : './select-rival.component.html',
   styleUrls : [ './select-rival.component.scss' ]
 })
-export class SelectRivalComponent implements OnInit {
+export class SelectRivalComponent implements OnInit, OnDestroy {
 
   @ViewChildren('resultCard') resultCards : QueryList<any>;
   rivales : Set<string>;
+  rivalSubscription : Subscription = null;
 
 
   public set rivalName( rivalName : string ){
@@ -40,6 +42,9 @@ export class SelectRivalComponent implements OnInit {
     this.refreshCardList();
   }
 
+  ngOnDestroy(): void {
+    this.rivalSubscription && this.rivalSubscription.unsubscribe();
+  }
 
   public refreshCardList(){
     this.loadRivales( this.crearComponent.rivalName )
@@ -50,7 +55,7 @@ export class SelectRivalComponent implements OnInit {
     } );
     // la subscripción es necesaria para 
     // cuando efectúo cambios en la página
-    this.crearComponent.rivalNameChanged.subscribe( (rivalName:string) => {
+    this.rivalSubscription = this.crearComponent.rivalNameChanged.subscribe( (rivalName:string) => {
       console.log( "suscripcion rival: ", rivalName );
       this.markAsSelected( rivalName );   
     });

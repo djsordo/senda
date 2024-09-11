@@ -1,6 +1,6 @@
 import { PasoDatosService } from './../services/paso-datos.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
 import { EstadJugador } from '../modelo/estadJugador';
@@ -37,9 +37,11 @@ export class ModoVerPage implements OnInit, OnDestroy {
               private estadPartidoService: EstadPartidoService,
               private estadJugadorService: EstadJugadorService,
               private router: Router,
+              private activatedRoute : ActivatedRoute,
               private pasoDatos: PasoDatosService) { }
 
   ngOnInit() {
+    console.log( "parametros: ", this.activatedRoute.params );
     this.eventos = [];
     this.estadPartido = [];
     this.lineasEv = [ {tpEvento: Acciones.gol, tipo: 'evIzquierda', icono: 'football'},
