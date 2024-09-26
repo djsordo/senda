@@ -1,16 +1,21 @@
-import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Crono } from 'projects/mobile/src/app/modelo/crono';
+import { Injectable } from '@angular/core';
+
+import { CronoData } from 'projects/mobile/src/app/modelo/cronoData';
 
 export interface Tick {
   segundos: number;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'any'
 })
 export class CronoService {
-  tiempo: Crono = {
+
+  partes: number;
+  segsParte: number;
+
+  tiempo: CronoData = {
     encendido: false,
     finParte: false,
     finPartido: false,
@@ -18,15 +23,11 @@ export class CronoService {
     segundos: 0
   };
 
-  partes: number;
-  segsParte: number;
-
   // Observable que de un tick cada segundo cuando el crono está encendido
   private tickObservablePrivate: BehaviorSubject<Tick> = new BehaviorSubject<Tick>({segundos: 0});
 
-  constructor() {
-    this.partes = +localStorage.getItem('partes');
-    this.segsParte = +localStorage.getItem('segsParte');
+  constructor( ) { 
+    console.log("paso por constructor de crono");
   }
 
   get tickObservable(){
@@ -37,10 +38,44 @@ export class CronoService {
     this.tickObservablePrivate.next(data);
   }
 
+  esInicioPartido() : boolean {
+    return this.tiempo.segundos === 0 && this.tiempo.parte === 1;
+  }
+
+  esFinalPartido() : boolean {
+    return this.tiempo.parte == this.partes;
+  }
+
+  esComienzoDeParte() : boolean {
+    return this.tiempo.segundos === 0;
+  }
+
+  setConfig( partes: number, segsParte: number ){
+    this.partes = partes;
+    this.segsParte = segsParte;
+  }
+
+  finPartido(){
+    this.tiempo.finPartido = true;
+  }
+
+  inicioParte(){
+    this.tiempo.parte++;
+    this.tiempo.segundos = 0; 
+    this.tiempo.finParte = false;
+  }
+
+  finParte(){
+    this.tiempo.finParte = true;
+    this.tiempo.encendido = false;
+  }
+
   pasoTiempo(){
     // Función que se ejecuta cada segundo si el crono está encendido
     // Valorar setInterval
     setTimeout(() => {
+      console.log("tic");
+      console.log("encendido?", this.tiempo.encendido);
       if (this.tiempo.encendido){
         if (this.tiempo.segundos >= this.segsParte){
           this.tiempo.finParte = true;
@@ -56,9 +91,12 @@ export class CronoService {
     return this.tiempo.encendido;
   }
 
+  /**
+   * Función que retorna el instante actual
+   * @returns a shallow copy of the current "tiempo" object
+   */
   marcaTiempo(){
-    // Función que devuelve el instante actual
-    return JSON.parse(JSON.stringify(this.tiempo));
+    return { ...this.tiempo };
   }
 
   getEncendido(){
@@ -69,6 +107,7 @@ export class CronoService {
   encender(){
     // Función que enciende el crono
     this.tiempo.encendido = true;
+    this.pasoTiempo();
   }
 
   apagar(){
@@ -85,7 +124,7 @@ export class CronoService {
       segundos: 0
     };
 
-    this.partes = +localStorage.getItem('partes');
-    this.segsParte = +localStorage.getItem('segsParte');
+    this.partes = null;
+    this.segsParte = null;
   }
 }

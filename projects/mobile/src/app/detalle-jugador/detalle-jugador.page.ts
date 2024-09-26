@@ -1,5 +1,5 @@
 import { EstadPartidoService } from './../services/estad-partido.service';
-import { Crono } from './../modelo/crono';
+import { CronoData } from '../modelo/cronoData';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -24,7 +24,7 @@ export class DetalleJugadorPage implements OnInit {
   accion: Acciones = null;
   private accionS: Acciones = null;
   private jugador: EstadJugador = null;
-  private marcaTiempo: Crono = null;
+  private marcaTiempo: CronoData = null;
 
   constructor(private toastController: ToastController,
     private router: Router,

@@ -1,15 +1,15 @@
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Component, Input, OnInit, Output, ViewChild, EventEmitter, OnDestroy, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonAccordionGroup, ToastController } from '@ionic/angular';
 
 import { EstadPartidoService } from './../../services/estad-partido.service';
 import { EstadJugadorService } from '../../services/estad-jugador.service';
-import { Crono } from './../../modelo/crono';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { PasoDatosService } from './../../services/paso-datos.service';
-import { CronoService, Tick } from './../crono/crono.service';
+import { CronoService, Tick } from '../crono/crono.service';
 import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
+import { CronoData } from '../../modelo/cronoData';
 
 @Component({
   selector: 'app-titulares',
@@ -19,18 +19,10 @@ import { Acciones, EventosService } from 'projects/mobile/src/app/services/event
 export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   @Input() partidoId: string;
   @Input() equipoId: string;
-  @Input() jugCampo$: Subject<Array<EstadJugador>>;
-  @Input() listaBanquillo$: Subject<Array<EstadJugador>>;
-  @Input() listaExcluidos: Array<EstadJugador>;
-  @Input() listaEliminados: Array<EstadJugador>;
-  @Input() portero: EstadJugador = null;
   @Output() porteroEmisor = new EventEmitter<EstadJugador>();
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   @ViewChild('acordeonJugadores') acordeonJugadores: IonAccordionGroup;
 
-  jugCampo: Array<EstadJugador> = [];
-  listaBanquillo: Array<EstadJugador> = [];
   listaRobos= [{nombre: 'Provocado'},
                {nombre: 'Falta en ataque'},
                {nombre: 'Intercepción'},
@@ -46,7 +38,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
                   {nombre: 'Otros'}];
 
   ev: Event;
-  marcaTiempo: Crono;
+  marcaTiempo: CronoData;
 
   // Ticks para los cronos
   tick$: Observable<Tick>;
@@ -64,60 +56,17 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   ngOnInit() {
 
-    this.jugCampo$.subscribe( (jugCampo) => {
-      if( jugCampo.length > 0 ){
-        // divido la lista inicial en portero y jugadores de campo
-        let porteroEncontrado = jugCampo.find( x => x.datos.posicion === 'PO' );
-        if( porteroEncontrado ){
-          this.portero = porteroEncontrado;
-          this.portero.exclusion = false; 
-          this.porteroEmisor.emit( this.portero );
-        }
-
-        jugCampo.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
-        this.jugCampo = [];
-        for(let jugador of jugCampo){
-          if( jugador.datos.posicion !== 'PO' ){
-            jugador.exclusion = false;
-            this.jugCampo.push( jugador );
-          }
-        }
-      }
-    });
-
-    this.listaBanquillo$.subscribe( (banquillo) => {
-      if( banquillo.length > 0 )
-        this.listaBanquillo = banquillo.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
-    })
-
-    // // divido la lista inicial en portero y jugadores de campo
-    // let porteroEncontrado = this.jugCampo.find( x => x.datos.posicion === 'PO' );
-    // if( porteroEncontrado ){
-    //   this.portero = porteroEncontrado;
-    //   this.portero.exclusion = false; 
-    //   this.porteroEmisor.emit( this.portero[0] );
-    // }else{
-    //   this.portero = null;
-    // }
-
-    // this.jugCampo = this.jugCampo?.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
-    // for (let i = 0; i < this.jugCampo?.length; i++){
-    //  this.jugCampo[i].exclusion = false;
-    // }
-
-
     localStorage.setItem('accion', '');
     localStorage.setItem('jugadorId', '');
 
     // Observable ticks
     this.tick$ = this.crono.tickObservable;
 
-
     this.subTick = this.tick$.subscribe(res => {
       if (res.segundos !== 0){
-        this.portero.segJugados++;
-        this.jugCampo.forEach(jug => jug.segJugados++);
-        this.listaExcluidos.forEach(jug => {
+        this.pasoDatos.portero.segJugados++;
+        this.pasoDatos.jugCampo.forEach(jug => jug.segJugados++);
+        this.pasoDatos.listaExcluidos.forEach(jug => {
           jug.segJugados++;
           jug.segExclusion--;
         });
@@ -128,26 +77,26 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
   ngDoCheck(){
     // Si alguno de los crono de 2 minutos ha llegado a cero,
     // Actualizo los cronos de 2 minutos de exclusión
-    if (this.listaExcluidos !== undefined){
-      for (let i = 0; i < this.listaExcluidos.length; i++){
+    if (this.pasoDatos.listaExcluidos !== undefined){
+      for (let i = 0; i < this.pasoDatos.listaExcluidos.length; i++){
 
-        if (this.listaExcluidos[i].segExclusion <= 0) {
-          this.listaExcluidos[i].exclusion = false;
+        if (this.pasoDatos.listaExcluidos[i].segExclusion <= 0) {
+          this.pasoDatos.listaExcluidos[i].exclusion = false;
 
           // devolvemos al jugador a la lista de banquillo, o si es la tercera exclusión, roja o azul a la de eliminados
-          const titular = this.listaExcluidos.splice(i,1);
+          const titular = this.pasoDatos.listaExcluidos.splice(i,1);
           if (titular[0].exclusiones === 3 || titular[0].rojas === 1 || titular[0].azules === 1) {
-            this.listaEliminados.push(titular[0]);
+            this.pasoDatos.listaEliminados.push(titular[0]);
           } else {
-            this.listaBanquillo.push(titular[0]);
+            this.pasoDatos.listaBanquillo.push(titular[0]);
           }
         }
       }
     }
 
     // Emitimos el portero
-    if (this.portero){
-      this.porteroEmisor.emit(this.portero);
+    if (this.pasoDatos.portero){
+      this.porteroEmisor.emit(this.pasoDatos.portero);
     }
 
     if (localStorage.getItem('accion') !== ''){
@@ -168,7 +117,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnGol(jugador: EstadJugador): void{
     const detalle = { accion: Acciones.gol,
-                      accionS: this.portero ? Acciones.sinPortero : '',
+                      accionS: this.pasoDatos.portero ? Acciones.sinPortero : '',
                       jugador,
                       marcaTiempo: this.crono.marcaTiempo()};
     this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
@@ -190,7 +139,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnLanzamiento(jugador: EstadJugador): void{
     const detalle = { accion: Acciones.lanzamiento,
-      accionS: this.portero ? Acciones.sinPortero : '',
+      accionS: this.pasoDatos.portero ? Acciones.sinPortero : '',
       jugador,
       marcaTiempo: this.crono.marcaTiempo()};
 
@@ -303,7 +252,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     let salir = false;
 
     // Si está ya en la lista de excluidos, sumamos 120 segundos
-    this.listaExcluidos.forEach(jugExc => {
+    this.pasoDatos.listaExcluidos.forEach(jugExc => {
       if (jugExc.datos.id === jugador.datos.id){
         jugExc.segExclusion += 120;
         salir = true;
@@ -312,23 +261,23 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     // Si no está en la lista, lo añadimos
     if (!salir){
-      if (this.portero?.datos.id === jugador.datos.id){
-        this.portero.exclusion = true;
-        this.portero.segExclusion = 120;
+      if (this.pasoDatos.portero?.datos.id === jugador.datos.id){
+        this.pasoDatos.portero.exclusion = true;
+        this.pasoDatos.portero.segExclusion = 120;
 
         // Mandamos al portero a la lista de excluidos
-        this.listaExcluidos.push(this.portero);
-        this.portero = null;
+        this.pasoDatos.listaExcluidos.push(this.pasoDatos.portero);
+        this.pasoDatos.portero = null;
       } else {
         // Jugadores de campo
-        for (let i = 0; i < this.jugCampo?.length; i++){
-          if (this.jugCampo[i].datos.id === jugador.datos.id){
-            this.jugCampo[i].exclusion = true;
-            this.jugCampo[i].segExclusion = 120;
+        for (let i = 0; i < this.pasoDatos.jugCampo?.length; i++){
+          if (this.pasoDatos.jugCampo[i].datos.id === jugador.datos.id){
+            this.pasoDatos.jugCampo[i].exclusion = true;
+            this.pasoDatos.jugCampo[i].segExclusion = 120;
 
             // Mandamos al jugador a la lista de excluidos
-            excluido = this.jugCampo.splice(i,1);
-            this.listaExcluidos.push(excluido[0]);
+            excluido = this.pasoDatos.jugCampo.splice(i,1);
+            this.pasoDatos.listaExcluidos.push(excluido[0]);
             break;
           }
          }
@@ -336,7 +285,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
       }
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero);
+    this.porteroEmisor.emit(this.pasoDatos.portero);
   }
 
   btnCambioMarca(){
@@ -348,28 +297,28 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     let jugSale: EstadJugador[];
 
     if (esPortero){
-      jugSale = [this.portero];
-      this.portero = null;
+      jugSale = [this.pasoDatos.portero];
+      this.pasoDatos.portero = null;
 
     } else {
-      const sale = this.jugCampo.findIndex(res => res.datos.id === titular.datos.id);
-      jugSale = this.jugCampo.splice(sale, 1);
+      const sale = this.pasoDatos.jugCampo.findIndex(res => res.datos.id === titular.datos.id);
+      jugSale = this.pasoDatos.jugCampo.splice(sale, 1);
     }
     // Cambio en las listas
 
-    const entra = this.listaBanquillo.findIndex(res => res.datos.id === cambio.datos.id);
-    const jugEntra = this.listaBanquillo.splice(entra, 1);
+    const entra = this.pasoDatos.listaBanquillo.findIndex(res => res.datos.id === cambio.datos.id);
+    const jugEntra = this.pasoDatos.listaBanquillo.splice(entra, 1);
 
     if (esPortero){
-      this.portero = jugEntra[0];
+      this.pasoDatos.portero = jugEntra[0];
     } else {
-      this.jugCampo.push(jugEntra[0]);
+      this.pasoDatos.jugCampo.push(jugEntra[0]);
     }
 
-    this.listaBanquillo.push(jugSale[0]);
+    this.pasoDatos.listaBanquillo.push(jugSale[0]);
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero);
+    this.porteroEmisor.emit(this.pasoDatos.portero);
 
     // Se crean los eventos para la base de datos
     // Jugador que sale del campo
@@ -400,18 +349,18 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnEntra(jugador: EstadJugador){
     // Entra al campo
-    if (jugador.datos.portero && !this.portero){
-      this.portero = jugador;
+    if (jugador.datos.portero && !this.pasoDatos.portero){
+      this.pasoDatos.portero = jugador;
     } else {
-      this.jugCampo.push(jugador);
+      this.pasoDatos.jugCampo.push(jugador);
     }
 
     // Sale de la lista de banquillo
-    const entra = this.listaBanquillo.findIndex(res => res.datos.id === jugador.datos.id);
-    this.listaBanquillo.splice(entra, 1);
+    const entra = this.pasoDatos.listaBanquillo.findIndex(res => res.datos.id === jugador.datos.id);
+    this.pasoDatos.listaBanquillo.splice(entra, 1);
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero);
+    this.porteroEmisor.emit(this.pasoDatos.portero);
 
     // Jugador que entra al campo
     const eventoEntra = this.eventosService.newEvento();
@@ -429,19 +378,19 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnSale(jugador: EstadJugador, esPortero: boolean){
     // Sale del campo al banquillo
-    this.listaBanquillo.push(jugador);
+    this.pasoDatos.listaBanquillo.push(jugador);
 
     // Sale de la lista de portero o de jugCampo
     if (esPortero){
-      this.portero = null;
+      this.pasoDatos.portero = null;
 
     } else {
-      const sale = this.jugCampo.findIndex(res => res.datos.id === jugador.datos.id);
-      this.jugCampo.splice(sale, 1);
+      const sale = this.pasoDatos.jugCampo.findIndex(res => res.datos.id === jugador.datos.id);
+      this.pasoDatos.jugCampo.splice(sale, 1);
     }
 
     // Emitimos el portero
-    this.porteroEmisor.emit(this.portero);
+    this.porteroEmisor.emit(this.pasoDatos.portero);
 
     // Jugador que sale del campo
     const eventoSale = this.eventosService.newEvento();
@@ -461,70 +410,70 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     let jugActivo: EstadJugador; // Esadísticas del jugador para ser grabadas en BD
 
     if (accion === 'accion.gol' || accion === 'accion.lanzamiento'){
-      const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
+      const indice = this.pasoDatos.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
       if (accion === Acciones.gol){
-        this.jugCampo[indice].goles++;
-        jugActivo = this.jugCampo[indice];
+        this.pasoDatos.jugCampo[indice].goles++;
+        jugActivo = this.pasoDatos.jugCampo[indice];
       } else {
-        this.jugCampo[indice].lanzFallados++;
-        jugActivo = this.jugCampo[indice];
+        this.pasoDatos.jugCampo[indice].lanzFallados++;
+        jugActivo = this.pasoDatos.jugCampo[indice];
       }
     } else if (accion === Acciones.parada){
       // Parada del portero
-      this.portero.paradas++;
-      jugActivo = this.portero;
-    } else if (accion === Acciones.golRival && this.portero){
+      this.pasoDatos.portero.paradas++;
+      jugActivo = this.pasoDatos.portero;
+    } else if (accion === Acciones.golRival && this.pasoDatos.portero){
       // Gol del rival. Sólo contará si existe un portero.
-        this.portero.golesRival++;
-        jugActivo = this.portero;
+        this.pasoDatos.portero.golesRival++;
+        jugActivo = this.pasoDatos.portero;
     } else if (accion === Acciones.robo){
-      if (this.portero?.datos.id === jugadorId){
+      if (this.pasoDatos.portero?.datos.id === jugadorId){
         // Es un robo del portero
-        this.portero.robos++;
-        jugActivo = this.portero;
+        this.pasoDatos.portero.robos++;
+        jugActivo = this.pasoDatos.portero;
       } else {
         // Es un robo de un jugador de campo
-        const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
-        this.jugCampo[indice].robos++;
-        jugActivo = this.jugCampo[indice];
+        const indice = this.pasoDatos.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
+        this.pasoDatos.jugCampo[indice].robos++;
+        jugActivo = this.pasoDatos.jugCampo[indice];
       }
     } else if (accion === Acciones.perdida){
-      if (this.portero?.datos.id === jugadorId){
+      if (this.pasoDatos.portero?.datos.id === jugadorId){
         // Es una pérdida del portero
-        this.portero.perdidas++;
-        jugActivo = this.portero;
+        this.pasoDatos.portero.perdidas++;
+        jugActivo = this.pasoDatos.portero;
       } else {
         // Es una pérdida de un jugador de campo
-        const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
-        this.jugCampo[indice].perdidas++;
-        jugActivo = this.jugCampo[indice];
+        const indice = this.pasoDatos.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
+        this.pasoDatos.jugCampo[indice].perdidas++;
+        jugActivo = this.pasoDatos.jugCampo[indice];
       }
     } else if (accion === Acciones.dosMinutos){
       // 2 minutos de cualquier jugador
-      const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
-      this.listaExcluidos[indice].exclusiones++;
-      jugActivo = this.listaExcluidos[indice];
+      const indice = this.pasoDatos.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
+      this.pasoDatos.listaExcluidos[indice].exclusiones++;
+      jugActivo = this.pasoDatos.listaExcluidos[indice];
     } else if (accion === Acciones.tarjetaAmarilla){
-      if (this.portero.datos.id === jugadorId){
+      if (this.pasoDatos.portero.datos.id === jugadorId){
         // Amarilla del portero
-        this.portero.amarillas++;
-        jugActivo = this.portero;
+        this.pasoDatos.portero.amarillas++;
+        jugActivo = this.pasoDatos.portero;
       } else {
         // Amarilla de un jugador de campo
-        const indice = this.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
-        this.jugCampo[indice].amarillas++;
-        jugActivo = this.jugCampo[indice];
+        const indice = this.pasoDatos.jugCampo.findIndex(jugPos => jugPos.datos.id === jugadorId);
+        this.pasoDatos.jugCampo[indice].amarillas++;
+        jugActivo = this.pasoDatos.jugCampo[indice];
       }
     } else if (accion === Acciones.tarjetaRoja){
       // Roja de cualquier jugador
-      const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
-      this.listaExcluidos[indice].rojas++;
-      jugActivo = this.listaExcluidos[indice];
+      const indice = this.pasoDatos.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
+      this.pasoDatos.listaExcluidos[indice].rojas++;
+      jugActivo = this.pasoDatos.listaExcluidos[indice];
     } else if (accion === Acciones.tarjetaAzul){
       // Azul de cualquier jugador
-      const indice = this.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
-      this.listaExcluidos[indice].azules++;
-      jugActivo = this.listaExcluidos[indice];
+      const indice = this.pasoDatos.listaExcluidos.findIndex(jugPos => jugPos.datos.id === jugadorId);
+      this.pasoDatos.listaExcluidos[indice].azules++;
+      jugActivo = this.pasoDatos.listaExcluidos[indice];
     }
 
     // Aquí grabamos la estadística del jugador
@@ -545,4 +494,25 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     this.segmentoMostrado = ev.detail.value;
     console.log(this.segmentoMostrado);
   }
+
+  getPortero() {
+    return this.pasoDatos.portero;
+  }
+
+  getListaBanquillo(){
+    return this.pasoDatos.listaBanquillo;
+  }
+
+  getJugCampo(){
+    return this.pasoDatos.jugCampo;
+  }
+
+  getExcluidos(){
+    return this.pasoDatos.listaExcluidos;
+  }
+
+  getEliminados(){
+    return this.pasoDatos.listaEliminados;
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Crono } from 'projects/mobile/src/app/modelo/crono';
+import { CronoData } from 'projects/mobile/src/app/modelo/cronoData';
 export interface EstadPartido{
   id?: string;
   partidoId: string;
@@ -17,5 +17,5 @@ export interface EstadPartido{
   dosMinutosRival: number;
   tm: number;
   tmRival: number;
-  crono: Crono;
+  crono: CronoData;
 };

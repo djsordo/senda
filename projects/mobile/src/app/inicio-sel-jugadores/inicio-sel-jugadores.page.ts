@@ -7,6 +7,7 @@ import { Jugador } from '../modelo/jugador';
 import { Db } from '../services/db.service';
 import { where } from '@angular/fire/firestore';
 import { Partido } from '../modelo/partido';
+import { initEstadJugador } from '../modelo/estadJugador';
 
 @Component({
   selector: 'app-inicio-sel-jugadores',
@@ -56,6 +57,8 @@ export class InicioSelJugadoresPage implements OnInit {
   }
 
   ngOnInit() {
+    this.listaInicial = [];
+    this.listaBanquillo = [];
     this.activatedRoute.params.subscribe( (paramData: Params) => {
       this.db.getPartido( paramData.partidoId )
         .then( (partido) => {
@@ -243,6 +246,10 @@ export class InicioSelJugadoresPage implements OnInit {
     }
   }
 
+  doTest() {
+    console.log( "listaexcluidos:", this.pasoDatos.listaExcluidos );
+  }
+
   irAModo() {
     // Se crean eventos de titulares, banquillo y no convocado.
     this.listaInicial.forEach(jug => {
@@ -283,11 +290,56 @@ export class InicioSelJugadoresPage implements OnInit {
 
       this.eventosService.addEventoBD(eventoJugador).then(even => {eventoJugador.id = even.id;});
     });
-    console.log( "lista inicial:", this.listaInicial ); 
-    console.log( "lista banquillo: ", this.listaBanquillo );
-    this.pasoDatos.setListaInicial(this.listaInicial);
-    this.pasoDatos.setListaBanquillo(this.listaBanquillo);
+
+    this.pasoDatos.listaEliminados = [];
+    this.pasoDatos.listaExcluidos = [];
+    this.pasoDatos.listaInicial = this.listaInicial;
+    this.pasoDatos.listaBanquillo = this.convertListaBanquillo( this.listaBanquillo );
+    this.pasoDatos.jugCampo = this.getJugCampo( this.pasoDatos.listaInicial );
+    this.pasoDatos.portero = this.getPortero( this.pasoDatos.listaInicial );
+
+    console.log( "lista inicial:", this.pasoDatos.listaInicial ); 
+    console.log( "lista banquillo: ", this.pasoDatos.listaBanquillo );
+    console.log( "lista excluidos: ", this.pasoDatos.listaExcluidos );
+    console.log( "lista eliminados: ", this.pasoDatos.listaEliminados );
 
     this.router.navigate(['/modo-jugador', this.partido.id]);
   }
+
+  private convertListaBanquillo( listaBanquillo ){
+    return listaBanquillo.map( x =>  {
+      const estadJugador = initEstadJugador();
+      estadJugador.datos = x; 
+      estadJugador.partidoId = this.partido.id;
+    })
+    .sort( (x,y) => x.datos.numero.localeCompare(y.datos.numero) );
+  }
+
+  private getJugCampo( listaInicial ){
+    let result = []; 
+
+    for(let jugador of listaInicial){
+      if( jugador.posicion !== 'PO' ){
+        const estadJugador =  initEstadJugador();
+        estadJugador.datos = jugador;
+        estadJugador.exclusion = false;
+        estadJugador.partidoId = this.partido.id;
+        result.push( estadJugador );
+      }
+    }
+    return result.sort((x,y) => x.datos.numero.localeCompare(y.datos.numero));
+  }
+
+  private getPortero( listaInicial ){
+    let portero = listaInicial.find( x => x.posicion === 'PO' );
+    if( portero ){
+      const estadJugador = initEstadJugador();
+      estadJugador.datos = portero;
+      portero.exclusion = false; 
+      portero.partidoId = this.partido.id;
+      return estadJugador;
+    }
+    return null;
+  }
+
 }

@@ -1,6 +1,6 @@
 import { AlertController } from '@ionic/angular';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { Component, OnInit, OnDestroy, Output, DoCheck } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ToastController, Platform } from '@ionic/angular';
 
@@ -13,14 +13,13 @@ import { BDGeneralService } from './../services/bdgeneral.service';
 import { Evento } from '../modelo/evento';
 import { MarcadorService } from '../components/marcador/marcador.service';
 import { Acciones } from '../services/eventos.service';
-import { EstadJugador, initEstadJugador } from '../modelo/estadJugador';
+import { EstadJugador } from '../modelo/estadJugador';
 import { EstadPartidoService } from '../services/estad-partido.service';
 import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
 import { Db } from '../services/db.service';
 import { SecurityService } from '../services/security.service';
-import { JugadorIntentEs } from '../components/jugador-intent/jugador-intent-es';
-import { Jugador } from '../modelo/jugador';
+import { CronoService } from '../components/crono/crono.service';
 
 @Component({
   selector: 'app-modo-jugador',
@@ -32,15 +31,6 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   partido: Partido;
   usuario: Usuario;
   
-  listaInicial$: BehaviorSubject<Array<EstadJugador>>;
-  private listaInicial: Array<EstadJugador> = [];
-  
-  listaBanquillo$: BehaviorSubject<Array<EstadJugador>>;
-  private listaBanquillo: Array<EstadJugador> = [];
-  
-  listaExcluidos: Array<EstadJugador> = [];
-  listaEliminados: Array<EstadJugador> = [];
-
   portero: EstadJugador;
   estadoPartido: string;
 
@@ -59,6 +49,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
   constructor(private db: Db,
               private router: Router,
               private toastController: ToastController,
+              private crono: CronoService,
               private pasoDatos: PasoDatosService,
               private marcadorService: MarcadorService,
               private tradService: TradService,
@@ -74,23 +65,21 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
   ngOnInit() {
     this.estadoPartido = localStorage.getItem('estadoPartido');
-    this.listaInicial$ = new BehaviorSubject<EstadJugador[]>([]);
-    this.listaBanquillo$ = new BehaviorSubject<EstadJugador[]>([]);
-    this.listaEliminados = [];
-    this.listaExcluidos = [];
+    this.pasoDatos.listaEliminados = [];
+    this.pasoDatos.listaExcluidos = [];
 
     this.activatedRoute.params.subscribe( (paramData: Params) => {
       this.db.getPartido( paramData.partidoId )
         .then( (partido: Partido) => {
           this.partido = partido;
           this.estadoPartido = partido.config.estado;
+          this.crono.setConfig( this.partido.config.partes, this.partido.config.segsParte );
           this.afterPartidoIsLoaded();
         });
     });
 
     this.nombres = this.pasoDatos.getNombresEquipos();
     this.usuario = this.securityService.getUsuario();
-    console.log("el usuario leido es: ", this.usuario );
 
     // Para manejar el botón de atrás
     this.subs.push(this.platform.backButton.subscribeWithPriority(10, () => {
@@ -118,9 +107,6 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
 
   private afterPartidoIsLoaded(){
 
-    this.setListaInicial( this.pasoDatos.getListaInicial() );    
-    this.setListaBanquillo(this.pasoDatos.getListaBanquillo());
-
     this.estadPartidoService.actualiza('nombreEquipo', this.nombres.casa);
     this.estadPartidoService.actualiza('nombreRival', this.nombres.fuera);
     this.estadPartidoService.actualiza('partidoId', this.partido.id);
@@ -132,28 +118,6 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       this.estadPartidoService.updateEstadPartido();
     });
     
-  }
-
-  private setListaInicial( listaInicial: Array<Jugador> ){
-    this.listaInicial = [];
-    listaInicial.forEach(jugadorPrevia => {
-      const estadJugador =  initEstadJugador();
-      estadJugador.datos = jugadorPrevia; 
-      estadJugador.partidoId = this.partido.id;
-      this.listaInicial.push(estadJugador);
-    });
-    this.listaInicial$.next( this.listaInicial );
-  }
-
-  private setListaBanquillo( listaBanquillo: Array<Jugador> ){
-    this.listaBanquillo = [];
-    listaBanquillo.forEach(jugadorPrevia => {
-      const estadJugador = initEstadJugador();
-      estadJugador.datos = jugadorPrevia; 
-      estadJugador.partidoId = this.partido.id;
-      this.listaBanquillo.push(estadJugador);
-    });
-    this.listaBanquillo$.next( this.listaBanquillo );
   }
 
   ngDoCheck(){
@@ -206,10 +170,6 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  onTest(){
-    console.log("de momento nada");
-  }
-
   async mostrarAlerta(){
     let respuesta: string;
     const alert = await this.alertController.create({
@@ -241,7 +201,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     }
 
-    this.listaInicial.forEach(jug => {
+    this.pasoDatos.listaInicial.forEach(jug => {
       /* console.log('Pista: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
@@ -249,7 +209,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     });
 
-    this.listaBanquillo.forEach(jug => {
+    this.pasoDatos.listaBanquillo.forEach(jug => {
       /* console.log('Banquillo: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
@@ -257,7 +217,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     });
 
-    this.listaExcluidos.forEach(jug => {
+    this.pasoDatos.listaExcluidos.forEach(jug => {
       /* console.log('Excluidos: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
@@ -265,7 +225,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     });
 
-    this.listaEliminados.forEach(jug => {
+    this.pasoDatos.listaEliminados.forEach(jug => {
       /* console.log('Eliminados: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
@@ -287,7 +247,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     }
 
-    this.listaInicial.forEach(jug => {
+    this.pasoDatos.listaInicial.forEach(jug => {
       /* console.log('Pista: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
@@ -295,7 +255,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     });
 
-    this.listaBanquillo.forEach(jug => {
+    this.pasoDatos.listaBanquillo.forEach(jug => {
       /* console.log('Banquillo: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
@@ -303,7 +263,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     });
 
-    this.listaExcluidos.forEach(jug => {
+    this.pasoDatos.listaExcluidos.forEach(jug => {
       /* console.log('Excluidos: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;
@@ -311,7 +271,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       });
     });
 
-    this.listaEliminados.forEach(jug => {
+    this.pasoDatos.listaEliminados.forEach(jug => {
       /* console.log('Eliminados: ', jug); */
       this.estadJugadorService.addEstadJugador(jug).then(estad => {
         jug.id = estad.id;

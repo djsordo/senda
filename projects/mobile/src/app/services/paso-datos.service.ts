@@ -1,15 +1,21 @@
 
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { Evento } from '../modelo/evento';
+import { EstadJugador } from '../modelo/estadJugador';
+import { LocalStorageProvider, LocalStorageService } from './local.storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PasoDatosService {
-  private listaInicial: any;
-  private listaBanquillo: any;
+  public listaExcluidos: Array<EstadJugador>;
+  public listaEliminados: Array<EstadJugador>;
+  public listaInicial: any;
+  public listaBanquillo: any;
+  public jugCampo: any; 
+  public portero: any;
   private equipoId: string;
   private nombresEquipos: {
     casa: string;
@@ -19,7 +25,8 @@ export class PasoDatosService {
   private datosPantalla: any = {};
   public eventoJugador = new Subject<Evento>();
 
-  constructor() {}
+  constructor( ) {
+  }
 
   suscribirmeAEventoJugador( callback: (data: Evento) => void ){
     return this.eventoJugador.subscribe({ next: callback });
@@ -33,8 +40,24 @@ export class PasoDatosService {
     this.listaInicial = datos;
   }
 
-  getListaInicial(){
+  getListaInicial() {
     return this.listaInicial;
+  }
+
+  setJugCampo( datos: any ){
+    this.jugCampo = datos; 
+  }
+
+  getJugCampo(){
+    return this.jugCampo;
+  }
+
+  setPortero( datos: any ) {
+    this.portero = datos; 
+  }
+
+  getPortero() {
+    return this.portero; 
   }
 
   setListaBanquillo(datos: any){

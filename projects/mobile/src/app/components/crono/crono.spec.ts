@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CronoService } from './crono.service';
 
-describe('CronoService', () => {
+describe('Crono', () => {
   let service: CronoService;
 
   beforeEach(() => {

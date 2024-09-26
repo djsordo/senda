@@ -1,14 +1,13 @@
 import { AlertController } from '@ionic/angular';
-import { PartidosService } from './../../services/partidos.service';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from './../../services/eventos.service';
-import { Crono } from './../../modelo/crono';
-import { CronoService } from './crono.service';
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Usuario } from 'projects/mobile/src/app/modelo/usuario';
 import { SecurityService } from '../../services/security.service';
 import { Db } from '../../services/db.service';
 import { Partido } from '../../modelo/partido';
+import { CronoService } from './crono.service';
 
 @Component({
   selector: 'app-crono',
@@ -19,38 +18,31 @@ export class CronoComponent implements OnInit, OnDestroy {
 
   @Input() partidoId: string; 
   @Input() equipoId: string;
-  @Input() partes: number;
-  @Input() segsParte: number;
-
-  tiempo: Crono = {
-    encendido: false,
-    finParte: false,
-    finPartido: false,
-    parte: 1,
-    segundos: 0
-  };
+  partes: number;
+  segsParte: number;
 
   usuario: Usuario;
 
   constructor(private db: Db,
-              private cronoService: CronoService,
+              public crono: CronoService,
               private eventosService: EventosService,
               private pasoDatos: PasoDatosService,
               private securityService: SecurityService,
-              private alertController: AlertController) {}
+              private alertController: AlertController) {
+  }
 
   ngOnInit() {
-    this.tiempo = this.cronoService.tiempo;
+    console.log( "ngOnInit crono.component.ts");
     this.usuario = this.securityService.getUsuario();
   }
 
   ngOnDestroy(){
-    this.cronoService.reset();
+    this.crono.reset();
   }
 
   pulsaCrono(){
     // Si es la primera vez que se pulsa (comienzo de partido) cambiamos el estado
-    if (this.tiempo.segundos === 0 && this.tiempo.parte === 1){
+    if (this.crono.esInicioPartido() ){
       this.db.updatePartido( this.partidoId, { config: { estado: 'en curso' } } as Partido, {merge:true} );
       localStorage.setItem('estadoPartido', 'en curso');
 
@@ -62,7 +54,7 @@ export class CronoComponent implements OnInit, OnDestroy {
       this.pasoDatos.onEventoJugador( evento );
     }
 
-    if (this.tiempo.segundos === 0){
+    if (this.crono.esComienzoDeParte() ){
       // Es el comienzo de un periodo
       // Evento de comienzo de periodo
       const evento = this.eventosService.newEvento();
@@ -72,15 +64,15 @@ export class CronoComponent implements OnInit, OnDestroy {
       this.pasoDatos.onEventoJugador( evento );
     }
 
-    this.tiempo.encendido = !this.cronoService.pasoTiempo();
+    this.crono.encender();
   }
 
   pulsaParte(){
     this.mostrarAlerta().then( resp => {
       console.log(resp);
       if (resp === 'confirm'){
-        this.tiempo.finParte = true;
-        this.tiempo.encendido = false;
+
+        this.crono.finParte();
 
         // Evento de fin de parte
         const evento = this.eventosService.newEvento();
@@ -89,13 +81,11 @@ export class CronoComponent implements OnInit, OnDestroy {
         evento.equipoId = this.equipoId;
         this.pasoDatos.onEventoJugador( evento );
 
-        if (this.tiempo.parte === this.partes) {
+        if (this.crono.esFinalPartido()) {
           // Es el final del partido
           this.finPartido();
         } else {
-          this.tiempo.parte++;
-          this.tiempo.segundos = 0;
-          this.tiempo.finParte = false;
+          this.crono.inicioParte();
         }
       };
     });
@@ -103,20 +93,18 @@ export class CronoComponent implements OnInit, OnDestroy {
 
   finParte(){
 
-    this.tiempo.parte++;
-    this.tiempo.segundos = 0;
-    this.tiempo.finParte = false;
-
     // Evento de fin de parte
     const evento = this.eventosService.newEvento();
     evento.accionPrincipal = Acciones.finPeriodo;
     evento.partidoId = this.partidoId;
     evento.equipoId = this.equipoId;
     this.pasoDatos.onEventoJugador( evento );
+
+    this.crono.inicioParte();
   }
 
   finPartido(){
-    this.tiempo.finPartido = true;
+    this.crono.finPartido();
 
     // Evento de fin de partido
     const evento = this.eventosService.newEvento();

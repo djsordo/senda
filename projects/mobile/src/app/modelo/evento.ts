@@ -2,7 +2,7 @@
 /* import { Jugador } from './jugador'; */
 /* import { Equipo } from './equipo';*/
 import { Acciones } from '../services/eventos.service';
-import { Crono } from './crono';
+import { CronoData } from './cronoData';
 
 export interface Evento {
   id: string;
@@ -15,6 +15,6 @@ export interface Evento {
   accionSecundaria?: string;
   posicionCampo?: string;
   posicionPorteria?: string;
-  crono: Crono;
+  crono: CronoData;
 }
 

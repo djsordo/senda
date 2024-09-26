@@ -1,6 +1,6 @@
 import { EstadPartidoService } from './../../services/estad-partido.service';
-import { CronoService } from './../crono/crono.service';
-import { Crono } from './../../modelo/crono';
+import { CronoService } from '../crono/crono.service';
+import { CronoData } from '../../modelo/cronoData';
 import { EstadJugador } from './../../modelo/estadJugador';
 import { PasoDatosService } from './../../services/paso-datos.service';
 import { Acciones, EventosService } from 'projects/mobile/src/app/services/eventos.service';
@@ -18,7 +18,7 @@ export class BotonListaComponent implements OnInit {
   @Input() icono: string;
   @Input() colorBoton: string;
 
-  marcaTiempo: Crono;
+  marcaTiempo: CronoData;
 
   constructor(private eventosService: EventosService,
               private pasoDatos: PasoDatosService,

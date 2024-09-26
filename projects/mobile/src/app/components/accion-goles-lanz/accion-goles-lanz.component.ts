@@ -1,5 +1,5 @@
 import { MarcadorService } from './../marcador/marcador.service';
-import { CronoService } from './../crono/crono.service';
+import { CronoService } from '../crono/crono.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

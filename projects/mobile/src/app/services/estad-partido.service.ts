@@ -1,4 +1,4 @@
-import { Crono } from 'projects/mobile/src/app/modelo/crono';
+import { CronoData } from 'projects/mobile/src/app/modelo/cronoData';
 import { EstadPartido } from './../modelo/estadPartido';
 import { Firestore, collection, addDoc, doc, setDoc, collectionData, query, where, deleteDoc } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
@@ -43,7 +43,7 @@ export class EstadPartidoService {
   }
 
   // Suma en las estadísticas globales y en la base de datos
-  suma(campo: string, crono: Crono){
+  suma(campo: string, crono: CronoData){
     this.estadPartido[campo]++;
     this.estadPartido.crono = crono;
     // Actualizamos el registro en la base de datos

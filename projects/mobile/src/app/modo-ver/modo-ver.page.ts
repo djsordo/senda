@@ -41,7 +41,6 @@ export class ModoVerPage implements OnInit, OnDestroy {
               private pasoDatos: PasoDatosService) { }
 
   ngOnInit() {
-    console.log( "parametros: ", this.activatedRoute.params );
     this.eventos = [];
     this.estadPartido = [];
     this.lineasEv = [ {tpEvento: Acciones.gol, tipo: 'evIzquierda', icono: 'football'},
