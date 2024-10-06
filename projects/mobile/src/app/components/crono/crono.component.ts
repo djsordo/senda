@@ -52,19 +52,19 @@ export class CronoComponent implements OnInit, OnDestroy {
       evento.partidoId = this.partidoId;
       evento.equipoId = this.equipoId;
       this.pasoDatos.onEventoJugador( evento );
+    }else{
+      if (this.crono.esComienzoDeParte() ){
+        // Es el comienzo de un periodo
+        // Evento de comienzo de periodo
+        const evento = this.eventosService.newEvento();
+        evento.accionPrincipal = Acciones.comienzoPeriodo;
+        evento.partidoId = this.partidoId;
+        evento.equipoId = this.equipoId;
+        this.pasoDatos.onEventoJugador( evento );
+      }
     }
 
-    if (this.crono.esComienzoDeParte() ){
-      // Es el comienzo de un periodo
-      // Evento de comienzo de periodo
-      const evento = this.eventosService.newEvento();
-      evento.accionPrincipal = Acciones.comienzoPeriodo;
-      evento.partidoId = this.partidoId;
-      evento.equipoId = this.equipoId;
-      this.pasoDatos.onEventoJugador( evento );
-    }
-
-    this.crono.encender();
+    this.crono.pulsaCrono();
   }
 
   pulsaParte(){

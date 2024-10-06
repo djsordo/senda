@@ -74,8 +74,6 @@ export class CronoService {
     // Función que se ejecuta cada segundo si el crono está encendido
     // Valorar setInterval
     setTimeout(() => {
-      console.log("tic");
-      console.log("encendido?", this.tiempo.encendido);
       if (this.tiempo.encendido){
         if (this.tiempo.segundos >= this.segsParte){
           this.tiempo.finParte = true;
@@ -102,6 +100,13 @@ export class CronoService {
   getEncendido(){
     // Función que obtiene el estado del crono
     return this.tiempo.encendido;
+  }
+
+  pulsaCrono(){
+    if( this.tiempo.encendido )
+      this.apagar();
+    else
+      this.encender();
   }
 
   encender(){

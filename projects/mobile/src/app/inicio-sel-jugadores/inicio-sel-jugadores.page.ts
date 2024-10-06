@@ -246,10 +246,6 @@ export class InicioSelJugadoresPage implements OnInit {
     }
   }
 
-  doTest() {
-    console.log( "listaexcluidos:", this.pasoDatos.listaExcluidos );
-  }
-
   irAModo() {
     // Se crean eventos de titulares, banquillo y no convocado.
     this.listaInicial.forEach(jug => {
@@ -302,15 +298,22 @@ export class InicioSelJugadoresPage implements OnInit {
     console.log( "lista banquillo: ", this.pasoDatos.listaBanquillo );
     console.log( "lista excluidos: ", this.pasoDatos.listaExcluidos );
     console.log( "lista eliminados: ", this.pasoDatos.listaEliminados );
-
+    console.log( "portero: ", this.pasoDatos.portero );
+    
     this.router.navigate(['/modo-jugador', this.partido.id]);
   }
 
+  /**
+   * convertimos listaBanquillo de Jugador[] a EstadJugador[]
+   * @param listaBanquillo 
+   * @returns 
+   */
   private convertListaBanquillo( listaBanquillo ){
     return listaBanquillo.map( x =>  {
       const estadJugador = initEstadJugador();
       estadJugador.datos = x; 
       estadJugador.partidoId = this.partido.id;
+      return estadJugador;
     })
     .sort( (x,y) => x.datos.numero.localeCompare(y.datos.numero) );
   }

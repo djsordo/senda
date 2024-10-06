@@ -64,7 +64,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
     this.subTick = this.tick$.subscribe(res => {
       if (res.segundos !== 0){
-        this.pasoDatos.portero.segJugados++;
+        if( this.pasoDatos.portero )
+          this.pasoDatos.portero.segJugados++;
         this.pasoDatos.jugCampo.forEach(jug => jug.segJugados++);
         this.pasoDatos.listaExcluidos.forEach(jug => {
           jug.segJugados++;
@@ -406,7 +407,7 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
     //this.acordeonJugadores.value = undefined;
   }
 
-   sumaEstad(accion: Acciones, jugadorId: string){
+  sumaEstad(accion: Acciones, jugadorId: string){
     let jugActivo: EstadJugador; // Esadísticas del jugador para ser grabadas en BD
 
     if (accion === 'accion.gol' || accion === 'accion.lanzamiento'){

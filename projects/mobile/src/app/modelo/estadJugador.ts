@@ -2,7 +2,7 @@ import { Jugador } from './jugador';
 
 
 export function initEstadJugador() : EstadJugador{
-  return Object.create({
+  return {
     datos : null,
     partidoId : '',
     amarillas : 0,
@@ -17,8 +17,7 @@ export function initEstadJugador() : EstadJugador{
     exclusion : false,
     paradas : 0,
     golesRival : 0,
-    segJugados : 0
-});
+    segJugados : 0 };
 }
 
 export interface EstadJugador{

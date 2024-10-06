@@ -11,27 +11,27 @@ import { Firestore,
         QueryFieldFilterConstraint } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Db } from './db.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadJugadorService {
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, 
+              private db : Db
+  ) { }
 
   //Funciones de Base de Datos
   async addEstadJugador(jugador: EstadJugador){
     const estadJugadorRef = collection(this.firestore, 'estadJugadores');
-    return await addDoc(estadJugadorRef, jugador);
+    return await addDoc(estadJugadorRef, jugador );
   }
 
   async updateEstadJugador(jugador: EstadJugador){
-    console.log(jugador);
     const path = 'estadJugadores/' + jugador.id;
-    //console.log(path);
     const estadJugadorRef = doc(this.firestore, path);
-    //console.log(estadJugadorRef);
-    return await setDoc(estadJugadorRef, jugador);
+    return await setDoc(estadJugadorRef, jugador );
   }
 
   getEstadJugador(partidoId?: string,
@@ -46,7 +46,6 @@ export class EstadJugadorService {
   }
 
   async deleteEstadJugador(id: string){
-    console.log(id);
     const estadJugadorRef = doc(this.firestore, 'estadJugadores/' + id);
     return await deleteDoc(estadJugadorRef);
   }

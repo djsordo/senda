@@ -64,6 +64,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
     }
 
   ngOnInit() {
+
     this.estadoPartido = localStorage.getItem('estadoPartido');
     this.pasoDatos.listaEliminados = [];
     this.pasoDatos.listaExcluidos = [];
@@ -117,7 +118,7 @@ export class ModoJugadorPage implements OnInit, DoCheck, OnDestroy {
       this.estadPartidoService.actualiza('id', estad.id);
       this.estadPartidoService.updateEstadPartido();
     });
-    
+
   }
 
   ngDoCheck(){

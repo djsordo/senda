@@ -32,7 +32,6 @@ export class BuscarComponent implements OnInit {
   constructor( private mainPage : AdminEquiposPage, 
               private db : Db,
               private equipoService : EquipoService,
-              private renderer : Renderer2, 
               private alertController : AlertController,
               private stringUtil : StringUtil ){
   }
@@ -64,6 +63,7 @@ export class BuscarComponent implements OnInit {
   private matchesSearch( equipo: any, searchText : string ){
     const composedInfo = equipo.nombre + ' ' 
                   + equipo?.genero + ' ' 
+                  + equipo?.categoria + ' '
                   + equipo?.temporada.nombre;
     if( searchText )
       return this.stringUtil.like( composedInfo, searchText );

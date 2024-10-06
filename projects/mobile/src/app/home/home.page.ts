@@ -14,7 +14,6 @@ import { Usuario } from '../modelo/usuario';
 import { Partido } from '../modelo/partido';
 import { SecurityService } from '../services/security.service';
 import { Db } from '../services/db.service';
-import { where } from '@angular/fire/firestore';
 
 
 @Component({

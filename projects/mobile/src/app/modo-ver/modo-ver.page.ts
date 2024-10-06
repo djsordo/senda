@@ -64,34 +64,52 @@ export class ModoVerPage implements OnInit, OnDestroy {
                       {tpEvento: Acciones.comienzoPeriodo, tipo: 'evCentro', texto: 'COMIENZO DE PERIODO'},
                     ];
 
-    this.subs.push(this.estadPartidoService.getEstadPartido(localStorage.getItem('partidoId'))
+    let partidoId = this.activatedRoute.snapshot.params["partidoId"];
+
+    this.subs.push(this.estadPartidoService.getEstadPartido(partidoId)
     .subscribe(estadP => {
       this.estadPartido = estadP;
     }));
 
-    this.subs.push(this.estadJugadorService.getEstadJugador(localStorage.getItem('partidoId'))
+    this.subs.push(this.estadJugadorService.getEstadJugador(partidoId)
     .subscribe(estadJ => {
       this.estadJugadores = estadJ;
-      // Borramos las listas
       this.listas = [];
-      this.listas.push({tipo: 'goles', tipo2: '', cabecera: 'Goleadores', lista: [...this.estadJugadores]
+      this.listas.push({tipo: 'goles', 
+                        tipo2: '', 
+                        cabecera: 'Goleadores', 
+                        lista: [...this.estadJugadores]
         .sort((a, b) => (b.goles - a.goles))});
-      this.listas.push({tipo: 'lanzFallados', tipo2: 'goles', cabecera: 'Lanzamientos totales', lista: [...this.estadJugadores]
+      this.listas.push({tipo: 'lanzFallados', 
+                        tipo2: 'goles', 
+                        cabecera: 'Lanzamientos totales', 
+                        lista: [...this.estadJugadores]
         .sort((a, b) => ((b.lanzFallados + b.goles) - (a.lanzFallados + a.goles)))});
-      this.listas.push({tipo: 'paradas', tipo2: '', cabecera: 'Paradas', lista: [...this.estadJugadores].filter(jug => jug.paradas >0)
+      this.listas.push({tipo: 'paradas', 
+                        tipo2: '', 
+                        cabecera: 'Paradas', 
+                        lista: [...this.estadJugadores].filter(jug => jug.paradas >0)
         .sort((a, b) => (b.paradas - a.paradas))});
-      // eslint-disable-next-line max-len
-      this.listas.push({tipo: 'golesRival', tipo2: '', cabecera: 'Goles recibidos', lista: [...this.estadJugadores].filter(jug => jug.golesRival > 0)
-        .sort((a, b) => (b.golesRival - a.golesRival))});
-      this.listas.push({tipo: 'perdidas', tipo2: '', cabecera: 'Pérdidas', lista: [...this.estadJugadores]
-        .sort((a, b) => (b.perdidas - a.perdidas))});
-      this.listas.push({tipo: 'robos', tipo2: '', cabecera: 'recuperaciones', lista: [...this.estadJugadores]
-        .sort((a, b) => (b.robos - a.robos))});
+      this.listas.push({tipo: 'golesRival', 
+                        tipo2: '', 
+                        cabecera: 'Goles recibidos', 
+                        lista: [...this.estadJugadores].filter(jug => jug.golesRival > 0)
+      .sort((a, b) => (b.golesRival - a.golesRival))});
+      this.listas.push({tipo: 'perdidas', 
+                        tipo2: '', 
+                        cabecera: 'Pérdidas', 
+                        lista: [...this.estadJugadores]
+      .sort((a, b) => (b.perdidas - a.perdidas))});
+      this.listas.push({tipo: 'robos', 
+                        tipo2: '', 
+                        cabecera: 'recuperaciones', 
+                        lista: [...this.estadJugadores]
+      .sort((a, b) => (b.robos - a.robos))});
       console.log('Listas: ');
       console.log(this.listas);
       }));
 
-    this.subs.push(this.eventosService.getEventos(localStorage.getItem('partidoId'))
+    this.subs.push(this.eventosService.getEventos(partidoId)
     .subscribe(evento => {
       this.eventos = evento;
 
@@ -101,6 +119,11 @@ export class ModoVerPage implements OnInit, OnDestroy {
       );
     }));
     console.log(this.eventos);
+  }
+
+  testObject( obj ){
+    console.log( obj ); 
+    return "";
   }
 
   volver(){
@@ -130,11 +153,9 @@ export class ModoVerPage implements OnInit, OnDestroy {
   segmentChangedP(ev: any){
     this.segmentoMostradoP = ev.detail.value;
     this.segmentoMostradoS = 'equipo';
-    console.log(this.segmentoMostradoP);
   }
 
   segmentChangedS(ev: any){
     this.segmentoMostradoS = ev.detail.value;
-    console.log(this.segmentoMostradoS);
   }
 }
