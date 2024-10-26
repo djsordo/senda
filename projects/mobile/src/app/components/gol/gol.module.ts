@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 
-import { DetalleJugadorPageRoutingModule } from './detalle-jugador-routing.module';
-
-import { DetalleJugadorPage } from './detalle-jugador.page';
-import { MapaComponent } from '../components/mapa/mapa.component';
+import { DetalleJugadorPageRoutingModule } from './gol-routing.module';
+import { GolPage } from './gol.page';
+import { MapaComponent } from '../mapa/mapa.component';
 
 @NgModule({
   imports: [
@@ -17,7 +15,7 @@ import { MapaComponent } from '../components/mapa/mapa.component';
     DetalleJugadorPageRoutingModule
   ],
   declarations: [
-    DetalleJugadorPage, 
+    GolPage, 
     MapaComponent ]
 })
-export class DetalleJugadorPageModule {}
+export class GolPageModule {}

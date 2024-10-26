@@ -8,7 +8,7 @@ export interface Tick {
 }
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 export class CronoService {
 

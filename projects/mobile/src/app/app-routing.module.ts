@@ -84,8 +84,8 @@ const routes: Routes = [
     canActivate: [ permissionsGuard ]
   },
   {
-    path: 'detalle-jugador',
-    loadChildren: () => import('./detalle-jugador/detalle-jugador.module').then( m => m.DetalleJugadorPageModule),
+    path: 'gol',
+    loadChildren: () => import('./components/gol/gol.module').then( m => m.GolPageModule),
     canActivate: [ permissionsGuard ]
   },
   {

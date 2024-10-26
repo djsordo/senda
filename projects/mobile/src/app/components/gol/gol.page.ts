@@ -1,22 +1,22 @@
-import { EstadPartidoService } from './../services/estad-partido.service';
-import { CronoData } from '../modelo/cronoData';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { PasoDatosService } from '../services/paso-datos.service';
-import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../services/balonmano.service';
-import { Acciones, EventosService } from '../services/eventos.service';
-import { TradService } from '../services/trad.service';
-import { EstadJugador } from '../modelo/estadJugador';
+import { EstadPartidoService } from './../../services/estad-partido.service';
+import { CronoData } from '../../modelo/cronoData';
+import { PasoDatosService } from '../../services/paso-datos.service';
+import { BalonmanoService, PosicionCampo, PosicionPorteria } from '../../services/balonmano.service';
+import { Acciones, EventosService } from '../../services/eventos.service';
+import { TradService } from '../../services/trad.service';
+import { EstadJugador } from '../../modelo/estadJugador';
 
 @Component({
-  selector: 'app-detalle-jugador',
-  templateUrl: './detalle-jugador.page.html',
-  styleUrls: ['./detalle-jugador.page.scss'],
+  selector: 'app-gol',
+  templateUrl: './gol.page.html',
+  styleUrls: ['./gol.page.scss'],
 })
-export class DetalleJugadorPage implements OnInit {
+export class GolPage implements OnInit {
   detalle: any;
   porteriaVacia = false;
   public areaCampo = '';
@@ -37,10 +37,10 @@ export class DetalleJugadorPage implements OnInit {
     ) {}
 
   ngOnInit() {
-    this.accion = this.pasoDatos.getPantalla('detalle-jugador').accion;
-    this.accionS = this.pasoDatos.getPantalla('detalle-jugador').accionS;
-    this.jugador = this.pasoDatos.getPantalla('detalle-jugador')?.jugador;
-    this.marcaTiempo = this.pasoDatos.getPantalla('detalle-jugador').marcaTiempo;
+    this.accion = this.pasoDatos.getPantalla('gol').accion;
+    this.accionS = this.pasoDatos.getPantalla('gol').accionS;
+    this.jugador = this.pasoDatos.getPantalla('gol')?.jugador;
+    this.marcaTiempo = this.pasoDatos.getPantalla('gol').marcaTiempo;
   }
 
   public onCampoClicked( event: string ){

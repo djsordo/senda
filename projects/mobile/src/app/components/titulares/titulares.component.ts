@@ -121,8 +121,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
                       accionS: this.pasoDatos.portero ? Acciones.sinPortero : '',
                       jugador,
                       marcaTiempo: this.crono.marcaTiempo()};
-    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
-    this.router.navigate(['/detalle-jugador']);
+    this.pasoDatos.setPantalla( 'gol', detalle);
+    this.router.navigate(['/gol']);
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
@@ -131,8 +131,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnGolRival(jugador: EstadJugador): void{
     const detalle = {accion: Acciones.golRival, jugador, marcaTiempo: this.crono.marcaTiempo()};
-    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
-    this.router.navigate(['/detalle-jugador']);
+    this.pasoDatos.setPantalla( 'gol', detalle);
+    this.router.navigate(['/gol']);
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
@@ -144,8 +144,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
       jugador,
       marcaTiempo: this.crono.marcaTiempo()};
 
-    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
-    this.router.navigate(['/detalle-jugador']);
+    this.pasoDatos.setPantalla( 'gol', detalle);
+    this.router.navigate(['/gol']);
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;
@@ -153,8 +153,8 @@ export class TitularesComponent implements OnInit, OnDestroy, DoCheck {
 
   btnParada(jugador: EstadJugador): void {
     const detalle = {accion: Acciones.parada, jugador, marcaTiempo: this.crono.marcaTiempo()};
-    this.pasoDatos.setPantalla('detalle-jugador', detalle);
-    this.router.navigate(['/detalle-jugador']);
+    this.pasoDatos.setPantalla('gol', detalle);
+    this.router.navigate(['/gol']);
 
     // Cerramos el acordeón de jugadores
     this.acordeonJugadores.value = undefined;

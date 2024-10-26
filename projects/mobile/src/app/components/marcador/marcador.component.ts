@@ -112,7 +112,7 @@ export class MarcadorComponent implements OnInit, DoCheck, OnDestroy {
     }
 
     const detalle = {accion: Acciones.golRival, jugador, marcaTiempo: this.cronoService.marcaTiempo()};
-    this.pasoDatos.setPantalla( 'detalle-jugador', detalle);
-    this.router.navigate(['/detalle-jugador']);
+    this.pasoDatos.setPantalla( 'gol', detalle);
+    this.router.navigate(['/gol']);
   }
 }
