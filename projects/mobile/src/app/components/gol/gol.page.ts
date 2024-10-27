@@ -1,5 +1,4 @@
-import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
@@ -25,8 +24,9 @@ export class GolPage implements OnInit {
   private accionS: Acciones = null;
   private jugador: EstadJugador = null;
   private marcaTiempo: CronoData = null;
+  private whereToReturn: string = null;
 
-  constructor(private toastController: ToastController,
+  constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     private pasoDatos: PasoDatosService,
     public balonmanoService: BalonmanoService,
@@ -98,7 +98,7 @@ export class GolPage implements OnInit {
     localStorage.setItem('accion', this.accion);
     localStorage.setItem('jugadorId', this.jugador?.datos.id);
 
-    this.router.navigate(['/modo-jugador']);
+    this.location.back();
   }
 
   public getTituloPagina() {

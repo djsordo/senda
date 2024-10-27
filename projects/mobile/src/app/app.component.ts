@@ -6,7 +6,6 @@ import { register } from 'swiper/element/bundle';
 import { environment } from '../environments/environment';
 import { version } from 'projects/mobile/src/environments/version';
 
-import { NavegacionService } from './services/navegacion.service';
 import { SecurityService } from './services/security.service';
 import { MenuEntry, appMenu } from './app-routing.module';
 
@@ -27,7 +26,6 @@ export class AppComponent implements OnInit {
 
   constructor(private security : SecurityService,
               private menu: MenuController,
-              private navegacion: NavegacionService,
               private router: Router ) {
     this.isProduction = environment.production;
     this.version = version;
@@ -35,7 +33,6 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.navegacion.init();
   }
 
   public usuario( property : string ) {

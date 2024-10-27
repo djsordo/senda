@@ -1,10 +1,10 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SpeechRecognition  } from '@capacitor-community/speech-recognition';
 import { JugadorIntentEs } from '../components/jugador-intent/jugador-intent-es';
 import { Evento } from '../modelo/evento';
-import { NavegacionService } from '../services/navegacion.service';
 import { PasoDatosService } from '../services/paso-datos.service';
 import { ColorScheme, StylesService } from '../services/styles.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-microfono',
@@ -20,10 +20,10 @@ export class MicrofonoPage implements OnInit {
   private microfonoOff = "./assets/mic-animation-disabled.gif";
   public microfonoImgSrc = this.microfonoOn;
 
-  constructor(  private navegacion : NavegacionService, 
-                private intentParser : JugadorIntentEs,
+  constructor(  private intentParser : JugadorIntentEs,
                 private pasoDatos : PasoDatosService, 
-                private stylesService : StylesService ) {
+                private stylesService : StylesService, 
+                private location : Location ) {
   }
 
   ngOnInit() {
@@ -93,7 +93,7 @@ export class MicrofonoPage implements OnInit {
   }
 
   public irAtras(){
-    this.navegacion.back();
+    this.location.back();
   }
 
 }
